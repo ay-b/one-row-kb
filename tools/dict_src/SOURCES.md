@@ -46,3 +46,9 @@ python tools/build_bigrams.py dictionaries <tatoeba_dir>                    # ->
 `<hunspell_dir>/<lang>/` holds the `.aff` + `.dic`; `<extras>/freq_<lang>/<lang>_full.txt` is FrequencyWords (Norwegian is
 `no` in that repository). Tatoeba codes: ita nld swe dan nob fin isl pol ces slk slv hrv hun ron ell est lvs lit cat.
 See docs/dictionary-countries.md and docs/on-demand-dictionaries.md.
+
+## Hyphenated words
+wordfreq has no hyphenated words in any language, so `tools/build_lexicon.py` takes them from the OpenSubtitles list (at least 30
+occurrences, at most three parts, no repetitions like да-да and no stutters like п-привет). Where a Hunspell dictionary exists
+the word must pass it (this also drops Russian words from the Ukrainian subtitle list). The hyphen is part of the displayed
+word only; the key a swipe or tap must match skips it (Alphabet.key), exactly like an apostrophe.

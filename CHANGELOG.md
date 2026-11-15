@@ -4,6 +4,10 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.12.1
+- Fix: ":" and ";" typed after a space you pressed yourself no longer take that space back (it is probably the start of a smiley, " :)"). They still take back the automatic space after a swiped word or a picked guess; "." "," "!" "?" are unchanged.
+- Fix: hyphenated words (когда-то, что-нибудь, из-за, по-русски, well-known, mother-in-law) were missing from the dictionaries, so swipes could not find them. They are in now: Russian +975, English +6,065, Ukrainian +48. (The other languages get them when their dictionaries are rebuilt with tools/build_lexicon.py.)
+
 ## 0.12.0
 - One row: pulling up from the guess bar or from the bottom row (123, language key, comma, space, period, enter) expands the keyboard, like a straight swipe up on the letters. Sideways drags there (scroll guesses, move the cursor) are unchanged.
 

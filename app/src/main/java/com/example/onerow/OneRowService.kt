@@ -34,6 +34,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     private var selEnd = 0
     private var ignoreSelUntil = 0L               // selection reports right after we re-open a word describe stale states
     private var resumed = false                   // composing was re-opened from existing text (don't learn it unchanged)
+    private var wordAutoSpaced = false            // the space before the caret was added by us after a swiped word or a picked guess (not typed by the user)
     private var justAutoSpaced = false            // the last thing typed was a punctuation mark plus our automatic space
     private var glideWord: String? = null         // the word a glide just typed (followed by our space): guesses replace it
     private var glideAlts: List<String> = emptyList()
@@ -361,7 +362,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     private fun addTap(ch: Char, logp: FloatArray, exactPick: Boolean, shownText: String?) {
-        justAutoSpaced = false
+        justAutoSpaced = false; wordAutoSpaced = false
         endGlide()
         val ic = currentInputConnection ?: return
         fun literal(): String {
@@ -395,8 +396,9 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (text == " " && taps.isNotEmpty() && cands.firstOrNull()?.word?.endsWith("'") == true) { finishComposing(); return }
         finishComposing()
         val ic = currentInputConnection ?: return
+        val wasWordAuto = wordAutoSpaced
         val wasAuto = justAutoSpaced
-        justAutoSpaced = false
+        justAutoSpaced = false; wordAutoSpaced = false
         // a space typed right after the automatic one is not needed
         if (text == " " && wasAuto && textBefore(1) == " ") return
         // ":)" / ";)" smileys: take the automatic space back before a closing bracket
@@ -408,8 +410,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (decoding && text.length == 1 && text[0] in AUTO_SPACE_AFTER) {
             ic.beginBatchEdit()
             // "word ." -> "word." (also joins "..." and "?!" after the automatic space)
-            val b = textBefore(2)
-            if (b.length == 2 && b[1] == ' ' && !b[0].isWhitespace()) ic.deleteSurroundingText(1, 0)
+            if (SpacePolicy.cutsSpaceBefore(text[0], textBefore(2), wasAuto || wasWordAuto)) ic.deleteSurroundingText(1, 0)
             val prev = textBefore(1).lastOrNull()
             ic.commitText(text, 1)
             val after = ic.getTextAfterCursor(1, 0)?.toString().orEmpty()
@@ -438,7 +439,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     override fun onBackspace() {
-        justAutoSpaced = false
+        justAutoSpaced = false; wordAutoSpaced = false
         if (glideWord != null && taps.isEmpty() && glideIntact()) {          // delete the whole glided word
             currentInputConnection?.deleteSurroundingText(glideWord!!.length + 1, 0)
             endGlide(); refresh(); return
@@ -498,7 +499,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     override fun onDeleteWord() {
-        justAutoSpaced = false
+        justAutoSpaced = false; wordAutoSpaced = false
         endGlide()
         taps.clear(); exact.clear(); shown.clear()
         val ic = currentInputConnection ?: return
@@ -540,7 +541,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     override fun onEnter() {
-        justAutoSpaced = false
+        justAutoSpaced = false; wordAutoSpaced = false
         endGlide()
         finishComposing()
         val info = currentInputEditorInfo
@@ -562,7 +563,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
      * move focus out of the field and the input connection is lost.
      */
     override fun onMoveCursor(steps: Int) {
-        justAutoSpaced = false
+        justAutoSpaced = false; wordAutoSpaced = false
         endGlide()
         finishComposing()
         val ic = currentInputConnection ?: return
@@ -587,7 +588,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (!decoding) return
         val t0 = System.nanoTime()
         finishComposing(); endGlide()
-        justAutoSpaced = false
+        justAutoSpaced = false; wordAutoSpaced = false
         val prevW = previousWordIdx()
         val t1 = System.nanoTime()
         val list = eng.glide.decode(xs, ys, n, layout, prevW, 8)
@@ -600,18 +601,20 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (b.isNotEmpty() && !b.last().isWhitespace() && b.last() !in "([{\"'\u00AB\u201C-") ic.commitText(" ", 1)
         ic.commitText(words[0] + " ", 1)
         ic.endBatchEdit()
+        wordAutoSpaced = true
         glideWord = words[0]; glideAlts = words
         kv.suggestions = words; kv.bestIndex = 0
         android.util.Log.d("OneRowGlide", "ipc+prev=${(t1 - t0) / 1000}us decode=${(t2 - t1) / 1000}us commit=${(System.nanoTime() - t2) / 1000}us | ${eng.glide.stats}")
     }
 
     override fun onSuggestion(word: String) {
-        justAutoSpaced = false
+        justAutoSpaced = false; wordAutoSpaced = false
         val ic = currentInputConnection ?: return
         val gw = glideWord
         if (gw != null && taps.isEmpty() && glideIntact()) {         // a guess for a glided word replaces it
             ic.beginBatchEdit(); ic.deleteSurroundingText(gw.length + 1, 0); ic.commitText("$word ", 1); ic.endBatchEdit()
             glideWord = word; kv.bestIndex = glideAlts.indexOf(word)
+            wordAutoSpaced = true
             return
         }
         endGlide()
@@ -632,6 +635,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
             ic.commitText("$word ", 1)
         }
         ic.endBatchEdit()
+        wordAutoSpaced = true
         refresh()
     }
 }

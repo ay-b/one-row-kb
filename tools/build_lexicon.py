@@ -43,6 +43,7 @@ ZIPF_TRUST = 3.0        # words at least this common are taken without a diction
 CONSENSUS_MIN = 30      # OpenSubtitles occurrences that, together with wordfreq zipf >= 2, vouch for a word
 NEO_FLOOR = 3e-8        # frequency given to listed neologisms no corpus knows (zipf 1.5)
 TOP_K = 4
+HYPHEN_MIN = 30         # OpenSubtitles occurrences needed for a hyphenated word (когда-то, что-нибудь, well-known): wordfreq has none
 SUB_MIN = 5             # OpenSubtitles occurrences needed for a word that only that list knows (non-bundled languages)
 
 BASE = {
@@ -80,6 +81,8 @@ if os.path.exists(_lj):
         TARGET[_c] = TARGET_NEW.get(_c, 150_000); FOLDS[_c] = _d["folds"]
         DICTS[_c] = None   # found at build time: <hunspell_dir>/<code>/*.aff
 OLD = {"en", "fr", "de", "es", "pt", "ru", "uk"}
+for _c in EXTRA:
+    if "-" not in EXTRA[_c]: EXTRA[_c] += "-"        # hyphenated words are words (their hyphen is not a key: Alphabet.key skips it)
 def out_dir(code): return OUT if code in OLD else OPT_OUT
 
 ELISION = {"l", "d", "j", "m", "t", "s", "n", "c", "qu", "jusqu", "lorsqu", "puisqu", "quoiqu"}
@@ -110,6 +113,12 @@ def make_key(code):
         return out
     return key
 
+def hyphen_ok(w):
+    """A hyphenated word worth keeping: at most three parts, no repetition (да-да) and no stutter (п-привет)."""
+    parts = w.split("-")
+    if len(parts) > 3 or any(not p for p in parts): return False
+    return not any(a == b or (len(a) == 1 and b.startswith(a)) for a, b in zip(parts, parts[1:]))
+
 def candidates(code, sub=None):
     """lowercase surface -> frequency, from wordfreq (same filtering rules as tools/build_dict.py) and, for the
     languages wordfreq does not cover (or only thinly), from the OpenSubtitles list [sub] (words seen >= SUB_MIN times)."""
@@ -127,10 +136,13 @@ def candidates(code, sub=None):
             vocab[w + "'"] = word_frequency(w, code, wordlist=wl); continue
         if w.endswith("'"): continue
         if ok(w): vocab[w] = word_frequency(w, code, wordlist=wl)
-    if sub and code not in OLD:
+    if sub:
         counts = sub.get("__counts__", {})
         for w, f in sub.items():
-            if w != "__counts__" and w not in vocab and counts.get(w, 0) >= SUB_MIN and ok(w): vocab[w] = f
+            if w == "__counts__" or w in vocab or not ok(w): continue
+            if "-" in w:                         # wordfreq has no hyphenated words at all; the subtitle list does
+                if counts.get(w, 0) >= HYPHEN_MIN and hyphen_ok(w): vocab[w] = f
+            elif code not in OLD and counts.get(w, 0) >= SUB_MIN: vocab[w] = f
     return vocab
 
 def load_casing(code):
@@ -197,12 +209,13 @@ def build_words(code, dict_dir, extras=None):
     for w, fr in vocab.items():
         z = math.log10(fr) + 9 if fr > 0 else 0
         disp = casing.get(w)
-        if z >= ZIPF_TRUST or w in mandatory:
+        hyphen = "-" in w and bool(dicts)         # a hyphenated word always has to pass the dictionary: the subtitle lists mix languages (Russian in the Ukrainian one)
+        if (z >= ZIPF_TRUST and not hyphen) or w in mandatory:
             kept[w] = (disp or w, fr); trusted += 1; continue
         if known(w): kept[w] = (disp or w, fr); vetted += 1; continue
         cap = w[0].upper() + w[1:]
         if known(cap): kept[w] = (disp or cap, fr); vetted += 1; continue
-        if z >= 2.0 and (w in ok_en or counts.get(w, 0) >= CONSENSUS_MIN):
+        if z >= 2.0 and not hyphen and (w in ok_en or counts.get(w, 0) >= CONSENSUS_MIN):
             kept[w] = (disp or w, fr); agreed += 1; continue
         rejected += 1
     for w in mandatory:                                     # bigram words missing from wordfreq's list
