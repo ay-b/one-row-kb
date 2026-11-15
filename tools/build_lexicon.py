@@ -32,8 +32,9 @@ Usage (from the project root):
   <hunspell_dir> holds en/en_US.{aff,dic} fr/fr.* de/de_DE_frami.* es/es_ES.* pt_BR/pt_BR.* pt_PT/pt_PT.* ru/ru_RU.* uk/uk_UA.*
   (LibreOffice dictionaries). Licenses of the dictionaries: see NOTICE-dictionaries.md.
 """
-import math, os, re, struct, sys, time
+import glob, json, math, os, re, struct, sys, time
 from collections import deque
+import wordfreq
 from wordfreq import top_n_list, word_frequency, zipf_frequency
 from spylls.hunspell import Dictionary
 
@@ -42,6 +43,7 @@ ZIPF_TRUST = 3.0        # words at least this common are taken without a diction
 CONSENSUS_MIN = 30      # OpenSubtitles occurrences that, together with wordfreq zipf >= 2, vouch for a word
 NEO_FLOOR = 3e-8        # frequency given to listed neologisms no corpus knows (zipf 1.5)
 TOP_K = 4
+SUB_MIN = 5             # OpenSubtitles occurrences needed for a word that only that list knows (non-bundled languages)
 
 BASE = {
     "en": "abcdefghijklmnopqrstuvwxyz", "fr": "abcdefghijklmnopqrstuvwxyz", "de": "abcdefghijklmnopqrstuvwxyz",
@@ -54,10 +56,37 @@ SINGLE = {"en": "ai", "fr": "ay", "de": "", "es": "aeouy", "pt": "aeo", "ru": "�
 TARGET = {"en": 150_000, "fr": 220_000, "de": 330_000, "es": 250_000, "pt": 220_000, "ru": 450_000, "uk": 350_000}
 DICTS = {"en": ["en/en_US"], "fr": ["fr/fr"], "de": ["de/de_DE_frami"], "es": ["es/es_ES"],
          "pt": ["pt_BR/pt_BR", "pt_PT/pt_PT"], "ru": ["ru/ru_RU"], "uk": ["uk/uk_UA"]}
+# ---- languages whose dictionaries are not bundled in the app (see docs/on-demand-dictionaries.md) ----
+# Their alphabets come from tools/languages.json (generated from Lang.kt); output goes to OPT_OUT.
+OPT_OUT = "dictionaries"
+NATIVE = {   # accented letters that belong to the language (everything else is a foreign word and is dropped)
+    "it": "àèéìíîòóùú", "nl": "áäéèëïíóöúü", "sv": "é", "da": "é", "nb": "éèêóòôü", "fi": "šž", "is": "áéíóúý",
+    "el": "άέήίόύώϊϋΐΰς", "pl": "ąćęłńóśźż", "cs": "áčďéěíňóřšťúůýž", "sk": "áäčďéíĺľňóôŕšťúýž",
+    "sl": "čšž", "hr": "čćđšž", "hu": "áéíóöőúüű", "ro": "ăâîșț", "et": "šž", "lv": "āčēģīķļņšūž",
+    "lt": "ąčęėįšųūž", "ca": "àçéèíïóòúü",
+}
+SINGLE_NEW = {"it": "aeio", "sv": "iåö", "da": "iå", "nb": "iå", "is": "áíóéý", "pl": "aiowuz", "cs": "aikosuvz",
+              "sk": "aikosuvz", "sl": "aiksvz", "hr": "aiekosuz", "hu": "ae", "ro": "ae", "lv": "ai", "lt": "ai", "ca": "aiy",
+              "nl": "", "fi": "", "el": "", "et": ""}
+TARGET_NEW = {"it": 220_000, "nl": 200_000, "sv": 200_000, "da": 150_000, "nb": 150_000, "fi": 400_000, "is": 100_000,
+              "el": 200_000, "pl": 300_000, "cs": 300_000, "sk": 200_000, "sl": 150_000, "hr": 200_000, "hu": 300_000,
+              "ro": 200_000, "et": 150_000, "lv": 150_000, "lt": 150_000, "ca": 150_000}
+FOLDS = {}
+_lj = os.path.join(os.path.dirname(os.path.abspath(__file__)), "languages.json")
+if os.path.exists(_lj):
+    for _c, _d in json.load(open(_lj, encoding="utf-8")).items():
+        if _c in BASE: continue
+        BASE[_c] = _d["letters"]; EXTRA[_c] = NATIVE.get(_c, "") + "'-"; SINGLE[_c] = SINGLE_NEW.get(_c, "")
+        TARGET[_c] = TARGET_NEW.get(_c, 150_000); FOLDS[_c] = _d["folds"]
+        DICTS[_c] = None   # found at build time: <hunspell_dir>/<code>/*.aff
+OLD = {"en", "fr", "de", "es", "pt", "ru", "uk"}
+def out_dir(code): return OUT if code in OLD else OPT_OUT
+
 ELISION = {"l", "d", "j", "m", "t", "s", "n", "c", "qu", "jusqu", "lorsqu", "puisqu", "quoiqu"}
 
 # ---- must match engine/Alphabet.kt exactly ----
 def folds_for(code):
+    if code in FOLDS: return dict(FOLDS[code])
     f = {}
     if code in ("en", "fr", "de", "es", "pt"):
         for to, chars in (("a", "àáâãäå"), ("c", "çćč"), ("e", "èéêëē"), ("i", "ìíîïī"), ("n", "ñń"), ("o", "òóôõöø"),
@@ -81,8 +110,9 @@ def make_key(code):
         return out
     return key
 
-def candidates(code):
-    """lowercase surface -> frequency, from wordfreq (same filtering rules as tools/build_dict.py)."""
+def candidates(code, sub=None):
+    """lowercase surface -> frequency, from wordfreq (same filtering rules as tools/build_dict.py) and, for the
+    languages wordfreq does not cover (or only thinly), from the OpenSubtitles list [sub] (words seen >= SUB_MIN times)."""
     allowed = set(BASE[code] + EXTRA[code])
     def ok(w):
         if not w or any(ch not in allowed for ch in w): return False
@@ -90,12 +120,17 @@ def candidates(code):
         letters = [c for c in w if c not in "'-"]
         return len(letters) > 1 or w in set(SINGLE[code])
     vocab = {}
-    for w in top_n_list(code, 10**7, wordlist="large"):
+    wl = next((l for l in ("large", "small") if code in wordfreq.available_languages(l)), None)
+    for w in (top_n_list(code, 10**7, wordlist=wl) if wl else []):
         w = w.replace("’", "'").replace("ʼ", "'")
         if code == "fr" and w in ELISION:
-            vocab[w + "'"] = word_frequency(w, code, wordlist="large"); continue
+            vocab[w + "'"] = word_frequency(w, code, wordlist=wl); continue
         if w.endswith("'"): continue
-        if ok(w): vocab[w] = word_frequency(w, code, wordlist="large")
+        if ok(w): vocab[w] = word_frequency(w, code, wordlist=wl)
+    if sub and code not in OLD:
+        counts = sub.get("__counts__", {})
+        for w, f in sub.items():
+            if w != "__counts__" and w not in vocab and counts.get(w, 0) >= SUB_MIN and ok(w): vocab[w] = f
     return vocab
 
 def load_casing(code):
@@ -137,7 +172,8 @@ def load_neologisms(code):
 
 def bigram_words(code):
     s = set()
-    for line in open(f"{OUT}/{code}_bi.tsv", encoding="utf-8"):
+    if not os.path.exists(f"{out_dir(code)}/{code}_bi.tsv"): return s
+    for line in open(f"{out_dir(code)}/{code}_bi.tsv", encoding="utf-8"):
         t = line.rstrip("\n").split("\t")
         if len(t) >= 3:
             for w in t[:2]:
@@ -146,9 +182,11 @@ def bigram_words(code):
 
 def build_words(code, dict_dir, extras=None):
     t0 = time.time()
-    vocab = candidates(code); mandatory = bigram_words(code); casing = load_casing(code)
     sub, ok_en, slang = read_extras(code, extras); counts = sub.get("__counts__", {})
-    dicts = [Dictionary.from_files(os.path.join(dict_dir, d)) for d in DICTS[code]]
+    vocab = candidates(code, sub); mandatory = bigram_words(code); casing = load_casing(code)
+    names = DICTS[code] or [os.path.splitext(f)[0].replace(dict_dir + os.sep, "") for f in sorted(glob.glob(os.path.join(dict_dir, code, "*.aff")))]
+    dicts = [Dictionary.from_files(os.path.join(dict_dir, d)) for d in names]
+    print(f"{code}: hunspell {names or 'none'}, wordfreq {[l for l in ('large','small') if code in wordfreq.available_languages(l)][:1] or 'none'}, subtitles {len(counts)}", flush=True)
     def known(w):
         for d in dicts:
             try:
@@ -249,6 +287,7 @@ if __name__ == "__main__":
         if only and code not in only: continue
         items = build_words(code, dict_dir, extras)
         data, st = compile_trie(code, items)
-        path = f"{OUT}/{code}.lex"
+        os.makedirs(out_dir(code), exist_ok=True)
+        path = f"{out_dir(code)}/{code}.lex"
         open(path, "wb").write(data)
         print(f"{code}: wrote {path} {len(data)/1e6:.2f} MB  {st}", flush=True)

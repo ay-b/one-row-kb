@@ -4,6 +4,7 @@ import android.content.Context
 
 /** Settings shared between the keyboard service and the settings screen. */
 class Prefs(context: Context) {
+    private val appCtx = context.applicationContext
     private val sp = context.applicationContext.getSharedPreferences("onerow", Context.MODE_PRIVATE)
 
     var enabledCodes: List<String>
@@ -11,8 +12,8 @@ class Prefs(context: Context) {
             .ifEmpty { listOf("en") }
         set(v) = sp.edit().putString("langs", v.joinToString(",")).apply()
 
-    /** Enabled languages in the canonical order. */
-    val enabled: List<Lang> get() = Languages.all.filter { it.code in enabledCodes }
+    /** Enabled languages in the canonical order (only those whose dictionary is installed). */
+    val enabled: List<Lang> get() = Languages.all.filter { it.code in enabledCodes && Dictionaries.has(appCtx, it.code) }.ifEmpty { listOf(Languages.all[0]) }
 
     var currentCode: String
         get() = sp.getString("cur", "en") ?: "en"

@@ -33,3 +33,16 @@ trusted; the Wiktionary neologism lists are added regardless of frequency; at mo
 250k (es) / 330k (de) / 350k (uk) / 450k (ru) words per language before the neologisms are added.
 
 The Wiktionary categories do not carry dates, so "words of the last 10-15 years" is approximate.
+
+## Optional languages (not bundled)
+
+it nl sv da nb fi is el pl cs sk sl hr hu ro et lv lt ca: configured by `tools/languages.json` (exported from `Lang.kt`).
+Hunspell: LibreOffice/dictionaries `it/it_IT`, `nl_NL`, `sv_SE/dictionaries`, `da_DK`, `no` (nb_NO), `is`, `pl_PL`, `cs_CZ`,
+`sk_SK`, `sl_SI`, `hr_HR`, `hu_HU`, `ro`, `el_GR`, `et_EE`, `lv_LV`, `lt_LT` (`lt`), `ca/dictionaries`. No Finnish dictionary.
+```
+python tools/build_lexicon.py <hunspell_dir> --extras <extras> it nl ...     # -> dictionaries/<lang>.lex
+python tools/build_bigrams.py dictionaries <tatoeba_dir>                    # -> dictionaries/<lang>_bi.tsv
+```
+`<hunspell_dir>/<lang>/` holds the `.aff` + `.dic`; `<extras>/freq_<lang>/<lang>_full.txt` is FrequencyWords (Norwegian is
+`no` in that repository). Tatoeba codes: ita nld swe dan nob fin isl pol ces slk slv hrv hun ron ell est lvs lit cat.
+See docs/dictionary-countries.md and docs/on-demand-dictionaries.md.

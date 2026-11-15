@@ -12,6 +12,8 @@ local.properties
 # generated dictionaries: the licences of their sources are not settled yet (see NOTICE-dictionaries.md),
 # rebuild them with tools/build_lexicon.py (see tools/dict_src/SOURCES.md)
 app/src/main/assets/dict/*.lex
+# dictionaries of the languages that are not bundled (docs/on-demand-dictionaries.md)
+dictionaries/
 
 # scratch
 rank1.png

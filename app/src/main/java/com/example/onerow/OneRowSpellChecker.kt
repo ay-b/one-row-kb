@@ -34,7 +34,7 @@ class OneRowSpellChecker : SpellCheckerService() {
         fun known(ctx: android.content.Context, raw: String): Boolean {
             val parts = raw.split('-', '‐', '‑', '_').filter { it.isNotEmpty() }
             if (parts.isEmpty()) return true
-            val enabled = Prefs(ctx).enabledCodes
+            val enabled = Prefs(ctx).enabled.map { it.code }
             val key = enabled.joinToString(",")
             if (key != codes && !loading) {
                 loading = true
@@ -59,7 +59,7 @@ class OneRowSpellChecker : SpellCheckerService() {
         }
 
         private fun load(ctx: android.content.Context, code: String): Known {
-            val lex = try { Lexicon.loadBinary(Languages.byCode(code).alphabet, ctx.assets.open("dict/$code.lex"), null) } catch (e: Exception) { null }
+            val lex = try { Lexicon.loadBinary(Languages.byCode(code).alphabet, Dictionaries.open(ctx, "$code.lex")!!, null) } catch (e: Exception) { null }
             val ud = UserDictionary(File(ctx.filesDir, "user_$code.txt"))
             return Known(lex, ud.counts.keys.map { it.lowercase() }.toSet())
         }

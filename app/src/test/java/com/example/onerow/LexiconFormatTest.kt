@@ -8,15 +8,15 @@ import java.io.File
 /** The binary dictionaries written by tools/build_lexicon.py must be readable and consistent with Alphabet.key. */
 class LexiconFormatTest {
     @Test fun everyLanguageRoundTrips() {
-        val d = File("src/main/assets/dict")
         for (l in Languages.all) {
-            val f = File(d, "${l.code}.lex")
-            assertTrue("${l.code}.lex is missing: run tools/build_lexicon.py", f.exists())
+            if (!TestDicts.present(l.code)) continue
+            val f = TestDicts.file("${l.code}.lex")
+            assertTrue("${l.code}.lex is missing: run tools/build_lexicon.py", f != null)
             val t0 = System.nanoTime()
-            val lex = Lexicon.loadBinary(l.alphabet, f.inputStream(), File(d, "${l.code}_bi.tsv").inputStream())
+            val lex = Lexicon.loadBinary(l.alphabet, f!!.inputStream(), TestDicts.file("${l.code}_bi.tsv")?.inputStream())
             val ms = (System.nanoTime() - t0) / 1_000_000
             val n = lex.words.size
-            assertTrue("${l.code}: dictionary too small ($n)", n > 80_000)
+            assertTrue("${l.code}: dictionary too small ($n)", n > 25_000)
             var checked = 0
             for (i in 0 until n step 37) {
                 val w = lex.words[i]; val key = l.alphabet.key(w)

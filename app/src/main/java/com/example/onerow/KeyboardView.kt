@@ -321,7 +321,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             Mode.FULL -> listOf(
                 Row(listOf(Key(Kind.SUGG, "", 1f)), stripH, panel = false),
                 Row(hinted(lang.fullRows[0], "1234567890"), fullRowH, keyBg = true),
-                Row(hinted(lang.fullRows[1], HINTS_ROW2), fullRowH, inset = (lang.fullRows[0].length - lang.fullRows[1].length) / 2f, keyBg = true),
+                Row(hinted(lang.fullRows[1], HINTS_ROW2), fullRowH, inset = ((lang.fullRows[0].length - lang.fullRows[1].length) / 2f).coerceAtLeast(0f), keyBg = true),
                 Row(listOf(Key(Kind.SHIFT, "", 1.5f)) + hinted(lang.fullRows[2], SYMBOLS_ROW3) + Key(Kind.BACKSPACE, "", 1.5f), fullRowH, keyBg = true),
                 Row(listOf(Key(Kind.TO_SYMBOLS, "123", 1.5f), langKey, comma, Key(Kind.SPACE, "", 4f), period,
                     Key(Kind.ENTER, "", 1.5f)), fullRowH, keyBg = true)

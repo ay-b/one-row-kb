@@ -68,7 +68,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         lex = null; decoder = null; user = null
         Thread {
             val t0 = System.nanoTime()
-            val lx = Lexicon.loadBinary(l.alphabet, assets.open("dict/${l.code}.lex"), assets.open("dict/${l.code}_bi.tsv"))
+            val lx = Lexicon.loadBinary(l.alphabet, Dictionaries.open(this, "${l.code}.lex")!!, Dictionaries.open(this, "${l.code}_bi.tsv"))
             val ud = UserDictionary(File(filesDir, "user_${l.code}.txt"))
             // the user's own words outrank the shipped ones; words they removed stay gone
             for ((w, c) in ud.counts) {

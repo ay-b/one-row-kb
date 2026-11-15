@@ -15,8 +15,7 @@ import kotlin.math.sin
  */
 class GlideSimTest {
     private fun lexicon(l: Lang): Lexicon {
-        val d = File("src/main/assets/dict")
-        return Lexicon.loadBinary(l.alphabet, File(d, "${l.code}.lex").inputStream(), File(d, "${l.code}_bi.tsv").inputStream())
+        return Lexicon.loadBinary(l.alphabet, TestDicts.file("${l.code}.lex")!!.inputStream(), TestDicts.file("${l.code}_bi.tsv")?.inputStream())
     }
 
     /** Key centres of the full layout: unit = width of the widest row / its key count; rows 1.15 units tall. */
@@ -54,6 +53,7 @@ class GlideSimTest {
 
     @Test fun everyLanguage() {
         for (l in Languages.all) {
+            if (!TestDicts.present(l.code)) continue
             val lex = lexicon(l); val g = layout(l); val dec = GlideDecoder(lex); val r = Random(11)
             val byFreq = lex.words.indices.sortedByDescending { lex.logUni[it] }
             for (noise in listOf(0.2f, 0.35f)) {

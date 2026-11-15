@@ -62,9 +62,11 @@ class MainActivity : Activity() {
 
         col.addView(header("Languages"))
         val boxes = Languages.all.map { l ->
+            val installed = Dictionaries.has(this, l.code)
             CheckBox(this).apply {
-                text = "${l.name}  (${l.code})"; textSize = 16f
-                isChecked = l.code in prefs.enabledCodes
+                text = "${l.name}  (${l.code})" + if (installed) "" else "  - dictionary not installed"; textSize = 16f
+                isEnabled = installed
+                isChecked = installed && l.code in prefs.enabledCodes
                 setOnCheckedChangeListener { btn, on ->
                     val set = prefs.enabledCodes.toMutableSet().also { if (on) it += l.code else it -= l.code }
                     if (set.isEmpty()) { btn.isChecked = true; Toast.makeText(context, "Keep at least one language", Toast.LENGTH_SHORT).show(); return@setOnCheckedChangeListener }
@@ -74,7 +76,7 @@ class MainActivity : Activity() {
         }
         boxes.forEach { col.addView(it) }
         col.addView(TextView(this).apply {
-            text = "Switch language on the keyboard: press and hold the shift key, then tap a language."
+            text = "Switch language on the keyboard: tap the language key (next to the comma)."
             textSize = 13f; setTextColor(Color.GRAY)
         })
 

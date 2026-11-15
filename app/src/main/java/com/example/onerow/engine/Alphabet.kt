@@ -4,7 +4,7 @@ package com.example.onerow.engine
  * The typable letters of a language, in a fixed order, plus folding of everything else onto them
  * ("é" -> e, "ß" -> ss, "ё" -> е). The decoder only ever sees letter indices 0 until n.
  */
-class Alphabet(val letters: String, private val folds: Map<Char, String> = emptyMap()) {
+class Alphabet(val letters: String, val folds: Map<Char, String> = emptyMap()) {
     val n = letters.length
     private val idx = HashMap<Char, Int>().also { m -> letters.forEachIndexed { i, c -> m[c] = i } }
 
@@ -26,8 +26,9 @@ class Alphabet(val letters: String, private val folds: Map<Char, String> = empty
         /** Accent folding shared by the Latin-script languages. */
         val LATIN_FOLDS: Map<Char, String> = buildMap {
             fun add(to: String, chars: String) = chars.forEach { put(it, to) }
-            add("a", "àáâãäå"); add("c", "çćč"); add("e", "èéêëē"); add("i", "ìíîïī"); add("n", "ñń")
-            add("o", "òóôõöø"); add("u", "ùúûüū"); add("y", "ýÿ"); add("s", "śš"); add("z", "źżž")
+            add("a", "àáâãäåąāă"); add("c", "çćč"); add("d", "ďđ"); add("e", "èéêëēęěė"); add("g", "ģğ"); add("i", "ìíîïīįı")
+            add("k", "ķ"); add("l", "łľĺļ"); add("n", "ñńňņ"); add("o", "òóôõöøő"); add("r", "řŕ"); add("s", "śšșş")
+            add("t", "țťţ"); add("u", "ùúûüūůűų"); add("y", "ýÿ"); add("z", "źżž")
             put('œ', "oe"); put('æ', "ae"); put('ß', "ss")
         }
         val LATIN = "abcdefghijklmnopqrstuvwxyz"

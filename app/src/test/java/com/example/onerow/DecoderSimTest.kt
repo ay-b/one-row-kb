@@ -9,8 +9,7 @@ import java.util.Random
 /** Simulates noisy taps on each language's one-row layout; reports nearest-key vs decoder accuracy. */
 class DecoderSimTest {
     private fun lexicon(l: Lang): Lexicon {
-        val d = File("src/main/assets/dict")
-        return Lexicon.loadBinary(l.alphabet, File(d, "${l.code}.lex").inputStream(), File(d, "${l.code}_bi.tsv").inputStream())
+        return Lexicon.loadBinary(l.alphabet, TestDicts.file("${l.code}.lex")!!.inputStream(), TestDicts.file("${l.code}_bi.tsv")?.inputStream())
     }
 
     private class Geo(val l: Lang) {
@@ -27,6 +26,7 @@ class DecoderSimTest {
 
     @Test fun everyLanguage() {
         for (l in Languages.all) {
+            if (!TestDicts.present(l.code)) continue
             val t0 = System.nanoTime()
             val lex = lexicon(l)
             val byFreq = lex.words.indices.sortedByDescending { lex.logUni[it] }     // word indices are trie positions, not ranks
