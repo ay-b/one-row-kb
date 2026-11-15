@@ -31,3 +31,23 @@ The bigram files (`*_bi.tsv`, from Tatoeba, CC BY 2.0 FR) are included.
 - `app/src/main/java/com/example/onerow`: keyboard view, input method service, spell checker, settings.
 - `app/src/main/java/com/example/onerow/engine`: dictionary, decoder, swipe-typing decoder.
 - `tools/`: dictionary and cheat-sheet generators. `demo/`: a small notes app and scripts used for the demo video.
+
+## Attribution
+
+The word lists and bigrams are built from the following open data. Thank you to everyone behind it.
+
+- **wordfreq** by Robyn Speer et al. (https://github.com/rspeer/wordfreq), word frequencies, CC BY-SA 4.0.
+- **Hunspell dictionaries** from LibreOffice/dictionaries (https://github.com/LibreOffice/dictionaries), used to check
+  words. Authors and licences per language: English (SCOWL), French (Grammalecte, Olivier R.), German (de_DE_frami),
+  Spanish, Portuguese (Raimundo Moura; Jose Joao Almeida et al.), Russian (Alexander I. Lebedev), Ukrainian (dict_uk,
+  https://github.com/brown-uk/dict_uk), Italian, Dutch, Swedish, Danish, Norwegian, Icelandic, Polish, Czech, Slovak,
+  Slovenian, Croatian, Hungarian, Romanian, Greek, Estonian, Latvian, Lithuanian, Catalan. Each folder in that
+  repository carries its own README and licence.
+- **FrequencyWords** by hermitdave (https://github.com/hermitdave/FrequencyWords), built from OpenSubtitles, CC BY-SA 4.0.
+- **Tatoeba** sentences (https://tatoeba.org), CC BY 2.0 FR, for the bigram files.
+- **Wiktionary** neologism and internet-slang categories (https://en.wiktionary.org), CC BY-SA 4.0.
+- **dwyl/english-words** (https://github.com/dwyl/english-words), **Aptivi-Analytics/WordsList**
+  (https://github.com/Aptivi-Analytics/WordsList) and **Ashpex/Slang-Word** (https://github.com/Ashpex/Slang-Word):
+  extra English word and slang lists.
+
+Details and exact sources: `NOTICE-dictionaries.md` and `tools/dict_src/SOURCES.md`.
