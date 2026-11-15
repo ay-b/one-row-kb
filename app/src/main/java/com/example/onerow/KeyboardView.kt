@@ -46,7 +46,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         fun onRemoveWord(word: String)
     }
 
-    enum class Mode { MINI, FULL, SYMBOLS, SYMBOLS_FULL, SYMBOLS_FULL2 }
+    enum class Mode { MINI, FULL, SYMBOLS, SYMBOLS_FULL, SYMBOLS_FULL2, PEEK }
     enum class Shift { OFF, ONCE, LOCK }
     private enum class Kind { LETTER, CHAR, SHIFT, BACKSPACE, SPACE, ENTER, TO_SYMBOLS, TO_LETTERS, SYM_PAGE2, SYM_PAGE1, SUGG, LANG, NONE }
 
@@ -129,7 +129,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     private var rowRects: List<RectF> = emptyList()
 
     // touch state
-    private enum class Gesture { NONE, CURSOR, DELWORD, MODE_SWITCH, PRECISE, SWIPE, MENU, GLIDE }
+    private enum class Gesture { NONE, CURSOR, DELWORD, MODE_SWITCH, PRECISE, SWIPE, MENU, GLIDE, PEEK }
     private enum class Swipe { NONE, LEFT, RIGHT, UP_LEFT, UP_RIGHT, UP }
     private var pressed: Placed? = null
     private var gesture = Gesture.NONE
@@ -299,7 +299,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     fun resetForNewField() {
         emojiPopup?.dismiss(); emojiPopup = null
         removeWord = null
-        if (mode == Mode.SYMBOLS || mode == Mode.SYMBOLS_FULL || mode == Mode.SYMBOLS_FULL2) setMode(letterMode)
+        if (mode == Mode.SYMBOLS || mode == Mode.SYMBOLS_FULL || mode == Mode.SYMBOLS_FULL2 || mode == Mode.PEEK) setMode(letterMode)
         shift = Shift.OFF
         suggestions = emptyList()
     }
@@ -339,7 +339,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 Row(listOf(Key(Kind.SUGG, "", 1f)), stripH, panel = false),
                 if (numberRow) Row(numberKeys(), fullRowH, inset = ((lang.fullRows[0].length - 10) / 2f).coerceAtLeast(0f), keyBg = true) else null,
                 Row(hinted(lang.fullRows[0], if (numberRow) TOP_ROW_SYMBOLS else "1234567890"), fullRowH, keyBg = true),
-                Row(hinted(lang.fullRows[1], HINTS_ROW2), fullRowH, inset = ((lang.fullRows[0].length - lang.fullRows[1].length) / 2f).coerceAtLeast(0f), keyBg = true),
+                Row(hinted(lang.fullRows[1], if (numberRow) HINTS_ROW2_NUM else HINTS_ROW2), fullRowH, inset = ((lang.fullRows[0].length - lang.fullRows[1].length) / 2f).coerceAtLeast(0f), keyBg = true),
                 Row(listOf(Key(Kind.SHIFT, "", 1.5f)) + hinted(lang.fullRows[2], SYMBOLS_ROW3) + Key(Kind.BACKSPACE, "", 1.5f), fullRowH, keyBg = true),
                 Row(listOf(Key(Kind.TO_SYMBOLS, "123", 1.5f), langKey, comma, Key(Kind.SPACE, "", 4f), period,
                     Key(Kind.ENTER, "", 1.5f)), fullRowH, keyBg = true)
@@ -362,6 +362,20 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 Row(listOf(Key(Kind.TO_LETTERS, "abc", 1.5f), Key(Kind.CHAR, "<", 1f), Key(Kind.SPACE, "", 5f),
                     Key(Kind.CHAR, ">", 1f), Key(Kind.ENTER, "", 1.5f)), fullRowH, keyBg = true)
             )
+            // Peek (swipe from "123" onto the keys, release types and returns): the letter rows show their small symbols,
+            // the third row shows currency signs. Same number of rows as the full keyboard, so nothing jumps.
+            Mode.PEEK -> {
+                fun sym(t: String) = Row(chars(t), fullRowH, inset = ((lang.fullRows[0].length - t.length) / 2f).coerceAtLeast(0f), keyBg = true)
+                listOfNotNull(
+                    Row(listOf(Key(Kind.SUGG, "", 1f)), stripH, panel = false),
+                    if (numberRow) sym("1234567890") else null,
+                    sym(if (numberRow) TOP_ROW_SYMBOLS else "1234567890"),
+                    sym(if (numberRow) "@#\$_&-+()" else "@#\$%&-+()/"),
+                    sym(CURRENCY),
+                    Row(listOf(Key(Kind.TO_LETTERS, "abc", 1.5f), langKey, comma, Key(Kind.SPACE, "", 4f), period,
+                        Key(Kind.ENTER, "", 1.5f)), fullRowH, keyBg = true)
+                )
+            }
             Mode.SYMBOLS -> listOf(
                 Row(listOf(Key(Kind.NONE, "", 1.3f), Key(Kind.SUGG, "", 6f), Key(Kind.BACKSPACE, "", 1.3f)), stripH, panel = false),
                 Row(zigzag("1234567890-/:;()\$&@\".,?!'#".chunked(3), Kind.CHAR), rowH, inset = 0.5f),
@@ -373,7 +387,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     private fun setMode(m: Mode) {
         if (m == mode) return
-        if (m != Mode.SYMBOLS && m != Mode.SYMBOLS_FULL && m != Mode.SYMBOLS_FULL2) { letterMode = m; onLetterMode?.invoke(m == Mode.FULL) }
+        if (m != Mode.SYMBOLS && m != Mode.SYMBOLS_FULL && m != Mode.SYMBOLS_FULL2 && m != Mode.PEEK) { letterMode = m; onLetterMode?.invoke(m == Mode.FULL) }
         mode = m
         buildRows()
         layoutKeys(width.toFloat())   // same-height modes don't trigger onSizeChanged
@@ -804,6 +818,9 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                     if (suggDown >= 0 && !suggDragging && suggSlot(p, e.x) == suggDown && e.y < rowRects[0].bottom)
                         suggestions.getOrNull(suggDown)?.let { listener.onSuggestion(it) }
                     suggDown = -1; suggDragging = false
+                } else if (gesture == Gesture.PEEK) {            // type what is under the finger (a symbol, space, enter) and go back to the letters
+                    p?.takeIf { it.key.kind == Kind.CHAR || it.key.kind == Kind.SPACE || it.key.kind == Kind.ENTER }?.let { commit(it, e.x, e.y) }
+                    setMode(Mode.FULL)
                 } else if (gesture == Gesture.GLIDE) {
                     finishGlide(p)
                 } else if (gesture == Gesture.SWIPE) {
@@ -817,13 +834,27 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             }
             MotionEvent.ACTION_CANCEL -> {
                 handler.removeCallbacks(repeatStart); handler.removeCallbacks(repeatDelete); handler.removeCallbacks(holdToPrecise); handler.removeCallbacks(holdGuess)
+                if (gesture == Gesture.PEEK) setMode(Mode.FULL)
                 pressed = null; suggDown = -1; gesture = Gesture.NONE; swipe = Swipe.NONE; glideX.clear(); glideY.clear(); invalidate()
             }
         }
         return true
     }
 
+    /** Finger slid off the "123" key onto the keyboard: show the symbols layout for as long as the finger is down. */
+    private fun startPeek(e: MotionEvent) {
+        handler.removeCallbacks(holdToPrecise); handler.removeCallbacks(lensTick)
+        gesture = Gesture.PEEK
+        setMode(Mode.PEEK)
+        pressed = keyAt(e.x, e.y); haptic(); invalidate()
+    }
+
     private fun onMove(e: MotionEvent) {
+        if (gesture == Gesture.PEEK) {
+            val k = keyAt(e.x, e.y)
+            if (k !== pressed) { pressed = k; haptic(); invalidate() }
+            return
+        }
         val p = pressed ?: return
         if (p.key.kind == Kind.SUGG && hypot(e.x - downX, e.y - downY) > dp(14f)) handler.removeCallbacks(holdGuess)
         if (p.key.kind == Kind.SUGG) {
@@ -838,6 +869,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             if (suggDragging) { suggScroll = (suggScrollStart - (e.x - suggDragX)).coerceIn(0f, maxSuggScroll()); invalidate() }
             return
         }
+        if (p.key.kind == Kind.TO_SYMBOLS && mode == Mode.FULL && gesture == Gesture.NONE && hypot(e.x - downX, e.y - downY) > dp(14f)) { startPeek(e); return }
         if (gesture == Gesture.PRECISE) {
             if (preciseEmoji && downY - e.y > dp(40f)) {          // swipe up from the emoji lens: the full palette
                 gesture = Gesture.MODE_SWITCH; pressed = null; preciseEmoji = false
@@ -1126,7 +1158,9 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         const val SYMBOLS_ROW2 = "@#\$_&-+()/"       // small symbols under the 2nd / 3rd letter rows
         const val HINTS_ROW2 = "@#\$%&-+()/"          // Gboard's small symbols under the 2nd letter row
         const val SYMBOLS_ROW3 = "*\"':;!?"
-        const val TOP_ROW_SYMBOLS = "~`|•√π÷×¶∆"   // Gboard's second symbols page, first row: hints on the top letter row when the number row is on
+        const val TOP_ROW_SYMBOLS = "%\\|=[]<>{}"      // what Gboard shows on the top letter row when it has a number row
+        const val HINTS_ROW2_NUM = "@#\$_&-+()/"        // ... and on the second ("%" moved up to Q)
+        const val CURRENCY = "\$€£¥¢¤₣₤"             // every currency sign the keyboard's font (Victor Mono) has, most used first
         const val NUM_HINTS = "½²³¼⁵⁶⁷⁸⁹⁰"       // under 1234567890 on the number row
         const val SWIPE_MIN_DP = 26f      // travel before a stroke on the letter row counts as a shortcut swipe
         const val SPLIT_GAP = 0.24f         // share of the width left empty between the halves in split layout

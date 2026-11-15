@@ -111,6 +111,12 @@ def build(theme):
     S.card("Swipe typing (full keyboard)", "trail", lambda d, s, h: None,
            ["Optional (Settings > Gestures). Draw a word across", "the letters, here  h-e-l-l-o.  Tap a guess to replace", "the word; backspace deletes the whole word."], HEAD_FULL)
 
+    def c8(d, size, head):
+        y = HEAD_FULL + 503                                                 # the "123" key, bottom left of the full keyboard
+        S.finger(d, 90, y); S.arrow(d, 118, y - 18, 250, HEAD_FULL + 384, 7)
+    S.card("Symbols (full keyboard)", "peek", c8,
+           ["SLIDE from  123  onto the keys: symbols and currency", "signs appear; release types one and goes back", "to the letters"], HEAD_FULL)
+
     def c9(d, size, head):
         y0 = HEAD_FULL + 44
         S.arrow(d, 760, y0, 760, y0 + 190, 8)
