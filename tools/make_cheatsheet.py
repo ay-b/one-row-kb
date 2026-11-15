@@ -120,7 +120,8 @@ def build(theme):
     def c9(d, size, head):
         y0 = HEAD_FULL + 44
         S.arrow(d, 760, y0, 760, y0 + 190, 8)
-    S.card("Back to one row", "fullidle", c9, ["SWIPE DOWN on the guess bar"], HEAD_FULL)
+    S.card("Full keyboard / back to one row", "fullidle", c9,
+           ["SWIPE DOWN on the guess bar: back to one row", "PULL UP from the guess bar or the bottom row of", "the one-row keyboard: full keyboard"], HEAD_FULL)
     return S.render()
 
 if __name__ == "__main__":

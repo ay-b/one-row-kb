@@ -869,6 +869,10 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 handler.removeCallbacks(holdGuess); suggDown = -1; gesture = Gesture.MODE_SWITCH
                 setMode(Mode.MINI); pressed = null; haptic(); invalidate(); return
             }
+            if (mode == Mode.MINI && !suggDragging && downY - e.y > dp(36f) && downY - e.y > abs(e.x - downX) * 1.5f) {   // pull up on the guess bar: full keyboard
+                handler.removeCallbacks(holdGuess); suggDown = -1; gesture = Gesture.MODE_SWITCH
+                setMode(Mode.FULL); pressed = null; haptic(); invalidate(); return
+            }
             if (!suggDragging && abs(e.x - downX) > dp(12f) && maxSuggScroll() > 0f) {
                 suggDragging = true; handler.removeCallbacks(holdGuess)
                 suggScrollStart = suggScroll; suggDragX = e.x
@@ -894,6 +898,12 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         val dx = e.x - downX
         val dy = e.y - downY
         val slop = dp(10f)
+        if (mode == Mode.MINI && gesture == Gesture.NONE && p.row == rows.lastIndex && p.key.kind != Kind.LETTER && p.key.kind != Kind.SUGG &&
+            -dy > dp(36f) && -dy > abs(dx) * 1.5f) {              // pull up from the bottom row (123, language, comma, space, period, enter): full keyboard
+            handler.removeCallbacks(holdToPrecise); handler.removeCallbacks(repeatStart)
+            gesture = Gesture.MODE_SWITCH
+            setMode(Mode.FULL); pressed = null; haptic(); invalidate(); return
+        }
         when (p.key.kind) {
             Kind.SPACE -> {
                 if (gesture == Gesture.NONE && abs(dx) > slop) gesture = Gesture.CURSOR
