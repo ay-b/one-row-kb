@@ -55,6 +55,11 @@ class Prefs(context: Context) {
         get() = sp.getInt("float_y", Int.MIN_VALUE)
         set(v) = sp.edit().putInt("float_y", v).apply()
 
+    /** The keyboard was last left expanded (full keyboard) rather than one row: it comes back the same way. */
+    var fullKeyboard: Boolean
+        get() = sp.getBoolean("full_keyboard", false)
+        set(v) = sp.edit().putBoolean("full_keyboard", v).apply()
+
     var haptics: Boolean
         get() = sp.getBoolean("haptics", true)
         set(v) = sp.edit().putBoolean("haptics", v).apply()

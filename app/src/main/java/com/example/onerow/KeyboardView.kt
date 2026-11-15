@@ -118,6 +118,8 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     private var mode = Mode.MINI
     private var letterMode = Mode.MINI
+    /** Told when the keyboard changes between one row and the full keyboard (true = full), so it can be remembered. */
+    var onLetterMode: ((Boolean) -> Unit)? = null
 
     private var rows: List<Row> = emptyList()
     private var placed: List<Placed> = emptyList()
@@ -281,6 +283,16 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         invalidate()
     }
 
+    /** Starts in the full keyboard (or one row) without announcing it: used to bring back the last state. */
+    fun restoreFull(full: Boolean) {
+        val m = if (full) Mode.FULL else Mode.MINI
+        if (letterMode == m && mode == m) return
+        mode = m; letterMode = m
+        buildRows()
+        if (width > 0) layoutKeys(width.toFloat())
+        requestLayout(); invalidate()
+    }
+
     fun resetForNewField() {
         emojiPopup?.dismiss(); emojiPopup = null
         removeWord = null
@@ -355,7 +367,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     private fun setMode(m: Mode) {
         if (m == mode) return
-        if (m != Mode.SYMBOLS && m != Mode.SYMBOLS_FULL && m != Mode.SYMBOLS_FULL2) letterMode = m
+        if (m != Mode.SYMBOLS && m != Mode.SYMBOLS_FULL && m != Mode.SYMBOLS_FULL2) { letterMode = m; onLetterMode?.invoke(m == Mode.FULL) }
         mode = m
         buildRows()
         layoutKeys(width.toFloat())   // same-height modes don't trigger onSizeChanged
@@ -447,7 +459,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 Kind.NONE -> continue
                 else -> {}
             }
-            if (row.keyBg && k.kind != Kind.SPACE) {
+            if (row.keyBg) {
                 val b = RectF(r).apply { inset(dp(2.5f), dp(2.5f)) }
                 fill.color = if (down) cKeyDown else cKey
                 c.drawRoundRect(b, dp(6f), dp(6f), fill)
@@ -469,7 +481,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                     text.color = cTeal; text.textSize = sp(15f)
                     drawCentered(c, k.label, r.centerX(), r.centerY())
                 }
-                Kind.SPACE -> {                               // an outline only, nothing filled; thicker while pressed
+                Kind.SPACE -> if (!row.keyBg) {               // one row: an outline only, nothing filled; thicker while pressed (the full keyboard draws it like any key)
                     val b = RectF(r).apply { inset(dp(5f), r.height() * 0.17f) }
                     val sw = stroke.strokeWidth
                     stroke.strokeWidth = dp(if (down) 2.4f else 1.4f); c.drawRoundRect(b, dp(4f), dp(4f), stroke)

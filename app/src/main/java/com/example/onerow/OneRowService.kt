@@ -116,6 +116,8 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         kv.themeMode = prefs.theme
         kv.swipeTyping = prefs.swipeTyping
         kv.splitAvailable = isTablet()
+        kv.restoreFull(prefs.fullKeyboard)                      // come back the way it was left
+        kv.onLetterMode = { full -> prefs.fullKeyboard = full }
         if (::floating.isInitialized) floating.hide()
         floating = FloatingKeyboard(this, prefs)
         dock = FrameLayout(this)
@@ -400,6 +402,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
             val b = textBefore(2)
             if (b.length == 2 && b[0] in ":;" && b[1] == ' ') ic.deleteSurroundingText(1, 0)
         }
+        if (decoding && text.length == 1 && text[0] in Quotes.ALL && smartQuote(ic, text[0])) return
         if (decoding && text.length == 1 && text[0] in AUTO_SPACE_AFTER) {
             ic.beginBatchEdit()
             // "word ." -> "word." (also joins "..." and "?!" after the automatic space)
@@ -417,6 +420,19 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
             return
         }
         ic.commitText(text, 1)
+    }
+
+    /** Quotation marks, see [Quotes]. Returns true when the quote was handled here. */
+    private fun smartQuote(ic: android.view.inputmethod.InputConnection, q: Char): Boolean {
+        val line = textBefore(600).substringAfterLast('\n')
+        val after = ic.getTextAfterCursor(1, 0)?.toString().orEmpty()
+        val plan = Quotes.plan(line, after, q) ?: return false
+        ic.beginBatchEdit()
+        if (plan.deleteBefore > 0) ic.deleteSurroundingText(plan.deleteBefore, 0)
+        ic.commitText(plan.pre + plan.quote + plan.post, 1)
+        ic.endBatchEdit()
+        if (plan.post.isNotEmpty()) justAutoSpaced = true
+        return true
     }
 
     override fun onBackspace() {
