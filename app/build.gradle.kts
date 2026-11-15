@@ -5,7 +5,7 @@ plugins {
 // Semantic versioning (MAJOR.MINOR.PATCH). Bump this ONE line for every build you hand out:
 //   PATCH = bug fix, MINOR = new feature (backwards compatible), MAJOR = breaking change / 1.0 = first public release.
 // versionCode is derived from it (M*10000 + m*100 + p) so Android always sees newer builds as upgrades.
-val appVersion = "0.12.1"
+val appVersion = "0.13.0"
 val (vMajor, vMinor, vPatch) = appVersion.split(".").map { it.toInt() }
 
 base { archivesName.set("onerow-$appVersion") }
@@ -19,6 +19,15 @@ android {
         targetSdk = 34
         versionCode = vMajor * 10000 + vMinor * 100 + vPatch
         versionName = appVersion
+    }
+    buildTypes {
+        // R8 on the debug build too (it is the one we hand out, debug-signed): shrinks code and resources.
+        debug {
+            val r8 = (project.findProperty("r8") ?: "true") != "false"   // -Pr8=false for A/B timing
+            isMinifyEnabled = r8
+            isShrinkResources = r8
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

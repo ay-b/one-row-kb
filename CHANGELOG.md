@@ -4,6 +4,18 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.13.0
+- With the dedicated number row on, the "123" pages of the full keyboard no longer shrink the keyboard: page 1 gets a row of currency signs, page 2 keeps a row of digits. (Without the number row nothing changes.)
+
+## 0.12.4
+- Faster start: the keyboard is fully ready (guesses and swipe typing) about 2.1 s after a cold start with Russian, was 4.4 s. The swipe index is built in parallel with the bigrams, its sort no longer boxes, letter lookup no longer allocates, and word lookup skips string copies.
+
+## 0.12.3
+- Startup timing is logged (tag OneRowStartup: input view build, swipe warm-up, time to ready) next to the existing OneRowEngine / OneRowGlide timings, for comparing builds.
+
+## 0.12.2
+- Build: R8 code and resource shrinking is on (experiment). No behaviour change intended.
+
 ## 0.12.1
 - Fix: ":" and ";" typed after a space you pressed yourself no longer take that space back (it is probably the start of a smiley, " :)"). They still take back the automatic space after a swiped word or a picked guess; "." "," "!" "?" are unchanged.
 - Fix: hyphenated words (когда-то, что-нибудь, из-за, по-русски, well-known, mother-in-law) were missing from the dictionaries, so swipes could not find them. They are in now: Russian +975, English +6,065, Ukrainian +48. (The other languages get them when their dictionaries are rebuilt with tools/build_lexicon.py.)

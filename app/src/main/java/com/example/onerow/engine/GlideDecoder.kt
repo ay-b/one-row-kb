@@ -44,6 +44,7 @@ class GlideDecoder(private val lex: Lexicon) {
 
     /** Brings the index up to date with the dictionary (call off the UI thread after loading; cheap afterwards). */
     @Synchronized fun sync() {
+        val ts = System.nanoTime()
         val total = lex.words.size
         if (indexed >= total) return
         val fresh = indexed == 0
@@ -62,11 +63,18 @@ class GlideDecoder(private val lex: Lexicon) {
             byPair[flat[off[i]] * nk0 + flat[off[i] + m - 1]].add(i)
         }
         indexed = total
+        val tm = System.nanoTime()
         if (fresh) maxLogUni = lex.logUni.max()
         if (fresh) for (b in byPair) {              // most frequent words first: good matches are found early, so pruning bites sooner
-            val idx = (0 until b.n).map { b.a[it] }.sortedByDescending { lex.logUni[it] }
-            for (j in idx.indices) b.a[j] = idx[j]
+            if (b.n < 2) continue
+            val packed = LongArray(b.n) {           // order-preserving float bits, inverted = descending; ties keep index order
+                val w = b.a[it]; val bits = lex.logUni[w].toRawBits()
+                ((bits xor ((bits shr 31) and 0x7fffffff)).inv().toLong() shl 32) or w.toLong()
+            }
+            packed.sort()
+            for (j in 0 until b.n) b.a[j] = (packed[j] and 0xffffffffL).toInt()
         }
+        if (fresh) Lexicon.trace?.invoke("glide index: keys ${(tm - ts) / 1_000_000} ms, sort ${(System.nanoTime() - tm) / 1_000_000} ms")
     }
 
     /** Runs a few throwaway decodes so the first real swipe is not slowed by cold code (call off the UI thread). */
@@ -76,7 +84,9 @@ class GlideDecoder(private val lex: Lexicon) {
         val cx = FloatArray(nk) { 40f + 40f * (it % 10) }; val cy = FloatArray(nk) { 40f + 46f * (it / 10) }
         val g = GlideLayout(cx, cy, 40f)
         val xs = floatArrayOf(40f, 120f, 200f, 300f, 380f); val ys = floatArrayOf(40f, 86f, 86f, 40f, 40f)
+        val tw = System.nanoTime()
         repeat(6) { decode(xs, ys, xs.size, g, -1) }
+        Lexicon.trace?.invoke("glide decode warm-up ${(System.nanoTime() - tw) / 1_000_000} ms")
     }
 
     // scratch space, reused between calls (decode runs on one thread)

@@ -352,17 +352,20 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                     Key(Kind.ENTER, "", 1.5f)), fullRowH, keyBg = true)
             )
             // Gboard's symbols pages (full keyboard). Page 1: digits, @#$_&-+()/, [=\<] *"':;!? [bksp], ABC , space . enter
-            Mode.SYMBOLS_FULL -> listOf(
+            // With the dedicated number row on, the letters have five rows, so this page gets a currency row too and the keyboard keeps its height.
+            Mode.SYMBOLS_FULL -> listOfNotNull(
                 Row(listOf(Key(Kind.SUGG, "", 1f)), stripH, panel = false),
                 Row(chars("1234567890"), fullRowH, keyBg = true),
                 Row(chars(SYMBOLS_ROW2), fullRowH, keyBg = true),
+                if (numberRow) Row(chars(CURRENCY), fullRowH, inset = ((lang.fullRows[0].length - CURRENCY.length) / 2f).coerceAtLeast(0f), keyBg = true) else null,
                 Row(listOf(Key(Kind.SYM_PAGE2, "=\\<", 1.5f)) + chars("*\"':;!?") + Key(Kind.BACKSPACE, "", 1.5f), fullRowH, keyBg = true),
                 Row(listOf(Key(Kind.TO_LETTERS, "abc", 1.5f), langKey, comma, Key(Kind.SPACE, "", 4f), period,
                     Key(Kind.ENTER, "", 1.5f)), fullRowH, keyBg = true)
             )
             // Page 2: ~`|•√π÷×¶∆ / £¢€¥^°={}\ / [?123] %©®™✓[] [bksp] / ABC < space > enter
-            Mode.SYMBOLS_FULL2 -> listOf(
+            Mode.SYMBOLS_FULL2 -> listOfNotNull(
                 Row(listOf(Key(Kind.SUGG, "", 1f)), stripH, panel = false),
+                if (numberRow) Row(chars("1234567890"), fullRowH, keyBg = true) else null,   // the number row stays, so the height does too
                 Row(chars("~`|•√π÷×¶∆"), fullRowH, keyBg = true),
                 Row(chars("£¢€¥^°={}\\"), fullRowH, keyBg = true),
                 Row(listOf(Key(Kind.SYM_PAGE1, "?123", 1.5f)) + chars("%©®™✓[]") + Key(Kind.BACKSPACE, "", 1.5f), fullRowH, keyBg = true),

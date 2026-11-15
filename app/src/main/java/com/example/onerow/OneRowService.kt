@@ -56,9 +56,14 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     private var cands: List<Candidate> = emptyList()
     private var decoding = true       // false in password / non-text fields
 
+    private var bornAt = 0L
+    private fun sinceBirth() = (System.nanoTime() - bornAt) / 1_000_000
+
     override fun onCreate() {
         super.onCreate()
+        bornAt = System.nanoTime()
         prefs = Prefs(this)
+        com.example.onerow.engine.Lexicon.trace = { android.util.Log.d("OneRowStartup", it) }
         lang = prefs.current()
         loadEngine(lang)
     }
@@ -69,7 +74,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         lex = null; decoder = null; user = null
         Thread {
             val t0 = System.nanoTime()
-            val lx = Lexicon.loadBinary(l.alphabet, Dictionaries.open(this, "${l.code}.lex")!!, Dictionaries.open(this, "${l.code}_bi.tsv"))
+            val lx = Lexicon.loadBinary(l.alphabet, Dictionaries.open(this, "${l.code}.lex")!!, null)
             val ud = UserDictionary(File(filesDir, "user_${l.code}.txt"))
             // the user's own words outrank the shipped ones; words they removed stay gone
             for ((w, c) in ud.counts) {
@@ -78,9 +83,17 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
             }
             for (w in ud.removed) { val i = lx.indexOf(w); if (i >= 0) lx.remove(i) }
             val eng = Engine(lx, Decoder(lx), ud)
+            // the bigrams and the swipe index are independent: build them side by side
+            val idxThread = Thread { if (prefs.swipeTyping) eng.glide.sync() }.also { it.start() }
+            val tb = System.nanoTime()
+            Dictionaries.open(this, "${l.code}_bi.tsv")?.let { lx.loadBigrams(it) }
+            android.util.Log.d("OneRowStartup", "${l.code}: bigrams ${(System.nanoTime() - tb) / 1_000_000} ms (parallel with the swipe index)")
+            idxThread.join()
             val rt = Runtime.getRuntime()
             android.util.Log.d("OneRowEngine", "${l.code}: ${lx.words.size} words in ${(System.nanoTime() - t0) / 1_000_000} ms, heap in use ${(rt.totalMemory() - rt.freeMemory()) / 1_000_000} MB")
-            if (prefs.swipeTyping) eng.glide.warmUp()       // build the swipe index and warm the code here, not on the first swipe
+            val tw = System.nanoTime()
+            if (prefs.swipeTyping) eng.glide.warmUp()       // a few throwaway decodes, so the first swipe does not run cold code
+            android.util.Log.d("OneRowStartup", "${l.code}: swipe warm-up ${(System.nanoTime() - tw) / 1_000_000} ms, ready ${sinceBirth()} ms after service start")
             ui.post {
                 loaded[l.code] = eng
                 if (lang.code == l.code) { lex = lx; decoder = eng.dec; user = ud; if (::kv.isInitialized && taps.isEmpty()) refresh() }
@@ -111,6 +124,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     override fun onCreateInputView(): View {
+        val tv = System.nanoTime()
         kv = KeyboardView(this, this, lang)
         kv.languages = prefs.enabled
         kv.heightScale = prefs.heightScale
@@ -126,6 +140,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         dock = FrameLayout(this)
         layoutMode = prefs.layoutMode.let { if (it == "split" && !isTablet()) "docked" else it }
         arrange()
+        android.util.Log.d("OneRowStartup", "input view built in ${(System.nanoTime() - tv) / 1_000_000} ms, ${sinceBirth()} ms after service start")
         return dock
     }
 

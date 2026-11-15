@@ -118,6 +118,8 @@ class Lexicon private constructor(
         if (key.isEmpty()) return -1
         var n = 0
         for (c in key) { n = child(n, c); if (n < 0) return -1 }
+        val s = if (n < staticNodes) wordStart[n] else 0; val e = if (n < staticNodes) wordStart[n + 1] else 0
+        if (e - s == 1 && dynWords.isEmpty() && removed.isEmpty() && surfaceOf(s).equals(word, ignoreCase = true)) return s   // the common case, no allocation
         val low = word.lowercase()
         for (i in wordsAt(n)) if (i !in removed && surfaceOf(i).lowercase() == low) return i
         return -1
@@ -186,15 +188,16 @@ class Lexicon private constructor(
     }
 
     /** Reads "<prev>\t<next>\t<p>" lines ("^" = sentence start), sorted by prev, then probability descending. */
-    private fun loadBigrams(bi: InputStream) {
+    fun loadBigrams(bi: InputStream) {
         val fol = HashMap<Int, ArrayList<Int>>()
         val stList = ArrayList<Pair<Int, Float>>()
         bi.bufferedReader().forEachLine {
-            val t = it.split('\t'); if (t.size < 3) return@forEachLine
-            val b = indexOf(t[1]); if (b < 0) return@forEachLine
-            val p = t[2].toFloat()
-            if (t[0] == "^") { starts[b] = p; stList += b to p; return@forEachLine }
-            val a = indexOf(t[0]); if (a < 0) return@forEachLine
+            val t1 = it.indexOf('\t'); if (t1 < 0) return@forEachLine
+            val t2 = it.indexOf('\t', t1 + 1); if (t2 < 0) return@forEachLine
+            val b = indexOf(it.substring(t1 + 1, t2)); if (b < 0) return@forEachLine
+            val p = it.substring(t2 + 1).toFloat()
+            if (t1 == 1 && it[0] == '^') { starts[b] = p; stList += b to p; return@forEachLine }
+            val a = indexOf(it.substring(0, t1)); if (a < 0) return@forEachLine
             bigram[key(a, b)] = p
             fol.getOrPut(a) { ArrayList() } += b
         }
@@ -209,7 +212,11 @@ class Lexicon private constructor(
         fun key(a: Int, b: Int) = (a.toLong() shl 32) or b.toLong()
 
         /** Loads <lang>.lex (the trie) and <lang>_bi.tsv (the bigrams; null = words only, e.g. for spell checking). */
+        /** Optional timing sink (the service sets it to Log.d); engine code stays free of Android classes. */
+        @JvmStatic var trace: ((String) -> Unit)? = null
+
         fun loadBinary(alphabet: Alphabet, lex: InputStream, bi: InputStream?): Lexicon {
+            val tA = System.nanoTime()
             val inp = DataInputStream(lex.buffered(1 shl 16))
             val magic = ByteArray(4); inp.readFully(magic)
             check(String(magic, Charsets.US_ASCII) == "OLX1") { "not a lexicon file" }
@@ -236,8 +243,9 @@ class Lexicon private constructor(
             val topNodes = readInts(inp, tops)
             val topData = readInts(inp, tops * TOP_K)
             check(edgeStart[nodes] == edges && wordStart[nodes] == words && wordOff[words] == poolBytes) { "corrupt lexicon" }
+            val tB = System.nanoTime()
             return Lexicon(alphabet, edgeStart, edgeLetter, wordStart, wordOff, pool, logUni, topNodes, topData)
-                .also { if (bi != null) it.loadBigrams(bi) }
+                .also { if (bi != null) it.loadBigrams(bi); trace?.invoke("trie read ${(tB - tA) / 1_000_000} ms, bigrams ${(System.nanoTime() - tB) / 1_000_000} ms") }
         }
 
         private fun le(inp: DataInputStream): Int = Integer.reverseBytes(inp.readInt())

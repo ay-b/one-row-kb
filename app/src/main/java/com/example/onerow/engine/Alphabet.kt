@@ -11,15 +11,19 @@ class Alphabet(val letters: String, val folds: Map<Char, String> = emptyMap()) {
     fun index(c: Char): Int = idx[c.lowercaseChar()] ?: -1
 
     /** Letter indices a user would type for [word]; apostrophes, hyphens, digits are skipped. */
+    private val tab = IntArray(0x530) { -1 }.also { t -> letters.forEachIndexed { i, c -> if (c.code < t.size) t[c.code] = i } }
+    private fun lookup(c: Char): Int = if (c.code < tab.size) tab[c.code] else (idx[c] ?: -1)
+
     fun key(word: String): IntArray {
-        val out = ArrayList<Int>(word.length)
+        var out = IntArray(word.length); var m = 0
         for (ch in word) {
             val c = ch.lowercaseChar()
-            val i = idx[c]
-            if (i != null) { out += i; continue }
-            folds[c]?.forEach { f -> idx[f]?.let { out += it } }
+            val i = lookup(c)
+            if (i >= 0) { if (m == out.size) out = out.copyOf(m * 2 + 2); out[m++] = i; continue }
+            val f = folds[c] ?: continue
+            for (g in f) { val j = lookup(g); if (j >= 0) { if (m == out.size) out = out.copyOf(m * 2 + 2); out[m++] = j } }
         }
-        return out.toIntArray()
+        return if (m == out.size) out else out.copyOf(m)
     }
 
     companion object {
