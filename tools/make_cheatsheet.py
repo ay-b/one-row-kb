@@ -99,7 +99,14 @@ def build(theme):
     def c6(d, size, head):
         S.arrow(d, 250, strip + 34, 700, strip + 34, 6)
     S.card("Guesses", "bucket", c6, ["SWIPE the guess bar sideways: more guesses", "HOLD a guess, drop it on the bin: forget the word"])
-    S.card("Language key", "lang", lambda d, s, h: None, ["TAP the language key: next language", "HOLD it: settings"])
+    S.card("Language key", "lang", lambda d, s, h: None,
+           ["TAP the language key: next language", "HOLD it, then slide: settings, normal,", "floating, split (tablets only)"])
+
+    def c7b(d, size, head):
+        S.arrow(d, 465, 132, 300, 132, 6); S.arrow(d, 615, 132, 780, 132, 6)          # drag the handle on top
+        S.arrow(d, 955, 432, 1015, 490, 6)                                             # drag the corner
+    S.card("Floating keyboard", "float", c7b,
+           ["DRAG the handle on top: move it", "DRAG the corner: resize it", "(slide to the normal icon to dock it again)"])
 
     S.card("Swipe typing (full keyboard)", "trail", lambda d, s, h: None,
            ["Optional (Settings > Gestures). Draw a word across", "the letters, here  h-e-l-l-o.  Tap a guess to replace", "the word; backspace deletes the whole word."], HEAD_FULL)

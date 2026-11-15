@@ -4,6 +4,12 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.10.0
+- Layouts: hold the language key and slide to one of three new icons next to the gear: normal (docked), floating (a window you can drag by its handle and resize by its corner, like Gboard's) and split (two halves with a gap, offered on tablets only).
+- Floating keyboard: remembers its place and size; the lens, swipe shortcuts, swipe typing and the full keyboard work inside it.
+- Split keyboard: the guess strip stays whole, the key rows fall apart into a left and a right half (the space bar is in both), and touches in the gap go to the app.
+- The cheat sheet shows the layout icons and the floating window.
+
 ## 0.9.2
 - Fix: the zoom bubble no longer flashes on every tap. It appears once the finger has rested for 150 ms (a tap is over before that) and is never shown during swipe shortcuts. Hold-and-slide (exact letter, with a buzz) still starts at 300 ms.
 

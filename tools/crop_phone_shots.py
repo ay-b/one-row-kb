@@ -1,6 +1,6 @@
 """Cuts the keyboard out of full-screen phone screenshots for the cheat sheet.
 
-Input : a folder of raw screenshots  <theme>_<shot>.png  (shots: mini letter punct emoji lang bucket fullidle trail),
+Input : a folder of raw screenshots  <theme>_<shot>.png  (shots: mini letter punct emoji lang float bucket fullidle trail),
         taken on a blank page (card-colored background) with the keyboard showing.
 Output: tools/cheatsheet_src/<theme>/<shot>.png  -- the keyboard plus HEAD pixels above it (room for the zoom bubble).
 Usage : python crop_phone_shots.py raw_dir     (run from the project root)"""
@@ -29,5 +29,7 @@ for theme in ("default", "light", "dark"):
     print(theme, "mini", t, b, "full", tf, bf)
     for shot in ("mini", "letter", "punct", "emoji", "lang", "bucket"):
         Image.open(f"{raw}/{theme}_{shot}.png").convert("RGB").crop((0, t - HEAD, 1080, b)).save(f"{out}/{shot}.png")
+    # the floating keyboard: the window sits above the bottom of the screen; the lowest 72 px are the app's own inset band
+    Image.open(f"{raw}/{theme}_float.png").convert("RGB").crop((0, b - 585, 1080, b - 72)).save(f"{out}/float.png")
     for shot in ("fullidle", "trail"):
         Image.open(f"{raw}/{theme}_{shot}.png").convert("RGB").crop((0, tf - HEAD_FULL, 1080, bf)).save(f"{out}/{shot}.png")

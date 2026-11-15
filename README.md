@@ -9,6 +9,7 @@ sloppily, the keyboard guesses the word. Personal project, pre-release (see `CHA
 - Punctuation and emoji "lenses" (hold `.` or `,`), a full emoji palette, learned and removable words, themes (default, light, dark, auto).
 - Seven languages: English, French, German, Spanish, Portuguese, Russian, Ukrainian.
 - Optional system spell-checker that knows all enabled keyboard languages at once.
+- Layouts: normal, floating (drag and resize) and split (tablets): hold the language key and slide to the icon.
 
 ## Build
 

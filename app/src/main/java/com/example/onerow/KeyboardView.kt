@@ -38,6 +38,8 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         fun onAccent(base: Char, shown: String)
         fun onLanguage(code: String)
         fun onSettings()
+        /** The user picked a layout in the language key's zoom: "docked", "floating" or "split". */
+        fun onMode(mode: String)
         /** A word was drawn across the letters of the full keyboard ([n] points, view pixels). */
         fun onGlide(xs: FloatArray, ys: FloatArray, n: Int, layout: GlideLayout)
         /** The user asked to delete [word] from the dictionary (hold a guess, then the bucket). */
@@ -103,6 +105,13 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     var tapSigma = 0.9f
     /** Glide typing on the full keyboard. */
     var swipeTyping = false
+    /** Split layout: the key rows fall apart into a left and a right half with a gap between (tablets). */
+    var split = false
+        set(v) { if (v != field) { field = v; layoutKeys(width.toFloat()); requestLayout(); invalidate() } }
+    /** Offer the split layout in the language key's zoom (tablets). */
+    var splitAvailable = false
+    private var leftBlock: RectF? = null
+    private var rightBlock: RectF? = null
     private val glideX = ArrayList<Float>(); private val glideY = ArrayList<Float>()
     private var menuFresh = false      // the finger that opened the menu is still down
     private var removeWord: String? = null   // a guess was held: show the bucket
@@ -148,7 +157,8 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             else -> null
         } else null
         if (p.key.kind == Kind.LANG) {
-            preciseKeys = listOf(Placed(Key(Kind.LANG, "⚙", 1f), p.rect, p.row)); preciseIdx0 = 0
+            val items = listOf(L_GEAR, L_DOCKED, L_FLOAT) + (if (splitAvailable) listOf(L_SPLIT) else emptyList())      // settings, then the layouts
+            preciseKeys = items.map { Placed(Key(Kind.LANG, it, 1f), p.rect, p.row) }; preciseIdx0 = 0
         } else if (mode == Mode.FULL && p.key.kind == Kind.LETTER) {
             // full keyboard: [its small symbol] [national letters ...] -- not the letter itself (a tap types that).
             // The first national letter (else the symbol) is highlighted, so hold + release types it.
@@ -364,23 +374,64 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         val padH = dp(4f)
         val list = ArrayList<Placed>(); val rects = ArrayList<RectF>()
         var y = 0f
+        val gap = if (split) w * SPLIT_GAP else 0f
+        val side = (w - 2 * padH - gap) / 2
+        var blockTop = -1f; var blockBottom = 0f
         for ((ri, row) in rows.withIndex()) {
             val rh = dp(row.heightDp) * heightScale
             val total = row.keys.sumOf { it.weight.toDouble() }.toFloat() + 2 * row.inset
-            val unit = (w - 2 * padH) / total
-            var x = padH + row.inset * unit
             rects += RectF(0f, y, w, y + rh)
-            for (k in row.keys) { list += Placed(k, RectF(x, y, x + k.weight * unit, y + rh), ri); x += k.weight * unit }
+            if (split && row.panel) {
+                // the guess strip stays whole; key rows fall apart: keys up to the middle go left, the rest right,
+                // a key across the middle goes to the nearer half (the space bar is in both halves)
+                if (blockTop < 0) blockTop = y
+                blockBottom = y + rh
+                val half = total / 2
+                val left = ArrayList<Pair<Key, Float>>(); val right = ArrayList<Pair<Key, Float>>()
+                var c = row.inset
+                for (k in row.keys) {
+                    val start = c; val end = c + k.weight; c = end
+                    when {
+                        end <= half -> left += k to k.weight
+                        start >= half -> right += k to k.weight
+                        k.kind == Kind.SPACE -> { left += k to (half - start); right += k to (end - half) }
+                        (start + end) / 2 < half -> left += k to k.weight
+                        else -> right += k to k.weight
+                    }
+                }
+                fun lay(items: List<Pair<Key, Float>>, x0: Float) {
+                    val unit = side / (items.sumOf { it.second.toDouble() }.toFloat() + row.inset)
+                    var x = x0 + (if (x0 < w / 2) row.inset * unit else 0f)
+                    for ((k, wt) in items) { list += Placed(k, RectF(x, y, x + wt * unit, y + rh), ri); x += wt * unit }
+                }
+                lay(left, padH); lay(right, w - padH - side)
+            } else {
+                val unit = (w - 2 * padH) / total
+                var x = padH + row.inset * unit
+                for (k in row.keys) { list += Placed(k, RectF(x, y, x + k.weight * unit, y + rh), ri); x += k.weight * unit }
+            }
             y += rh
         }
+        leftBlock = if (split && blockTop >= 0) RectF(padH, blockTop, padH + side, blockBottom) else null
+        rightBlock = if (split && blockTop >= 0) RectF(w - padH - side, blockTop, w - padH, blockBottom) else null
         placed = list; rowRects = rects
+    }
+
+    /** The parts of the keyboard that take touches (in split layout the gap between the halves lets touches through). */
+    fun touchRects(): List<android.graphics.Rect> {
+        val l = leftBlock; val r = rightBlock
+        if (!split || l == null || r == null || rowRects.isEmpty()) return listOf(android.graphics.Rect(0, 0, width, height))
+        val s = rowRects[0]
+        fun rect(f: RectF) = android.graphics.Rect(f.left.toInt(), f.top.toInt(), f.right.toInt(), f.bottom.toInt() + 1)
+        return listOf(rect(RectF(0f, s.top, width.toFloat(), s.bottom)), rect(l), rect(r))
     }
 
     // ---------- drawing ----------
 
     override fun onDraw(c: Canvas) {
         if (placed.isEmpty()) layoutKeys(width.toFloat())
-        c.drawColor(cPanel)
+        if (split) { fill.color = cPanel; leftBlock?.let { c.drawRoundRect(it, dp(10f), dp(10f), fill) }; rightBlock?.let { c.drawRoundRect(it, dp(10f), dp(10f), fill) } }
+        else c.drawColor(cPanel)
         fill.color = cStrip
         c.drawRect(0f, 0f, width.toFloat(), rowRects[0].bottom, fill)
 
@@ -480,10 +531,12 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                     c.drawRoundRect(x - dp(16f), dp(6f), x + dp(16f), cardH - dp(6f), dp(9f), dp(9f), p)
                     t.color = cStrip; t.textSize = sp(19f)
                 } else { t.color = cDim; t.textSize = sp(14f) }
-                if (label == "\u2699") {
+                if (label == L_GEAR) {
                     val old = stroke.color; stroke.color = if (i == hi) cStrip else cDim
                     drawGear(c, RectF(x - dp(10f), cardH / 2 - dp(10f), x + dp(10f), cardH / 2 + dp(10f)))
                     stroke.color = old
+                } else if (label == L_DOCKED || label == L_FLOAT || label == L_SPLIT) {
+                    drawLayoutIcon(c, label, RectF(x - dp(10f), cardH / 2 - dp(8f), x + dp(10f), cardH / 2 + dp(8f)), if (i == hi) cStrip else cDim)
                 } else { val fm = t.fontMetrics; c.drawText(label, x, cardH / 2 - (fm.ascent + fm.descent) / 2, t) }
             }
         }
@@ -931,6 +984,26 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         text.color = cInk
     }
 
+    /** Small pictures of the three layouts: a screen with the keyboard at the bottom / floating inside / in two halves. */
+    private fun drawLayoutIcon(c: Canvas, which: String, r: RectF, color: Int) {
+        val sw = stroke.strokeWidth; val col = stroke.color; val fc = fill.color
+        stroke.color = color; stroke.strokeWidth = dp(1.4f); fill.color = color
+        c.drawRoundRect(r, dp(2.5f), dp(2.5f), stroke)
+        val w = r.width(); val h = r.height()
+        when (which) {
+            L_DOCKED -> c.drawRect(r.left + dp(1.5f), r.bottom - h * 0.34f, r.right - dp(1.5f), r.bottom - dp(1.5f), fill)
+            L_FLOAT -> {
+                c.drawRoundRect(RectF(r.left + w * 0.18f, r.top + h * 0.22f, r.left + w * 0.82f, r.top + h * 0.74f), dp(1.5f), dp(1.5f), fill)
+                c.drawLine(r.right - dp(5f), r.bottom - dp(1.5f), r.right - dp(1.5f), r.bottom - dp(5f), stroke)        // the resize corner
+            }
+            L_SPLIT -> {
+                c.drawRect(r.left + dp(1.5f), r.bottom - h * 0.34f, r.left + w * 0.40f, r.bottom - dp(1.5f), fill)
+                c.drawRect(r.right - w * 0.40f, r.bottom - h * 0.34f, r.right - dp(1.5f), r.bottom - dp(1.5f), fill)
+            }
+        }
+        stroke.strokeWidth = sw; stroke.color = col; fill.color = fc
+    }
+
     private fun drawGear(c: Canvas, box: RectF, scale: Float = 1f) {
         val cx = box.centerX(); val cy = box.centerY(); val ro = dp(8f) * scale; val ri = dp(5.5f) * scale
         if (scale == 1f) stroke.strokeWidth = dp(1.8f)
@@ -987,7 +1060,12 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 if (p.key.label[0].code >= 0x2190 || Character.isSurrogate(p.key.label[0])) Emojis.bump(context, p.key.label)
                 listener.onText(p.key.label)
             }
-            Kind.LANG -> listener.onSettings()
+            Kind.LANG -> when (p.key.label) {
+                L_DOCKED -> listener.onMode("docked")
+                L_FLOAT -> listener.onMode("floating")
+                L_SPLIT -> listener.onMode("split")
+                else -> listener.onSettings()
+            }
             else -> {}
         }
     }
@@ -1028,6 +1106,11 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         const val HINTS_ROW2 = "@#\$%&-+()/"          // Gboard's small symbols under the 2nd letter row
         const val SYMBOLS_ROW3 = "*\"':;!?"
         const val SWIPE_MIN_DP = 26f      // travel before a stroke on the letter row counts as a shortcut swipe
+        const val SPLIT_GAP = 0.24f         // share of the width left empty between the halves in split layout
+        const val L_GEAR = "\u2699"         // the language key's zoom: settings and the three layouts (private-use code points = icons drawn in code)
+        const val L_DOCKED = "\uE000"
+        const val L_FLOAT = "\uE001"
+        const val L_SPLIT = "\uE002"
         const val LENS_CARD_DP = 46f
         const val LENS_STEP_DP = 36f
         const val GLIDE_START_DP = 16f    // finger travel that turns a press on a letter into a glide

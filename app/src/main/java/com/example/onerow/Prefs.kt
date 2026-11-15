@@ -38,6 +38,22 @@ class Prefs(context: Context) {
         get() = sp.getBoolean("swipe_typing", false)
         set(v) = sp.edit().putBoolean("swipe_typing", v).apply()
 
+    /** How the keyboard sits on screen: "docked" (normal), "floating" (movable, resizable window) or "split" (two halves, tablets). */
+    var layoutMode: String
+        get() = (sp.getString("layout", "docked") ?: "docked").takeIf { it == "floating" || it == "split" } ?: "docked"
+        set(v) = sp.edit().putString("layout", v).apply()
+
+    /** Floating keyboard: width as a share of the screen, and where it was left (offsets, see FloatingKeyboard). */
+    var floatWidth: Float
+        get() = sp.getFloat("float_w", 0.8f).coerceIn(0.4f, 1f)
+        set(v) = sp.edit().putFloat("float_w", v).apply()
+    var floatX: Int
+        get() = sp.getInt("float_x", Int.MIN_VALUE)
+        set(v) = sp.edit().putInt("float_x", v).apply()
+    var floatY: Int
+        get() = sp.getInt("float_y", Int.MIN_VALUE)
+        set(v) = sp.edit().putInt("float_y", v).apply()
+
     var haptics: Boolean
         get() = sp.getBoolean("haptics", true)
         set(v) = sp.edit().putBoolean("haptics", v).apply()

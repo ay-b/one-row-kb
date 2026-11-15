@@ -10,6 +10,8 @@ import android.os.Looper
 import android.text.InputType
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.view.inputmethod.EditorInfo
 import com.example.onerow.engine.Candidate
 import com.example.onerow.engine.Decoder
@@ -20,6 +22,9 @@ import com.example.onerow.engine.Lexicon
 class OneRowService : InputMethodService(), KeyboardView.Listener {
     private companion object { const val AUTO_SPACE_AFTER = ".,!?:;" }
     private lateinit var kv: KeyboardView
+    private lateinit var dock: FrameLayout          // the input view: holds the keyboard when docked or split, a sliver when floating
+    private lateinit var floating: FloatingKeyboard
+    private var layoutMode = "docked"               // "docked", "floating" or "split"
     private lateinit var prefs: Prefs
     private lateinit var lang: Lang
     private class Engine(val lex: Lexicon, val dec: Decoder, val user: UserDictionary) { val glide by lazy { GlideDecoder(lex) } }
@@ -110,7 +115,70 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         kv.hapticsOn = prefs.haptics
         kv.themeMode = prefs.theme
         kv.swipeTyping = prefs.swipeTyping
-        return kv
+        kv.splitAvailable = isTablet()
+        if (::floating.isInitialized) floating.hide()
+        floating = FloatingKeyboard(this, prefs)
+        dock = FrameLayout(this)
+        layoutMode = prefs.layoutMode.let { if (it == "split" && !isTablet()) "docked" else it }
+        arrange()
+        return dock
+    }
+
+    private fun isTablet() = resources.configuration.smallestScreenWidthDp >= 600
+
+    /** Puts the keyboard where [layoutMode] says: in the input view (docked or split) or in the floating window. */
+    private fun arrange() {
+        kv.split = layoutMode == "split"
+        if (layoutMode == "floating") {
+            (kv.parent as? ViewGroup)?.let { if (it !== dock) it.removeView(kv) }
+            dock.removeAllViews()
+            dock.addView(View(this), FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1))      // the input view shrinks to a sliver
+            showFloatingSoon()
+        } else {
+            floating.release(kv)
+            if (kv.parent !== dock) {
+                (kv.parent as? ViewGroup)?.removeView(kv)
+                dock.removeAllViews()
+                dock.addView(kv, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+            }
+        }
+        dock.requestLayout()
+    }
+
+    private fun showFloatingSoon() {
+        dock.post {
+            if (layoutMode == "floating" && isInputViewShown) {
+                val p = Themes.palette(prefs.theme, resources.configuration)
+                floating.show(dock, kv, p.strip, p.dim)
+            }
+        }
+    }
+
+    override fun onWindowShown() { super.onWindowShown(); if (::floating.isInitialized && layoutMode == "floating") showFloatingSoon() }
+
+    override fun onWindowHidden() { super.onWindowHidden(); if (::floating.isInitialized) floating.hide() }
+
+    override fun onDestroy() { if (::floating.isInitialized) floating.hide(); super.onDestroy() }
+
+    /** In split layout only the two halves (and the guess strip) take touches; the gap between them belongs to the app. */
+    override fun onComputeInsets(outInsets: Insets) {
+        super.onComputeInsets(outInsets)
+        if (layoutMode == "split" && ::kv.isInitialized && kv.isShown) {
+            val loc = IntArray(2); kv.getLocationInWindow(loc)
+            outInsets.touchableRegion.setEmpty()
+            for (r in kv.touchRects()) { r.offset(loc[0], loc[1]); outInsets.touchableRegion.union(r) }
+            outInsets.touchableInsets = Insets.TOUCHABLE_INSETS_REGION
+        }
+    }
+
+    override fun onMode(mode: String) { ui.post { setLayoutMode(mode) } }
+
+    private fun setLayoutMode(m: String) {
+        val target = if (m == "split" && !isTablet()) "docked" else m
+        if (target == layoutMode) return
+        layoutMode = target; prefs.layoutMode = target
+        arrange()
+        kv.invalidate()
     }
 
     override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
