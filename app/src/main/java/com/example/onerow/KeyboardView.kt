@@ -312,6 +312,8 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     private fun hinted(row: String, symbols: String) =
         row.mapIndexed { i, ch -> Key(Kind.LETTER, ch.toString(), 1f, hint = symbols.getOrNull(i)?.toString()) }
     private fun chars(s: String) = s.map { Key(Kind.CHAR, it.toString(), 1f) }
+    /** The digits of the number row, each with a small hint of what its hold offers (superscripts, fractions). */
+    private fun numberKeys() = "1234567890".mapIndexed { i, d -> Key(Kind.CHAR, d.toString(), 1f, hint = NUM_HINTS[i].toString()) }
 
     /** Letters grouped by keyboard column; inside a column they zig-zag high / middle / low. */
     private fun zigzag(groups: List<String>, kind: Kind): List<Key> = groups.flatMap { g ->
@@ -335,7 +337,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             )
             Mode.FULL -> listOfNotNull(
                 Row(listOf(Key(Kind.SUGG, "", 1f)), stripH, panel = false),
-                if (numberRow) Row(chars("1234567890"), fullRowH, inset = ((lang.fullRows[0].length - 10) / 2f).coerceAtLeast(0f), keyBg = true) else null,
+                if (numberRow) Row(numberKeys(), fullRowH, inset = ((lang.fullRows[0].length - 10) / 2f).coerceAtLeast(0f), keyBg = true) else null,
                 Row(hinted(lang.fullRows[0], if (numberRow) "" else "1234567890"), fullRowH, keyBg = true),
                 Row(hinted(lang.fullRows[1], HINTS_ROW2), fullRowH, inset = ((lang.fullRows[0].length - lang.fullRows[1].length) / 2f).coerceAtLeast(0f), keyBg = true),
                 Row(listOf(Key(Kind.SHIFT, "", 1.5f)) + hinted(lang.fullRows[2], SYMBOLS_ROW3) + Key(Kind.BACKSPACE, "", 1.5f), fullRowH, keyBg = true),
@@ -476,7 +478,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                         c.drawRoundRect(RectF(r).apply { inset(0f, dp(3f)) }, dp(5f), dp(5f), fill)
                     }
                     val s = if (k.kind == Kind.LETTER && (inRow || shift != Shift.OFF)) k.label.uppercase() else k.label
-                    text.color = if (k.kind == Kind.CHAR && !inRow && k.hint != null) cTeal else cInk
+                    text.color = if (k.kind == Kind.CHAR && !inRow && k.hint != null && !k.label[0].isDigit()) cTeal else cInk
                     text.textSize = sp(if (inRow) (if (lang.alphabet.n > 28) 12f else 14f) else 20f)
                     drawCentered(c, s, r.centerX(), r.top + k.dy * r.height())
                     k.hint?.let { drawHint(c, it, r, k) }
@@ -571,6 +573,8 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         val waiting = gesture != Gesture.PRECISE && (gesture != Gesture.NONE || android.os.SystemClock.uptimeMillis() - downTime < PREVIEW_MS)
         if (down == null || waiting || !(down.key.kind == Kind.LETTER || down.key.kind == Kind.CHAR || down.key.kind == Kind.LANG) || down.key.label.isEmpty() || width == 0) { hideLens(); return }
         val precise = gesture == Gesture.PRECISE
+        // the neighbours preview belongs to the one-row strip; on the full keyboard a key with nothing to offer just stays a plain press
+        if (!precise && mode != Mode.MINI && mode != Mode.SYMBOLS) { hideLens(); return }
         val keys = if (precise) preciseKeys else placed.filter { it.row == down.row && (it.key.kind == Kind.LETTER || it.key.kind == Kind.CHAR) }
         val idx = keys.indexOf(down); if (idx < 0) { hideLens(); return }
         val span = if (precise) 3 else 2
@@ -1122,6 +1126,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         const val SYMBOLS_ROW2 = "@#\$_&-+()/"       // small symbols under the 2nd / 3rd letter rows
         const val HINTS_ROW2 = "@#\$%&-+()/"          // Gboard's small symbols under the 2nd letter row
         const val SYMBOLS_ROW3 = "*\"':;!?"
+        const val NUM_HINTS = "½²³¼⁵⁶⁷⁸⁹⁰"       // under 1234567890 on the number row
         const val SWIPE_MIN_DP = 26f      // travel before a stroke on the letter row counts as a shortcut swipe
         const val SPLIT_GAP = 0.24f         // share of the width left empty between the halves in split layout
         const val L_GEAR = "\u2699"         // the language key's zoom: settings and the three layouts (private-use code points = icons drawn in code)
