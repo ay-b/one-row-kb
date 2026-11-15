@@ -117,6 +117,16 @@ class MainActivity : Activity() {
             })
         })
 
+        col.addView(header("Full keyboard"))
+        col.addView(Switch(this).apply {
+            text = "Dedicated number row"; textSize = 16f; isChecked = prefs.numberRow
+            setOnCheckedChangeListener { _, on -> prefs.numberRow = on }
+        })
+        col.addView(TextView(this).apply {
+            text = "A row of digits above the letters. Hold a digit for superscripts and fractions (\u00B3, \u00BD, \u2153, \u00BC ...)."
+            textSize = 13f; setPadding(0, 0, 0, dp(12))
+        })
+
         col.addView(header("Feedback"))
         col.addView(Switch(this).apply {
             text = "Vibrate on key press"; textSize = 16f; isChecked = prefs.haptics

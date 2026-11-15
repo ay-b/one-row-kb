@@ -94,6 +94,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         kv.hapticsOn = prefs.haptics
         kv.themeMode = prefs.theme
         kv.swipeTyping = prefs.swipeTyping
+        kv.numberRow = prefs.numberRow
         if (prefs.swipeTyping) loaded[lang.code]?.let { e -> Thread { e.glide.warmUp() }.start() }   // switched on after the engine loaded
         kv.tapSigma = floatArrayOf(0.62f, 0.9f, 1.3f)[prefs.tolerance]
         if (cur.code != lang.code) switchLanguage(cur)
@@ -115,6 +116,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         kv.hapticsOn = prefs.haptics
         kv.themeMode = prefs.theme
         kv.swipeTyping = prefs.swipeTyping
+        kv.numberRow = prefs.numberRow
         kv.splitAvailable = isTablet()
         kv.restoreFull(prefs.fullKeyboard)                      // come back the way it was left
         kv.onLetterMode = { full -> prefs.fullKeyboard = full }

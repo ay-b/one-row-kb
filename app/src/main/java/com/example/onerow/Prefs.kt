@@ -60,6 +60,11 @@ class Prefs(context: Context) {
         get() = sp.getBoolean("full_keyboard", false)
         set(v) = sp.edit().putBoolean("full_keyboard", v).apply()
 
+    /** A dedicated row of digits above the letters of the full keyboard (their zoom offers superscripts and fractions). */
+    var numberRow: Boolean
+        get() = sp.getBoolean("number_row", false)
+        set(v) = sp.edit().putBoolean("number_row", v).apply()
+
     var haptics: Boolean
         get() = sp.getBoolean("haptics", true)
         set(v) = sp.edit().putBoolean("haptics", v).apply()

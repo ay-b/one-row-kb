@@ -105,6 +105,9 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     var tapSigma = 0.9f
     /** Glide typing on the full keyboard. */
     var swipeTyping = false
+    /** A dedicated row of digits on the full keyboard (instead of the small digits on the top letter row). */
+    var numberRow = false
+        set(v) { if (v != field) { field = v; buildRows(); if (width > 0) layoutKeys(width.toFloat()); requestLayout(); invalidate() } }
     /** Split layout: the key rows fall apart into a left and a right half with a gap between (tablets). */
     var split = false
         set(v) { if (v != field) { field = v; layoutKeys(width.toFloat()); requestLayout(); invalidate() } }
@@ -176,7 +179,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             if (items.isEmpty()) return@Runnable                  // nothing to offer: stay a plain tap
             preciseKeys = items.map { Placed(it, p.rect, p.row) }
             preciseIdx0 = if (first < items.size) first else 0
-        } else if ((mode == Mode.SYMBOLS_FULL || mode == Mode.SYMBOLS_FULL2) && p.key.kind == Kind.CHAR && p.key.label.length == 1 &&
+        } else if ((mode == Mode.SYMBOLS_FULL || mode == Mode.SYMBOLS_FULL2 || mode == Mode.FULL) && p.key.kind == Kind.CHAR && p.key.label.length == 1 &&
             SYMBOL_VARIANTS.containsKey(p.key.label[0])) {
             val items = listOf(p.key.label) + SYMBOL_VARIANTS.getValue(p.key.label[0]).map { it.toString() }
             preciseKeys = items.map { Placed(Key(Kind.CHAR, it, 1f), p.rect, p.row) }
@@ -330,9 +333,10 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 Row(listOf(Key(Kind.TO_SYMBOLS, "123", 1.5f), langKey, comma, Key(Kind.SPACE, "", 4f), period,
                     Key(Kind.ENTER, "", 1.5f)), ctrlH)
             )
-            Mode.FULL -> listOf(
+            Mode.FULL -> listOfNotNull(
                 Row(listOf(Key(Kind.SUGG, "", 1f)), stripH, panel = false),
-                Row(hinted(lang.fullRows[0], "1234567890"), fullRowH, keyBg = true),
+                if (numberRow) Row(chars("1234567890"), fullRowH, inset = ((lang.fullRows[0].length - 10) / 2f).coerceAtLeast(0f), keyBg = true) else null,
+                Row(hinted(lang.fullRows[0], if (numberRow) "" else "1234567890"), fullRowH, keyBg = true),
                 Row(hinted(lang.fullRows[1], HINTS_ROW2), fullRowH, inset = ((lang.fullRows[0].length - lang.fullRows[1].length) / 2f).coerceAtLeast(0f), keyBg = true),
                 Row(listOf(Key(Kind.SHIFT, "", 1.5f)) + hinted(lang.fullRows[2], SYMBOLS_ROW3) + Key(Kind.BACKSPACE, "", 1.5f), fullRowH, keyBg = true),
                 Row(listOf(Key(Kind.TO_SYMBOLS, "123", 1.5f), langKey, comma, Key(Kind.SPACE, "", 4f), period,
@@ -1096,7 +1100,8 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     /** What Gboard offers when a symbol is held (after the symbol itself). */
     private val SYMBOL_VARIANTS = mapOf(
-        '1' to "¹½⅓¼⅛", '2' to "²⅔", '3' to "³¾⅜", '4' to "⁴", '5' to "⅝", '7' to "⅞", '0' to "ⁿ∅",
+        '1' to "¹½⅓¼⅕⅙⅛", '2' to "²⅔⅖", '3' to "³¾⅗⅜", '4' to "⁴⅘", '5' to "⁵⅚⅝", '6' to "⁶", '7' to "⁷⅞", '8' to "⁸", '9' to "⁹",
+        '0' to "⁰ⁿ∅°",
         '#' to "№", '\$' to "¢£€¥₱", '%' to "‰", '-' to "—–", '+' to "±", '(' to "[{<", ')' to "]}>",
         '*' to "†‡★", '"' to "„“”«»", '\'' to "‘’‚‹›", '!' to "¡", '?' to "¿", '=' to "≠≈∞", '<' to "≤«‹", '>' to "≥»›",
     )
