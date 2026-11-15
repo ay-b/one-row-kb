@@ -1,0 +1,50 @@
+package com.example.onerow
+
+import android.content.Context
+
+/** Settings shared between the keyboard service and the settings screen. */
+class Prefs(context: Context) {
+    private val sp = context.applicationContext.getSharedPreferences("onerow", Context.MODE_PRIVATE)
+
+    var enabledCodes: List<String>
+        get() = (sp.getString("langs", "en") ?: "en").split(',').filter { c -> Languages.all.any { it.code == c } }
+            .ifEmpty { listOf("en") }
+        set(v) = sp.edit().putString("langs", v.joinToString(",")).apply()
+
+    /** Enabled languages in the canonical order. */
+    val enabled: List<Lang> get() = Languages.all.filter { it.code in enabledCodes }
+
+    var currentCode: String
+        get() = sp.getString("cur", "en") ?: "en"
+        set(v) = sp.edit().putString("cur", v).apply()
+
+    /** Keyboard height multiplier, 0.7 .. 1.5. */
+    var heightScale: Float
+        get() = sp.getFloat("height", 1f)
+        set(v) = sp.edit().putFloat("height", v).apply()
+
+    /** One of [Themes]: default (original look), light, dark, auto (follows the system). */
+    var theme: String
+        get() = (sp.getString("theme", Themes.DEFAULT) ?: Themes.DEFAULT).takeIf { t -> Themes.choices.any { it.first == t } } ?: Themes.DEFAULT
+        set(v) = sp.edit().putString("theme", v).apply()
+
+    /** How far a tap may land from a letter and still count on the one-row keyboard: 0 tight, 1 normal, 2 loose. */
+    var tolerance: Int
+        get() = sp.getInt("tolerance", 1).coerceIn(0, 2)
+        set(v) = sp.edit().putInt("tolerance", v.coerceIn(0, 2)).apply()
+
+    /** Glide typing on the full keyboard (draw a word across the letters). Off by default. */
+    var swipeTyping: Boolean
+        get() = sp.getBoolean("swipe_typing", false)
+        set(v) = sp.edit().putBoolean("swipe_typing", v).apply()
+
+    var haptics: Boolean
+        get() = sp.getBoolean("haptics", true)
+        set(v) = sp.edit().putBoolean("haptics", v).apply()
+
+    /** Current language, falling back to the first enabled one if it was disabled. */
+    fun current(): Lang {
+        val en = enabled
+        return en.firstOrNull { it.code == currentCode } ?: en[0]
+    }
+}
