@@ -33,6 +33,28 @@ class MainActivity : Activity() {
 
     private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
 
+    /** A small bin, drawn in code (same idea as the one on the keyboard's guess bar). */
+    private inner class BinView(ctx: android.content.Context) : View(ctx) {
+        private val p = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+            style = android.graphics.Paint.Style.STROKE; strokeWidth = dp(2).toFloat(); color = Color.GRAY
+            strokeCap = android.graphics.Paint.Cap.ROUND; strokeJoin = android.graphics.Paint.Join.ROUND
+        }
+        override fun onDraw(c: android.graphics.Canvas) {
+            val cx = width / 2f; val cy = height / 2f; val s = minOf(width, height) * 0.26f
+            c.drawLine(cx - s * 1.15f, cy - s * 0.8f, cx + s * 1.15f, cy - s * 0.8f, p)                        // lid
+            c.drawLine(cx - s * 0.4f, cy - s * 0.8f, cx - s * 0.4f, cy - s * 1.2f, p)                          // handle
+            c.drawLine(cx + s * 0.4f, cy - s * 0.8f, cx + s * 0.4f, cy - s * 1.2f, p)
+            c.drawLine(cx - s * 0.4f, cy - s * 1.2f, cx + s * 0.4f, cy - s * 1.2f, p)
+            val body = android.graphics.Path().apply {
+                moveTo(cx - s * 0.9f, cy - s * 0.8f); lineTo(cx - s * 0.7f, cy + s * 1.2f)
+                lineTo(cx + s * 0.7f, cy + s * 1.2f); lineTo(cx + s * 0.9f, cy - s * 0.8f)
+            }
+            c.drawPath(body, p)
+            c.drawLine(cx - s * 0.25f, cy - s * 0.35f, cx - s * 0.2f, cy + s * 0.8f, p)                         // ribs
+            c.drawLine(cx + s * 0.25f, cy - s * 0.35f, cx + s * 0.2f, cy + s * 0.8f, p)
+        }
+    }
+
     private fun header(text: String) = TextView(this).apply {
         this.text = text.uppercase(); textSize = 12f; setTextColor(teal); typeface = Typeface.DEFAULT_BOLD
         letterSpacing = 0.08f; setPadding(0, dp(22), 0, dp(6))
@@ -61,20 +83,54 @@ class MainActivity : Activity() {
         })
 
         col.addView(header("Languages"))
-        val boxes = Languages.all.map { l ->
-            val installed = Dictionaries.has(this, l.code)
-            CheckBox(this).apply {
-                text = "${l.name}  (${l.code})" + if (installed) "" else "  - dictionary not installed"; textSize = 16f
-                isEnabled = installed
-                isChecked = installed && l.code in prefs.enabledCodes
-                setOnCheckedChangeListener { btn, on ->
-                    val set = prefs.enabledCodes.toMutableSet().also { if (on) it += l.code else it -= l.code }
-                    if (set.isEmpty()) { btn.isChecked = true; Toast.makeText(context, "Keep at least one language", Toast.LENGTH_SHORT).show(); return@setOnCheckedChangeListener }
-                    prefs.enabledCodes = Languages.all.map { it.code }.filter { it in set }
-                }
-            }
+        // the added languages, each with a bin; below them a dropdown of the others and a + to add the chosen one
+        val langList = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        col.addView(langList)
+        val spinner = Spinner(this)
+        val plus = Button(this).apply { text = "+"; textSize = 18f }
+        val addRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL
+            addView(spinner, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+            addView(plus, LinearLayout.LayoutParams(dp(64), ViewGroup.LayoutParams.WRAP_CONTENT))
         }
-        boxes.forEach { col.addView(it) }
+        col.addView(addRow)
+        var others: List<Lang> = emptyList()
+        fun save(codes: Set<String>) { prefs.enabledCodes = Languages.all.map { it.code }.filter { it in codes } }
+        lateinit var refreshLanguages: () -> Unit
+        refreshLanguages = {
+            langList.removeAllViews()
+            val added = prefs.enabledCodes.toSet()
+            Languages.all.filter { it.code in added }.forEach { l ->
+                val installed = Dictionaries.has(this, l.code)
+                langList.addView(LinearLayout(this).apply {
+                    orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL
+                    addView(TextView(context).apply {
+                        text = "${l.name}  (${l.code})" + if (installed) "" else "  - dictionary not installed"; textSize = 16f
+                        val tv = android.util.TypedValue()
+                        theme.resolveAttribute(android.R.attr.textColorPrimary, tv, true)
+                        setTextColor(if (installed) resources.getColor(tv.resourceId, theme) else Color.GRAY)
+                    }, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+                    addView(BinView(context).apply {
+                        contentDescription = "Remove ${l.name}"
+                        alpha = if (added.size > 1) 1f else 0.3f
+                        setOnClickListener {
+                            if (prefs.enabledCodes.size <= 1) { Toast.makeText(context, "Keep at least one language", Toast.LENGTH_SHORT).show(); return@setOnClickListener }
+                            save(prefs.enabledCodes.toSet() - l.code); refreshLanguages()
+                        }
+                    }, LinearLayout.LayoutParams(dp(48), dp(48)))
+                })
+            }
+            others = Languages.all.filter { it.code !in added }
+            spinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,
+                others.map { l -> "${l.name}  (${l.code})" + if (Dictionaries.has(this, l.code)) "" else "  - not installed" })
+            addRow.visibility = if (others.isEmpty()) View.GONE else View.VISIBLE
+        }
+        plus.setOnClickListener {
+            val l = others.getOrNull(spinner.selectedItemPosition) ?: return@setOnClickListener
+            if (!Dictionaries.has(this, l.code)) { Toast.makeText(this, "The ${l.name} dictionary is not installed", Toast.LENGTH_SHORT).show(); return@setOnClickListener }
+            save(prefs.enabledCodes.toSet() + l.code); refreshLanguages()
+        }
+        refreshLanguages()
         col.addView(TextView(this).apply {
             text = "Switch language on the keyboard: tap the language key (next to the comma)."
             textSize = 13f; setTextColor(Color.GRAY)
