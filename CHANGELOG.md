@@ -4,6 +4,16 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.11.0
+- New languages (26 in all): Italian, Dutch, Swedish, Danish, Norwegian, Finnish, Icelandic, Greek, Polish, Czech, Slovak, Slovenian, Croatian, Hungarian, Romanian, Estonian, Latvian, Lithuanian, Catalan. Their dictionaries are not in the app: a language whose dictionary is not installed is marked in settings and cannot be added (see docs/on-demand-dictionaries.md and docs/dictionary-countries.md).
+- Settings: the languages are a list with a bin on each, and a dropdown with a + to add one.
+- Smart quotes: " opens then closes (a closing quote sticks to the last symbol and adds a space); ' opens only after a space, otherwise it is an apostrophe; « and „ add a space before, » and " after.
+- Optional dedicated number row on the full keyboard (Settings > Full keyboard). Holding a digit offers superscripts and fractions; with the row on, the top letter row carries Gboard's symbols (% \ | = [ ] < > { }).
+- Swipe from the 123 key onto the keys: a temporary symbols layout (with currency signs on the third row); releasing types the key and goes back to the letters.
+- The keyboard re-opens as it was left (one row or expanded). The space bar on the full keyboard is drawn like the other keys.
+- Fix: holding a key that has nothing to offer on the full keyboard no longer shows a bubble of its neighbours.
+- Fix: Russian, Ukrainian and Estonian full-keyboard layouts now follow Gboard (no ъ key, a ґ key, õ in the third row); Shift and Backspace are sized so the third row is as wide as the top row.
+
 ## 0.10.0
 - Layouts: hold the language key and slide to one of three new icons next to the gear: normal (docked), floating (a window you can drag by its handle and resize by its corner, like Gboard's) and split (two halves with a gap, offered on tablets only).
 - Floating keyboard: remembers its place and size; the lens, swipe shortcuts, swipe typing and the full keyboard work inside it.
