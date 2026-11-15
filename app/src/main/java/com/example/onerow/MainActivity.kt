@@ -36,11 +36,11 @@ class MainActivity : Activity() {
     /** A small bin, drawn in code (same idea as the one on the keyboard's guess bar). */
     private inner class BinView(ctx: android.content.Context) : View(ctx) {
         private val p = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
-            style = android.graphics.Paint.Style.STROKE; strokeWidth = dp(2).toFloat(); color = Color.GRAY
+            style = android.graphics.Paint.Style.STROKE; strokeWidth = resources.displayMetrics.density * 1.5f; color = Color.GRAY
             strokeCap = android.graphics.Paint.Cap.ROUND; strokeJoin = android.graphics.Paint.Join.ROUND
         }
         override fun onDraw(c: android.graphics.Canvas) {
-            val cx = width / 2f; val cy = height / 2f; val s = minOf(width, height) * 0.26f
+            val cx = width / 2f; val cy = height / 2f; val s = minOf(width, height) * 0.16f
             c.drawLine(cx - s * 1.15f, cy - s * 0.8f, cx + s * 1.15f, cy - s * 0.8f, p)                        // lid
             c.drawLine(cx - s * 0.4f, cy - s * 0.8f, cx - s * 0.4f, cy - s * 1.2f, p)                          // handle
             c.drawLine(cx + s * 0.4f, cy - s * 0.8f, cx + s * 0.4f, cy - s * 1.2f, p)
@@ -117,7 +117,7 @@ class MainActivity : Activity() {
                             if (prefs.enabledCodes.size <= 1) { Toast.makeText(context, "Keep at least one language", Toast.LENGTH_SHORT).show(); return@setOnClickListener }
                             save(prefs.enabledCodes.toSet() - l.code); refreshLanguages()
                         }
-                    }, LinearLayout.LayoutParams(dp(48), dp(48)))
+                    }, LinearLayout.LayoutParams(dp(40), dp(40)))
                 })
             }
             others = Languages.all.filter { it.code !in added }
