@@ -338,7 +338,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             Mode.FULL -> listOfNotNull(
                 Row(listOf(Key(Kind.SUGG, "", 1f)), stripH, panel = false),
                 if (numberRow) Row(numberKeys(), fullRowH, inset = ((lang.fullRows[0].length - 10) / 2f).coerceAtLeast(0f), keyBg = true) else null,
-                Row(hinted(lang.fullRows[0], if (numberRow) "" else "1234567890"), fullRowH, keyBg = true),
+                Row(hinted(lang.fullRows[0], if (numberRow) TOP_ROW_SYMBOLS else "1234567890"), fullRowH, keyBg = true),
                 Row(hinted(lang.fullRows[1], HINTS_ROW2), fullRowH, inset = ((lang.fullRows[0].length - lang.fullRows[1].length) / 2f).coerceAtLeast(0f), keyBg = true),
                 Row(listOf(Key(Kind.SHIFT, "", 1.5f)) + hinted(lang.fullRows[2], SYMBOLS_ROW3) + Key(Kind.BACKSPACE, "", 1.5f), fullRowH, keyBg = true),
                 Row(listOf(Key(Kind.TO_SYMBOLS, "123", 1.5f), langKey, comma, Key(Kind.SPACE, "", 4f), period,
@@ -1126,6 +1126,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         const val SYMBOLS_ROW2 = "@#\$_&-+()/"       // small symbols under the 2nd / 3rd letter rows
         const val HINTS_ROW2 = "@#\$%&-+()/"          // Gboard's small symbols under the 2nd letter row
         const val SYMBOLS_ROW3 = "*\"':;!?"
+        const val TOP_ROW_SYMBOLS = "~`|•√π÷×¶∆"   // Gboard's second symbols page, first row: hints on the top letter row when the number row is on
         const val NUM_HINTS = "½²³¼⁵⁶⁷⁸⁹⁰"       // under 1234567890 on the number row
         const val SWIPE_MIN_DP = 26f      // travel before a stroke on the letter row counts as a shortcut swipe
         const val SPLIT_GAP = 0.24f         // share of the width left empty between the halves in split layout
