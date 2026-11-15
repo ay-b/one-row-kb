@@ -310,8 +310,15 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     /** Full-keyboard letters with a small standard symbol on each (digits on the top row). */
     private fun hinted(row: String, symbols: String) =
-        row.mapIndexed { i, ch -> Key(Kind.LETTER, ch.toString(), 1f, hint = symbols.getOrNull(i)?.toString()) }
+        row.mapIndexed { i, ch ->
+            val hint = symbols.getOrNull(i)?.toString()
+            // a letter of the alphabet is a normal key; one that is not (ґ) is typed as a national letter of the plain letter it folds onto
+            if (lang.alphabet.index(ch) >= 0) Key(Kind.LETTER, ch.toString(), 1f, hint = hint)
+            else Key(Kind.CHAR, ch.toString(), 1f, hint = hint, base = lang.alphabet.folds[ch]?.firstOrNull())
+        }
     private fun chars(s: String) = s.map { Key(Kind.CHAR, it.toString(), 1f) }
+    /** Width of Shift / Backspace on the full keyboard: the third row ends up as wide as the top row (1.5 on a 10-key QWERTY). */
+    private fun edgeKey() = ((lang.fullRows[0].length - lang.fullRows[2].length) / 2f).coerceAtLeast(1f)
     /** The digits of the number row, each with a small hint of what its hold offers (superscripts, fractions). */
     private fun numberKeys() = "1234567890".mapIndexed { i, d -> Key(Kind.CHAR, d.toString(), 1f, hint = NUM_HINTS[i].toString()) }
 
@@ -340,7 +347,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 if (numberRow) Row(numberKeys(), fullRowH, inset = ((lang.fullRows[0].length - 10) / 2f).coerceAtLeast(0f), keyBg = true) else null,
                 Row(hinted(lang.fullRows[0], if (numberRow) TOP_ROW_SYMBOLS else "1234567890"), fullRowH, keyBg = true),
                 Row(hinted(lang.fullRows[1], if (numberRow) HINTS_ROW2_NUM else HINTS_ROW2), fullRowH, inset = ((lang.fullRows[0].length - lang.fullRows[1].length) / 2f).coerceAtLeast(0f), keyBg = true),
-                Row(listOf(Key(Kind.SHIFT, "", 1.5f)) + hinted(lang.fullRows[2], SYMBOLS_ROW3) + Key(Kind.BACKSPACE, "", 1.5f), fullRowH, keyBg = true),
+                Row(listOf(Key(Kind.SHIFT, "", edgeKey())) + hinted(lang.fullRows[2], SYMBOLS_ROW3) + Key(Kind.BACKSPACE, "", edgeKey()), fullRowH, keyBg = true),
                 Row(listOf(Key(Kind.TO_SYMBOLS, "123", 1.5f), langKey, comma, Key(Kind.SPACE, "", 4f), period,
                     Key(Kind.ENTER, "", 1.5f)), fullRowH, keyBg = true)
             )
@@ -491,7 +498,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                         fill.color = (cTeal and 0x00FFFFFF) or 0x40000000
                         c.drawRoundRect(RectF(r).apply { inset(0f, dp(3f)) }, dp(5f), dp(5f), fill)
                     }
-                    val s = if (k.kind == Kind.LETTER && (inRow || shift != Shift.OFF)) k.label.uppercase() else k.label
+                    val s = if ((k.kind == Kind.LETTER || k.base != null) && (inRow || shift != Shift.OFF)) k.label.uppercase() else k.label
                     text.color = if (k.kind == Kind.CHAR && !inRow && k.hint != null && !k.label[0].isDigit()) cTeal else cInk
                     text.textSize = sp(if (inRow) (if (lang.alphabet.n > 28) 12f else 14f) else 20f)
                     drawCentered(c, s, r.centerX(), r.top + k.dy * r.height())
@@ -1073,7 +1080,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 listener.onLetter(p.key.label[0], letterLogProbs(x, y), false)
                 if (shift == Shift.ONCE) shift = Shift.OFF
             }
-            Kind.CHAR -> listener.onText(p.key.label)
+            Kind.CHAR -> if (p.key.base != null) commitExact(p) else listener.onText(p.key.label)
             Kind.LANG -> if (languages.size > 1) {
                 val i = languages.indexOfFirst { it.code == this.lang.code }
                 listener.onLanguage(languages[(i + 1) % languages.size].code)

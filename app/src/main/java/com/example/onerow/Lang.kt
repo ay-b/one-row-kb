@@ -9,7 +9,11 @@ class Lang(
     val alphabet: Alphabet,
     /** Letters grouped by physical keyboard column, left to right (each group zig-zags in the one-row mode). */
     val columns: List<String>,
-    /** Rows of the full keyboard (letters only; shift/backspace are added around the last row). */
+    /**
+     * Rows of the full keyboard (letters only; shift/backspace are added around the last row). A letter of the alphabet may be left
+     * out when it is reachable by holding a key ([alternates], e.g. Russian ъ under ь); a character that is not in the alphabet but
+     * folds onto a letter (Ukrainian ґ) may be added.
+     */
     val fullRows: List<String>,
     /** National letters reachable by holding a key on the full keyboard: base letter -> variants. */
     val alternates: Map<Char, String> = emptyMap(),
@@ -47,11 +51,11 @@ object Languages {
             mapOf('a' to "áàâã", 'c' to "ç", 'e' to "éê", 'i' to "í", 'o' to "óôõ", 'u' to "úü")),
         Lang("ru", "Русский", cyrillic,
             listOf("йфя", "цыч", "увс", "кам", "епи", "нрт", "гоь", "шлб", "щдю", "зж", "хэ", "ъ"),
-            listOf("йцукенгшщзхъ", "фывапролджэ", "ячсмитьбю"),
+            listOf("йцукенгшщзх", "фывапролджэ", "ячсмитьбю"),            // ъ is under ь (hold), as on Gboard
             mapOf('е' to "ё", 'ь' to "ъ")),
         Lang("uk", "Українська", ukrainian,
             listOf("йфя", "ціч", "увс", "кам", "епи", "нрт", "гоь", "шлб", "щдю", "зж", "хє", "ї"),
-            listOf("йцукенгшщзхї", "фівапролджє", "ячсмитьбю"),
+            listOf("йцукенгшщзхї", "фівапролджє", "ячсмитьбюґ"),
             mapOf('г' to "ґ")),
         // ---- more languages (dictionaries are not part of the app: see docs/on-demand-dictionaries.md) ----
         Lang("it", "Italiano", latin, qwerty, qwertyRows,
@@ -87,7 +91,7 @@ object Languages {
             mapOf('a' to "á", 'e' to "é", 'i' to "í", 'o' to "óöő", 'u' to "úüű")),
         Lang("ro", "Română", latin, qwerty, qwertyRows,
             mapOf('a' to "ăâ", 'i' to "î", 's' to "ș", 't' to "ț")),
-        Lang("et", "Eesti", estonian, qwerty9 + listOf("pö", "üä", "õ"), listOf("qwertyuiopüõ", "asdfghjklöä", "zxcvbnm"),
+        Lang("et", "Eesti", estonian, qwerty9 + listOf("pö", "üä", "õ"), listOf("qwertyuiopü", "asdfghjklöä", "zxcvbnmõ"),
             mapOf('s' to "š", 'z' to "ž")),
         Lang("lv", "Latviešu", latin, qwerty, qwertyRows,
             mapOf('a' to "ā", 'c' to "č", 'e' to "ē", 'g' to "ģ", 'i' to "ī", 'k' to "ķ", 'l' to "ļ", 'n' to "ņ", 's' to "š", 'u' to "ū", 'z' to "ž")),

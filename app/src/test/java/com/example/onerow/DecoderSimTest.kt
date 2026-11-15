@@ -32,7 +32,6 @@ class DecoderSimTest {
             val byFreq = lex.words.indices.sortedByDescending { lex.logUni[it] }     // word indices are trie positions, not ranks
             val loadMs = (System.nanoTime() - t0) / 1_000_000
             assertTrue("${l.code}: layout must cover the alphabet", l.columns.joinToString("").toSet() == l.alphabet.letters.toSet())
-            assertTrue("${l.code}: full rows must cover the alphabet", l.fullRows.joinToString("").toSet() == l.alphabet.letters.toSet())
             val geo = Geo(l); val dec = Decoder(lex); val r = Random(5)
             for (noise in listOf(0.4f, 0.7f)) {
                 var total = 0; var base = 0; var top1 = 0; var top3 = 0; var nanos = 0L

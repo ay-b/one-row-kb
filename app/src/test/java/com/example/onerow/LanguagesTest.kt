@@ -13,8 +13,11 @@ class LanguagesTest {
             assertTrue("${l.code}: duplicate letters", l.alphabet.letters.length == letters.size)
             assertEquals("${l.code}: one-row columns", letters, l.columns.joinToString("").toSet())
             assertEquals("${l.code}: one-row columns repeat a letter", letters.size, l.columns.joinToString("").length)
-            assertEquals("${l.code}: full keyboard rows", letters, l.fullRows.joinToString("").toSet())
-            assertEquals("${l.code}: full keyboard rows repeat a letter", letters.size, l.fullRows.joinToString("").length)
+            val rows = l.fullRows.joinToString("")
+            assertEquals("${l.code}: full keyboard rows repeat a letter", rows.toSet().size, rows.length)
+            val held = l.alternates.values.joinToString("").toSet()
+            for (c in letters) assertTrue("${l.code}: '$c' is neither on the full keyboard nor under another key", c in rows || c in held)
+            for (c in rows) assertTrue("${l.code}: '$c' on the full keyboard is not a letter of the alphabet", c in letters || c in l.alphabet.folds)
             for ((base, variants) in l.alternates) assertTrue("${l.code}: alternates of '$base'", l.alphabet.index(base) >= 0 && variants.isNotEmpty())
         }
     }

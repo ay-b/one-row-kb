@@ -26,7 +26,7 @@ class GlideSimTest {
         val cx = FloatArray(l.alphabet.n) { Float.NaN }; val cy = FloatArray(l.alphabet.n) { Float.NaN }
         rows.forEachIndexed { ri, r ->
             val inset = when (ri) { 0 -> 0f; rows.lastIndex -> 1.5f; else -> (rows[0].length - r.length) / 2f }
-            r.forEachIndexed { i, ch -> val k = l.alphabet.index(ch); cx[k] = (inset + i + 0.5f) * w; cy[k] = (ri + 0.5f) * 1.15f * w }
+            r.forEachIndexed { i, ch -> val k = l.alphabet.index(ch); if (k < 0) return@forEachIndexed; cx[k] = (inset + i + 0.5f) * w; cy[k] = (ri + 0.5f) * 1.15f * w }
         }
         for ((base, alts) in l.alternates) for (a in alts) { val k = l.alphabet.index(a); if (k >= 0 && cx[k].isNaN()) { val b = l.alphabet.index(base); cx[k] = cx[b]; cy[k] = cy[b] } }
         return GlideLayout(cx, cy, w)
