@@ -6,18 +6,18 @@ plugins {
 // Semantic versioning (MAJOR.MINOR.PATCH). Bump this ONE line for every build you hand out:
 //   PATCH = bug fix, MINOR = new feature (backwards compatible), MAJOR = breaking change / 1.0 = first public release.
 // versionCode is derived from it (M*10000 + m*100 + p) so Android always sees newer builds as upgrades.
-val appVersion = "0.23.2"
+val appVersion = "0.23.3"
 val (vMajor, vMinor, vPatch) = appVersion.split(".").map { it.toInt() }
 
 base { archivesName.set("onerow-$appVersion") }
 
 android {
     namespace = "com.example.onerow"
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig {
         applicationId = "one.yb.onerow"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = vMajor * 10000 + vMinor * 100 + vPatch
         versionName = appVersion
     }
@@ -59,6 +59,6 @@ android {
 
 dependencies {
     implementation("com.google.mlkit:genai-proofreading:1.0.0-beta1")
-    implementation("com.android.billingclient:billing:7.1.1")
+    implementation("com.android.billingclient:billing:8.0.0")
     testImplementation("junit:junit:4.13.2")
 }

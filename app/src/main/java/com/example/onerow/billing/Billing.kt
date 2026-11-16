@@ -102,8 +102,8 @@ class BillingManager(context: Context, private val onChange: () -> Unit) : Purch
     private fun queryPrices(c: BillingClient) {
         fun q(id: String, type: String, set: (ProductDetails?) -> Unit) {
             val prod = QueryProductDetailsParams.Product.newBuilder().setProductId(id).setProductType(type).build()
-            c.queryProductDetailsAsync(QueryProductDetailsParams.newBuilder().setProductList(listOf(prod)).build()) { r, list ->
-                if (r.responseCode == BillingClient.BillingResponseCode.OK) { set(list.firstOrNull()); onChange() }
+            c.queryProductDetailsAsync(QueryProductDetailsParams.newBuilder().setProductList(listOf(prod)).build()) { r, res ->
+                if (r.responseCode == BillingClient.BillingResponseCode.OK) { set(res.productDetailsList.firstOrNull()); onChange() }
             }
         }
         q(Products.MONTHLY, BillingClient.ProductType.SUBS) { monthly = it }

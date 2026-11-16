@@ -4,6 +4,9 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.23.3
+- Play Billing Library 8.0.0 (Play requires 8+); target and compile SDK 36 (Play requires 36).
+
 ## 0.23.2
 - Play bundle: release build type (R8, upload-key signing from `~/.android/onerow-upload.properties`, outside the repo) so `./gradlew :app:bundleRelease` makes an `.aab`; target and compile SDK raised to 35, which Play requires for new apps.
 
