@@ -4,6 +4,9 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.24.2
+- Ukrainian full keyboard: the small "?" moved from ь to б, like in Russian (ь has no small symbol).
+
 ## 0.24.1
 - Russian full keyboard: the small "?" moved from ь to б, and ь now shows ъ as its small symbol (hold ь still types ъ, no duplicate in the zoom).
 
