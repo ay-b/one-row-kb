@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">%1$s verzió</string>
+    <string name="header_setup">Beállítás</string>
+    <string name="btn_enable_keyboard">1. Billentyűzet engedélyezése</string>
+    <string name="btn_switch_keyboard">2. Váltás a OneRow-ra</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Előfizetés</string>
+    <string name="btn_subscribe">Előfizetés</string>
+    <string name="btn_buy_forever">Vásárlás örökre (1. verzió)</string>
+    <string name="btn_manage_subscription">Előfizetés kezelése</string>
+    <string name="sub_status_locked">A próbaidőszak lejárt. A billentyűzet csak gépelni tud, amíg elő nem fizet vagy meg nem vásárolja.</string>
+    <string name="sub_status_lifetime">A OneRow örökre az öné (1. verzió). Köszönjük!</string>
+    <string name="sub_status_subscribed">Előfizetve. Köszönjük!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Az előfizetés lemondva: körülbelül %1$d nap múlva lejár.</item>
+        <item quantity="other">Az előfizetés lemondva: körülbelül %1$d nap múlva lejár.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Ingyenes időszak: %1$d nap van hátra. Utána indítsa el az 1 hónapos ingyenes próbaverziót, vagy vásárolja meg a billentyűzetet, hogy minden funkciót megtarthasson.</item>
+        <item quantity="other">Ingyenes időszak: %1$d nap van hátra. Utána indítsa el az 1 hónapos ingyenes próbaverziót, vagy vásárolja meg a billentyűzetet, hogy minden funkciót megtarthasson.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Előfizetés (az ár még nem érhető el)</string>
+    <string name="btn_subscribe_trial_price">1 hónapos ingyenes próba indítása, utána havi %1$s</string>
+    <string name="btn_subscribe_price">Előfizetés: havi %1$s</string>
+    <string name="btn_buy_forever_price">Vásárlás örökre (1. verzió): %1$s</string>
+    <string name="btn_buy_forever_no_price">Vásárlás örökre (az ár még nem érhető el)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Nyelvek</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - a szótár nincs telepítve</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - nincs telepítve</string>
+    <string name="cd_remove_language">%1$s eltávolítása</string>
+    <string name="toast_keep_one_language">Legalább egy nyelvnek maradnia kell</string>
+    <string name="toast_dictionary_not_installed">Nincs telepítve szótár ehhez: %1$s</string>
+    <string name="lang_switch_hint">Nyelvváltás a billentyűzeten: koppintson a nyelv billentyűre (a vessző mellett).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Téma</string>
+    <string name="theme_default">Alapértelmezett</string>
+    <string name="theme_light">Világos</string>
+    <string name="theme_dark">Sötét</string>
+    <string name="theme_auto">Automatikus (rendszer szerint)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Tippelés</string>
+    <string name="guessing_desc">Mennyire tévedhet el egy koppintás a betűtől az egysoros billentyűzeten, hogy még elfogadja. A szigorú jobban bízik a koppintásaiban; a laza megbocsátja a nagyobb melléfogásokat.</string>
+    <string name="guessing_tight">Szigorú – legfeljebb ~2½ betűnyire</string>
+    <string name="guessing_normal">Normál – legfeljebb ~4 betűnyire</string>
+    <string name="guessing_loose">Laza – legfeljebb ~5½ betűnyire</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Csúsztatásos gépelés pontossága</string>
+    <string name="swipe_precision_desc">Mennyire kell a teljes billentyűzeten húzott görbének követnie a szó betűit. A laza megbocsát egy pontatlan görbét; a szigorú jobban bízik benne.</string>
+    <string name="swipe_precision_tight">Szigorú – szorosan kövesse a betűket</string>
+    <string name="swipe_precision_normal">Normál</string>
+    <string name="swipe_precision_loose">Laza – elég egy pontatlan görbe</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Teljes billentyűzet</string>
+    <string name="number_row">Külön számsor</string>
+    <string name="number_row_desc">Számjegyek sora a betűk felett. Tartson lenyomva egy számjegyet felső indexekhez és törtekhez (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Helyesírás-ellenőrző</string>
+    <string name="spell_checker_desc">Az Android a saját helyesírás-ellenőrzőjével húzza alá pirossal a szavakat, amely csak egy nyelvet ismer. A OneRow-nak saját van: ismeri az összes itt hozzáadott nyelvet (és a megtanított szavakat is), így csak a valóban ismeretlen szavak vannak megjelölve.</string>
+    <string name="btn_spell_on">A OneRow helyesírás-ellenőrzőjének használata</string>
+    <string name="btn_spell_off">Helyesírás-ellenőrzés kikapcsolása</string>
+    <string name="toast_spell_on">OneRow helyesírás-ellenőrző kiválasztva</string>
+    <string name="toast_spell_off">A helyesírás-ellenőrzés ki van kapcsolva</string>
+    <string name="toast_spell_manual">Válassza ki a \"OneRow Keyboard\" elemet a megnyíló képernyőn, vagy futtassa egyszer számítógépen: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Korrektúra</string>
+    <string name="proofread_button">Korrektúra gomb</string>
+    <string name="proofread_checking">Annak ellenőrzése, hogy a telefon képes-e rá...</string>
+    <string name="proofread_available">Egy pipás kör a javaslatsáv jobb szélén: koppintson rá, hogy javítsa a mezőbe írt szöveg nyelvtanát és helyesírását, újabb koppintásra visszavonja. Angol, francia, német, olasz és spanyol. A telefonon fut; az első használatkor letölthet egy modellt.</string>
+    <string name="proofread_unavailable">Nem érhető el ezen a telefonon: a Google eszközön futó MI-jére (Gemini Nano) van szükség, amely csak néhány újabb telefonon van meg.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Visszajelzés</string>
+    <string name="vibrate">Rezgés billentyűleütéskor</string>
+    <string name="header_gestures">Gesztusok</string>
+    <string name="swipe_typing">Csúsztatásos gépelés a teljes billentyűzeten</string>
+    <string name="gestures_desc">Rajzoljon egy szót a betűk fölött ahelyett, hogy koppintana rájuk. Húzza le az ujját a javaslatsávon, hogy visszatérjen az egy sorhoz. Az alábbi puska minden gesztust bemutat.</string>
+    <string name="header_cheat_sheet">Puska</string>
+    <string name="cheat_1">Húzás balra a betűsoron: törlés</string>
+    <string name="cheat_2">Húzás balra fel: hangbevitel</string>
+    <string name="cheat_3">Húzás fel: teljes billentyűzet</string>
+    <string name="cheat_4">Húzás jobbra fel: enter</string>
+    <string name="cheat_5">Húzás jobbra: szóköz</string>
+    <string name="cheat_6">Tartson lenyomva egy betűt, majd csúsztasson: az elengedés pontosan azt a betűt írja be (találgatás nélkül)</string>
+    <string name="cheat_7">Tartsa lenyomva a pont billentyűt, majd csúsztasson az alapvető írásjelek kiválasztásához</string>
+    <string name="cheat_8">Tartsa lenyomva a vessző billentyűt, majd csúsztasson: a leggyakrabban használt emojik vannak elöl. Húzás fel: az összes emoji (koppintson egyre)</string>
+    <string name="cheat_9">Húzás a szóközön: a kurzor mozgatása</string>
+    <string name="cheat_10">Húzás balra a backspace-en: törlés szavanként</string>
+    <string name="cheat_11">Húzza oldalra a javaslatsávot: további javaslatok</string>
+    <string name="cheat_12">Tartson lenyomva egy javaslatot, és ejtse a kukába: a szó elfelejtése</string>
+    <string name="cheat_13">Koppintás a nyelv billentyűre: következő nyelv</string>
+    <string name="cheat_14">Tartsa lenyomva a nyelv billentyűt, majd csúsztasson: beállítások, normál, lebegő, osztott (csak táblagépen). Csúsztasson a normál ikonra, hogy a lebegő billentyűzetet újra rögzítse</string>
+    <string name="cheat_15">Lebegő billentyűzet: húzza a felső fogantyút az áthelyezéshez</string>
+    <string name="cheat_16">Lebegő billentyűzet: húzza a sarkot az átméretezéshez</string>
+    <string name="cheat_17">Csúsztatásos gépelés (opcionális, Beállítások &gt; Gesztusok): rajzoljon egy szót a betűk fölött, itt h-e-l-l-o. Koppintson egy javaslatra a szó cseréjéhez; a backspace az egész szót törli</string>
+    <string name="cheat_18">Csúsztasson a 123-ról a billentyűkre: szimbólumok és pénznemjelek jelennek meg; az elengedés egyet beír, és visszatér a betűkhöz</string>
+    <string name="cheat_19">Húzás le a javaslatsávon: vissza az egy sorhoz. Húzás fel a javaslatsávról vagy az egysoros billentyűzet alsó sorából: teljes billentyűzet</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Névjegy</string>
+    <string name="btn_attributions">Forrásmegjelölések és licencek</string>
+    <string name="attributions_title">Forrásmegjelölések</string>
+    <string name="attributions_missing">Hiányzik az attribution.md.</string>
+    <string name="close">Bezárás</string>
+    <string name="header_try_it">Kipróbálás</string>
+    <string name="hint_type_here">Írjon ide</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Nincs mit ellenőrizni</string>
+    <string name="toast_proofread_failed">A korrektúra sikertelen</string>
+    <string name="toast_no_mistakes">Nem található hiba</string>
+    <string name="toast_model_downloading_start">A korrektúramodell letöltése...</string>
+    <string name="toast_model_ready">A modell kész - koppintson újra</string>
+    <string name="toast_download_failed">A letöltés sikertelen</string>
+    <string name="toast_model_still_downloading">A korrektúramodell még töltődik le</string>
+    <string name="toast_proofread_unavailable">A korrektúra nem érhető el ezen a telefonon</string>
+    <string name="toast_word_not_in_dictionary">A(z) \"%1$s\" nincs a szótárban</string>
+    <string name="toast_word_removed">\"%1$s\" eltávolítva</string>
+    <string name="toast_no_voice_input">Nincs engedélyezett hangbevitel</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Lejárt a próba, fizessen elő</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Az előfizetés %1$d nap múlva lejár</item>
+        <item quantity="other">Az előfizetés %1$d nap múlva lejár</item>
+    </plurals>
+</resources>

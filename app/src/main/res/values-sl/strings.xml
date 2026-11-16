@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">različica %1$s</string>
+    <string name="header_setup">Nastavitev</string>
+    <string name="btn_enable_keyboard">1. Omogočite tipkovnico</string>
+    <string name="btn_switch_keyboard">2. Preklopite na OneRow</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Naročnina</string>
+    <string name="btn_subscribe">Naročite se</string>
+    <string name="btn_buy_forever">Kupite za vedno (različica 1)</string>
+    <string name="btn_manage_subscription">Upravljanje naročnine</string>
+    <string name="sub_status_locked">Preizkusno obdobje je poteklo. Tipkovnica samo tipka, dokler se ne naročite ali je ne kupite.</string>
+    <string name="sub_status_lifetime">OneRow imate za vedno (različica 1). Hvala!</string>
+    <string name="sub_status_subscribed">Naročeni ste. Hvala!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Naročnina preklicana: poteče čez približno %1$d dan.</item>
+        <item quantity="two">Naročnina preklicana: poteče čez približno %1$d dneva.</item>
+        <item quantity="few">Naročnina preklicana: poteče čez približno %1$d dni.</item>
+        <item quantity="other">Naročnina preklicana: poteče čez približno %1$d dni.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Brezplačno obdobje: še %1$d dan. Nato začnite 1-mesečni brezplačni preizkus ali kupite tipkovnico, da obdržite vse funkcije.</item>
+        <item quantity="two">Brezplačno obdobje: še %1$d dneva. Nato začnite 1-mesečni brezplačni preizkus ali kupite tipkovnico, da obdržite vse funkcije.</item>
+        <item quantity="few">Brezplačno obdobje: še %1$d dni. Nato začnite 1-mesečni brezplačni preizkus ali kupite tipkovnico, da obdržite vse funkcije.</item>
+        <item quantity="other">Brezplačno obdobje: še %1$d dni. Nato začnite 1-mesečni brezplačni preizkus ali kupite tipkovnico, da obdržite vse funkcije.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Naročite se (cena še ni na voljo)</string>
+    <string name="btn_subscribe_trial_price">Začnite 1-mesečni brezplačni preizkus, nato %1$s na mesec</string>
+    <string name="btn_subscribe_price">Naročite se: %1$s na mesec</string>
+    <string name="btn_buy_forever_price">Kupite za vedno (različica 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Kupite za vedno (cena še ni na voljo)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Jeziki</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - slovar ni nameščen</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - ni nameščen</string>
+    <string name="cd_remove_language">Odstranite %1$s</string>
+    <string name="toast_keep_one_language">Obdržite vsaj en jezik</string>
+    <string name="toast_dictionary_not_installed">Slovar %1$s ni nameščen</string>
+    <string name="lang_switch_hint">Preklop jezika na tipkovnici: tapnite tipko za jezik (poleg vejice).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Tema</string>
+    <string name="theme_default">Privzeta</string>
+    <string name="theme_light">Svetla</string>
+    <string name="theme_dark">Temna</string>
+    <string name="theme_auto">Samodejno (po sistemu)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Ugibanje</string>
+    <string name="guessing_desc">Kako daleč od črke lahko tap zgreši na enovrstični tipkovnici, da se še vedno upošteva. Strogo bolj zaupa vašim tapom; ohlapno odpusti večje zgrešitve.</string>
+    <string name="guessing_tight">Strogo – do ~2½ črke stran</string>
+    <string name="guessing_normal">Običajno – do ~4 črke stran</string>
+    <string name="guessing_loose">Ohlapno – do ~5½ črke stran</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Natančnost tipkanja z drsenjem</string>
+    <string name="swipe_precision_desc">Kako natančno mora krivulja, ki jo narišete čez celotno tipkovnico, slediti črkam besede. Ohlapno odpusti grobo krivuljo; strogo ji bolj zaupa.</string>
+    <string name="swipe_precision_tight">Strogo – natančno sledite črkam</string>
+    <string name="swipe_precision_normal">Običajno</string>
+    <string name="swipe_precision_loose">Ohlapno – dovolj je groba krivulja</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Polna tipkovnica</string>
+    <string name="number_row">Namenska vrstica s števkami</string>
+    <string name="number_row_desc">Vrstica števk nad črkami. Pridržite števko za nadpisane znake in ulomke (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Črkovalnik</string>
+    <string name="spell_checker_desc">Android z rdečo črto podčrta besede s svojim črkovalnikom, ki pozna samo en jezik. OneRow ima svojega: pozna vse jezike, ki ste jih dodali tukaj (in besede, ki ste jih naučili), zato so označene samo res neznane besede.</string>
+    <string name="btn_spell_on">Uporabite črkovalnik OneRow</string>
+    <string name="btn_spell_off">Izklopite preverjanje črkovanja</string>
+    <string name="toast_spell_on">Izbran je črkovalnik OneRow</string>
+    <string name="toast_spell_off">Preverjanje črkovanja je izklopljeno</string>
+    <string name="toast_spell_manual">Na zaslonu, ki se odpre, izberite \"OneRow Keyboard\" ali enkrat zaženite v računalniku: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Lektoriranje</string>
+    <string name="proofread_button">Gumb za lektoriranje</string>
+    <string name="proofread_checking">Preverjanje, ali to zmore ta telefon...</string>
+    <string name="proofread_available">Krog s kljukico na desnem koncu vrstice predlogov: tapnite ga, da popravite slovnico in črkovanje besedila, ki ste ga vnesli v polje, in ponovno tapnite za razveljavitev. Angleščina, francoščina, nemščina, italijanščina in španščina. Deluje v telefonu; ob prvi uporabi se lahko prenese model.</string>
+    <string name="proofread_unavailable">Ni na voljo v tem telefonu: potrebuje umetno inteligenco Google v napravi (Gemini Nano), ki jo imajo le nekateri novejši telefoni.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Odziv</string>
+    <string name="vibrate">Vibriranje ob pritisku tipke</string>
+    <string name="header_gestures">Kretnje</string>
+    <string name="swipe_typing">Tipkanje z drsenjem na polni tipkovnici</string>
+    <string name="gestures_desc">Namesto tapkanja po črkah narišite besedo čez črke. Podrsnite navzdol po vrstici predlogov, da se vrnete na eno vrstico. Spodnji povzetek prikazuje vse kretnje.</string>
+    <string name="header_cheat_sheet">Povzetek</string>
+    <string name="cheat_1">Podrsnite levo po vrstici črk: brisanje</string>
+    <string name="cheat_2">Podrsnite navzgor in levo: glasovni vnos</string>
+    <string name="cheat_3">Podrsnite navzgor: polna tipkovnica</string>
+    <string name="cheat_4">Podrsnite navzgor in desno: enter</string>
+    <string name="cheat_5">Podrsnite desno: preslednica</string>
+    <string name="cheat_6">Pridržite črko, nato podrsnite: ob spustu se vnese natanko ta črka (brez ugibanja)</string>
+    <string name="cheat_7">Pridržite tipko za piko, nato podrsnite, da izberete osnovna ločila</string>
+    <string name="cheat_8">Pridržite tipko za vejico, nato podrsnite: najprej so emojiji, ki jih največ uporabljate. Podrsnite navzgor: vsi emojiji (tapnite enega)</string>
+    <string name="cheat_9">Vlecite po preslednici: premikanje kazalke</string>
+    <string name="cheat_10">Vlecite levo po tipki za brisanje: brisanje po besedah</string>
+    <string name="cheat_11">Podrsnite vstran po vrstici predlogov: več predlogov</string>
+    <string name="cheat_12">Pridržite predlog in ga spustite na koš: pozabi besedo</string>
+    <string name="cheat_13">Tapnite tipko za jezik: naslednji jezik</string>
+    <string name="cheat_14">Pridržite tipko za jezik, nato podrsnite: nastavitve, običajna, plavajoča, razdeljena (samo tablični računalniki). Podrsnite na ikono običajne, da plavajočo tipkovnico znova zasidrate</string>
+    <string name="cheat_15">Plavajoča tipkovnica: povlecite ročaj na vrhu, da jo premaknete</string>
+    <string name="cheat_16">Plavajoča tipkovnica: povlecite vogal, da ji spremenite velikost</string>
+    <string name="cheat_17">Tipkanje z drsenjem (neobvezno, Nastavitve &gt; Kretnje): narišite besedo čez črke, tukaj h-e-l-l-o. Tapnite predlog, da zamenjate besedo; tipka za brisanje izbriše celo besedo</string>
+    <string name="cheat_18">Podrsnite z 123 na tipke: prikažejo se simboli in valutni znaki; ob spustu se vnese eden in vrnete se na črke</string>
+    <string name="cheat_19">Podrsnite navzdol po vrstici predlogov: nazaj na eno vrstico. Povlecite navzgor z vrstice predlogov ali spodnje vrstice enovrstične tipkovnice: polna tipkovnica</string>
+
+    <!-- About, try it -->
+    <string name="header_about">O aplikaciji</string>
+    <string name="btn_attributions">Priznanja in licence</string>
+    <string name="attributions_title">Priznanja</string>
+    <string name="attributions_missing">Datoteka attribution.md manjka.</string>
+    <string name="close">Zapri</string>
+    <string name="header_try_it">Preizkusite</string>
+    <string name="hint_type_here">Tipkajte tukaj</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Ni ničesar za lektoriranje</string>
+    <string name="toast_proofread_failed">Lektoriranje ni uspelo</string>
+    <string name="toast_no_mistakes">Napak ni</string>
+    <string name="toast_model_downloading_start">Prenos modela za lektoriranje ...</string>
+    <string name="toast_model_ready">Model je pripravljen - tapnite znova</string>
+    <string name="toast_download_failed">Prenos ni uspel</string>
+    <string name="toast_model_still_downloading">Model za lektoriranje se še prenaša</string>
+    <string name="toast_proofread_unavailable">Lektoriranje v tem telefonu ni na voljo</string>
+    <string name="toast_word_not_in_dictionary">\"%1$s\" ni v slovarju</string>
+    <string name="toast_word_removed">Odstranjeno: \"%1$s\"</string>
+    <string name="toast_no_voice_input">Glasovni vnos ni omogočen</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Preizkus je potekel, naročite se</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Naročnina poteče čez %1$d dan</item>
+        <item quantity="two">Naročnina poteče čez %1$d dneva</item>
+        <item quantity="few">Naročnina poteče čez %1$d dni</item>
+        <item quantity="other">Naročnina poteče čez %1$d dni</item>
+    </plurals>
+</resources>

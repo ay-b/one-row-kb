@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">version %1$s</string>
+    <string name="header_setup">Konfiguration</string>
+    <string name="btn_enable_keyboard">1. Aktivera tangentbordet</string>
+    <string name="btn_switch_keyboard">2. Byt till OneRow</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Prenumeration</string>
+    <string name="btn_subscribe">Prenumerera</string>
+    <string name="btn_buy_forever">Köp för alltid (version 1)</string>
+    <string name="btn_manage_subscription">Hantera prenumeration</string>
+    <string name="sub_status_locked">Provperioden har gått ut. Tangentbordet kan bara skriva tills du prenumererar eller köper det.</string>
+    <string name="sub_status_lifetime">Du äger OneRow för alltid (version 1). Tack!</string>
+    <string name="sub_status_subscribed">Prenumeration aktiv. Tack!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Prenumerationen är avslutad: den upphör om ungefär %1$d dag.</item>
+        <item quantity="other">Prenumerationen är avslutad: den upphör om ungefär %1$d dagar.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Gratisperiod: %1$d dag kvar. Därefter kan du starta den kostnadsfria provperioden på 1 månad eller köpa tangentbordet för att behålla alla funktioner.</item>
+        <item quantity="other">Gratisperiod: %1$d dagar kvar. Därefter kan du starta den kostnadsfria provperioden på 1 månad eller köpa tangentbordet för att behålla alla funktioner.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Prenumerera (priset är inte tillgängligt än)</string>
+    <string name="btn_subscribe_trial_price">Starta 1 månads gratis provperiod, sedan %1$s per månad</string>
+    <string name="btn_subscribe_price">Prenumerera: %1$s per månad</string>
+    <string name="btn_buy_forever_price">Köp för alltid (version 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Köp för alltid (priset är inte tillgängligt än)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Språk</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - ordlistan är inte installerad</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - inte installerad</string>
+    <string name="cd_remove_language">Ta bort %1$s</string>
+    <string name="toast_keep_one_language">Behåll minst ett språk</string>
+    <string name="toast_dictionary_not_installed">Ordlistan för %1$s är inte installerad</string>
+    <string name="lang_switch_hint">Byt språk på tangentbordet: tryck på språktangenten (bredvid kommatecknet).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Tema</string>
+    <string name="theme_default">Standard</string>
+    <string name="theme_light">Ljust</string>
+    <string name="theme_dark">Mörkt</string>
+    <string name="theme_auto">Automatiskt (följ systemet)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Gissning</string>
+    <string name="guessing_desc">Hur långt ett tryck får missa en bokstav på tangentbordet med en rad och ändå räknas. Strikt litar mer på dina tryck; generös tillåter större missar.</string>
+    <string name="guessing_tight">Strikt – upp till ~2½ bokstäver bort</string>
+    <string name="guessing_normal">Normal – upp till ~4 bokstäver bort</string>
+    <string name="guessing_loose">Generös – upp till ~5½ bokstäver bort</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Precision för svepskrivning</string>
+    <string name="swipe_precision_desc">Hur noga kurvan du drar över hela tangentbordet måste följa ordets bokstäver. Generös tillåter en slarvig kurva; strikt litar mer på den.</string>
+    <string name="swipe_precision_tight">Strikt – följ bokstäverna noga</string>
+    <string name="swipe_precision_normal">Normal</string>
+    <string name="swipe_precision_loose">Generös – en slarvig kurva räcker</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Fullt tangentbord</string>
+    <string name="number_row">Egen siffrorad</string>
+    <string name="number_row_desc">En rad med siffror ovanför bokstäverna. Håll in en siffra för upphöjda tecken och bråk (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Stavningskontroll</string>
+    <string name="spell_checker_desc">Android understryker ord med rött med sin egen stavningskontroll, som bara kan ett språk. OneRow har en egen: den kan alla språk du lagt till här (och orden du lärt den), så bara riktigt okända ord markeras.</string>
+    <string name="btn_spell_on">Använd OneRows stavningskontroll</string>
+    <string name="btn_spell_off">Stäng av stavningskontrollen</string>
+    <string name="toast_spell_on">OneRows stavningskontroll vald</string>
+    <string name="toast_spell_off">Stavningskontrollen är avstängd</string>
+    <string name="toast_spell_manual">Välj \"OneRow Keyboard\" på skärmen som öppnas, eller kör en gång på en dator: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Korrekturläsning</string>
+    <string name="proofread_button">Korrekturläsningsknapp</string>
+    <string name="proofread_checking">Kontrollerar om den här telefonen klarar det...</string>
+    <string name="proofread_available">En bockcirkel längst till höger i förslagsfältet: tryck på den för att rätta grammatik och stavning i det du skrivit i fältet, tryck igen för att ångra. Engelska, franska, tyska, italienska och spanska. Körs på telefonen; vid första användningen kan en modell laddas ned.</string>
+    <string name="proofread_unavailable">Inte tillgängligt på den här telefonen: det kräver Googles AI på enheten (Gemini Nano), som bara vissa nyare telefoner har.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Återkoppling</string>
+    <string name="vibrate">Vibrera vid tangenttryck</string>
+    <string name="header_gestures">Gester</string>
+    <string name="swipe_typing">Svepskrivning på hela tangentbordet</string>
+    <string name="gestures_desc">Dra ett ord över bokstäverna i stället för att trycka på dem. Svep nedåt i förslagsfältet för att återgå till en rad. Fusklappen nedan visar alla gester.</string>
+    <string name="header_cheat_sheet">Fusklapp</string>
+    <string name="cheat_1">Svep åt vänster på bokstavsraden: radera</string>
+    <string name="cheat_2">Svep uppåt vänster: röstinmatning</string>
+    <string name="cheat_3">Svep uppåt: fullt tangentbord</string>
+    <string name="cheat_4">Svep uppåt höger: enter</string>
+    <string name="cheat_5">Svep åt höger: blanksteg</string>
+    <string name="cheat_6">Håll in en bokstav och glid sedan: när du släpper skrivs exakt den bokstaven (ingen gissning)</string>
+    <string name="cheat_7">Håll in punkttangenten och glid sedan för att välja vanliga skiljetecken</string>
+    <string name="cheat_8">Håll in komma-tangenten och glid sedan: de emojier du använder mest kommer först. Svep uppåt: alla emojier (tryck på en)</string>
+    <string name="cheat_9">Dra på blanksteg: flytta markören</string>
+    <string name="cheat_10">Dra åt vänster på backsteg: radera ord för ord</string>
+    <string name="cheat_11">Svep förslagsfältet åt sidan: fler förslag</string>
+    <string name="cheat_12">Håll in ett förslag och släpp det på papperskorgen: glöm ordet</string>
+    <string name="cheat_13">Tryck på språktangenten: nästa språk</string>
+    <string name="cheat_14">Håll in språktangenten och glid sedan: inställningar, normal, flytande, delad (bara surfplattor). Glid till ikonen för normal för att docka ett flytande tangentbord igen</string>
+    <string name="cheat_15">Flytande tangentbord: dra i handtaget högst upp för att flytta det</string>
+    <string name="cheat_16">Flytande tangentbord: dra i hörnet för att ändra storlek</string>
+    <string name="cheat_17">Svepskrivning (valfritt, Inställningar &gt; Gester): dra ett ord över bokstäverna, här h-e-l-l-o. Tryck på ett förslag för att ersätta ordet; backsteg raderar hela ordet</string>
+    <string name="cheat_18">Glid från 123 till tangenterna: symboler och valutatecken visas; när du släpper skrivs en och du återgår till bokstäverna</string>
+    <string name="cheat_19">Svep nedåt i förslagsfältet: tillbaka till en rad. Dra uppåt från förslagsfältet eller nedersta raden på tangentbordet med en rad: fullt tangentbord</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Om</string>
+    <string name="btn_attributions">Käll- och licensuppgifter</string>
+    <string name="attributions_title">Källuppgifter</string>
+    <string name="attributions_missing">attribution.md saknas.</string>
+    <string name="close">Stäng</string>
+    <string name="header_try_it">Testa</string>
+    <string name="hint_type_here">Skriv här</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Inget att korrekturläsa</string>
+    <string name="toast_proofread_failed">Korrekturläsningen misslyckades</string>
+    <string name="toast_no_mistakes">Inga fel hittades</string>
+    <string name="toast_model_downloading_start">Laddar ned korrekturmodellen...</string>
+    <string name="toast_model_ready">Modellen är klar - tryck igen</string>
+    <string name="toast_download_failed">Nedladdningen misslyckades</string>
+    <string name="toast_model_still_downloading">Korrekturmodellen laddas fortfarande ned</string>
+    <string name="toast_proofread_unavailable">Korrekturläsning är inte tillgänglig på den här telefonen</string>
+    <string name="toast_word_not_in_dictionary">\"%1$s\" finns inte i ordlistan</string>
+    <string name="toast_word_removed">\"%1$s\" borttaget</string>
+    <string name="toast_no_voice_input">Ingen röstinmatning aktiverad</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Provet har gått ut, prenumerera</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Prenumerationen upphör om %1$d dag</item>
+        <item quantity="other">Prenumerationen upphör om %1$d dagar</item>
+    </plurals>
+</resources>

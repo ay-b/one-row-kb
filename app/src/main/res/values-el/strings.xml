@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">έκδοση %1$s</string>
+    <string name="header_setup">Ρύθμιση</string>
+    <string name="btn_enable_keyboard">1. Ενεργοποίηση πληκτρολογίου</string>
+    <string name="btn_switch_keyboard">2. Εναλλαγή στο OneRow</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Συνδρομή</string>
+    <string name="btn_subscribe">Συνδρομή</string>
+    <string name="btn_buy_forever">Αγορά για πάντα (έκδοση 1)</string>
+    <string name="btn_manage_subscription">Διαχείριση συνδρομής</string>
+    <string name="sub_status_locked">Η δοκιμαστική περίοδος έληξε. Το πληκτρολόγιο απλώς πληκτρολογεί μέχρι να κάνετε συνδρομή ή να το αγοράσετε.</string>
+    <string name="sub_status_lifetime">Έχετε το OneRow για πάντα (έκδοση 1). Ευχαριστούμε!</string>
+    <string name="sub_status_subscribed">Η συνδρομή είναι ενεργή. Ευχαριστούμε!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Η συνδρομή ακυρώθηκε: λήγει σε περίπου %1$d ημέρα.</item>
+        <item quantity="other">Η συνδρομή ακυρώθηκε: λήγει σε περίπου %1$d ημέρες.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Δωρεάν περίοδος: απομένει %1$d ημέρα. Μετά, ξεκινήστε τη δωρεάν δοκιμή 1 μήνα ή αγοράστε το πληκτρολόγιο για να διατηρήσετε όλες τις λειτουργίες.</item>
+        <item quantity="other">Δωρεάν περίοδος: απομένουν %1$d ημέρες. Μετά, ξεκινήστε τη δωρεάν δοκιμή 1 μήνα ή αγοράστε το πληκτρολόγιο για να διατηρήσετε όλες τις λειτουργίες.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Συνδρομή (η τιμή δεν είναι διαθέσιμη ακόμα)</string>
+    <string name="btn_subscribe_trial_price">Έναρξη δωρεάν δοκιμής 1 μήνα, μετά %1$s ανά μήνα</string>
+    <string name="btn_subscribe_price">Συνδρομή: %1$s ανά μήνα</string>
+    <string name="btn_buy_forever_price">Αγορά για πάντα (έκδοση 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Αγορά για πάντα (η τιμή δεν είναι διαθέσιμη ακόμα)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Γλώσσες</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - το λεξικό δεν είναι εγκατεστημένο</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - δεν είναι εγκατεστημένο</string>
+    <string name="cd_remove_language">Κατάργηση: %1$s</string>
+    <string name="toast_keep_one_language">Κρατήστε τουλάχιστον μία γλώσσα</string>
+    <string name="toast_dictionary_not_installed">Το λεξικό %1$s δεν είναι εγκατεστημένο</string>
+    <string name="lang_switch_hint">Αλλαγή γλώσσας στο πληκτρολόγιο: πατήστε το πλήκτρο γλώσσας (δίπλα στο κόμμα).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Θέμα</string>
+    <string name="theme_default">Προεπιλογή</string>
+    <string name="theme_light">Φωτεινό</string>
+    <string name="theme_dark">Σκούρο</string>
+    <string name="theme_auto">Αυτόματο (ακολουθεί το σύστημα)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Εικασία</string>
+    <string name="guessing_desc">Πόσο μακριά από ένα γράμμα μπορεί να πέσει ένα πάτημα στο πληκτρολόγιο μίας σειράς και να μετράει ακόμα. Το αυστηρό εμπιστεύεται περισσότερο τα πατήματά σας· το χαλαρό συγχωρεί μεγαλύτερες αστοχίες.</string>
+    <string name="guessing_tight">Αυστηρό – έως ~2½ γράμματα μακριά</string>
+    <string name="guessing_normal">Κανονικό – έως ~4 γράμματα μακριά</string>
+    <string name="guessing_loose">Χαλαρό – έως ~5½ γράμματα μακριά</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Ακρίβεια πληκτρολόγησης με σύρσιμο</string>
+    <string name="swipe_precision_desc">Πόσο πιστά πρέπει η καμπύλη που σχεδιάζετε στο πλήρες πληκτρολόγιο να ακολουθεί τα γράμματα της λέξης. Το χαλαρό συγχωρεί μια πρόχειρη καμπύλη· το αυστηρό την εμπιστεύεται περισσότερο.</string>
+    <string name="swipe_precision_tight">Αυστηρό – ακολουθήστε στενά τα γράμματα</string>
+    <string name="swipe_precision_normal">Κανονικό</string>
+    <string name="swipe_precision_loose">Χαλαρό – αρκεί μια πρόχειρη καμπύλη</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Πλήρες πληκτρολόγιο</string>
+    <string name="number_row">Ειδική σειρά αριθμών</string>
+    <string name="number_row_desc">Μια σειρά ψηφίων πάνω από τα γράμματα. Πατήστε παρατεταμένα ένα ψηφίο για εκθέτες και κλάσματα (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Ορθογραφικός έλεγχος</string>
+    <string name="spell_checker_desc">Το Android υπογραμμίζει με κόκκινο τις λέξεις χρησιμοποιώντας τον δικό του ορθογραφικό έλεγχο, ο οποίος γνωρίζει μόνο μία γλώσσα. Το OneRow έχει δικό του: γνωρίζει όλες τις γλώσσες που προσθέσατε εδώ (και τις λέξεις που του μάθατε), ώστε να επισημαίνονται μόνο οι πραγματικά άγνωστες λέξεις.</string>
+    <string name="btn_spell_on">Χρήση ορθογραφικού ελέγχου OneRow</string>
+    <string name="btn_spell_off">Απενεργοποίηση ορθογραφικού ελέγχου</string>
+    <string name="toast_spell_on">Επιλέχθηκε ο ορθογραφικός έλεγχος OneRow</string>
+    <string name="toast_spell_off">Ο ορθογραφικός έλεγχος είναι απενεργοποιημένος</string>
+    <string name="toast_spell_manual">Επιλέξτε \"OneRow Keyboard\" στην οθόνη που ανοίγει ή εκτελέστε μία φορά σε υπολογιστή: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Διόρθωση κειμένου</string>
+    <string name="proofread_button">Κουμπί διόρθωσης</string>
+    <string name="proofread_checking">Έλεγχος αν το τηλέφωνο το υποστηρίζει...</string>
+    <string name="proofread_available">Ένας κύκλος με σημάδι επιλογής στο δεξί άκρο της γραμμής προτάσεων: πατήστε τον για να διορθώσετε τη γραμματική και την ορθογραφία όσων πληκτρολογήσατε στο πεδίο, πατήστε ξανά για αναίρεση. Αγγλικά, γαλλικά, γερμανικά, ιταλικά και ισπανικά. Εκτελείται στο τηλέφωνο· η πρώτη χρήση μπορεί να κατεβάσει ένα μοντέλο.</string>
+    <string name="proofread_unavailable">Μη διαθέσιμο σε αυτό το τηλέφωνο: απαιτεί την τεχνητή νοημοσύνη της Google στη συσκευή (Gemini Nano), που διαθέτουν μόνο ορισμένα νεότερα τηλέφωνα.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Ανατροφοδότηση</string>
+    <string name="vibrate">Δόνηση κατά το πάτημα πλήκτρου</string>
+    <string name="header_gestures">Κινήσεις</string>
+    <string name="swipe_typing">Πληκτρολόγηση με σύρσιμο στο πλήρες πληκτρολόγιο</string>
+    <string name="gestures_desc">Σχεδιάστε μια λέξη πάνω από τα γράμματα αντί να τα πατάτε. Σύρετε προς τα κάτω στη γραμμή προτάσεων για να επιστρέψετε σε μία σειρά. Ο οδηγός παρακάτω δείχνει όλες τις κινήσεις.</string>
+    <string name="header_cheat_sheet">Οδηγός</string>
+    <string name="cheat_1">Σύρετε αριστερά στη σειρά γραμμάτων: διαγραφή</string>
+    <string name="cheat_2">Σύρετε πάνω αριστερά: φωνητική εισαγωγή</string>
+    <string name="cheat_3">Σύρετε πάνω: πλήρες πληκτρολόγιο</string>
+    <string name="cheat_4">Σύρετε πάνω δεξιά: enter</string>
+    <string name="cheat_5">Σύρετε δεξιά: διάστημα</string>
+    <string name="cheat_6">Πατήστε παρατεταμένα ένα γράμμα και σύρετε: η απελευθέρωση πληκτρολογεί ακριβώς αυτό το γράμμα (χωρίς εικασία)</string>
+    <string name="cheat_7">Πατήστε παρατεταμένα το πλήκτρο τελείας και σύρετε για να επιλέξετε βασική στίξη</string>
+    <string name="cheat_8">Πατήστε παρατεταμένα το πλήκτρο κόμματος και σύρετε: πρώτα τα emoji που χρησιμοποιείτε περισσότερο. Σύρετε πάνω: όλα τα emoji (πατήστε ένα)</string>
+    <string name="cheat_9">Σύρετε στο διάστημα: μετακίνηση του δρομέα</string>
+    <string name="cheat_10">Σύρετε αριστερά στο backspace: διαγραφή λέξη προς λέξη</string>
+    <string name="cheat_11">Σύρετε πλάγια τη γραμμή προτάσεων: περισσότερες προτάσεις</string>
+    <string name="cheat_12">Πατήστε παρατεταμένα μια πρόταση και αφήστε την στον κάδο: η λέξη ξεχνιέται</string>
+    <string name="cheat_13">Πατήστε το πλήκτρο γλώσσας: επόμενη γλώσσα</string>
+    <string name="cheat_14">Πατήστε παρατεταμένα το πλήκτρο γλώσσας και σύρετε: ρυθμίσεις, κανονικό, αιωρούμενο, διαχωρισμένο (μόνο σε tablet). Σύρετε στο εικονίδιο κανονικού για να στερεώσετε ξανά ένα αιωρούμενο πληκτρολόγιο</string>
+    <string name="cheat_15">Αιωρούμενο πληκτρολόγιο: σύρετε τη λαβή στο πάνω μέρος για να το μετακινήσετε</string>
+    <string name="cheat_16">Αιωρούμενο πληκτρολόγιο: σύρετε τη γωνία για να αλλάξετε το μέγεθός του</string>
+    <string name="cheat_17">Πληκτρολόγηση με σύρσιμο (προαιρετική, Ρυθμίσεις &gt; Κινήσεις): σχεδιάστε μια λέξη πάνω από τα γράμματα, εδώ h-e-l-l-o. Πατήστε μια πρόταση για να αντικαταστήσετε τη λέξη· το backspace διαγράφει ολόκληρη τη λέξη</string>
+    <string name="cheat_18">Σύρετε από το 123 στα πλήκτρα: εμφανίζονται σύμβολα και σύμβολα νομισμάτων· η απελευθέρωση πληκτρολογεί ένα και επιστρέφει στα γράμματα</string>
+    <string name="cheat_19">Σύρετε προς τα κάτω στη γραμμή προτάσεων: επιστροφή σε μία σειρά. Σύρετε προς τα πάνω από τη γραμμή προτάσεων ή την κάτω σειρά του πληκτρολογίου μίας σειράς: πλήρες πληκτρολόγιο</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Πληροφορίες</string>
+    <string name="btn_attributions">Αναφορές και άδειες χρήσης</string>
+    <string name="attributions_title">Αναφορές</string>
+    <string name="attributions_missing">Λείπει το attribution.md.</string>
+    <string name="close">Κλείσιμο</string>
+    <string name="header_try_it">Δοκιμή</string>
+    <string name="hint_type_here">Πληκτρολογήστε εδώ</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Δεν υπάρχει κείμενο για διόρθωση</string>
+    <string name="toast_proofread_failed">Η διόρθωση απέτυχε</string>
+    <string name="toast_no_mistakes">Δεν βρέθηκαν λάθη</string>
+    <string name="toast_model_downloading_start">Λήψη του μοντέλου διόρθωσης...</string>
+    <string name="toast_model_ready">Το μοντέλο είναι έτοιμο - πατήστε ξανά</string>
+    <string name="toast_download_failed">Η λήψη απέτυχε</string>
+    <string name="toast_model_still_downloading">Το μοντέλο διόρθωσης κατεβαίνει ακόμα</string>
+    <string name="toast_proofread_unavailable">Η διόρθωση δεν είναι διαθέσιμη σε αυτό το τηλέφωνο</string>
+    <string name="toast_word_not_in_dictionary">Το \"%1$s\" δεν υπάρχει στο λεξικό</string>
+    <string name="toast_word_removed">Αφαιρέθηκε το \"%1$s\"</string>
+    <string name="toast_no_voice_input">Δεν είναι ενεργοποιημένη η φωνητική εισαγωγή</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Η δοκιμή έληξε, κάντε συνδρομή</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Η συνδρομή λήγει σε %1$d ημέρα</item>
+        <item quantity="other">Η συνδρομή λήγει σε %1$d ημέρες</item>
+    </plurals>
+</resources>

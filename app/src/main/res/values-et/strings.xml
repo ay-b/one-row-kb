@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">versioon %1$s</string>
+    <string name="header_setup">Seadistus</string>
+    <string name="btn_enable_keyboard">1. Luba klaviatuur</string>
+    <string name="btn_switch_keyboard">2. Vaheta OneRow peale</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Tellimus</string>
+    <string name="btn_subscribe">Telli</string>
+    <string name="btn_buy_forever">Osta igaveseks (versioon 1)</string>
+    <string name="btn_manage_subscription">Halda tellimust</string>
+    <string name="sub_status_locked">Prooviaeg on lõppenud. Klaviatuur ainult kirjutab, kuni tellid või ostad selle.</string>
+    <string name="sub_status_lifetime">OneRow kuulub sulle igaveseks (versioon 1). Aitäh!</string>
+    <string name="sub_status_subscribed">Tellitud. Aitäh!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Tellimus tühistatud: see lõpeb umbes %1$d päeva pärast.</item>
+        <item quantity="other">Tellimus tühistatud: see lõpeb umbes %1$d päeva pärast.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Tasuta periood: jäänud on %1$d päev. Pärast seda alusta 1-kuulist tasuta prooviperioodi või osta klaviatuur, et kõik funktsioonid alles jääksid.</item>
+        <item quantity="other">Tasuta periood: jäänud on %1$d päeva. Pärast seda alusta 1-kuulist tasuta prooviperioodi või osta klaviatuur, et kõik funktsioonid alles jääksid.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Telli (hind pole veel saadaval)</string>
+    <string name="btn_subscribe_trial_price">Alusta 1-kuulist tasuta prooviperioodi, seejärel %1$s kuus</string>
+    <string name="btn_subscribe_price">Telli: %1$s kuus</string>
+    <string name="btn_buy_forever_price">Osta igaveseks (versioon 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Osta igaveseks (hind pole veel saadaval)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Keeled</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - sõnastik pole installitud</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - pole installitud</string>
+    <string name="cd_remove_language">Eemalda %1$s</string>
+    <string name="toast_keep_one_language">Jäta vähemalt üks keel</string>
+    <string name="toast_dictionary_not_installed">Sõnastik %1$s pole installitud</string>
+    <string name="lang_switch_hint">Keele vahetamine klaviatuuril: puuduta keeleklahvi (koma kõrval).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Teema</string>
+    <string name="theme_default">Vaikimisi</string>
+    <string name="theme_light">Hele</string>
+    <string name="theme_dark">Tume</string>
+    <string name="theme_auto">Automaatne (süsteemi järgi)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Äraarvamine</string>
+    <string name="guessing_desc">Kui kaugele tähest võib puudutus ühe rea klaviatuuril mööda minna ja ikka loetakse. Range usaldab su puudutusi rohkem; lõdv andestab suuremad möödapanekud.</string>
+    <string name="guessing_tight">Range – kuni ~2½ tähe kaugusele</string>
+    <string name="guessing_normal">Tavaline – kuni ~4 tähe kaugusele</string>
+    <string name="guessing_loose">Lõdv – kuni ~5½ tähe kaugusele</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Pühkimissisestuse täpsus</string>
+    <string name="swipe_precision_desc">Kui täpselt peab kogu klaviatuuril joonistatud kõver sõna tähti järgima. Lõdv andestab kareda kõvera; range usaldab seda rohkem.</string>
+    <string name="swipe_precision_tight">Range – järgi tähti täpselt</string>
+    <string name="swipe_precision_normal">Tavaline</string>
+    <string name="swipe_precision_loose">Lõdv – kare kõver piisab</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Täisklaviatuur</string>
+    <string name="number_row">Eraldi numbririda</string>
+    <string name="number_row_desc">Numbrite rida tähtede kohal. Hoia numbrit all ülaindeksite ja murdude jaoks (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Õigekirjakontroll</string>
+    <string name="spell_checker_desc">Android allajoonib sõnu punasega oma õigekirjakontrolliga, mis tunneb ainult ühte keelt. Rakendusel OneRow on oma kontroll: see tunneb kõiki siia lisatud keeli (ja sõnu, mida sa talle õpetasid), nii et märgitakse ainult tõesti tundmatud sõnad.</string>
+    <string name="btn_spell_on">Kasuta OneRow õigekirjakontrolli</string>
+    <string name="btn_spell_off">Lülita õigekirjakontroll välja</string>
+    <string name="toast_spell_on">OneRow õigekirjakontroll valitud</string>
+    <string name="toast_spell_off">Õigekirjakontroll on väljas</string>
+    <string name="toast_spell_manual">Vali avanevas vaates \"OneRow Keyboard\" või käivita ühe korra arvutis: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Korrektuur</string>
+    <string name="proofread_button">Korrektuuri nupp</string>
+    <string name="proofread_checking">Kontrollin, kas see telefon suudab seda...</string>
+    <string name="proofread_available">Linnukesega ring soovituseriba paremas otsas: puuduta seda, et parandada väljale kirjutatud teksti grammatikat ja õigekirja, uuesti puudutades võtad tagasi. Inglise, prantsuse, saksa, itaalia ja hispaania keel. Töötab telefonis; esimesel kasutamisel võidakse alla laadida mudel.</string>
+    <string name="proofread_unavailable">Selles telefonis pole saadaval: vaja on Google seadmesisest tehisintellekti (Gemini Nano), mis on ainult mõnel uuemal telefonil.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Tagasiside</string>
+    <string name="vibrate">Vibreeri klahvivajutusel</string>
+    <string name="header_gestures">Žestid</string>
+    <string name="swipe_typing">Pühkimissisestus täisklaviatuuril</string>
+    <string name="gestures_desc">Joonista sõna tähtede kohal, selle asemel et neid puudutada. Pühi soovituseribal alla, et naasta ühe reani. Allolev spikker näitab kõiki žeste.</string>
+    <string name="header_cheat_sheet">Spikker</string>
+    <string name="cheat_1">Pühi tähereal vasakule: kustuta</string>
+    <string name="cheat_2">Pühi üles vasakule: häälsisend</string>
+    <string name="cheat_3">Pühi üles: täisklaviatuur</string>
+    <string name="cheat_4">Pühi üles paremale: enter</string>
+    <string name="cheat_5">Pühi paremale: tühik</string>
+    <string name="cheat_6">Hoia tähte all, siis libista: vabastamine kirjutab täpselt selle tähe (ilma äraarvamiseta)</string>
+    <string name="cheat_7">Hoia punktiklahvi all, siis libista põhiliste kirjavahemärkide valimiseks</string>
+    <string name="cheat_8">Hoia komaklahvi all, siis libista: enim kasutatud emoji on esimesed. Pühi üles: kõik emoji (puuduta ühte)</string>
+    <string name="cheat_9">Lohista tühikul: liiguta kursorit</string>
+    <string name="cheat_10">Lohista tagasilükkeklahvil vasakule: kustuta sõna haaval</string>
+    <string name="cheat_11">Pühi soovituseribal küljele: rohkem soovitusi</string>
+    <string name="cheat_12">Hoia soovitust all ja lase prügikasti: unusta sõna</string>
+    <string name="cheat_13">Puuduta keeleklahvi: järgmine keel</string>
+    <string name="cheat_14">Hoia keeleklahvi all, siis libista: seaded, tavaline, hõljuv, poolitatud (ainult tahvelarvutites). Libista tavalise ikoonile, et hõljuv klaviatuur uuesti kinnitada</string>
+    <string name="cheat_15">Hõljuv klaviatuur: lohista ülaosa käepidet, et seda liigutada</string>
+    <string name="cheat_16">Hõljuv klaviatuur: lohista nurka, et suurust muuta</string>
+    <string name="cheat_17">Pühkimissisestus (valikuline, Seaded &gt; Žestid): joonista sõna tähtede kohal, siin h-e-l-l-o. Puuduta soovitust, et sõna asendada; tagasilükkeklahv kustutab kogu sõna</string>
+    <string name="cheat_18">Libista 123-lt klahvidele: ilmuvad sümbolid ja valuutamärgid; vabastamine kirjutab ühe ja läheb tagasi tähtede juurde</string>
+    <string name="cheat_19">Pühi soovituseribal alla: tagasi ühe rea juurde. Tõmba üles soovituseribalt või ühe rea klaviatuuri alumiselt realt: täisklaviatuur</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Teave</string>
+    <string name="btn_attributions">Viited ja litsentsid</string>
+    <string name="attributions_title">Viited</string>
+    <string name="attributions_missing">Fail attribution.md puudub.</string>
+    <string name="close">Sulge</string>
+    <string name="header_try_it">Proovi</string>
+    <string name="hint_type_here">Kirjuta siia</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Pole midagi kontrollida</string>
+    <string name="toast_proofread_failed">Korrektuur ebaõnnestus</string>
+    <string name="toast_no_mistakes">Vigu ei leitud</string>
+    <string name="toast_model_downloading_start">Korrektuurimudelit laaditakse alla...</string>
+    <string name="toast_model_ready">Mudel on valmis - puuduta uuesti</string>
+    <string name="toast_download_failed">Allalaadimine ebaõnnestus</string>
+    <string name="toast_model_still_downloading">Korrektuurimudelit laaditakse alles alla</string>
+    <string name="toast_proofread_unavailable">Korrektuur pole selles telefonis saadaval</string>
+    <string name="toast_word_not_in_dictionary">\"%1$s\" ei ole sõnastikus</string>
+    <string name="toast_word_removed">\"%1$s\" eemaldatud</string>
+    <string name="toast_no_voice_input">Häälsisend pole lubatud</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Prooviaeg lõppes, telli</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Tellimus aegub %1$d päeva pärast</item>
+        <item quantity="other">Tellimus aegub %1$d päeva pärast</item>
+    </plurals>
+</resources>

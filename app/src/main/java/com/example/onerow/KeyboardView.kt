@@ -827,7 +827,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         val days = expiringDays
         if (days != null && suggestions.all { it.isEmpty() }) {                      // before anything is typed: the countdown
             text.color = cDim; text.textSize = sp(14f)
-            val msg = "Subscription expiring in $days " + (if (days == 1) "day" else "days")
+            val msg = resources.getQuantityString(R.plurals.bar_subscription_expiring, days, days)
             val avail = stripW(r) - dp(12f); val w = text.measureText(msg)
             if (w > avail) text.textSize = (sp(14f) * avail / w).coerceAtLeast(sp(9f))
             drawCentered(c, msg, r.left + stripW(r) / 2, r.centerY())
@@ -881,7 +881,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         drawGear(c, RectF(cx - rad, cy - rad, cx + rad, cy + rad), 0.95f)
         stroke.color = old; stroke.strokeWidth = sw
         text.color = cInk; text.textSize = sp(14f)
-        val msg = "Trial has expired, please subscribe"
+        val msg = context.getString(R.string.bar_trial_expired)
         val avail = r.width() - dp(52f); val w = text.measureText(msg)
         if (w > avail) text.textSize = (sp(14f) * avail / w).coerceAtLeast(sp(9f))
         drawCentered(c, msg, r.left + (r.width() - dp(40f)) / 2, r.centerY())

@@ -1,1 +1,146 @@
-<resources><string name="app_name">OneRow Keyboard</string></resources>
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Source language: English (the fallback for every language we do not translate).
+  One folder per translation: res/values-<code>/strings.xml. Keep every key, every %1$s / %2$d placeholder and every plural quantity
+  (the unit test StringsTest checks all of that). Brand "OneRow" and language names are never translated.
+  Escape: ' as \'  and " as \"  and a literal % as %%.
+-->
+<resources>
+    <string name="app_name" translatable="false">OneRow Keyboard</string>
+
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">version %1$s</string>
+    <string name="header_setup">Setup</string>
+    <string name="btn_enable_keyboard">1. Enable keyboard</string>
+    <string name="btn_switch_keyboard">2. Switch to OneRow</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Subscription</string>
+    <string name="btn_subscribe">Subscribe</string>
+    <string name="btn_buy_forever">Buy forever (version 1)</string>
+    <string name="btn_manage_subscription">Manage subscription</string>
+    <string name="sub_status_locked">The trial has expired. The keyboard only types until you subscribe or buy it.</string>
+    <string name="sub_status_lifetime">You own OneRow forever (version 1). Thank you!</string>
+    <string name="sub_status_subscribed">Subscribed. Thank you!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Subscription cancelled: it ends in about %1$d day.</item>
+        <item quantity="other">Subscription cancelled: it ends in about %1$d days.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Free period: %1$d day left. After that, start the 1-month free trial or buy the keyboard to keep every feature.</item>
+        <item quantity="other">Free period: %1$d days left. After that, start the 1-month free trial or buy the keyboard to keep every feature.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Subscribe (price not available yet)</string>
+    <string name="btn_subscribe_trial_price">Start the 1-month free trial, then %1$s a month</string>
+    <string name="btn_subscribe_price">Subscribe: %1$s a month</string>
+    <string name="btn_buy_forever_price">Buy forever (version 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Buy forever (price not available yet)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Languages</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - dictionary not installed</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - not installed</string>
+    <string name="cd_remove_language">Remove %1$s</string>
+    <string name="toast_keep_one_language">Keep at least one language</string>
+    <string name="toast_dictionary_not_installed">The %1$s dictionary is not installed</string>
+    <string name="lang_switch_hint">Switch language on the keyboard: tap the language key (next to the comma).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Theme</string>
+    <string name="theme_default">Default</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_auto">Auto (follow system)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Guessing</string>
+    <string name="guessing_desc">How far a tap may miss a letter on the one-row keyboard and still count. Tight trusts your taps more; loose forgives bigger misses.</string>
+    <string name="guessing_tight">Tight – up to ~2½ letters away</string>
+    <string name="guessing_normal">Normal – up to ~4 letters away</string>
+    <string name="guessing_loose">Loose – up to ~5½ letters away</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Swipe typing precision</string>
+    <string name="swipe_precision_desc">How closely the curve you draw across the full keyboard has to follow the letters of the word. Loose forgives a rough curve; tight trusts it more.</string>
+    <string name="swipe_precision_tight">Tight – follow the letters closely</string>
+    <string name="swipe_precision_normal">Normal</string>
+    <string name="swipe_precision_loose">Loose – a rough curve is enough</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Full keyboard</string>
+    <string name="number_row">Dedicated number row</string>
+    <string name="number_row_desc">A row of digits above the letters. Hold a digit for superscripts and fractions (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Spell checker</string>
+    <string name="spell_checker_desc">Android underlines words in red using its own spell checker, which only knows one language. OneRow has its own: it knows every language you added here (and the words you taught it), so only really unknown words get marked.</string>
+    <string name="btn_spell_on">Use the OneRow spell checker</string>
+    <string name="btn_spell_off">Turn spell checking off</string>
+    <string name="toast_spell_on">OneRow spell checker selected</string>
+    <string name="toast_spell_off">Spell checking is off</string>
+    <string name="toast_spell_manual">Pick \"OneRow Keyboard\" in the screen that opens, or run once on a computer: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Proofreading</string>
+    <string name="proofread_button">Proofread button</string>
+    <string name="proofread_checking">Checking whether this phone can do it...</string>
+    <string name="proofread_available">A check circle at the right end of the guess bar: tap it to fix the grammar and spelling of what you typed in the field, tap again to undo. English, French, German, Italian and Spanish. Runs on the phone; the first use may download a model.</string>
+    <string name="proofread_unavailable">Not available on this phone: it needs Google\'s on-device AI (Gemini Nano), which only some newer phones have.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Feedback</string>
+    <string name="vibrate">Vibrate on key press</string>
+    <string name="header_gestures">Gestures</string>
+    <string name="swipe_typing">Swipe typing on the full keyboard</string>
+    <string name="gestures_desc">Draw a word across the letters instead of tapping them. Swipe down on the guess bar to return to one row. The cheat sheet below shows every gesture.</string>
+    <string name="header_cheat_sheet">Cheat sheet</string>
+    <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture (tools/make_cheatsheet.py) -->
+    <string name="cheat_1">Swipe left on the letter row: delete</string>
+    <string name="cheat_2">Swipe up-left: voice input</string>
+    <string name="cheat_3">Swipe up: full keyboard</string>
+    <string name="cheat_4">Swipe up-right: enter</string>
+    <string name="cheat_5">Swipe right: space</string>
+    <string name="cheat_6">Hold a letter, then slide: release types exactly that letter (no guessing)</string>
+    <string name="cheat_7">Hold the period key, then slide to choose basic punctuation</string>
+    <string name="cheat_8">Hold the comma key, then slide: the emoji you use most come first. Swipe up: all emoji (tap one)</string>
+    <string name="cheat_9">Drag on space: move the cursor</string>
+    <string name="cheat_10">Drag left on backspace: delete word by word</string>
+    <string name="cheat_11">Swipe the guess bar sideways: more guesses</string>
+    <string name="cheat_12">Hold a guess, drop it on the bin: forget the word</string>
+    <string name="cheat_13">Tap the language key: next language</string>
+    <string name="cheat_14">Hold the language key, then slide: settings, normal, floating, split (tablets only). Slide to the normal icon to dock a floating keyboard again</string>
+    <string name="cheat_15">Floating keyboard: drag the handle on top to move it</string>
+    <string name="cheat_16">Floating keyboard: drag the corner to resize it</string>
+    <string name="cheat_17">Swipe typing (optional, Settings &gt; Gestures): draw a word across the letters, here h-e-l-l-o. Tap a guess to replace the word; backspace deletes the whole word</string>
+    <string name="cheat_18">Slide from 123 onto the keys: symbols and currency signs appear; release types one and goes back to the letters</string>
+    <string name="cheat_19">Swipe down on the guess bar: back to one row. Pull up from the guess bar or the bottom row of the one-row keyboard: full keyboard</string>
+
+    <!-- About, try it -->
+    <string name="header_about">About</string>
+    <string name="btn_attributions">Attributions and licences</string>
+    <string name="attributions_title">Attributions</string>
+    <string name="attributions_missing">attribution.md is missing.</string>
+    <string name="close">Close</string>
+    <string name="header_try_it">Try it</string>
+    <string name="hint_type_here">Type here</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Nothing to proofread</string>
+    <string name="toast_proofread_failed">Proofreading failed</string>
+    <string name="toast_no_mistakes">No mistakes found</string>
+    <string name="toast_model_downloading_start">Downloading the proofreading model...</string>
+    <string name="toast_model_ready">Model ready - tap again</string>
+    <string name="toast_download_failed">Download failed</string>
+    <string name="toast_model_still_downloading">The proofreading model is still downloading</string>
+    <string name="toast_proofread_unavailable">Proofreading is not available on this phone</string>
+    <string name="toast_word_not_in_dictionary">\"%1$s\" is not in the dictionary</string>
+    <string name="toast_word_removed">Removed \"%1$s\"</string>
+    <string name="toast_no_voice_input">No voice input enabled</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Trial has expired, please subscribe</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Subscription expiring in %1$d day</item>
+        <item quantity="other">Subscription expiring in %1$d days</item>
+    </plurals>
+</resources>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">versija %1$s</string>
+    <string name="header_setup">Sąranka</string>
+    <string name="btn_enable_keyboard">1. Įjunkite klaviatūrą</string>
+    <string name="btn_switch_keyboard">2. Perjunkite į OneRow</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Prenumerata</string>
+    <string name="btn_subscribe">Prenumeruokite</string>
+    <string name="btn_buy_forever">Pirkite visam laikui (1 versija)</string>
+    <string name="btn_manage_subscription">Tvarkykite prenumeratą</string>
+    <string name="sub_status_locked">Bandomasis laikotarpis baigėsi. Klaviatūra tik rašo, kol neprenumeruosite arba jos nenusipirksite.</string>
+    <string name="sub_status_lifetime">OneRow priklauso jums visam laikui (1 versija). Ačiū!</string>
+    <string name="sub_status_subscribed">Prenumeruojate. Ačiū!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Prenumerata atšaukta: baigsis maždaug po %1$d dienos.</item>
+        <item quantity="few">Prenumerata atšaukta: baigsis maždaug po %1$d dienų.</item>
+        <item quantity="other">Prenumerata atšaukta: baigsis maždaug po %1$d dienų.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Nemokamas laikotarpis: liko %1$d diena. Po to pradėkite 1 mėnesio nemokamą bandomąjį laikotarpį arba nusipirkite klaviatūrą, kad išsaugotumėte visas funkcijas.</item>
+        <item quantity="few">Nemokamas laikotarpis: liko %1$d dienos. Po to pradėkite 1 mėnesio nemokamą bandomąjį laikotarpį arba nusipirkite klaviatūrą, kad išsaugotumėte visas funkcijas.</item>
+        <item quantity="other">Nemokamas laikotarpis: liko %1$d dienų. Po to pradėkite 1 mėnesio nemokamą bandomąjį laikotarpį arba nusipirkite klaviatūrą, kad išsaugotumėte visas funkcijas.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Prenumeruokite (kaina dar nepasiekiama)</string>
+    <string name="btn_subscribe_trial_price">Pradėkite 1 mėnesio nemokamą bandomąjį laikotarpį, vėliau %1$s per mėnesį</string>
+    <string name="btn_subscribe_price">Prenumeruokite: %1$s per mėnesį</string>
+    <string name="btn_buy_forever_price">Pirkite visam laikui (1 versija): %1$s</string>
+    <string name="btn_buy_forever_no_price">Pirkite visam laikui (kaina dar nepasiekiama)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Kalbos</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - žodynas neįdiegtas</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - neįdiegta</string>
+    <string name="cd_remove_language">Pašalinkite %1$s</string>
+    <string name="toast_keep_one_language">Palikite bent vieną kalbą</string>
+    <string name="toast_dictionary_not_installed">%1$s žodynas neįdiegtas</string>
+    <string name="lang_switch_hint">Kalbos keitimas klaviatūroje: palieskite kalbos klavišą (šalia kablelio).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Tema</string>
+    <string name="theme_default">Numatytoji</string>
+    <string name="theme_light">Šviesi</string>
+    <string name="theme_dark">Tamsi</string>
+    <string name="theme_auto">Automatinė (pagal sistemą)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Spėjimas</string>
+    <string name="guessing_desc">Kiek toli nuo raidės gali nukrypti palietimas vienos eilutės klaviatūroje, kad vis tiek būtų įskaitytas. Griežtas labiau pasitiki jūsų palietimais; laisvas atleidžia didesnes klaidas.</string>
+    <string name="guessing_tight">Griežtas – iki ~2½ raidės atstumu</string>
+    <string name="guessing_normal">Įprastas – iki ~4 raidžių atstumu</string>
+    <string name="guessing_loose">Laisvas – iki ~5½ raidės atstumu</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Rašymo braukiant tikslumas</string>
+    <string name="swipe_precision_desc">Kaip tiksliai per visą klaviatūrą nubrėžta kreivė turi sekti žodžio raides. Laisvas atleidžia grubią kreivę; griežtas ja labiau pasitiki.</string>
+    <string name="swipe_precision_tight">Griežtas – tiksliai sekite raides</string>
+    <string name="swipe_precision_normal">Įprastas</string>
+    <string name="swipe_precision_loose">Laisvas – pakanka grubios kreivės</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Pilna klaviatūra</string>
+    <string name="number_row">Atskira skaičių eilutė</string>
+    <string name="number_row_desc">Skaitmenų eilutė virš raidžių. Palaikykite skaitmenį, kad gautumėte viršutinius indeksus ir trupmenas (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Rašybos tikrinimas</string>
+    <string name="spell_checker_desc">Android raudonai pabraukia žodžius naudodama savo rašybos tikrinimo priemonę, kuri žino tik vieną kalbą. OneRow turi savo: ji žino visas čia pridėtas kalbas (ir žodžius, kuriuos ją išmokėte), todėl pažymimi tik tikrai nežinomi žodžiai.</string>
+    <string name="btn_spell_on">Naudokite OneRow rašybos tikrinimo priemonę</string>
+    <string name="btn_spell_off">Išjunkite rašybos tikrinimą</string>
+    <string name="toast_spell_on">Pasirinkta OneRow rašybos tikrinimo priemonė</string>
+    <string name="toast_spell_off">Rašybos tikrinimas išjungtas</string>
+    <string name="toast_spell_manual">Pasirinkite \"OneRow Keyboard\" atsidariusiame ekrane arba kartą paleiskite kompiuteryje: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Korektūra</string>
+    <string name="proofread_button">Korektūros mygtukas</string>
+    <string name="proofread_checking">Tikrinama, ar šis telefonas tai gali...</string>
+    <string name="proofread_available">Varnelės apskritimas dešiniajame pasiūlymų juostos gale: palieskite jį, kad pataisytumėte lauke įvesto teksto gramatiką ir rašybą, palieskite dar kartą, kad atšauktumėte. Anglų, prancūzų, vokiečių, italų ir ispanų kalbomis. Veikia telefone; pirmą kartą naudojant gali būti atsisiunčiamas modelis.</string>
+    <string name="proofread_unavailable">Šiame telefone nepasiekiama: reikia Google įrenginyje veikiančio dirbtinio intelekto (Gemini Nano), kurį turi tik kai kurie naujesni telefonai.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Atsakas</string>
+    <string name="vibrate">Vibruoti paspaudus klavišą</string>
+    <string name="header_gestures">Gestai</string>
+    <string name="swipe_typing">Rašymas braukiant pilnoje klaviatūroje</string>
+    <string name="gestures_desc">Užuot liesdami raides, nubrėžkite žodį per jas. Perbraukite žemyn pasiūlymų juostoje, kad grįžtumėte prie vienos eilutės. Toliau pateiktoje atmintinėje rodomi visi gestai.</string>
+    <string name="header_cheat_sheet">Atmintinė</string>
+    <string name="cheat_1">Perbraukite kairėn raidžių eilutėje: trynimas</string>
+    <string name="cheat_2">Perbraukite aukštyn ir kairėn: balso įvestis</string>
+    <string name="cheat_3">Perbraukite aukštyn: pilna klaviatūra</string>
+    <string name="cheat_4">Perbraukite aukštyn ir dešinėn: enter</string>
+    <string name="cheat_5">Perbraukite dešinėn: tarpas</string>
+    <string name="cheat_6">Palaikykite raidę, tada braukite: atleidus įvedama būtent ta raidė (be spėjimo)</string>
+    <string name="cheat_7">Palaikykite taško klavišą, tada braukite, kad pasirinktumėte pagrindinius skyrybos ženklus</string>
+    <string name="cheat_8">Palaikykite kablelio klavišą, tada braukite: pirmiausia rodomi dažniausiai naudojami jaustukai. Perbraukite aukštyn: visi jaustukai (palieskite vieną)</string>
+    <string name="cheat_9">Vilkite tarpo klavišu: žymeklio perkėlimas</string>
+    <string name="cheat_10">Vilkite kairėn naikinimo klavišu: trynimas po žodį</string>
+    <string name="cheat_11">Perbraukite pasiūlymų juostą į šoną: daugiau pasiūlymų</string>
+    <string name="cheat_12">Palaikykite pasiūlymą ir numeskite ant šiukšliadėžės: pamiršti žodį</string>
+    <string name="cheat_13">Palieskite kalbos klavišą: kita kalba</string>
+    <string name="cheat_14">Palaikykite kalbos klavišą, tada braukite: nustatymai, įprasta, plaukiojanti, išskaidyta (tik planšetėms). Perbraukite ant įprastos piktogramos, kad plaukiojančią klaviatūrą vėl prijungtumėte</string>
+    <string name="cheat_15">Plaukiojanti klaviatūra: vilkite viršutinę rankenėlę, kad ją perkeltumėte</string>
+    <string name="cheat_16">Plaukiojanti klaviatūra: vilkite kampą, kad pakeistumėte dydį</string>
+    <string name="cheat_17">Rašymas braukiant (pasirinktinai, Nustatymai &gt; Gestai): nubrėžkite žodį per raides, čia h-e-l-l-o. Palieskite pasiūlymą, kad pakeistumėte žodį; naikinimo klavišas ištrina visą žodį</string>
+    <string name="cheat_18">Perbraukite nuo 123 ant klavišų: atsiranda simboliai ir valiutų ženklai; atleidus įvedamas vienas ir grįžtama prie raidžių</string>
+    <string name="cheat_19">Perbraukite žemyn pasiūlymų juostoje: atgal į vieną eilutę. Patraukite aukštyn nuo pasiūlymų juostos arba apatinės vienos eilutės klaviatūros eilutės: pilna klaviatūra</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Apie</string>
+    <string name="btn_attributions">Priskyrimai ir licencijos</string>
+    <string name="attributions_title">Priskyrimai</string>
+    <string name="attributions_missing">Trūksta failo attribution.md.</string>
+    <string name="close">Uždaryti</string>
+    <string name="header_try_it">Išbandykite</string>
+    <string name="hint_type_here">Rašykite čia</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Nėra ką taisyti</string>
+    <string name="toast_proofread_failed">Korektūra nepavyko</string>
+    <string name="toast_no_mistakes">Klaidų nerasta</string>
+    <string name="toast_model_downloading_start">Atsisiunčiamas korektūros modelis...</string>
+    <string name="toast_model_ready">Modelis paruoštas - palieskite dar kartą</string>
+    <string name="toast_download_failed">Atsisiuntimas nepavyko</string>
+    <string name="toast_model_still_downloading">Korektūros modelis dar siunčiamas</string>
+    <string name="toast_proofread_unavailable">Korektūra šiame telefone nepasiekiama</string>
+    <string name="toast_word_not_in_dictionary">\"%1$s\" nėra žodyne</string>
+    <string name="toast_word_removed">Pašalinta: \"%1$s\"</string>
+    <string name="toast_no_voice_input">Balso įvestis neįjungta</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Bandymas baigėsi, prenumeruokite</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Prenumerata baigsis po %1$d dienos</item>
+        <item quantity="few">Prenumerata baigsis po %1$d dienų</item>
+        <item quantity="other">Prenumerata baigsis po %1$d dienų</item>
+    </plurals>
+</resources>

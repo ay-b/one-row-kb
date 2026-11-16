@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">версія %1$s</string>
+    <string name="header_setup">Налаштування</string>
+    <string name="btn_enable_keyboard">1. Увімкнути клавіатуру</string>
+    <string name="btn_switch_keyboard">2. Перейти на OneRow</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Підписка</string>
+    <string name="btn_subscribe">Оформити підписку</string>
+    <string name="btn_buy_forever">Купити назавжди (версія 1)</string>
+    <string name="btn_manage_subscription">Керувати підпискою</string>
+    <string name="sub_status_locked">Пробний період закінчився. Клавіатура лише друкує, доки ви не оформите підписку або не купите її.</string>
+    <string name="sub_status_lifetime">OneRow у вас назавжди (версія 1). Дякуємо!</string>
+    <string name="sub_status_subscribed">Підписку оформлено. Дякуємо!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Підписку скасовано: вона закінчиться приблизно через %1$d день.</item>
+        <item quantity="few">Підписку скасовано: вона закінчиться приблизно через %1$d дні.</item>
+        <item quantity="many">Підписку скасовано: вона закінчиться приблизно через %1$d днів.</item>
+        <item quantity="other">Підписку скасовано: вона закінчиться приблизно через %1$d дня.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Безкоштовний період: залишився %1$d день. Після цього почніть безкоштовний пробний період на 1 місяць або купіть клавіатуру, щоб зберегти всі функції.</item>
+        <item quantity="few">Безкоштовний період: залишилося %1$d дні. Після цього почніть безкоштовний пробний період на 1 місяць або купіть клавіатуру, щоб зберегти всі функції.</item>
+        <item quantity="many">Безкоштовний період: залишилося %1$d днів. Після цього почніть безкоштовний пробний період на 1 місяць або купіть клавіатуру, щоб зберегти всі функції.</item>
+        <item quantity="other">Безкоштовний період: залишилося %1$d дня. Після цього почніть безкоштовний пробний період на 1 місяць або купіть клавіатуру, щоб зберегти всі функції.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Оформити підписку (ціна поки недоступна)</string>
+    <string name="btn_subscribe_trial_price">Почати безкоштовний пробний період на 1 місяць, потім %1$s на місяць</string>
+    <string name="btn_subscribe_price">Оформити підписку: %1$s на місяць</string>
+    <string name="btn_buy_forever_price">Купити назавжди (версія 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Купити назавжди (ціна поки недоступна)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Мови</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - словник не встановлено</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - не встановлено</string>
+    <string name="cd_remove_language">Видалити %1$s</string>
+    <string name="toast_keep_one_language">Залиште принаймні одну мову</string>
+    <string name="toast_dictionary_not_installed">Словник %1$s не встановлено</string>
+    <string name="lang_switch_hint">Щоб змінити мову на клавіатурі, натисніть клавішу мови (поруч із комою).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Тема</string>
+    <string name="theme_default">Типова</string>
+    <string name="theme_light">Світла</string>
+    <string name="theme_dark">Темна</string>
+    <string name="theme_auto">Авто (як у системі)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Вгадування</string>
+    <string name="guessing_desc">Наскільки далеко від літери може потрапити дотик на однорядній клавіатурі, щоб його все одно було зараховано. Суворий режим більше довіряє вашим дотикам, м\'який пробачає більші промахи.</string>
+    <string name="guessing_tight">Суворий – до ~2½ літер осторонь</string>
+    <string name="guessing_normal">Звичайний – до ~4 літер осторонь</string>
+    <string name="guessing_loose">М\'який – до ~5½ літер осторонь</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Точність жестового введення</string>
+    <string name="swipe_precision_desc">Наскільки точно лінія, яку ви проводите по повній клавіатурі, має повторювати літери слова. М\'який режим пробачає неточну лінію, суворий довіряє їй більше.</string>
+    <string name="swipe_precision_tight">Суворий – точно за літерами</string>
+    <string name="swipe_precision_normal">Звичайний</string>
+    <string name="swipe_precision_loose">М\'який – достатньо приблизної лінії</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Повна клавіатура</string>
+    <string name="number_row">Окремий рядок цифр</string>
+    <string name="number_row_desc">Рядок цифр над літерами. Утримуйте цифру, щоб ввести верхні індекси та дроби (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Перевірка правопису</string>
+    <string name="spell_checker_desc">Android підкреслює слова червоним за допомогою власної перевірки правопису, яка знає лише одну мову. OneRow має свою: вона знає всі додані тут мови (і слова, яких ви її навчили), тож позначаються лише справді невідомі слова.</string>
+    <string name="btn_spell_on">Використовувати перевірку правопису OneRow</string>
+    <string name="btn_spell_off">Вимкнути перевірку правопису</string>
+    <string name="toast_spell_on">Вибрано перевірку правопису OneRow</string>
+    <string name="toast_spell_off">Перевірку правопису вимкнено</string>
+    <string name="toast_spell_manual">Виберіть «OneRow Keyboard» на екрані, що відкриється, або один раз виконайте на комп\'ютері: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Перевірка тексту</string>
+    <string name="proofread_button">Кнопка перевірки тексту</string>
+    <string name="proofread_checking">Перевіряємо, чи підтримує телефон цю функцію...</string>
+    <string name="proofread_available">Коло з галочкою на правому краї панелі підказок: торкніться його, щоб виправити граматику й правопис тексту, введеного в полі, торкніться ще раз, щоб скасувати. Англійська, французька, німецька, італійська та іспанська мови. Працює на телефоні; під час першого використання може завантажитися модель.</string>
+    <string name="proofread_unavailable">Недоступно на цьому телефоні: потрібен ШІ Google, що працює на пристрої (Gemini Nano), який є лише на деяких новіших телефонах.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Відгук</string>
+    <string name="vibrate">Вібрація під час натискання клавіш</string>
+    <string name="header_gestures">Жести</string>
+    <string name="swipe_typing">Жестове введення на повній клавіатурі</string>
+    <string name="gestures_desc">Проведіть лінію по літерах слова замість того, щоб торкатися їх. Проведіть униз по панелі підказок, щоб повернутися до одного рядка. Усі жести показано в шпаргалці нижче.</string>
+    <string name="header_cheat_sheet">Шпаргалка</string>
+    <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture -->
+    <string name="cheat_1">Проведіть ліворуч по рядку літер: видалити</string>
+    <string name="cheat_2">Проведіть угору ліворуч: голосове введення</string>
+    <string name="cheat_3">Проведіть угору: повна клавіатура</string>
+    <string name="cheat_4">Проведіть угору праворуч: Enter</string>
+    <string name="cheat_5">Проведіть праворуч: пробіл</string>
+    <string name="cheat_6">Утримуйте літеру й посуньте палець: після відпускання вводиться саме ця літера (без вгадування)</string>
+    <string name="cheat_7">Утримуйте клавішу крапки й посуньте палець, щоб вибрати основні розділові знаки</string>
+    <string name="cheat_8">Утримуйте клавішу коми й посуньте палець: спочатку йдуть емодзі, якими ви користуєтеся найчастіше. Проведіть угору: усі емодзі (торкніться потрібного)</string>
+    <string name="cheat_9">Перетягніть по пробілу: переміщення курсора</string>
+    <string name="cheat_10">Перетягніть ліворуч по Backspace: видалення по словах</string>
+    <string name="cheat_11">Проведіть по панелі підказок убік: більше підказок</string>
+    <string name="cheat_12">Утримуйте підказку й перетягніть її в кошик: слово буде забуто</string>
+    <string name="cheat_13">Торкніться клавіші мови: наступна мова</string>
+    <string name="cheat_14">Утримуйте клавішу мови й посуньте палець: налаштування, звичайна, плаваюча, розділена (лише на планшетах). Посуньте до значка звичайної, щоб знову закріпити плаваючу клавіатуру</string>
+    <string name="cheat_15">Плаваюча клавіатура: перетягніть верхню ручку, щоб перемістити її</string>
+    <string name="cheat_16">Плаваюча клавіатура: перетягніть кут, щоб змінити розмір</string>
+    <string name="cheat_17">Жестове введення (необов\'язково, Налаштування &gt; Жести): проведіть лінію по літерах слова, тут h-e-l-l-o. Торкніться підказки, щоб замінити слово; Backspace видаляє слово повністю</string>
+    <string name="cheat_18">Проведіть від 123 до клавіш: з\'являться символи та знаки валют; після відпускання вводиться вибраний знак і клавіатура повертається до літер</string>
+    <string name="cheat_19">Проведіть униз по панелі підказок: повернення до одного рядка. Потягніть угору від панелі підказок або від нижнього рядка однорядної клавіатури: повна клавіатура</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Про застосунок</string>
+    <string name="btn_attributions">Авторство та ліцензії</string>
+    <string name="attributions_title">Авторство</string>
+    <string name="attributions_missing">Файл attribution.md відсутній.</string>
+    <string name="close">Закрити</string>
+    <string name="header_try_it">Спробуйте</string>
+    <string name="hint_type_here">Друкуйте тут</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Нічого перевіряти</string>
+    <string name="toast_proofread_failed">Не вдалося перевірити текст</string>
+    <string name="toast_no_mistakes">Помилок не знайдено</string>
+    <string name="toast_model_downloading_start">Завантаження моделі перевірки тексту...</string>
+    <string name="toast_model_ready">Модель готова - торкніться ще раз</string>
+    <string name="toast_download_failed">Не вдалося завантажити</string>
+    <string name="toast_model_still_downloading">Модель перевірки тексту ще завантажується</string>
+    <string name="toast_proofread_unavailable">Перевірка тексту недоступна на цьому телефоні</string>
+    <string name="toast_word_not_in_dictionary">«%1$s» немає у словнику</string>
+    <string name="toast_word_removed">Видалено «%1$s»</string>
+    <string name="toast_no_voice_input">Голосове введення не ввімкнено</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Пробний період минув, підпишіться</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Підписка спливає через %1$d день</item>
+        <item quantity="few">Підписка спливає через %1$d дні</item>
+        <item quantity="many">Підписка спливає через %1$d днів</item>
+        <item quantity="other">Підписка спливає через %1$d дня</item>
+    </plurals>
+</resources>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">versió %1$s</string>
+    <string name="header_setup">Configuració</string>
+    <string name="btn_enable_keyboard">1. Activa el teclat</string>
+    <string name="btn_switch_keyboard">2. Canvia a OneRow</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Subscripció</string>
+    <string name="btn_subscribe">Subscriu-me</string>
+    <string name="btn_buy_forever">Compra per sempre (versió 1)</string>
+    <string name="btn_manage_subscription">Gestiona la subscripció</string>
+    <string name="sub_status_locked">La prova ha caducat. El teclat només escriu fins que et subscriguis o el compris.</string>
+    <string name="sub_status_lifetime">OneRow és teu per sempre (versió 1). Gràcies!</string>
+    <string name="sub_status_subscribed">Subscrit. Gràcies!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Subscripció cancel·lada: acaba d\'aquí a aproximadament %1$d dia.</item>
+        <item quantity="other">Subscripció cancel·lada: acaba d\'aquí a aproximadament %1$d dies.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Període gratuït: queda %1$d dia. Després, inicia la prova gratuïta d\'1 mes o compra el teclat per mantenir totes les funcions.</item>
+        <item quantity="other">Període gratuït: queden %1$d dies. Després, inicia la prova gratuïta d\'1 mes o compra el teclat per mantenir totes les funcions.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Subscriu-me (preu encara no disponible)</string>
+    <string name="btn_subscribe_trial_price">Inicia la prova gratuïta d\'1 mes i després %1$s al mes</string>
+    <string name="btn_subscribe_price">Subscriu-me: %1$s al mes</string>
+    <string name="btn_buy_forever_price">Compra per sempre (versió 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Compra per sempre (preu encara no disponible)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Llengües</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - diccionari no instal·lat</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - no instal·lada</string>
+    <string name="cd_remove_language">Elimina %1$s</string>
+    <string name="toast_keep_one_language">Conserva almenys una llengua</string>
+    <string name="toast_dictionary_not_installed">El diccionari de %1$s no està instal·lat</string>
+    <string name="lang_switch_hint">Per canviar de llengua al teclat: toca la tecla de llengua (al costat de la coma).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Tema</string>
+    <string name="theme_default">Predeterminat</string>
+    <string name="theme_light">Clar</string>
+    <string name="theme_dark">Fosc</string>
+    <string name="theme_auto">Automàtic (segueix el sistema)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Tolerància en tocar</string>
+    <string name="guessing_desc">Quant pot fallar un toc una lletra al teclat d\'una fila i comptar igualment. Estricta es fia més dels teus tocs; àmplia perdona errors més grans.</string>
+    <string name="guessing_tight">Estricta – fins a ~2½ lletres de distància</string>
+    <string name="guessing_normal">Normal – fins a ~4 lletres de distància</string>
+    <string name="guessing_loose">Àmplia – fins a ~5½ lletres de distància</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Precisió de l\'escriptura gestual</string>
+    <string name="swipe_precision_desc">Quant ha de seguir la corba que dibuixes per tot el teclat les lletres de la paraula. Àmplia perdona una corba aproximada; estricta s\'hi fia més.</string>
+    <string name="swipe_precision_tight">Estricta – segueix de prop les lletres</string>
+    <string name="swipe_precision_normal">Normal</string>
+    <string name="swipe_precision_loose">Àmplia – n\'hi ha prou amb una corba aproximada</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Teclat complet</string>
+    <string name="number_row">Fila de números dedicada</string>
+    <string name="number_row_desc">Una fila de dígits sobre les lletres. Mantén premut un dígit per veure superíndexs i fraccions (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Corrector ortogràfic</string>
+    <string name="spell_checker_desc">Android subratlla les paraules en vermell amb el seu propi corrector ortogràfic, que només coneix una llengua. OneRow en té un de propi: coneix totes les llengües que has afegit aquí (i les paraules que li has après), de manera que només es marquen les paraules realment desconegudes.</string>
+    <string name="btn_spell_on">Utilitza el corrector ortogràfic de OneRow</string>
+    <string name="btn_spell_off">Desactiva el corrector ortogràfic</string>
+    <string name="toast_spell_on">Corrector ortogràfic de OneRow seleccionat</string>
+    <string name="toast_spell_off">El corrector ortogràfic està desactivat</string>
+    <string name="toast_spell_manual">Tria \"OneRow Keyboard\" a la pantalla que s\'obre, o executa una vegada en un ordinador: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Revisió</string>
+    <string name="proofread_button">Botó de revisió</string>
+    <string name="proofread_checking">Comprovant si aquest telèfon pot fer-ho...</string>
+    <string name="proofread_available">Un cercle de verificació a l\'extrem dret de la barra de suggeriments: toca\'l per corregir la gramàtica i l\'ortografia del que has escrit al camp, toca\'l de nou per desfer. Anglès, francès, alemany, italià i castellà. Funciona al telèfon; el primer ús pot baixar un model.</string>
+    <string name="proofread_unavailable">No disponible en aquest telèfon: cal la IA integrada al dispositiu de Google (Gemini Nano), que només tenen alguns telèfons recents.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Resposta hàptica</string>
+    <string name="vibrate">Vibra en prémer una tecla</string>
+    <string name="header_gestures">Gestos</string>
+    <string name="swipe_typing">Escriptura gestual al teclat complet</string>
+    <string name="gestures_desc">Dibuixa una paraula sobre les lletres en lloc de tocar-les. Llisca cap avall a la barra de suggeriments per tornar a una fila. La guia ràpida de sota mostra tots els gestos.</string>
+    <string name="header_cheat_sheet">Guia ràpida</string>
+    <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture (tools/make_cheatsheet.py) -->
+    <string name="cheat_1">Llisca cap a l\'esquerra a la fila de lletres: esborra</string>
+    <string name="cheat_2">Llisca cap amunt a l\'esquerra: entrada de veu</string>
+    <string name="cheat_3">Llisca cap amunt: teclat complet</string>
+    <string name="cheat_4">Llisca cap amunt a la dreta: retorn</string>
+    <string name="cheat_5">Llisca cap a la dreta: espai</string>
+    <string name="cheat_6">Mantén premuda una lletra i llisca: en deixar anar s\'escriu exactament aquesta lletra (sense predicció)</string>
+    <string name="cheat_7">Mantén premuda la tecla del punt i llisca per triar la puntuació bàsica</string>
+    <string name="cheat_8">Mantén premuda la tecla de la coma i llisca: primer van els emojis que més fas servir. Llisca cap amunt: tots els emojis (toca\'n un)</string>
+    <string name="cheat_9">Arrossega sobre la barra d\'espai: mou el cursor</string>
+    <string name="cheat_10">Arrossega cap a l\'esquerra sobre el retrocés: esborra paraula per paraula</string>
+    <string name="cheat_11">Llisca la barra de suggeriments cap als costats: més suggeriments</string>
+    <string name="cheat_12">Mantén premut un suggeriment i deixa\'l anar a la paperera: oblida la paraula</string>
+    <string name="cheat_13">Toca la tecla de llengua: llengua següent</string>
+    <string name="cheat_14">Mantén premuda la tecla de llengua i llisca: configuració, normal, flotant, dividit (només tauletes). Llisca fins a la icona normal per tornar a acoblar un teclat flotant</string>
+    <string name="cheat_15">Teclat flotant: arrossega la nansa de dalt per moure\'l</string>
+    <string name="cheat_16">Teclat flotant: arrossega la cantonada per canviar-ne la mida</string>
+    <string name="cheat_17">Escriptura gestual (opcional, Configuració &gt; Gestos): dibuixa una paraula sobre les lletres, aquí h-e-l-l-o. Toca un suggeriment per substituir la paraula; el retrocés esborra la paraula sencera</string>
+    <string name="cheat_18">Llisca des de 123 fins a les tecles: apareixen símbols i signes de moneda; en deixar anar se n\'escriu un i es torna a les lletres</string>
+    <string name="cheat_19">Llisca cap avall a la barra de suggeriments: torna a una fila. Estira cap amunt des de la barra de suggeriments o la fila inferior del teclat d\'una fila: teclat complet</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Quant a</string>
+    <string name="btn_attributions">Atribucions i llicències</string>
+    <string name="attributions_title">Atribucions</string>
+    <string name="attributions_missing">Falta attribution.md.</string>
+    <string name="close">Tanca</string>
+    <string name="header_try_it">Prova-ho</string>
+    <string name="hint_type_here">Escriu aquí</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Res per revisar</string>
+    <string name="toast_proofread_failed">La revisió ha fallat</string>
+    <string name="toast_no_mistakes">No s\'han trobat errors</string>
+    <string name="toast_model_downloading_start">Baixant el model de revisió...</string>
+    <string name="toast_model_ready">Model a punt - toca de nou</string>
+    <string name="toast_download_failed">La baixada ha fallat</string>
+    <string name="toast_model_still_downloading">El model de revisió encara s\'està baixant</string>
+    <string name="toast_proofread_unavailable">La revisió no està disponible en aquest telèfon</string>
+    <string name="toast_word_not_in_dictionary">\"%1$s\" no és al diccionari</string>
+    <string name="toast_word_removed">S\'ha eliminat \"%1$s\"</string>
+    <string name="toast_no_voice_input">Cap entrada de veu activada</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Prova caducada, subscriu-te</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Subscripció caduca en %1$d dia</item>
+        <item quantity="other">Subscripció caduca en %1$d dies</item>
+    </plurals>
+</resources>

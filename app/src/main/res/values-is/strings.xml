@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">útgáfa %1$s</string>
+    <string name="header_setup">Uppsetning</string>
+    <string name="btn_enable_keyboard">1. Virkja lyklaborð</string>
+    <string name="btn_switch_keyboard">2. Skipta yfir í OneRow</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Áskrift</string>
+    <string name="btn_subscribe">Gerast áskrifandi</string>
+    <string name="btn_buy_forever">Kaupa að eilífu (útgáfa 1)</string>
+    <string name="btn_manage_subscription">Stjórna áskrift</string>
+    <string name="sub_status_locked">Prufutímabilinu er lokið. Lyklaborðið getur aðeins skrifað þar til þú gerist áskrifandi eða kaupir það.</string>
+    <string name="sub_status_lifetime">Þú átt OneRow að eilífu (útgáfa 1). Takk fyrir!</string>
+    <string name="sub_status_subscribed">Áskrift virk. Takk fyrir!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Áskrift sagt upp: hún rennur út eftir um það bil %1$d dag.</item>
+        <item quantity="other">Áskrift sagt upp: hún rennur út eftir um það bil %1$d daga.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Ókeypis tímabil: %1$d dagur eftir. Eftir það skaltu hefja 1 mánaðar ókeypis prufuáskrift eða kaupa lyklaborðið til að halda öllum eiginleikum.</item>
+        <item quantity="other">Ókeypis tímabil: %1$d dagar eftir. Eftir það skaltu hefja 1 mánaðar ókeypis prufuáskrift eða kaupa lyklaborðið til að halda öllum eiginleikum.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Gerast áskrifandi (verð ekki enn tiltækt)</string>
+    <string name="btn_subscribe_trial_price">Hefja 1 mánaðar ókeypis prufuáskrift, síðan %1$s á mánuði</string>
+    <string name="btn_subscribe_price">Gerast áskrifandi: %1$s á mánuði</string>
+    <string name="btn_buy_forever_price">Kaupa að eilífu (útgáfa 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Kaupa að eilífu (verð ekki enn tiltækt)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Tungumál</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - orðabók ekki uppsett</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - ekki uppsett</string>
+    <string name="cd_remove_language">Fjarlægja %1$s</string>
+    <string name="toast_keep_one_language">Hafðu að minnsta kosti eitt tungumál</string>
+    <string name="toast_dictionary_not_installed">Orðabók fyrir %1$s er ekki uppsett</string>
+    <string name="lang_switch_hint">Skiptu um tungumál á lyklaborðinu: ýttu á tungumálslykilinn (við hliðina á kommunni).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Þema</string>
+    <string name="theme_default">Sjálfgefið</string>
+    <string name="theme_light">Ljóst</string>
+    <string name="theme_dark">Dökkt</string>
+    <string name="theme_auto">Sjálfvirkt (fylgja kerfinu)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Ágiskun</string>
+    <string name="guessing_desc">Hversu langt frá staf snerting má lenda á einnar raðar lyklaborðinu og samt talist með. Þröngt treystir snertingum þínum betur; rúmt fyrirgefur stærri skekkjur.</string>
+    <string name="guessing_tight">Þröngt – allt að ~2½ staf frá</string>
+    <string name="guessing_normal">Venjulegt – allt að ~4 stafi frá</string>
+    <string name="guessing_loose">Rúmt – allt að ~5½ staf frá</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Nákvæmni strokuritunar</string>
+    <string name="swipe_precision_desc">Hversu vel ferillinn sem þú dregur yfir allt lyklaborðið þarf að fylgja stöfum orðsins. Rúmt fyrirgefur grófan feril; þröngt treystir honum betur.</string>
+    <string name="swipe_precision_tight">Þröngt – fylgdu stöfunum náið</string>
+    <string name="swipe_precision_normal">Venjulegt</string>
+    <string name="swipe_precision_loose">Rúmt – grófur ferill nægir</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Fullt lyklaborð</string>
+    <string name="number_row">Sérstök talnaröð</string>
+    <string name="number_row_desc">Röð talna fyrir ofan stafina. Haltu inni tölu fyrir efri vísa og brot (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Stafsetningarathugun</string>
+    <string name="spell_checker_desc">Android undirstrikar orð með rauðu með eigin stafsetningarathugun sem þekkir aðeins eitt tungumál. OneRow er með sína eigin: hún þekkir öll tungumál sem þú bættir við hér (og orðin sem þú kenndir henni), svo aðeins orð sem eru í raun óþekkt eru merkt.</string>
+    <string name="btn_spell_on">Nota stafsetningarathugun OneRow</string>
+    <string name="btn_spell_off">Slökkva á stafsetningarathugun</string>
+    <string name="toast_spell_on">Stafsetningarathugun OneRow valin</string>
+    <string name="toast_spell_off">Slökkt er á stafsetningarathugun</string>
+    <string name="toast_spell_manual">Veldu \"OneRow Keyboard\" á skjánum sem opnast eða keyrðu einu sinni í tölvu: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Prófarkalestur</string>
+    <string name="proofread_button">Prófarkalestrarhnappur</string>
+    <string name="proofread_checking">Athuga hvort þessi sími getur þetta...</string>
+    <string name="proofread_available">Hringur með hak hægra megin á tillögustikunni: ýttu á hann til að laga málfræði og stafsetningu þess sem þú skrifaðir í reitinn, ýttu aftur til að afturkalla. Enska, franska, þýska, ítalska og spænska. Keyrir í símanum; við fyrstu notkun gæti líkan verið sótt.</string>
+    <string name="proofread_unavailable">Ekki í boði í þessum síma: hann þarf gervigreind Google í tækinu (Gemini Nano), sem aðeins sumir nýrri símar hafa.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Endurgjöf</string>
+    <string name="vibrate">Titra við takkaþrýsting</string>
+    <string name="header_gestures">Bendingar</string>
+    <string name="swipe_typing">Strokuritun á fulla lyklaborðinu</string>
+    <string name="gestures_desc">Dragðu orð yfir stafina í stað þess að ýta á þá. Strjúktu niður á tillögustikuna til að fara aftur í eina röð. Yfirlitið hér að neðan sýnir allar bendingar.</string>
+    <string name="header_cheat_sheet">Yfirlit</string>
+    <string name="cheat_1">Strjúktu til vinstri á stafaröðinni: eyða</string>
+    <string name="cheat_2">Strjúktu upp til vinstri: raddinntak</string>
+    <string name="cheat_3">Strjúktu upp: fullt lyklaborð</string>
+    <string name="cheat_4">Strjúktu upp til hægri: Enter</string>
+    <string name="cheat_5">Strjúktu til hægri: bil</string>
+    <string name="cheat_6">Haltu inni staf og renndu: þegar þú sleppir skrifast nákvæmlega sá stafur (engin ágiskun)</string>
+    <string name="cheat_7">Haltu inni punktalyklinum og renndu til að velja algeng greinarmerki</string>
+    <string name="cheat_8">Haltu inni kommulyklinum og renndu: emoji sem þú notar mest koma fyrst. Strjúktu upp: öll emoji (ýttu á eitt)</string>
+    <string name="cheat_9">Dragðu á bilslá: færa bendilinn</string>
+    <string name="cheat_10">Dragðu til vinstri á bakklykli: eyða orð fyrir orð</string>
+    <string name="cheat_11">Strjúktu tillögustikunni til hliðar: fleiri tillögur</string>
+    <string name="cheat_12">Haltu inni tillögu og slepptu henni á ruslatunnuna: gleyma orðinu</string>
+    <string name="cheat_13">Ýttu á tungumálslykilinn: næsta tungumál</string>
+    <string name="cheat_14">Haltu inni tungumálslyklinum og renndu: stillingar, venjulegt, fljótandi, skipt (aðeins spjaldtölvur). Renndu á venjulega táknið til að festa fljótandi lyklaborð aftur</string>
+    <string name="cheat_15">Fljótandi lyklaborð: dragðu handfangið efst til að færa það</string>
+    <string name="cheat_16">Fljótandi lyklaborð: dragðu hornið til að breyta stærð</string>
+    <string name="cheat_17">Strokuritun (valfrjálst, Stillingar &gt; Bendingar): dragðu orð yfir stafina, hér h-e-l-l-o. Ýttu á tillögu til að skipta orðinu út; bakklykill eyðir öllu orðinu</string>
+    <string name="cheat_18">Renndu frá 123 á takkana: tákn og gjaldmiðlatákn birtast; ef þú sleppir skrifast eitt þeirra og farið er aftur í stafina</string>
+    <string name="cheat_19">Strjúktu niður á tillögustikuna: aftur í eina röð. Dragðu upp frá tillögustikunni eða neðstu röð einnar raðar lyklaborðsins: fullt lyklaborð</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Um forritið</string>
+    <string name="btn_attributions">Tilvísanir og leyfi</string>
+    <string name="attributions_title">Tilvísanir</string>
+    <string name="attributions_missing">attribution.md vantar.</string>
+    <string name="close">Loka</string>
+    <string name="header_try_it">Prófaðu</string>
+    <string name="hint_type_here">Skrifaðu hér</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Ekkert til að prófarkalesa</string>
+    <string name="toast_proofread_failed">Prófarkalestur mistókst</string>
+    <string name="toast_no_mistakes">Engar villur fundust</string>
+    <string name="toast_model_downloading_start">Sæki prófarkalestrarlíkanið...</string>
+    <string name="toast_model_ready">Líkan tilbúið - ýttu aftur</string>
+    <string name="toast_download_failed">Niðurhal mistókst</string>
+    <string name="toast_model_still_downloading">Prófarkalestrarlíkanið er enn að hlaðast niður</string>
+    <string name="toast_proofread_unavailable">Prófarkalestur er ekki í boði í þessum síma</string>
+    <string name="toast_word_not_in_dictionary">\"%1$s\" er ekki í orðabókinni</string>
+    <string name="toast_word_removed">\"%1$s\" fjarlægt</string>
+    <string name="toast_no_voice_input">Raddinntak er ekki virkt</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Prufu lokið, gerstu áskrifandi</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Áskrift rennur út eftir %1$d dag</item>
+        <item quantity="other">Áskrift rennur út eftir %1$d daga</item>
+    </plurals>
+</resources>

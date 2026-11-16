@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">versiunea %1$s</string>
+    <string name="header_setup">Configurare</string>
+    <string name="btn_enable_keyboard">1. Activați tastatura</string>
+    <string name="btn_switch_keyboard">2. Comutați la OneRow</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Abonament</string>
+    <string name="btn_subscribe">Abonați-vă</string>
+    <string name="btn_buy_forever">Cumpărați pentru totdeauna (versiunea 1)</string>
+    <string name="btn_manage_subscription">Gestionați abonamentul</string>
+    <string name="sub_status_locked">Perioada de probă a expirat. Tastatura doar tastează până când vă abonați sau o cumpărați.</string>
+    <string name="sub_status_lifetime">Dețineți OneRow pentru totdeauna (versiunea 1). Mulțumim!</string>
+    <string name="sub_status_subscribed">Sunteți abonat. Mulțumim!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Abonament anulat: se încheie în aproximativ %1$d zi.</item>
+        <item quantity="few">Abonament anulat: se încheie în aproximativ %1$d zile.</item>
+        <item quantity="other">Abonament anulat: se încheie în aproximativ %1$d de zile.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Perioadă gratuită: mai aveți %1$d zi. După aceea, începeți perioada de probă gratuită de 1 lună sau cumpărați tastatura pentru a păstra toate funcțiile.</item>
+        <item quantity="few">Perioadă gratuită: mai aveți %1$d zile. După aceea, începeți perioada de probă gratuită de 1 lună sau cumpărați tastatura pentru a păstra toate funcțiile.</item>
+        <item quantity="other">Perioadă gratuită: mai aveți %1$d de zile. După aceea, începeți perioada de probă gratuită de 1 lună sau cumpărați tastatura pentru a păstra toate funcțiile.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Abonați-vă (prețul nu este încă disponibil)</string>
+    <string name="btn_subscribe_trial_price">Începeți perioada de probă gratuită de 1 lună, apoi %1$s pe lună</string>
+    <string name="btn_subscribe_price">Abonați-vă: %1$s pe lună</string>
+    <string name="btn_buy_forever_price">Cumpărați pentru totdeauna (versiunea 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Cumpărați pentru totdeauna (prețul nu este încă disponibil)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Limbi</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - dicționar neinstalat</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - neinstalat</string>
+    <string name="cd_remove_language">Eliminați %1$s</string>
+    <string name="toast_keep_one_language">Păstrați cel puțin o limbă</string>
+    <string name="toast_dictionary_not_installed">Dicționarul %1$s nu este instalat</string>
+    <string name="lang_switch_hint">Schimbarea limbii pe tastatură: atingeți tasta de limbă (lângă virgulă).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Temă</string>
+    <string name="theme_default">Implicită</string>
+    <string name="theme_light">Luminoasă</string>
+    <string name="theme_dark">Întunecată</string>
+    <string name="theme_auto">Automată (conform sistemului)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Ghicire</string>
+    <string name="guessing_desc">Cât de departe de o literă poate nimeri o atingere pe tastatura cu un singur rând și să fie totuși luată în calcul. Strict are mai multă încredere în atingerile dvs.; larg iartă greșelile mai mari.</string>
+    <string name="guessing_tight">Strict – până la ~2½ litere distanță</string>
+    <string name="guessing_normal">Normal – până la ~4 litere distanță</string>
+    <string name="guessing_loose">Larg – până la ~5½ litere distanță</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Precizia tastării prin glisare</string>
+    <string name="swipe_precision_desc">Cât de îndeaproape trebuie să urmeze literele cuvântului curba trasată pe toată tastatura. Larg iartă o curbă aproximativă; strict are mai multă încredere în ea.</string>
+    <string name="swipe_precision_tight">Strict – urmați îndeaproape literele</string>
+    <string name="swipe_precision_normal">Normal</string>
+    <string name="swipe_precision_loose">Larg – o curbă aproximativă este suficientă</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Tastatură completă</string>
+    <string name="number_row">Rând dedicat pentru cifre</string>
+    <string name="number_row_desc">Un rând de cifre deasupra literelor. Țineți apăsată o cifră pentru exponenți și fracții (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Verificare ortografică</string>
+    <string name="spell_checker_desc">Android subliniază cuvintele cu roșu folosind propriul verificator ortografic, care cunoaște o singură limbă. OneRow are unul al său: cunoaște toate limbile adăugate aici (și cuvintele pe care l-ați învățat), așa că sunt marcate doar cuvintele cu adevărat necunoscute.</string>
+    <string name="btn_spell_on">Folosiți verificatorul ortografic OneRow</string>
+    <string name="btn_spell_off">Dezactivați verificarea ortografică</string>
+    <string name="toast_spell_on">Verificator ortografic OneRow selectat</string>
+    <string name="toast_spell_off">Verificarea ortografică este dezactivată</string>
+    <string name="toast_spell_manual">Alegeți \"OneRow Keyboard\" în ecranul care se deschide sau rulați o dată pe un computer: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Corectare text</string>
+    <string name="proofread_button">Buton de corectare</string>
+    <string name="proofread_checking">Se verifică dacă acest telefon poate face asta...</string>
+    <string name="proofread_available">Un cerc cu bifă la capătul din dreapta al barei de sugestii: atingeți-l pentru a corecta gramatica și ortografia textului scris în câmp, atingeți din nou pentru a anula. Engleză, franceză, germană, italiană și spaniolă. Rulează pe telefon; la prima utilizare se poate descărca un model.</string>
+    <string name="proofread_unavailable">Indisponibil pe acest telefon: necesită IA de la Google pe dispozitiv (Gemini Nano), pe care o au doar unele telefoane mai noi.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Răspuns tactil</string>
+    <string name="vibrate">Vibrație la apăsarea tastei</string>
+    <string name="header_gestures">Gesturi</string>
+    <string name="swipe_typing">Tastare prin glisare pe tastatura completă</string>
+    <string name="gestures_desc">Trasați un cuvânt peste litere în loc să le atingeți. Glisați în jos pe bara de sugestii pentru a reveni la un singur rând. Ghidul rapid de mai jos arată toate gesturile.</string>
+    <string name="header_cheat_sheet">Ghid rapid</string>
+    <string name="cheat_1">Glisați la stânga pe rândul de litere: ștergere</string>
+    <string name="cheat_2">Glisați în sus și la stânga: introducere vocală</string>
+    <string name="cheat_3">Glisați în sus: tastatură completă</string>
+    <string name="cheat_4">Glisați în sus și la dreapta: enter</string>
+    <string name="cheat_5">Glisați la dreapta: spațiu</string>
+    <string name="cheat_6">Țineți apăsată o literă, apoi glisați: la eliberare se tastează exact litera respectivă (fără ghicire)</string>
+    <string name="cheat_7">Țineți apăsată tasta punct, apoi glisați pentru a alege punctuația de bază</string>
+    <string name="cheat_8">Țineți apăsată tasta virgulă, apoi glisați: mai întâi emoji-urile folosite cel mai des. Glisați în sus: toate emoji-urile (atingeți unul)</string>
+    <string name="cheat_9">Trageți pe spațiu: mutarea cursorului</string>
+    <string name="cheat_10">Trageți la stânga pe tasta de ștergere: ștergere cuvânt cu cuvânt</string>
+    <string name="cheat_11">Glisați lateral pe bara de sugestii: mai multe sugestii</string>
+    <string name="cheat_12">Țineți apăsată o sugestie și plasați-o pe coș: uitați cuvântul</string>
+    <string name="cheat_13">Atingeți tasta de limbă: limba următoare</string>
+    <string name="cheat_14">Țineți apăsată tasta de limbă, apoi glisați: setări, normală, flotantă, divizată (doar tablete). Glisați la pictograma normală pentru a ancora din nou tastatura flotantă</string>
+    <string name="cheat_15">Tastatură flotantă: trageți mânerul de sus pentru a o muta</string>
+    <string name="cheat_16">Tastatură flotantă: trageți colțul pentru a o redimensiona</string>
+    <string name="cheat_17">Tastare prin glisare (opțional, Setări &gt; Gesturi): trasați un cuvânt peste litere, aici h-e-l-l-o. Atingeți o sugestie pentru a înlocui cuvântul; tasta de ștergere elimină tot cuvântul</string>
+    <string name="cheat_18">Glisați de la 123 pe taste: apar simboluri și semne de monedă; la eliberare se tastează unul și se revine la litere</string>
+    <string name="cheat_19">Glisați în jos pe bara de sugestii: înapoi la un singur rând. Trageți în sus din bara de sugestii sau din rândul de jos al tastaturii cu un singur rând: tastatură completă</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Despre</string>
+    <string name="btn_attributions">Atribuiri și licențe</string>
+    <string name="attributions_title">Atribuiri</string>
+    <string name="attributions_missing">Fișierul attribution.md lipsește.</string>
+    <string name="close">Închideți</string>
+    <string name="header_try_it">Încercați</string>
+    <string name="hint_type_here">Scrieți aici</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Nimic de corectat</string>
+    <string name="toast_proofread_failed">Corectarea a eșuat</string>
+    <string name="toast_no_mistakes">Nicio greșeală găsită</string>
+    <string name="toast_model_downloading_start">Se descarcă modelul de corectare...</string>
+    <string name="toast_model_ready">Model pregătit - atingeți din nou</string>
+    <string name="toast_download_failed">Descărcarea a eșuat</string>
+    <string name="toast_model_still_downloading">Modelul de corectare se mai descarcă</string>
+    <string name="toast_proofread_unavailable">Corectarea nu este disponibilă pe acest telefon</string>
+    <string name="toast_word_not_in_dictionary">\"%1$s\" nu este în dicționar</string>
+    <string name="toast_word_removed">Eliminat: \"%1$s\"</string>
+    <string name="toast_no_voice_input">Nicio metodă de introducere vocală activată</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Proba a expirat, abonați-vă</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Abonamentul expiră în %1$d zi</item>
+        <item quantity="few">Abonamentul expiră în %1$d zile</item>
+        <item quantity="other">Abonamentul expiră în %1$d de zile</item>
+    </plurals>
+</resources>

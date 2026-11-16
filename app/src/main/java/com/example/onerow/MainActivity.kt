@@ -85,23 +85,23 @@ class MainActivity : Activity() {
         val col = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(20), dp(12), dp(20), dp(24)) }
         val scroll = ScrollView(this).apply { addView(col); isFillViewport = true }
 
-        col.addView(TextView(this).apply { text = "OneRow Keyboard"; textSize = 24f; typeface = Typeface.create("sans-serif-light", Typeface.NORMAL) })
+        col.addView(TextView(this).apply { text = getString(R.string.app_name); textSize = 24f; typeface = Typeface.create("sans-serif-light", Typeface.NORMAL) })
         col.addView(TextView(this).apply {
-            text = "version " + (try { packageManager.getPackageInfo(packageName, 0).versionName } catch (e: Exception) { "?" })
+            text = getString(R.string.version_label, try { packageManager.getPackageInfo(packageName, 0).versionName } catch (e: Exception) { "?" })
             textSize = 12f; setTextColor(Color.GRAY)
         })
 
-        col.addView(header("Setup"))
-        col.addView(button("1. Enable keyboard") { startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)) })
-        col.addView(button("2. Switch to OneRow") { (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).showInputMethodPicker() })
+        col.addView(header(getString(R.string.header_setup)))
+        col.addView(button(getString(R.string.btn_enable_keyboard)) { startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)) })
+        col.addView(button(getString(R.string.btn_switch_keyboard)) { (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).showInputMethodPicker() })
 
         // ---- subscription ----
-        col.addView(header("Subscription"))
+        col.addView(header(getString(R.string.header_subscription)))
         val subStatus = TextView(this).apply { textSize = 14f; setPadding(0, 0, 0, dp(4)) }
         col.addView(subStatus)
-        val buyMonthly = button("Subscribe") { billing.buyMonthly(this@MainActivity) }
-        val buyForever = button("Buy forever (version 1)") { billing.buyLifetime(this@MainActivity) }
-        val manage = button("Manage subscription") {
+        val buyMonthly = button(getString(R.string.btn_subscribe)) { billing.buyMonthly(this@MainActivity) }
+        val buyForever = button(getString(R.string.btn_buy_forever)) { billing.buyLifetime(this@MainActivity) }
+        val manage = button(getString(R.string.btn_manage_subscription)) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/account/subscriptions?sku=${Products.MONTHLY}&package=$packageName")))
         }
         col.addView(buyMonthly); col.addView(buyForever); col.addView(manage)
@@ -109,23 +109,23 @@ class MainActivity : Activity() {
             val a = BillingStore.access(this)
             val snap = BillingStore.load(this)
             subStatus.text = when {
-                a is Access.Locked -> "The trial has expired. The keyboard only types until you subscribe or buy it."
-                a is Access.Full && a.reason == Reason.LIFETIME -> "You own OneRow forever (version 1). Thank you!"
-                a is Access.Full && a.reason == Reason.SUBSCRIBED && a.expiresInDays != null -> "Subscription cancelled: it ends in about ${a.expiresInDays} days."
-                a is Access.Full && a.reason == Reason.SUBSCRIBED -> "Subscribed. Thank you!"
-                a is Access.Full -> "Free period: ${a.freeDaysLeft} days left. After that, start the 1-month free trial or buy the keyboard to keep every feature."
+                a is Access.Locked -> getString(R.string.sub_status_locked)
+                a is Access.Full && a.reason == Reason.LIFETIME -> getString(R.string.sub_status_lifetime)
+                a is Access.Full && a.reason == Reason.SUBSCRIBED && a.expiresInDays != null -> resources.getQuantityString(R.plurals.sub_status_cancelled, a.expiresInDays, a.expiresInDays)
+                a is Access.Full && a.reason == Reason.SUBSCRIBED -> getString(R.string.sub_status_subscribed)
+                a is Access.Full -> resources.getQuantityString(R.plurals.sub_status_free, a.freeDaysLeft, a.freeDaysLeft)
                 else -> ""
             }
             val owns = a is Access.Full && a.reason == Reason.LIFETIME
             val subbed = snap.subActive
             val price = billing.monthlyPrice()
             buyMonthly.text = when {
-                price == null -> "Subscribe (price not available yet)"
-                price.second -> "Start the 1-month free trial, then ${price.first} a month"
-                else -> "Subscribe: ${price.first} a month"
+                price == null -> getString(R.string.btn_subscribe_no_price)
+                price.second -> getString(R.string.btn_subscribe_trial_price, price.first)
+                else -> getString(R.string.btn_subscribe_price, price.first)
             }
             buyMonthly.isEnabled = price != null
-            buyForever.text = billing.lifetimePrice()?.let { "Buy forever (version 1): $it" } ?: "Buy forever (price not available yet)"
+            buyForever.text = billing.lifetimePrice()?.let { getString(R.string.btn_buy_forever_price, it) } ?: getString(R.string.btn_buy_forever_no_price)
             buyForever.isEnabled = billing.lifetimePrice() != null
             buyMonthly.visibility = if (owns || subbed) View.GONE else View.VISIBLE
             buyForever.visibility = if (owns) View.GONE else View.VISIBLE
@@ -134,7 +134,7 @@ class MainActivity : Activity() {
         billing = BillingManager(this) { runOnUiThread { updateSub() } }
         updateSub()
 
-        col.addView(header("Languages"))
+        col.addView(header(getString(R.string.header_languages)))
         // the added languages, each with a bin; below them a dropdown of the others and a + to add the chosen one
         val langList = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         col.addView(langList)
@@ -157,16 +157,16 @@ class MainActivity : Activity() {
                 langList.addView(LinearLayout(this).apply {
                     orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL
                     addView(TextView(context).apply {
-                        text = "${l.name}  (${l.code})" + if (installed) "" else "  - dictionary not installed"; textSize = 16f
+                        text = if (installed) "${l.name}  (${l.code})" else getString(R.string.lang_dictionary_missing, l.name, l.code); textSize = 16f
                         val tv = android.util.TypedValue()
                         theme.resolveAttribute(android.R.attr.textColorPrimary, tv, true)
                         setTextColor(if (installed) resources.getColor(tv.resourceId, theme) else Color.GRAY)
                     }, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
                     addView(BinView(context).apply {
-                        contentDescription = "Remove ${l.name}"
+                        contentDescription = getString(R.string.cd_remove_language, l.name)
                         alpha = if (added.size > 1) 1f else 0.3f
                         setOnClickListener {
-                            if (prefs.enabledCodes.size <= 1) { Toast.makeText(context, "Keep at least one language", Toast.LENGTH_SHORT).show(); return@setOnClickListener }
+                            if (prefs.enabledCodes.size <= 1) { Toast.makeText(context, getString(R.string.toast_keep_one_language), Toast.LENGTH_SHORT).show(); return@setOnClickListener }
                             save(prefs.enabledCodes.toSet() - l.code); refreshLanguages()
                         }
                     }, LinearLayout.LayoutParams(dp(40), dp(40)))
@@ -174,68 +174,68 @@ class MainActivity : Activity() {
             }
             others = Languages.all.filter { it.code !in added }
             spinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,
-                others.map { l -> "${l.name}  (${l.code})" + if (Dictionaries.has(this, l.code)) "" else "  - not installed" })
+                others.map { l -> if (Dictionaries.has(this, l.code)) "${l.name}  (${l.code})" else getString(R.string.lang_not_installed, l.name, l.code) })
             addRow.visibility = if (others.isEmpty()) View.GONE else View.VISIBLE
         }
         plus.setOnClickListener {
             val l = others.getOrNull(spinner.selectedItemPosition) ?: return@setOnClickListener
-            if (!Dictionaries.has(this, l.code)) { Toast.makeText(this, "The ${l.name} dictionary is not installed", Toast.LENGTH_SHORT).show(); return@setOnClickListener }
+            if (!Dictionaries.has(this, l.code)) { Toast.makeText(this, getString(R.string.toast_dictionary_not_installed, l.name), Toast.LENGTH_SHORT).show(); return@setOnClickListener }
             save(prefs.enabledCodes.toSet() + l.code); refreshLanguages()
         }
         refreshLanguages()
         col.addView(TextView(this).apply {
-            text = "Switch language on the keyboard: tap the language key (next to the comma)."
+            text = getString(R.string.lang_switch_hint)
             textSize = 13f; setTextColor(Color.GRAY)
         })
 
-        col.addView(header("Theme"))
+        col.addView(header(getString(R.string.header_theme)))
         col.addView(RadioGroup(this).apply {
             orientation = RadioGroup.VERTICAL
-            Themes.choices.forEach { (code, label) ->
-                addView(RadioButton(context).apply { id = View.generateViewId(); text = label; textSize = 16f; tag = code; isChecked = code == prefs.theme })
+            Themes.choices.forEach { (code, labelRes) ->
+                addView(RadioButton(context).apply { id = View.generateViewId(); text = getString(labelRes); textSize = 16f; tag = code; isChecked = code == prefs.theme })
             }
             setOnCheckedChangeListener { g, id -> prefs.theme = g.findViewById<View>(id).tag as String; showCheatSheet() }
         })
 
-        col.addView(header("Guessing"))
+        col.addView(header(getString(R.string.header_guessing)))
         col.addView(TextView(this).apply {
-            text = "How far a tap may miss a letter on the one-row keyboard and still count. Tight trusts your taps more; loose forgives bigger misses."
+            text = getString(R.string.guessing_desc)
             textSize = 13f; setTextColor(Color.GRAY)
         })
         col.addView(RadioGroup(this).apply {
             orientation = RadioGroup.VERTICAL
-            listOf("Tight – up to ~2½ letters away", "Normal – up to ~4 letters away", "Loose – up to ~5½ letters away").forEachIndexed { i, label ->
+            listOf(getString(R.string.guessing_tight), getString(R.string.guessing_normal), getString(R.string.guessing_loose)).forEachIndexed { i, label ->
                 addView(RadioButton(context).apply { id = View.generateViewId(); text = label; textSize = 16f; tag = i; isChecked = i == prefs.tolerance })
             }
             setOnCheckedChangeListener { g, id -> prefs.tolerance = g.findViewById<View>(id).tag as Int }
         })
 
-        col.addView(header("Swipe typing precision"))
+        col.addView(header(getString(R.string.header_swipe_precision)))
         col.addView(TextView(this).apply {
-            text = "How closely the curve you draw across the full keyboard has to follow the letters of the word. Loose forgives a rough curve; tight trusts it more."
+            text = getString(R.string.swipe_precision_desc)
             textSize = 13f; setTextColor(Color.GRAY)
         })
         col.addView(RadioGroup(this).apply {
             orientation = RadioGroup.VERTICAL
-            listOf("Tight \u2013 follow the letters closely", "Normal", "Loose \u2013 a rough curve is enough").forEachIndexed { i, label ->
+            listOf(getString(R.string.swipe_precision_tight), getString(R.string.swipe_precision_normal), getString(R.string.swipe_precision_loose)).forEachIndexed { i, label ->
                 addView(RadioButton(context).apply { id = View.generateViewId(); text = label; textSize = 16f; tag = i; isChecked = i == prefs.swipeTolerance })
             }
             setOnCheckedChangeListener { g, id -> prefs.swipeTolerance = g.findViewById<View>(id).tag as Int }
         })
 
-        col.addView(header("Full keyboard"))
+        col.addView(header(getString(R.string.header_full_keyboard)))
         col.addView(Switch(this).apply {
-            text = "Dedicated number row"; textSize = 16f; isChecked = prefs.numberRow
+            text = getString(R.string.number_row); textSize = 16f; isChecked = prefs.numberRow
             setOnCheckedChangeListener { _, on -> prefs.numberRow = on }
         })
         col.addView(TextView(this).apply {
-            text = "A row of digits above the letters. Hold a digit for superscripts and fractions (\u00B3, \u00BD, \u2153, \u00BC ...)."
+            text = getString(R.string.number_row_desc)
             textSize = 13f; setPadding(0, 0, 0, dp(12))
         })
 
-        col.addView(header("Spell checker"))
+        col.addView(header(getString(R.string.header_spell_checker)))
         col.addView(TextView(this).apply {
-            text = "Android underlines words in red using its own spell checker, which only knows one language. OneRow has its own: it knows every language you added here (and the words you taught it), so only really unknown words get marked."
+            text = getString(R.string.spell_checker_desc)
             textSize = 13f; setPadding(0, 0, 0, dp(6))
         })
         val me = "$packageName/${OneRowSpellChecker::class.java.name}"
@@ -244,24 +244,24 @@ class MainActivity : Activity() {
             try {
                 if (select) { Settings.Secure.putString(contentResolver, "selected_spell_checker", me); Settings.Secure.putInt(contentResolver, "spell_checker_enabled", 1) }
                 else Settings.Secure.putInt(contentResolver, "spell_checker_enabled", 0)
-                Toast.makeText(this, if (select) "OneRow spell checker selected" else "Spell checking is off", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(if (select) R.string.toast_spell_on else R.string.toast_spell_off), Toast.LENGTH_SHORT).show()
             } catch (e: SecurityException) {
-                Toast.makeText(this, "Pick \"OneRow Keyboard\" in the screen that opens, or run once on a computer: adb shell pm grant $packageName android.permission.WRITE_SECURE_SETTINGS", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.toast_spell_manual, packageName), Toast.LENGTH_LONG).show()
                 val intents = listOf(
                     Intent().setClassName("com.android.settings", "com.android.settings.Settings\$SpellCheckersSettingsActivity"),
                     Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
                 for (i in intents) { try { startActivity(i); break } catch (_: Exception) { } }
             }
         }
-        col.addView(button("Use the OneRow spell checker") { setSpell(true) })
-        col.addView(button("Turn spell checking off") { setSpell(false) })
+        col.addView(button(getString(R.string.btn_spell_on)) { setSpell(true) })
+        col.addView(button(getString(R.string.btn_spell_off)) { setSpell(false) })
 
-        col.addView(header("Proofreading"))
+        col.addView(header(getString(R.string.header_proofreading)))
         val proofSwitch = Switch(this).apply {
-            text = "Proofread button"; textSize = 16f; isChecked = false; isEnabled = false; alpha = 0.4f
+            text = getString(R.string.proofread_button); textSize = 16f; isChecked = false; isEnabled = false; alpha = 0.4f
             setOnCheckedChangeListener { _, on -> prefs.proofread = on }
         }
-        val proofNote = TextView(this).apply { textSize = 13f; setPadding(0, 0, 0, dp(12)); text = "Checking whether this phone can do it..." }
+        val proofNote = TextView(this).apply { textSize = 13f; setPadding(0, 0, 0, dp(12)); text = getString(R.string.proofread_checking) }
         col.addView(proofSwitch)
         col.addView(proofNote)
         // greyed out unless the phone has Google's on-device AI (Gemini Nano through AICore) for the proofreading feature
@@ -270,44 +270,56 @@ class MainActivity : Activity() {
             proofSwitch.isEnabled = ok; proofSwitch.alpha = if (ok) 1f else 0.4f
             proofSwitch.isChecked = ok && prefs.proofread
             if (!ok && prefs.proofread) prefs.proofread = false
-            proofNote.text = if (ok) "A check circle at the right end of the guess bar: tap it to fix the grammar and spelling of what you typed in the field, tap again to undo. English, French, German, Italian and Spanish. Runs on the phone; the first use may download a model."
-                             else "Not available on this phone: it needs Google's on-device AI (Gemini Nano), which only some newer phones have."
+            proofNote.text = getString(if (ok) R.string.proofread_available else R.string.proofread_unavailable)
         }
 
-        col.addView(header("Feedback"))
+        col.addView(header(getString(R.string.header_feedback)))
         col.addView(Switch(this).apply {
-            text = "Vibrate on key press"; textSize = 16f; isChecked = prefs.haptics
+            text = getString(R.string.vibrate); textSize = 16f; isChecked = prefs.haptics
             setOnCheckedChangeListener { _, on -> prefs.haptics = on }
         })
 
-        col.addView(header("Gestures"))
+        col.addView(header(getString(R.string.header_gestures)))
         col.addView(Switch(this).apply {
-            text = "Swipe typing on the full keyboard"; textSize = 16f; isChecked = prefs.swipeTyping
+            text = getString(R.string.swipe_typing); textSize = 16f; isChecked = prefs.swipeTyping
             setOnCheckedChangeListener { _, on -> prefs.swipeTyping = on }
         })
         col.addView(TextView(this).apply {
-            text = "Draw a word across the letters instead of tapping them. Swipe down on the guess bar to return to one row. The cheat sheet below shows every gesture."
+            text = getString(R.string.gestures_desc)
             textSize = 13f; setPadding(0, 0, 0, dp(12))
         })
 
-        col.addView(header("Cheat sheet"))
+        col.addView(header(getString(R.string.header_cheat_sheet)))
         cheat = ImageView(this).apply {
             adjustViewBounds = true
             scaleType = ImageView.ScaleType.FIT_CENTER
         }
         col.addView(cheat)
         showCheatSheet()
+        // the legend: number N here is the badge N on the picture (the picture itself has no words, so it needs no translation)
+        listOf(R.string.cheat_1, R.string.cheat_2, R.string.cheat_3, R.string.cheat_4, R.string.cheat_5, R.string.cheat_6, R.string.cheat_7,
+            R.string.cheat_8, R.string.cheat_9, R.string.cheat_10, R.string.cheat_11, R.string.cheat_12, R.string.cheat_13, R.string.cheat_14,
+            R.string.cheat_15, R.string.cheat_16, R.string.cheat_17, R.string.cheat_18, R.string.cheat_19).forEachIndexed { i, res ->
+            col.addView(LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                setPadding(0, dp(6), 0, 0)
+                addView(TextView(context).apply { text = "${i + 1}"; textSize = 14f; setTextColor(teal); typeface = Typeface.DEFAULT_BOLD; gravity = Gravity.END },
+                    LinearLayout.LayoutParams(dp(26), ViewGroup.LayoutParams.WRAP_CONTENT))
+                addView(TextView(context).apply { text = getString(res); textSize = 14f; setPadding(dp(10), 0, 0, 0) },
+                    LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+            })
+        }
 
-        col.addView(header("About"))
-        col.addView(button("Attributions and licences") {
-            val text = try { assets.open("attribution.md").bufferedReader().readText() } catch (e: Exception) { "attribution.md is missing." }
+        col.addView(header(getString(R.string.header_about)))
+        col.addView(button(getString(R.string.btn_attributions)) {
+            val text = try { assets.open("attribution.md").bufferedReader().readText() } catch (e: Exception) { getString(R.string.attributions_missing) }
             val tv = TextView(this).apply { this.text = text; textSize = 12f; setPadding(dp(20), dp(12), dp(20), dp(12)); setTextIsSelectable(true) }
-            android.app.AlertDialog.Builder(this).setTitle("Attributions").setView(ScrollView(this).apply { addView(tv) }).setPositiveButton("Close", null).show()
+            android.app.AlertDialog.Builder(this).setTitle(getString(R.string.attributions_title)).setView(ScrollView(this).apply { addView(tv) }).setPositiveButton(getString(R.string.close), null).show()
         })
 
-        col.addView(header("Try it"))
+        col.addView(header(getString(R.string.header_try_it)))
         col.addView(EditText(this).apply {
-            hint = "Type here"; minLines = 3; gravity = Gravity.TOP
+            hint = getString(R.string.hint_type_here); minLines = 3; gravity = Gravity.TOP
             // like a messaging field: capitalizes the first letter of each sentence
             inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or
                 android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE

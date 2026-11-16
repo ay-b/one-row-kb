@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">Version %1$s</string>
+    <string name="header_setup">Einrichtung</string>
+    <string name="btn_enable_keyboard">1. Tastatur aktivieren</string>
+    <string name="btn_switch_keyboard">2. Zu OneRow wechseln</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Abo</string>
+    <string name="btn_subscribe">Abonnieren</string>
+    <string name="btn_buy_forever">Dauerhaft kaufen (Version 1)</string>
+    <string name="btn_manage_subscription">Abo verwalten</string>
+    <string name="sub_status_locked">Die Testphase ist abgelaufen. Die Tastatur kann nur noch tippen, bis du ein Abo abschließt oder sie kaufst.</string>
+    <string name="sub_status_lifetime">OneRow gehört dir dauerhaft (Version 1). Vielen Dank!</string>
+    <string name="sub_status_subscribed">Abo aktiv. Vielen Dank!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Abo gekündigt: Es endet in etwa %1$d Tag.</item>
+        <item quantity="other">Abo gekündigt: Es endet in etwa %1$d Tagen.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Kostenloser Zeitraum: noch %1$d Tag. Danach kannst du die kostenlose Testphase von 1 Monat starten oder die Tastatur kaufen, um alle Funktionen zu behalten.</item>
+        <item quantity="other">Kostenloser Zeitraum: noch %1$d Tage. Danach kannst du die kostenlose Testphase von 1 Monat starten oder die Tastatur kaufen, um alle Funktionen zu behalten.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Abonnieren (Preis noch nicht verfügbar)</string>
+    <string name="btn_subscribe_trial_price">1 Monat kostenlos testen, danach %1$s pro Monat</string>
+    <string name="btn_subscribe_price">Abonnieren: %1$s pro Monat</string>
+    <string name="btn_buy_forever_price">Dauerhaft kaufen (Version 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Dauerhaft kaufen (Preis noch nicht verfügbar)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Sprachen</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - Wörterbuch nicht installiert</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - nicht installiert</string>
+    <string name="cd_remove_language">%1$s entfernen</string>
+    <string name="toast_keep_one_language">Mindestens eine Sprache muss bleiben</string>
+    <string name="toast_dictionary_not_installed">Das Wörterbuch %1$s ist nicht installiert</string>
+    <string name="lang_switch_hint">Sprache auf der Tastatur wechseln: die Sprachtaste neben dem Komma tippen.</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Design</string>
+    <string name="theme_default">Standard</string>
+    <string name="theme_light">Hell</string>
+    <string name="theme_dark">Dunkel</string>
+    <string name="theme_auto">Automatisch (wie System)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Tipp-Toleranz</string>
+    <string name="guessing_desc">Wie weit ein Tipp einen Buchstaben auf der einzeiligen Tastatur verfehlen darf und trotzdem zählt. Streng vertraut deinen Tipps mehr; locker verzeiht größere Abweichungen.</string>
+    <string name="guessing_tight">Streng – bis zu ~2½ Buchstaben daneben</string>
+    <string name="guessing_normal">Normal – bis zu ~4 Buchstaben daneben</string>
+    <string name="guessing_loose">Locker – bis zu ~5½ Buchstaben daneben</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Genauigkeit der Wischeingabe</string>
+    <string name="swipe_precision_desc">Wie genau die Kurve, die du über die volle Tastatur ziehst, den Buchstaben des Wortes folgen muss. Locker verzeiht eine grobe Kurve; streng vertraut ihr mehr.</string>
+    <string name="swipe_precision_tight">Streng – den Buchstaben genau folgen</string>
+    <string name="swipe_precision_normal">Normal</string>
+    <string name="swipe_precision_loose">Locker – eine grobe Kurve genügt</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Volle Tastatur</string>
+    <string name="number_row">Eigene Zahlenreihe</string>
+    <string name="number_row_desc">Eine Zifferreihe über den Buchstaben. Eine Ziffer gedrückt halten für Hochzahlen und Brüche (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Rechtschreibprüfung</string>
+    <string name="spell_checker_desc">Android unterstreicht Wörter rot mit der eigenen Rechtschreibprüfung, die nur eine Sprache kennt. OneRow hat eine eigene: Sie kennt alle hier hinzugefügten Sprachen (und die Wörter, die du ihr beigebracht hast), sodass nur wirklich unbekannte Wörter markiert werden.</string>
+    <string name="btn_spell_on">OneRow-Rechtschreibprüfung verwenden</string>
+    <string name="btn_spell_off">Rechtschreibprüfung ausschalten</string>
+    <string name="toast_spell_on">OneRow-Rechtschreibprüfung ausgewählt</string>
+    <string name="toast_spell_off">Rechtschreibprüfung ist aus</string>
+    <string name="toast_spell_manual">Wähle \"OneRow Keyboard\" im sich öffnenden Bildschirm oder führe einmal auf einem Computer aus: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Korrekturlesen</string>
+    <string name="proofread_button">Korrektur-Taste</string>
+    <string name="proofread_checking">Es wird geprüft, ob dieses Telefon das kann...</string>
+    <string name="proofread_available">Ein Kreis mit Häkchen am rechten Ende der Vorschlagsleiste: Tippe darauf, um Grammatik und Rechtschreibung des eingegebenen Textes im Feld zu korrigieren, und noch einmal, um rückgängig zu machen. Englisch, Französisch, Deutsch, Italienisch und Spanisch. Läuft auf dem Telefon; bei der ersten Nutzung wird eventuell ein Modell heruntergeladen.</string>
+    <string name="proofread_unavailable">Auf diesem Telefon nicht verfügbar: Es benötigt die KI auf dem Gerät von Google (Gemini Nano), die nur einige neuere Telefone haben.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Feedback</string>
+    <string name="vibrate">Vibration bei Tastendruck</string>
+    <string name="header_gestures">Gesten</string>
+    <string name="swipe_typing">Wischeingabe auf der vollen Tastatur</string>
+    <string name="gestures_desc">Zeichne ein Wort über die Buchstaben, statt sie zu tippen. Wische auf der Vorschlagsleiste nach unten, um zur einen Zeile zurückzukehren. Der Spickzettel unten zeigt alle Gesten.</string>
+    <string name="header_cheat_sheet">Spickzettel</string>
+    <string name="cheat_1">Auf der Buchstabenreihe nach links wischen: löschen</string>
+    <string name="cheat_2">Nach links oben wischen: Spracheingabe</string>
+    <string name="cheat_3">Nach oben wischen: volle Tastatur</string>
+    <string name="cheat_4">Nach rechts oben wischen: Eingabetaste</string>
+    <string name="cheat_5">Nach rechts wischen: Leerzeichen</string>
+    <string name="cheat_6">Einen Buchstaben gedrückt halten, dann gleiten: Loslassen tippt genau diesen Buchstaben (ohne Raten)</string>
+    <string name="cheat_7">Die Punkttaste gedrückt halten, dann gleiten, um einfache Satzzeichen zu wählen</string>
+    <string name="cheat_8">Die Kommataste gedrückt halten, dann gleiten: Deine meistgenutzten Emojis stehen zuerst. Nach oben wischen: alle Emojis (eines antippen)</string>
+    <string name="cheat_9">Auf der Leertaste ziehen: Cursor bewegen</string>
+    <string name="cheat_10">Auf der Rücktaste nach links ziehen: wortweise löschen</string>
+    <string name="cheat_11">Die Vorschlagsleiste seitlich wischen: weitere Vorschläge</string>
+    <string name="cheat_12">Einen Vorschlag gedrückt halten und auf den Papierkorb ziehen: Wort vergessen</string>
+    <string name="cheat_13">Die Sprachtaste tippen: nächste Sprache</string>
+    <string name="cheat_14">Die Sprachtaste gedrückt halten, dann gleiten: Einstellungen, normal, schwebend, geteilt (nur Tablets). Zum Symbol für normal gleiten, um eine schwebende Tastatur wieder anzudocken</string>
+    <string name="cheat_15">Schwebende Tastatur: den Griff oben ziehen, um sie zu verschieben</string>
+    <string name="cheat_16">Schwebende Tastatur: die Ecke ziehen, um die Größe zu ändern</string>
+    <string name="cheat_17">Wischeingabe (optional, Einstellungen &gt; Gesten): ein Wort über die Buchstaben zeichnen, hier h-e-l-l-o. Einen Vorschlag tippen, um das Wort zu ersetzen; die Rücktaste löscht das ganze Wort</string>
+    <string name="cheat_18">Von 123 auf die Tasten gleiten: Symbole und Währungszeichen erscheinen; Loslassen tippt eines und kehrt zu den Buchstaben zurück</string>
+    <string name="cheat_19">Auf der Vorschlagsleiste nach unten wischen: zurück zur einen Zeile. Von der Vorschlagsleiste oder der unteren Reihe der einzeiligen Tastatur nach oben ziehen: volle Tastatur</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Info</string>
+    <string name="btn_attributions">Quellenangaben und Lizenzen</string>
+    <string name="attributions_title">Quellenangaben</string>
+    <string name="attributions_missing">attribution.md fehlt.</string>
+    <string name="close">Schließen</string>
+    <string name="header_try_it">Ausprobieren</string>
+    <string name="hint_type_here">Hier tippen</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Nichts zu korrigieren</string>
+    <string name="toast_proofread_failed">Korrektur fehlgeschlagen</string>
+    <string name="toast_no_mistakes">Keine Fehler gefunden</string>
+    <string name="toast_model_downloading_start">Korrekturmodell wird heruntergeladen...</string>
+    <string name="toast_model_ready">Modell bereit - noch einmal tippen</string>
+    <string name="toast_download_failed">Download fehlgeschlagen</string>
+    <string name="toast_model_still_downloading">Das Korrekturmodell wird noch heruntergeladen</string>
+    <string name="toast_proofread_unavailable">Korrektur ist auf diesem Telefon nicht verfügbar</string>
+    <string name="toast_word_not_in_dictionary">\"%1$s\" steht nicht im Wörterbuch</string>
+    <string name="toast_word_removed">\"%1$s\" entfernt</string>
+    <string name="toast_no_voice_input">Keine Spracheingabe aktiviert</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Test abgelaufen, bitte abonnieren</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Abo endet in %1$d Tag</item>
+        <item quantity="other">Abo endet in %1$d Tagen</item>
+    </plurals>
+</resources>

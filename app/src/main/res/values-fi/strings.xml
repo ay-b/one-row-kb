@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">versio %1$s</string>
+    <string name="header_setup">Käyttöönotto</string>
+    <string name="btn_enable_keyboard">1. Ota näppäimistö käyttöön</string>
+    <string name="btn_switch_keyboard">2. Vaihda OneRow-näppäimistöön</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Tilaus</string>
+    <string name="btn_subscribe">Tilaa</string>
+    <string name="btn_buy_forever">Osta ikuisesti (versio 1)</string>
+    <string name="btn_manage_subscription">Hallinnoi tilausta</string>
+    <string name="sub_status_locked">Kokeilu on päättynyt. Näppäimistö vain kirjoittaa, kunnes tilaat tai ostat sen.</string>
+    <string name="sub_status_lifetime">OneRow on sinun ikuisesti (versio 1). Kiitos!</string>
+    <string name="sub_status_subscribed">Tilaus voimassa. Kiitos!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Tilaus peruttu: se päättyy noin %1$d päivän kuluttua.</item>
+        <item quantity="other">Tilaus peruttu: se päättyy noin %1$d päivän kuluttua.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Ilmainen jakso: %1$d päivä jäljellä. Sen jälkeen aloita 1 kuukauden ilmainen kokeilujakso tai osta näppäimistö, niin kaikki ominaisuudet säilyvät.</item>
+        <item quantity="other">Ilmainen jakso: %1$d päivää jäljellä. Sen jälkeen aloita 1 kuukauden ilmainen kokeilujakso tai osta näppäimistö, niin kaikki ominaisuudet säilyvät.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Tilaa (hinta ei ole vielä saatavilla)</string>
+    <string name="btn_subscribe_trial_price">Aloita 1 kuukauden ilmainen kokeilujakso, sitten %1$s kuukaudessa</string>
+    <string name="btn_subscribe_price">Tilaa: %1$s kuukaudessa</string>
+    <string name="btn_buy_forever_price">Osta ikuisesti (versio 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Osta ikuisesti (hinta ei ole vielä saatavilla)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Kielet</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - sanastoa ei ole asennettu</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - ei asennettu</string>
+    <string name="cd_remove_language">Poista %1$s</string>
+    <string name="toast_keep_one_language">Pidä vähintään yksi kieli</string>
+    <string name="toast_dictionary_not_installed">Sanastoa ei ole asennettu: %1$s</string>
+    <string name="lang_switch_hint">Vaihda kieltä näppäimistöllä: napauta kielinäppäintä (pilkun vieressä).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Teema</string>
+    <string name="theme_default">Oletus</string>
+    <string name="theme_light">Vaalea</string>
+    <string name="theme_dark">Tumma</string>
+    <string name="theme_auto">Automaattinen (järjestelmän mukaan)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Arvaus</string>
+    <string name="guessing_desc">Kuinka kauas kirjaimesta napautus voi osua yhden rivin näppäimistöllä ja silti kelvata. Tarkka luottaa napautuksiisi enemmän; väljä antaa anteeksi isommat ohitukset.</string>
+    <string name="guessing_tight">Tarkka – enintään ~2½ kirjainta päähän</string>
+    <string name="guessing_normal">Normaali – enintään ~4 kirjainta päähän</string>
+    <string name="guessing_loose">Väljä – enintään ~5½ kirjainta päähän</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Pyyhkäisykirjoituksen tarkkuus</string>
+    <string name="swipe_precision_desc">Kuinka tarkasti koko näppäimistön yli piirtämäsi käyrän on seurattava sanan kirjaimia. Väljä antaa anteeksi epätarkan käyrän; tarkka luottaa siihen enemmän.</string>
+    <string name="swipe_precision_tight">Tarkka – seuraa kirjaimia tarkasti</string>
+    <string name="swipe_precision_normal">Normaali</string>
+    <string name="swipe_precision_loose">Väljä – epätarkka käyrä riittää</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Täysi näppäimistö</string>
+    <string name="number_row">Oma numerorivi</string>
+    <string name="number_row_desc">Numerorivi kirjainten yläpuolella. Pidä numeroa painettuna saadaksesi yläindeksit ja murtoluvut (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Oikoluku</string>
+    <string name="spell_checker_desc">Android alleviivaa sanat punaisella oman oikolukunsa avulla, joka tuntee vain yhden kielen. OneRow-näppäimistöllä on oma: se tuntee kaikki tänne lisäämäsi kielet (ja sanat, jotka olet opettanut sille), joten vain todella tuntemattomat sanat merkitään.</string>
+    <string name="btn_spell_on">Käytä OneRow-oikolukua</string>
+    <string name="btn_spell_off">Poista oikoluku käytöstä</string>
+    <string name="toast_spell_on">OneRow-oikoluku valittu</string>
+    <string name="toast_spell_off">Oikoluku on pois käytöstä</string>
+    <string name="toast_spell_manual">Valitse \"OneRow Keyboard\" avautuvassa näkymässä tai suorita kerran tietokoneella: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Tekstin tarkistus</string>
+    <string name="proofread_button">Tarkistuspainike</string>
+    <string name="proofread_checking">Tarkistetaan, pystyykö puhelin siihen...</string>
+    <string name="proofread_available">Valintamerkillä varustettu ympyrä ehdotuspalkin oikeassa päässä: napauta sitä korjataksesi kenttään kirjoittamasi tekstin kieliopin ja oikeinkirjoituksen, napauta uudelleen kumotaksesi. Englanti, ranska, saksa, italia ja espanja. Toimii puhelimessa; ensimmäisellä käyttökerralla voidaan ladata malli.</string>
+    <string name="proofread_unavailable">Ei saatavilla tässä puhelimessa: se vaatii Googlen laitteella toimivan tekoälyn (Gemini Nano), joka on vain osassa uudempia puhelimia.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Palaute</string>
+    <string name="vibrate">Värinä näppäintä painettaessa</string>
+    <string name="header_gestures">Eleet</string>
+    <string name="swipe_typing">Pyyhkäisykirjoitus täydellä näppäimistöllä</string>
+    <string name="gestures_desc">Piirrä sana kirjainten yli niitä napauttamatta. Pyyhkäise ehdotuspalkista alas palataksesi yhteen riviin. Alla oleva muistilappu näyttää kaikki eleet.</string>
+    <string name="header_cheat_sheet">Muistilappu</string>
+    <string name="cheat_1">Pyyhkäise kirjainrivillä vasemmalle: poista</string>
+    <string name="cheat_2">Pyyhkäise ylävasemmalle: puhesyöte</string>
+    <string name="cheat_3">Pyyhkäise ylös: täysi näppäimistö</string>
+    <string name="cheat_4">Pyyhkäise ylöspäin oikealle: enter</string>
+    <string name="cheat_5">Pyyhkäise oikealle: välilyönti</string>
+    <string name="cheat_6">Pidä kirjainta painettuna ja vedä sormea: vapauttaminen kirjoittaa täsmälleen sen kirjaimen (ei arvausta)</string>
+    <string name="cheat_7">Pidä pistenäppäintä painettuna ja vedä valitaksesi perusvälimerkit</string>
+    <string name="cheat_8">Pidä pilkkunäppäintä painettuna ja vedä: eniten käyttämäsi emojit tulevat ensin. Pyyhkäise ylös: kaikki emojit (napauta yhtä)</string>
+    <string name="cheat_9">Vedä välilyöntinäppäimellä: siirrä kohdistinta</string>
+    <string name="cheat_10">Vedä askelpalauttimella vasemmalle: poista sana kerrallaan</string>
+    <string name="cheat_11">Pyyhkäise ehdotuspalkkia sivulle: lisää ehdotuksia</string>
+    <string name="cheat_12">Pidä ehdotusta painettuna ja pudota se roskakoriin: unohda sana</string>
+    <string name="cheat_13">Napauta kielinäppäintä: seuraava kieli</string>
+    <string name="cheat_14">Pidä kielinäppäintä painettuna ja vedä: asetukset, normaali, kelluva, jaettu (vain tableteissa). Vedä normaali-kuvakkeeseen kiinnittääksesi kelluvan näppäimistön takaisin</string>
+    <string name="cheat_15">Kelluva näppäimistö: siirrä vetämällä yläreunan kahvasta</string>
+    <string name="cheat_16">Kelluva näppäimistö: muuta kokoa vetämällä kulmasta</string>
+    <string name="cheat_17">Pyyhkäisykirjoitus (valinnainen, Asetukset &gt; Eleet): piirrä sana kirjainten yli, tässä h-e-l-l-o. Korvaa sana napauttamalla ehdotusta; askelpalautin poistaa koko sanan</string>
+    <string name="cheat_18">Vedä 123-näppäimestä näppäimille: näkyviin tulee symboleja ja valuuttamerkkejä; vapauttaminen kirjoittaa yhden ja palaa kirjaimiin</string>
+    <string name="cheat_19">Pyyhkäise ehdotuspalkista alas: takaisin yhteen riviin. Vedä ylös ehdotuspalkista tai yhden rivin näppäimistön alimmalta riviltä: täysi näppäimistö</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Tietoja</string>
+    <string name="btn_attributions">Tekijänoikeustiedot ja lisenssit</string>
+    <string name="attributions_title">Tekijänoikeustiedot</string>
+    <string name="attributions_missing">attribution.md puuttuu.</string>
+    <string name="close">Sulje</string>
+    <string name="header_try_it">Kokeile</string>
+    <string name="hint_type_here">Kirjoita tähän</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Ei tarkistettavaa</string>
+    <string name="toast_proofread_failed">Tarkistus epäonnistui</string>
+    <string name="toast_no_mistakes">Virheitä ei löytynyt</string>
+    <string name="toast_model_downloading_start">Ladataan tarkistusmallia...</string>
+    <string name="toast_model_ready">Malli valmis - napauta uudelleen</string>
+    <string name="toast_download_failed">Lataus epäonnistui</string>
+    <string name="toast_model_still_downloading">Tarkistusmallia ladataan vielä</string>
+    <string name="toast_proofread_unavailable">Tarkistus ei ole käytettävissä tässä puhelimessa</string>
+    <string name="toast_word_not_in_dictionary">\"%1$s\" ei ole sanastossa</string>
+    <string name="toast_word_removed">Poistettu: \"%1$s\"</string>
+    <string name="toast_no_voice_input">Puhesyöte ei ole käytössä</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Kokeilu päättyi, tilaa</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Tilaus päättyy %1$d päivässä</item>
+        <item quantity="other">Tilaus päättyy %1$d päivässä</item>
+    </plurals>
+</resources>

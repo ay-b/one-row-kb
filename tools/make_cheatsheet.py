@@ -1,5 +1,6 @@
 """Gesture cheat sheet for the settings screen, one per keyboard theme, built from real phone screenshots of the
-keyboard (tools/cheatsheet_src/<theme>/*.png, cut out by crop_phone_shots.py) plus drawn arrows and captions.
+keyboard (tools/cheatsheet_src/<theme>/*.png, cut out by crop_phone_shots.py) plus drawn arrows. The picture holds NO words: every
+arrow carries a number, and the numbered legend is text in the app (res/values*/strings.xml, keys cheat_1..cheat_19), so it can be translated.
 
 Usage (from the project root):  python tools/make_cheatsheet.py            -> app/src/main/res/drawable-nodpi/cheatsheet_<theme>.png
                                 python tools/make_cheatsheet.py light out.png"""
@@ -42,30 +43,36 @@ class Sheet:
     def label(self, d, x, y, s, size=32, anchor="mm"):
         d.text((x, y), s, font=F(size), fill=self.t["accent"] + (255,), anchor=anchor, stroke_width=4, stroke_fill=self.t["edge"] + (255,))
 
-    def card(self, title, shot, annotate, lines, head=HEAD):
-        self.cards.append((title, shot, annotate, lines, head))
+    def num(self, d, x, y, n, r=25):
+        """A numbered badge (the key to the legend text under the picture)."""
+        d.ellipse([x - r - 4, y - r - 4, x + r + 4, y + r + 4], fill=self.t["edge"] + (235,))
+        d.ellipse([x - r, y - r, x + r, y + r], fill=self.t["accent"] + (255,))
+        d.text((x, y + 1), str(n), font=F(32), fill=self.t["edge"] + (255,), anchor="mm", stroke_width=1, stroke_fill=self.t["edge"] + (255,))
+
+    def narrow(self, d, x0, y0, x1, y1, n, w=8, head=30, at=0.5):
+        """An arrow with its number on it (at = how far along the shaft the badge sits)."""
+        self.arrow(d, x0, y0, x1, y1, w, head)
+        self.num(d, x0 + (x1 - x0) * at, y0 + (y1 - y0) * at, n)
+
+    def card(self, shot, annotate, head=HEAD):
+        self.cards.append((shot, annotate, head))
 
     def render(self):
-        t = self.t; pad = 34; title_h = 64
+        t = self.t; pad = 30; inner = 22
         parts = []
-        for title, shot, annotate, lines, head in self.cards:
+        for shot, annotate, head in self.cards:
             im = self.src(shot); ov = Image.new("RGBA", im.size, (0, 0, 0, 0))
             annotate(ImageDraw.Draw(ov), im.size, head)
             im = Image.alpha_composite(im, ov)
             im = im.resize((IMG_W, round(im.height * IMG_W / im.width)), Image.LANCZOS)
-            h = title_h + im.height + 14 + 40 * len(lines) + 24
-            parts.append((title, im, lines, h))
-        total = 110 + sum(h + pad for *_, h in parts)
+            parts.append(im)
+        total = pad + sum(im.height + 2 * inner + pad for im in parts)
         page = Image.new("RGB", (W, total), t["page"]); d = ImageDraw.Draw(page)
-        d.text((60, 46), "OneRow gestures", font=F(52), fill=t["accent"])
-        y = 110
-        for title, im, lines, h in parts:
+        y = pad
+        for im in parts:
+            h = im.height + 2 * inner
             d.rounded_rectangle([30, y, W - 30, y + h], 24, fill=t["card"])
-            d.text((60, y + 22), title.upper(), font=F(25), fill=t["dim"])
-            page.paste(im.convert("RGB"), (60, y + title_h))
-            ty = y + title_h + im.height + 12
-            for ln in lines:
-                d.text((60, ty), ln, font=F(30), fill=t["accent"]); ty += 40
+            page.paste(im.convert("RGB"), (60, y + inner))
             y += h + pad
         return page.crop((0, 0, W, y))
 
@@ -74,54 +81,55 @@ def build(theme):
     # geometry of the phone keyboard in the mini crop: y measured from the top of the crop (keyboard starts at HEAD)
     strip = HEAD + 44; row = HEAD + 150; ctl = HEAD + 236
 
-    def c1(d, size, head):
+    def c1(d, size, head):                                                        # 1..5: swipes from the middle of the letter row
         cx = 540; S.finger(d, cx, row)
-        S.arrow(d, cx - 34, row, cx - 400, row); S.arrow(d, cx + 34, row, cx + 400, row)
-        S.arrow(d, cx + 24, row - 24, cx + 230, row - 140); S.arrow(d, cx - 24, row - 24, cx - 230, row - 140); S.arrow(d, cx, row - 34, cx, row - 150)
-        S.label(d, cx - 400, row + 44, "delete"); S.label(d, cx + 400, row + 44, "space")
-        S.label(d, cx + 250, row - 168, "enter"); S.label(d, cx - 250, row - 168, "voice"); S.label(d, cx, row - 176, "full keyboard")
-    S.card("Swipe on the letter row", "mini", c1, [], HEAD)
+        S.narrow(d, cx - 34, row, cx - 400, row, 1)                               # left: delete
+        S.narrow(d, cx - 24, row - 24, cx - 230, row - 140, 2)                    # up-left: voice
+        S.narrow(d, cx, row - 34, cx, row - 150, 3, at=0.55)                      # up: full keyboard
+        S.narrow(d, cx + 24, row - 24, cx + 230, row - 140, 4)                    # up-right: enter
+        S.narrow(d, cx + 34, row, cx + 400, row, 5)                               # right: space
+    S.card("mini", c1, HEAD)
 
-    def c2(d, size, head):
-        S.arrow(d, 330, row + 38, 220, row + 38, 6); S.arrow(d, 420, row + 38, 530, row + 38, 6)
-    S.card("Exact letters", "letter", c2, ["HOLD a letter, then slide: release types", "exactly that letter (no guessing)"])
-    S.card("Basic punctuation", "punct", lambda d, s, h: None, ["HOLD  .  then slide to choose"])
+    def c2(d, size, head):                                                        # 6: exact letters
+        S.arrow(d, 420, row + 38, 530, row + 38, 6); S.narrow(d, 330, row + 38, 220, row + 38, 6, 6)
+    S.card("letter", c2)
 
-    def c4(d, size, head):
-        S.arrow(d, 328, ctl - 70, 328, 24, 7)
-    S.card("Emoji", "emoji", c4, ["HOLD  ,  then slide: the emoji you use most", "come first.  Swipe UP: all emoji (tap one)"])
+    S.card("punct", lambda d, s, h: S.num(d, 560, 150, 7))                        # 7: punctuation popup
 
-    def c5(d, size, head):
-        S.arrow(d, 470, ctl, 320, ctl, 7); S.arrow(d, 620, ctl, 770, ctl, 7)
-        S.arrow(d, 960, strip, 700, strip, 6)
-    S.card("Delete and cursor", "mini", c5, ["DRAG on space: move the cursor", "DRAG left on backspace: delete word by word"])
+    def c4(d, size, head):                                                        # 8: emoji
+        S.narrow(d, 328, ctl - 70, 328, 24, 8, 7, at=0.75)
+    S.card("emoji", c4)
 
-    def c6(d, size, head):
-        S.arrow(d, 250, strip + 34, 700, strip + 34, 6)
-    S.card("Guesses", "bucket", c6, ["SWIPE the guess bar sideways: more guesses", "HOLD a guess, drop it on the bin: forget the word"])
-    S.card("Language key", "lang", lambda d, s, h: None,
-           ["TAP the language key: next language", "HOLD it, then slide: settings, normal,", "floating, split (tablets only)"])
+    def c5(d, size, head):                                                        # 9, 10: cursor and word delete
+        S.arrow(d, 620, ctl, 770, ctl, 7); S.narrow(d, 470, ctl, 320, ctl, 9, 7)
+        S.narrow(d, 960, strip, 700, strip, 10, 6)
+    S.card("mini", c5)
 
-    def c7b(d, size, head):
-        S.arrow(d, 465, 132, 300, 132, 6); S.arrow(d, 615, 132, 780, 132, 6)          # drag the handle on top
-        S.arrow(d, 955, 432, 1015, 490, 6)                                             # drag the corner
-    S.card("Floating keyboard", "float", c7b,
-           ["DRAG the handle on top: move it", "DRAG the corner: resize it", "(slide to the normal icon to dock it again)"])
+    def c6(d, size, head):                                                        # 11, 12: guess bar, bin
+        S.narrow(d, 250, strip + 34, 700, strip + 34, 11, 6)
+        S.num(d, 1010, 168, 12)
+    S.card("bucket", c6)
 
-    S.card("Swipe typing (full keyboard)", "trail", lambda d, s, h: None,
-           ["Optional (Settings > Gestures). Draw a word across", "the letters, here  h-e-l-l-o.  Tap a guess to replace", "the word; backspace deletes the whole word."], HEAD_FULL)
+    def c7(d, size, head):                                                        # 13, 14: language key
+        S.num(d, 310, 354, 13); S.num(d, 62, 150, 14)
+    S.card("lang", c7)
 
-    def c8(d, size, head):
-        y = HEAD_FULL + 503                                                 # the "123" key, bottom left of the full keyboard
-        S.finger(d, 90, y); S.arrow(d, 118, y - 18, 250, HEAD_FULL + 384, 7)
-    S.card("Symbols (full keyboard)", "peek", c8,
-           ["SLIDE from  123  onto the keys: symbols and currency", "signs appear; release types one and goes back", "to the letters"], HEAD_FULL)
+    def c7b(d, size, head):                                                       # 15, 16: floating keyboard
+        S.arrow(d, 615, 132, 780, 132, 6); S.narrow(d, 465, 132, 300, 132, 15, 6)  # drag the handle on top
+        S.narrow(d, 955, 432, 1015, 490, 16, 6)                                    # drag the corner
+    S.card("float", c7b)
 
-    def c9(d, size, head):
+    S.card("trail", lambda d, s, h: S.num(d, 640, 235, 17), HEAD_FULL)            # 17: swipe typing
+
+    def c8(d, size, head):                                                        # 18: symbols from 123
+        y = HEAD_FULL + 503
+        S.finger(d, 90, y); S.narrow(d, 118, y - 18, 250, HEAD_FULL + 384, 18, 7)
+    S.card("peek", c8, HEAD_FULL)
+
+    def c9(d, size, head):                                                        # 19: back to one row
         y0 = HEAD_FULL + 44
-        S.arrow(d, 760, y0, 760, y0 + 190, 8)
-    S.card("Full keyboard / back to one row", "fullidle", c9,
-           ["SWIPE DOWN on the guess bar: back to one row", "PULL UP from the guess bar or the bottom row of", "the one-row keyboard: full keyboard"], HEAD_FULL)
+        S.narrow(d, 760, y0, 760, y0 + 190, 19, 8)
+    S.card("fullidle", c9, HEAD_FULL)
     return S.render()
 
 if __name__ == "__main__":

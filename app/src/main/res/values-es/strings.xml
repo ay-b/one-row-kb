@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">versión %1$s</string>
+    <string name="header_setup">Configuración</string>
+    <string name="btn_enable_keyboard">1. Activar el teclado</string>
+    <string name="btn_switch_keyboard">2. Cambiar a OneRow</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Suscripción</string>
+    <string name="btn_subscribe">Suscribirse</string>
+    <string name="btn_buy_forever">Comprar para siempre (versión 1)</string>
+    <string name="btn_manage_subscription">Administrar suscripción</string>
+    <string name="sub_status_locked">La prueba ha caducado. El teclado solo escribe hasta que te suscribas o lo compres.</string>
+    <string name="sub_status_lifetime">OneRow es tuyo para siempre (versión 1). ¡Gracias!</string>
+    <string name="sub_status_subscribed">Suscrito. ¡Gracias!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Suscripción cancelada: termina en aproximadamente %1$d día.</item>
+        <item quantity="other">Suscripción cancelada: termina en aproximadamente %1$d días.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Periodo gratuito: queda %1$d día. Después, inicia la prueba gratuita de 1 mes o compra el teclado para conservar todas las funciones.</item>
+        <item quantity="other">Periodo gratuito: quedan %1$d días. Después, inicia la prueba gratuita de 1 mes o compra el teclado para conservar todas las funciones.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Suscribirse (precio aún no disponible)</string>
+    <string name="btn_subscribe_trial_price">Iniciar la prueba gratuita de 1 mes y luego %1$s al mes</string>
+    <string name="btn_subscribe_price">Suscribirse: %1$s al mes</string>
+    <string name="btn_buy_forever_price">Comprar para siempre (versión 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Comprar para siempre (precio aún no disponible)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Idiomas</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - diccionario no instalado</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - no instalado</string>
+    <string name="cd_remove_language">Quitar %1$s</string>
+    <string name="toast_keep_one_language">Mantén al menos un idioma</string>
+    <string name="toast_dictionary_not_installed">El diccionario de %1$s no está instalado</string>
+    <string name="lang_switch_hint">Cambiar de idioma en el teclado: toca la tecla de idioma (junto a la coma).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Tema</string>
+    <string name="theme_default">Predeterminado</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Oscuro</string>
+    <string name="theme_auto">Automático (seguir el sistema)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Tolerancia al teclear</string>
+    <string name="guessing_desc">Cuánto puede fallar una pulsación a una letra en el teclado de una fila y aun así contar. Estricta confía más en tus pulsaciones; amplia perdona fallos mayores.</string>
+    <string name="guessing_tight">Estricta – hasta ~2½ letras de distancia</string>
+    <string name="guessing_normal">Normal – hasta ~4 letras de distancia</string>
+    <string name="guessing_loose">Amplia – hasta ~5½ letras de distancia</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Precisión de la escritura por gestos</string>
+    <string name="swipe_precision_desc">Cuánto tiene que seguir la curva que dibujas por todo el teclado las letras de la palabra. Amplia perdona una curva imprecisa; estricta confía más en ella.</string>
+    <string name="swipe_precision_tight">Estricta – seguir las letras de cerca</string>
+    <string name="swipe_precision_normal">Normal</string>
+    <string name="swipe_precision_loose">Amplia – basta una curva imprecisa</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Teclado completo</string>
+    <string name="number_row">Fila de números dedicada</string>
+    <string name="number_row_desc">Una fila de dígitos sobre las letras. Mantén pulsado un dígito para ver superíndices y fracciones (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Corrector ortográfico</string>
+    <string name="spell_checker_desc">Android subraya las palabras en rojo con su propio corrector ortográfico, que solo conoce un idioma. OneRow tiene el suyo: conoce todos los idiomas que añadiste aquí (y las palabras que le enseñaste), así que solo se marcan las palabras realmente desconocidas.</string>
+    <string name="btn_spell_on">Usar el corrector ortográfico de OneRow</string>
+    <string name="btn_spell_off">Desactivar el corrector ortográfico</string>
+    <string name="toast_spell_on">Corrector ortográfico de OneRow seleccionado</string>
+    <string name="toast_spell_off">El corrector ortográfico está desactivado</string>
+    <string name="toast_spell_manual">Elige \"OneRow Keyboard\" en la pantalla que se abre, o ejecuta una vez en un ordenador: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Revisión</string>
+    <string name="proofread_button">Botón de revisión</string>
+    <string name="proofread_checking">Comprobando si este teléfono puede hacerlo...</string>
+    <string name="proofread_available">Un círculo de verificación en el extremo derecho de la barra de sugerencias: tócalo para corregir la gramática y la ortografía de lo que escribiste en el campo, tócalo de nuevo para deshacer. Inglés, francés, alemán, italiano y español. Funciona en el teléfono; el primer uso puede descargar un modelo.</string>
+    <string name="proofread_unavailable">No disponible en este teléfono: necesita la IA integrada en el dispositivo de Google (Gemini Nano), que solo tienen algunos teléfonos recientes.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Respuesta háptica</string>
+    <string name="vibrate">Vibrar al pulsar una tecla</string>
+    <string name="header_gestures">Gestos</string>
+    <string name="swipe_typing">Escritura por gestos en el teclado completo</string>
+    <string name="gestures_desc">Dibuja una palabra sobre las letras en lugar de tocarlas. Desliza hacia abajo en la barra de sugerencias para volver a una fila. La guía rápida de abajo muestra todos los gestos.</string>
+    <string name="header_cheat_sheet">Guía rápida</string>
+    <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture (tools/make_cheatsheet.py) -->
+    <string name="cheat_1">Desliza a la izquierda en la fila de letras: borrar</string>
+    <string name="cheat_2">Desliza hacia arriba a la izquierda: entrada de voz</string>
+    <string name="cheat_3">Desliza hacia arriba: teclado completo</string>
+    <string name="cheat_4">Desliza hacia arriba a la derecha: intro</string>
+    <string name="cheat_5">Desliza a la derecha: espacio</string>
+    <string name="cheat_6">Mantén pulsada una letra y desliza: al soltar se escribe exactamente esa letra (sin predicción)</string>
+    <string name="cheat_7">Mantén pulsada la tecla del punto y desliza para elegir la puntuación básica</string>
+    <string name="cheat_8">Mantén pulsada la tecla de la coma y desliza: primero van los emoji que más usas. Desliza hacia arriba: todos los emoji (toca uno)</string>
+    <string name="cheat_9">Arrastra sobre la barra espaciadora: mover el cursor</string>
+    <string name="cheat_10">Arrastra a la izquierda sobre retroceso: borrar palabra por palabra</string>
+    <string name="cheat_11">Desliza la barra de sugerencias hacia los lados: más sugerencias</string>
+    <string name="cheat_12">Mantén pulsada una sugerencia y suéltala sobre la papelera: olvidar la palabra</string>
+    <string name="cheat_13">Toca la tecla de idioma: siguiente idioma</string>
+    <string name="cheat_14">Mantén pulsada la tecla de idioma y desliza: ajustes, normal, flotante, dividido (solo tabletas). Desliza hasta el icono normal para acoplar de nuevo un teclado flotante</string>
+    <string name="cheat_15">Teclado flotante: arrastra el asa de arriba para moverlo</string>
+    <string name="cheat_16">Teclado flotante: arrastra la esquina para cambiar su tamaño</string>
+    <string name="cheat_17">Escritura por gestos (opcional, Ajustes &gt; Gestos): dibuja una palabra sobre las letras, aquí h-e-l-l-o. Toca una sugerencia para reemplazar la palabra; retroceso borra la palabra entera</string>
+    <string name="cheat_18">Desliza desde 123 hasta las teclas: aparecen símbolos y signos de moneda; al soltar se escribe uno y se vuelve a las letras</string>
+    <string name="cheat_19">Desliza hacia abajo en la barra de sugerencias: volver a una fila. Tira hacia arriba desde la barra de sugerencias o la fila inferior del teclado de una fila: teclado completo</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Acerca de</string>
+    <string name="btn_attributions">Atribuciones y licencias</string>
+    <string name="attributions_title">Atribuciones</string>
+    <string name="attributions_missing">Falta attribution.md.</string>
+    <string name="close">Cerrar</string>
+    <string name="header_try_it">Pruébalo</string>
+    <string name="hint_type_here">Escribe aquí</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Nada que revisar</string>
+    <string name="toast_proofread_failed">Error en la revisión</string>
+    <string name="toast_no_mistakes">No se encontraron errores</string>
+    <string name="toast_model_downloading_start">Descargando el modelo de revisión...</string>
+    <string name="toast_model_ready">Modelo listo - toca de nuevo</string>
+    <string name="toast_download_failed">Error en la descarga</string>
+    <string name="toast_model_still_downloading">El modelo de revisión aún se está descargando</string>
+    <string name="toast_proofread_unavailable">La revisión no está disponible en este teléfono</string>
+    <string name="toast_word_not_in_dictionary">\"%1$s\" no está en el diccionario</string>
+    <string name="toast_word_removed">Se quitó \"%1$s\"</string>
+    <string name="toast_no_voice_input">No hay entrada de voz activada</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Prueba caducada, suscríbete</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Suscripción caduca en %1$d día</item>
+        <item quantity="other">Suscripción caduca en %1$d días</item>
+    </plurals>
+</resources>

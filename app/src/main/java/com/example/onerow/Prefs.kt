@@ -8,15 +8,31 @@ class Prefs(context: Context) {
     private val sp = Storage.prefs(context, "onerow")
 
     var enabledCodes: List<String>
-        get() = (sp.getString("langs", "en") ?: "en").split(',').filter { c -> Languages.all.any { it.code == c } }
-            .ifEmpty { listOf("en") }
+        get() {
+            if (!sp.contains("langs")) firstRunLanguages()
+            return (sp.getString("langs", "en") ?: "en").split(',').filter { c -> Languages.all.any { it.code == c } }.ifEmpty { listOf("en") }
+        }
         set(v) = sp.edit().putString("langs", v.joinToString(",")).apply()
+
+    /** The phone's own language when the keyboard supports it and its dictionary is in the app, else null ("no" is the old code of "nb"). */
+    private fun systemLanguage(): String? {
+        val code = appCtx.resources.configuration.locales[0].language.let { if (it == "no" || it == "nn") "nb" else it }
+        return code.takeIf { c -> Languages.all.any { it.code == c } && Dictionaries.has(appCtx, c) }
+    }
+
+    /** First start: English plus the language of the phone's interface (if we have it), and the keyboard opens in the latter. Saved at once, so
+     *  removing a language later sticks. */
+    private fun firstRunLanguages() {
+        val sys = systemLanguage()
+        val codes = Languages.all.map { it.code }.filter { it == "en" || it == sys }
+        sp.edit().putString("langs", codes.joinToString(",")).also { if (sys != null && !sp.contains("cur")) it.putString("cur", sys) }.apply()
+    }
 
     /** Enabled languages in the canonical order (only those whose dictionary is installed). */
     val enabled: List<Lang> get() = Languages.all.filter { it.code in enabledCodes && Dictionaries.has(appCtx, it.code) }.ifEmpty { listOf(Languages.all[0]) }
 
     var currentCode: String
-        get() = sp.getString("cur", "en") ?: "en"
+        get() { if (!sp.contains("langs")) firstRunLanguages(); return sp.getString("cur", "en") ?: "en" }
         set(v) = sp.edit().putString("cur", v).apply()
 
     /** Keyboard height multiplier, 0.7 .. 1.5. */

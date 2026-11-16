@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">versija %1$s</string>
+    <string name="header_setup">Iestatīšana</string>
+    <string name="btn_enable_keyboard">1. Iespējojiet tastatūru</string>
+    <string name="btn_switch_keyboard">2. Pārslēdzieties uz OneRow</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Abonements</string>
+    <string name="btn_subscribe">Abonējiet</string>
+    <string name="btn_buy_forever">Iegādājieties uz visiem laikiem (1. versija)</string>
+    <string name="btn_manage_subscription">Pārvaldiet abonementu</string>
+    <string name="sub_status_locked">Izmēģinājuma laiks ir beidzies. Tastatūra tikai raksta, kamēr neabonējat vai neiegādājaties to.</string>
+    <string name="sub_status_lifetime">OneRow pieder jums uz visiem laikiem (1. versija). Paldies!</string>
+    <string name="sub_status_subscribed">Abonements ir aktīvs. Paldies!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="zero">Abonements atcelts: līdz beigām atlikušas aptuveni %1$d dienu.</item>
+        <item quantity="one">Abonements atcelts: līdz beigām atlikusi aptuveni %1$d diena.</item>
+        <item quantity="other">Abonements atcelts: līdz beigām atlikušas aptuveni %1$d dienas.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="zero">Bezmaksas periods: atlikušas %1$d dienu. Pēc tam sāciet 1 mēneša bezmaksas izmēģinājumu vai iegādājieties tastatūru, lai saglabātu visas funkcijas.</item>
+        <item quantity="one">Bezmaksas periods: atlikusi %1$d diena. Pēc tam sāciet 1 mēneša bezmaksas izmēģinājumu vai iegādājieties tastatūru, lai saglabātu visas funkcijas.</item>
+        <item quantity="other">Bezmaksas periods: atlikušas %1$d dienas. Pēc tam sāciet 1 mēneša bezmaksas izmēģinājumu vai iegādājieties tastatūru, lai saglabātu visas funkcijas.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Abonējiet (cena vēl nav pieejama)</string>
+    <string name="btn_subscribe_trial_price">Sāciet 1 mēneša bezmaksas izmēģinājumu, pēc tam %1$s mēnesī</string>
+    <string name="btn_subscribe_price">Abonējiet: %1$s mēnesī</string>
+    <string name="btn_buy_forever_price">Iegādājieties uz visiem laikiem (1. versija): %1$s</string>
+    <string name="btn_buy_forever_no_price">Iegādājieties uz visiem laikiem (cena vēl nav pieejama)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Valodas</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - vārdnīca nav instalēta</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - nav instalēta</string>
+    <string name="cd_remove_language">Noņemiet %1$s</string>
+    <string name="toast_keep_one_language">Paturiet vismaz vienu valodu</string>
+    <string name="toast_dictionary_not_installed">%1$s vārdnīca nav instalēta</string>
+    <string name="lang_switch_hint">Valodas maiņa tastatūrā: pieskarieties valodas taustiņam (blakus komatam).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Motīvs</string>
+    <string name="theme_default">Noklusējuma</string>
+    <string name="theme_light">Gaišs</string>
+    <string name="theme_dark">Tumšs</string>
+    <string name="theme_auto">Automātisks (pēc sistēmas)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Minēšana</string>
+    <string name="guessing_desc">Cik tālu pieskāriens drīkst nomaldīties no burta vienas rindas tastatūrā, lai to joprojām ieskaitītu. Stingrs vairāk uzticas jūsu pieskārieniem; brīvs piedod lielākas kļūdas.</string>
+    <string name="guessing_tight">Stingrs – līdz ~2½ burtiem attālumā</string>
+    <string name="guessing_normal">Normāls – līdz ~4 burtiem attālumā</string>
+    <string name="guessing_loose">Brīvs – līdz ~5½ burtiem attālumā</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Rakstīšanas ar vilkšanu precizitāte</string>
+    <string name="swipe_precision_desc">Cik cieši līknei, ko velkat pāri visai tastatūrai, jāseko vārda burtiem. Brīvs piedod aptuvenu līkni; stingrs tai vairāk uzticas.</string>
+    <string name="swipe_precision_tight">Stingrs – cieši sekojiet burtiem</string>
+    <string name="swipe_precision_normal">Normāls</string>
+    <string name="swipe_precision_loose">Brīvs – pietiek ar aptuvenu līkni</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Pilnā tastatūra</string>
+    <string name="number_row">Atsevišķa ciparu rinda</string>
+    <string name="number_row_desc">Ciparu rinda virs burtiem. Turiet nospiestu ciparu, lai iegūtu augšrakstus un daļskaitļus (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Pareizrakstības pārbaude</string>
+    <string name="spell_checker_desc">Android pasvītro vārdus sarkanā krāsā, izmantojot savu pareizrakstības pārbaudītāju, kas pārzina tikai vienu valodu. OneRow ir savs: tas pārzina visas šeit pievienotās valodas (un vārdus, ko tam iemācījāties), tāpēc tiek atzīmēti tikai patiešām nezināmi vārdi.</string>
+    <string name="btn_spell_on">Izmantojiet OneRow pareizrakstības pārbaudi</string>
+    <string name="btn_spell_off">Izslēdziet pareizrakstības pārbaudi</string>
+    <string name="toast_spell_on">Atlasīta OneRow pareizrakstības pārbaude</string>
+    <string name="toast_spell_off">Pareizrakstības pārbaude ir izslēgta</string>
+    <string name="toast_spell_manual">Atlasiet \"OneRow Keyboard\" ekrānā, kas tiks atvērts, vai vienreiz palaidiet datorā: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Korektūra</string>
+    <string name="proofread_button">Korektūras poga</string>
+    <string name="proofread_checking">Notiek pārbaude, vai šis tālrunis to spēj...</string>
+    <string name="proofread_available">Atzīmes aplis ieteikumu joslas labajā galā: pieskarieties tam, lai labotu laukā ievadītā teksta gramatiku un pareizrakstību, pieskarieties vēlreiz, lai atsauktu. Angļu, franču, vācu, itāļu un spāņu valoda. Darbojas tālrunī; pirmajā lietošanas reizē var tikt lejupielādēts modelis.</string>
+    <string name="proofread_unavailable">Šajā tālrunī nav pieejams: nepieciešams Google ierīcē darbināms mākslīgais intelekts (Gemini Nano), kas ir tikai dažiem jaunākiem tālruņiem.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Atgriezeniskā saite</string>
+    <string name="vibrate">Vibrācija, nospiežot taustiņu</string>
+    <string name="header_gestures">Žesti</string>
+    <string name="swipe_typing">Rakstīšana ar vilkšanu pilnajā tastatūrā</string>
+    <string name="gestures_desc">Velciet vārdu pāri burtiem, nevis pieskarieties tiem. Velciet uz leju ieteikumu joslā, lai atgrieztos pie vienas rindas. Zemāk redzamais pārskats rāda visus žestus.</string>
+    <string name="header_cheat_sheet">Pārskats</string>
+    <string name="cheat_1">Velciet pa kreisi burtu rindā: dzēšana</string>
+    <string name="cheat_2">Velciet augšup pa kreisi: balss ievade</string>
+    <string name="cheat_3">Velciet augšup: pilnā tastatūra</string>
+    <string name="cheat_4">Velciet augšup pa labi: enter</string>
+    <string name="cheat_5">Velciet pa labi: atstarpe</string>
+    <string name="cheat_6">Turiet burtu, tad velciet: atlaižot tiek ievadīts tieši šis burts (bez minēšanas)</string>
+    <string name="cheat_7">Turiet punkta taustiņu, tad velciet, lai izvēlētos pamata pieturzīmes</string>
+    <string name="cheat_8">Turiet komata taustiņu, tad velciet: vispirms visbiežāk lietotās emocijzīmes. Velciet augšup: visas emocijzīmes (pieskarieties kādai)</string>
+    <string name="cheat_9">Velciet pa atstarpes taustiņu: kursora pārvietošana</string>
+    <string name="cheat_10">Velciet pa kreisi pa atpakaļsoļa taustiņu: dzēšana pa vārdiem</string>
+    <string name="cheat_11">Velciet ieteikumu joslu uz sāniem: vairāk ieteikumu</string>
+    <string name="cheat_12">Turiet ieteikumu un nometiet to uz miskasti: aizmirst vārdu</string>
+    <string name="cheat_13">Pieskarieties valodas taustiņam: nākamā valoda</string>
+    <string name="cheat_14">Turiet valodas taustiņu, tad velciet: iestatījumi, parastā, peldošā, sadalītā (tikai planšetdatoros). Velciet uz parastās ikonu, lai peldošo tastatūru atkal piestiprinātu</string>
+    <string name="cheat_15">Peldošā tastatūra: velciet augšējo rokturi, lai to pārvietotu</string>
+    <string name="cheat_16">Peldošā tastatūra: velciet stūri, lai mainītu izmēru</string>
+    <string name="cheat_17">Rakstīšana ar vilkšanu (neobligāti, Iestatījumi &gt; Žesti): velciet vārdu pāri burtiem, šeit h-e-l-l-o. Pieskarieties ieteikumam, lai aizstātu vārdu; atpakaļsoļa taustiņš izdzēš visu vārdu</string>
+    <string name="cheat_18">Velciet no 123 uz taustiņiem: parādās simboli un valūtu zīmes; atlaižot tiek ievadīta viena un atgriežas burti</string>
+    <string name="cheat_19">Velciet uz leju ieteikumu joslā: atpakaļ uz vienu rindu. Velciet uz augšu no ieteikumu joslas vai vienas rindas tastatūras apakšējās rindas: pilnā tastatūra</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Par</string>
+    <string name="btn_attributions">Atsauces un licences</string>
+    <string name="attributions_title">Atsauces</string>
+    <string name="attributions_missing">Trūkst faila attribution.md.</string>
+    <string name="close">Aizvērt</string>
+    <string name="header_try_it">Izmēģiniet</string>
+    <string name="hint_type_here">Rakstiet šeit</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Nav ko pārbaudīt</string>
+    <string name="toast_proofread_failed">Korektūra neizdevās</string>
+    <string name="toast_no_mistakes">Kļūdas nav atrastas</string>
+    <string name="toast_model_downloading_start">Notiek korektūras modeļa lejupielāde...</string>
+    <string name="toast_model_ready">Modelis gatavs - pieskarieties vēlreiz</string>
+    <string name="toast_download_failed">Lejupielāde neizdevās</string>
+    <string name="toast_model_still_downloading">Korektūras modelis vēl tiek lejupielādēts</string>
+    <string name="toast_proofread_unavailable">Korektūra šajā tālrunī nav pieejama</string>
+    <string name="toast_word_not_in_dictionary">\"%1$s\" nav vārdnīcā</string>
+    <string name="toast_word_removed">Noņemts: \"%1$s\"</string>
+    <string name="toast_no_voice_input">Balss ievade nav iespējota</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Izmēģinājums beidzies, abonējiet</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="zero">Abonementam atlikušas %1$d dienu</item>
+        <item quantity="one">Abonementam atlikusi %1$d diena</item>
+        <item quantity="other">Abonementam atlikušas %1$d dienas</item>
+    </plurals>
+</resources>

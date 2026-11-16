@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">versjon %1$s</string>
+    <string name="header_setup">Oppsett</string>
+    <string name="btn_enable_keyboard">1. Aktiver tastaturet</string>
+    <string name="btn_switch_keyboard">2. Bytt til OneRow</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Abonnement</string>
+    <string name="btn_subscribe">Abonner</string>
+    <string name="btn_buy_forever">Kjøp for alltid (versjon 1)</string>
+    <string name="btn_manage_subscription">Administrer abonnement</string>
+    <string name="sub_status_locked">Prøveperioden er utløpt. Tastaturet kan bare skrive til du tegner et abonnement eller kjøper det.</string>
+    <string name="sub_status_lifetime">Du eier OneRow for alltid (versjon 1). Takk!</string>
+    <string name="sub_status_subscribed">Abonnement aktivt. Takk!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Abonnementet er sagt opp: det avsluttes om omtrent %1$d dag.</item>
+        <item quantity="other">Abonnementet er sagt opp: det avsluttes om omtrent %1$d dager.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Gratisperiode: %1$d dag igjen. Etter det kan du starte den gratis prøveperioden på 1 måned eller kjøpe tastaturet for å beholde alle funksjoner.</item>
+        <item quantity="other">Gratisperiode: %1$d dager igjen. Etter det kan du starte den gratis prøveperioden på 1 måned eller kjøpe tastaturet for å beholde alle funksjoner.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Abonner (prisen er ikke tilgjengelig ennå)</string>
+    <string name="btn_subscribe_trial_price">Start 1 måneds gratis prøveperiode, deretter %1$s per måned</string>
+    <string name="btn_subscribe_price">Abonner: %1$s per måned</string>
+    <string name="btn_buy_forever_price">Kjøp for alltid (versjon 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Kjøp for alltid (prisen er ikke tilgjengelig ennå)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Språk</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - ordboken er ikke installert</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - ikke installert</string>
+    <string name="cd_remove_language">Fjern %1$s</string>
+    <string name="toast_keep_one_language">Behold minst ett språk</string>
+    <string name="toast_dictionary_not_installed">Ordboken for %1$s er ikke installert</string>
+    <string name="lang_switch_hint">Bytt språk på tastaturet: trykk på språktasten (ved siden av kommaet).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Tema</string>
+    <string name="theme_default">Standard</string>
+    <string name="theme_light">Lyst</string>
+    <string name="theme_dark">Mørkt</string>
+    <string name="theme_auto">Automatisk (følg systemet)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Gjetting</string>
+    <string name="guessing_desc">Hvor langt et trykk kan bomme på en bokstav på tastaturet med én rad og likevel telle. Stram stoler mer på trykkene dine; løs tilgir større bom.</string>
+    <string name="guessing_tight">Stram – opptil ~2½ bokstaver unna</string>
+    <string name="guessing_normal">Normal – opptil ~4 bokstaver unna</string>
+    <string name="guessing_loose">Løs – opptil ~5½ bokstaver unna</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Presisjon for sveipeskriving</string>
+    <string name="swipe_precision_desc">Hvor nøye kurven du tegner over hele tastaturet må følge bokstavene i ordet. Løs tilgir en unøyaktig kurve; stram stoler mer på den.</string>
+    <string name="swipe_precision_tight">Stram – følg bokstavene nøye</string>
+    <string name="swipe_precision_normal">Normal</string>
+    <string name="swipe_precision_loose">Løs – en unøyaktig kurve holder</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Fullt tastatur</string>
+    <string name="number_row">Egen tallrad</string>
+    <string name="number_row_desc">En rad med sifre over bokstavene. Hold inne et siffer for hevet skrift og brøker (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Stavekontroll</string>
+    <string name="spell_checker_desc">Android understreker ord med rødt med sin egen stavekontroll, som bare kan ett språk. OneRow har sin egen: den kan alle språkene du har lagt til her (og ordene du har lært den), så bare helt ukjente ord blir markert.</string>
+    <string name="btn_spell_on">Bruk OneRows stavekontroll</string>
+    <string name="btn_spell_off">Slå av stavekontroll</string>
+    <string name="toast_spell_on">OneRows stavekontroll valgt</string>
+    <string name="toast_spell_off">Stavekontroll er slått av</string>
+    <string name="toast_spell_manual">Velg \"OneRow Keyboard\" på skjermen som åpnes, eller kjør én gang på en datamaskin: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Korrekturlesing</string>
+    <string name="proofread_button">Korrekturknapp</string>
+    <string name="proofread_checking">Sjekker om denne telefonen kan det...</string>
+    <string name="proofread_available">En hakesirkel ytterst til høyre i forslagsfeltet: trykk på den for å rette grammatikk og staving i det du har skrevet i feltet, trykk igjen for å angre. Engelsk, fransk, tysk, italiensk og spansk. Kjører på telefonen; første gang kan en modell lastes ned.</string>
+    <string name="proofread_unavailable">Ikke tilgjengelig på denne telefonen: den krever Googles KI på enheten (Gemini Nano), som bare noen nyere telefoner har.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Tilbakemelding</string>
+    <string name="vibrate">Vibrer ved tastetrykk</string>
+    <string name="header_gestures">Bevegelser</string>
+    <string name="swipe_typing">Sveipeskriving på hele tastaturet</string>
+    <string name="gestures_desc">Tegn et ord over bokstavene i stedet for å trykke på dem. Sveip ned på forslagsfeltet for å gå tilbake til én rad. Jukselappen nedenfor viser alle bevegelsene.</string>
+    <string name="header_cheat_sheet">Jukselapp</string>
+    <string name="cheat_1">Sveip til venstre på bokstavraden: slett</string>
+    <string name="cheat_2">Sveip opp til venstre: taleinndata</string>
+    <string name="cheat_3">Sveip opp: fullt tastatur</string>
+    <string name="cheat_4">Sveip opp til høyre: enter</string>
+    <string name="cheat_5">Sveip til høyre: mellomrom</string>
+    <string name="cheat_6">Hold inne en bokstav og gli deretter: når du slipper, skrives akkurat den bokstaven (ingen gjetting)</string>
+    <string name="cheat_7">Hold inne punktumtasten og gli deretter for å velge vanlige skilletegn</string>
+    <string name="cheat_8">Hold inne komma-tasten og gli deretter: emojiene du bruker mest kommer først. Sveip opp: alle emojier (trykk på en)</string>
+    <string name="cheat_9">Dra på mellomrom: flytt markøren</string>
+    <string name="cheat_10">Dra til venstre på slettetasten: slett ord for ord</string>
+    <string name="cheat_11">Sveip forslagsfeltet sideveis: flere forslag</string>
+    <string name="cheat_12">Hold inne et forslag og slipp det på søppelkassen: glem ordet</string>
+    <string name="cheat_13">Trykk på språktasten: neste språk</string>
+    <string name="cheat_14">Hold inne språktasten og gli deretter: innstillinger, normal, flytende, delt (bare nettbrett). Gli til ikonet for normal for å feste et flytende tastatur igjen</string>
+    <string name="cheat_15">Flytende tastatur: dra i håndtaket øverst for å flytte det</string>
+    <string name="cheat_16">Flytende tastatur: dra i hjørnet for å endre størrelsen</string>
+    <string name="cheat_17">Sveipeskriving (valgfritt, Innstillinger &gt; Bevegelser): tegn et ord over bokstavene, her h-e-l-l-o. Trykk på et forslag for å erstatte ordet; slettetasten sletter hele ordet</string>
+    <string name="cheat_18">Gli fra 123 til tastene: symboler og valutategn vises; når du slipper, skrives ett, og du går tilbake til bokstavene</string>
+    <string name="cheat_19">Sveip ned på forslagsfeltet: tilbake til én rad. Dra opp fra forslagsfeltet eller nederste rad på tastaturet med én rad: fullt tastatur</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Om</string>
+    <string name="btn_attributions">Kildehenvisninger og lisenser</string>
+    <string name="attributions_title">Kildehenvisninger</string>
+    <string name="attributions_missing">attribution.md mangler.</string>
+    <string name="close">Lukk</string>
+    <string name="header_try_it">Prøv det</string>
+    <string name="hint_type_here">Skriv her</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Ingenting å korrekturlese</string>
+    <string name="toast_proofread_failed">Korrekturlesingen mislyktes</string>
+    <string name="toast_no_mistakes">Ingen feil funnet</string>
+    <string name="toast_model_downloading_start">Laster ned korrekturmodellen...</string>
+    <string name="toast_model_ready">Modellen er klar - trykk igjen</string>
+    <string name="toast_download_failed">Nedlastingen mislyktes</string>
+    <string name="toast_model_still_downloading">Korrekturmodellen lastes fortsatt ned</string>
+    <string name="toast_proofread_unavailable">Korrekturlesing er ikke tilgjengelig på denne telefonen</string>
+    <string name="toast_word_not_in_dictionary">\"%1$s\" finnes ikke i ordboken</string>
+    <string name="toast_word_removed">\"%1$s\" fjernet</string>
+    <string name="toast_no_voice_input">Ingen taleinndata aktivert</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Prøven er utløpt, abonner</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Abonnementet utløper om %1$d dag</item>
+        <item quantity="other">Abonnementet utløper om %1$d dager</item>
+    </plurals>
+</resources>

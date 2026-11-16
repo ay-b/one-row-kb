@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">verze %1$s</string>
+    <string name="header_setup">Nastavení</string>
+    <string name="btn_enable_keyboard">1. Zapnout klávesnici</string>
+    <string name="btn_switch_keyboard">2. Přepnout na OneRow</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Předplatné</string>
+    <string name="btn_subscribe">Předplatit</string>
+    <string name="btn_buy_forever">Koupit navždy (verze 1)</string>
+    <string name="btn_manage_subscription">Spravovat předplatné</string>
+    <string name="sub_status_locked">Zkušební doba skončila. Klávesnice pouze píše, dokud si ji nepředplatíte nebo nekoupíte.</string>
+    <string name="sub_status_lifetime">OneRow vlastníte navždy (verze 1). Děkujeme!</string>
+    <string name="sub_status_subscribed">Předplatné je aktivní. Děkujeme!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Předplatné zrušeno: skončí přibližně za %1$d den.</item>
+        <item quantity="few">Předplatné zrušeno: skončí přibližně za %1$d dny.</item>
+        <item quantity="other">Předplatné zrušeno: skončí přibližně za %1$d dní.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Bezplatné období: zbývá %1$d den. Poté zahajte 1měsíční bezplatnou zkušební verzi nebo klávesnici kupte, abyste zachovali všechny funkce.</item>
+        <item quantity="few">Bezplatné období: zbývají %1$d dny. Poté zahajte 1měsíční bezplatnou zkušební verzi nebo klávesnici kupte, abyste zachovali všechny funkce.</item>
+        <item quantity="other">Bezplatné období: zbývá %1$d dní. Poté zahajte 1měsíční bezplatnou zkušební verzi nebo klávesnici kupte, abyste zachovali všechny funkce.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Předplatit (cena zatím není k dispozici)</string>
+    <string name="btn_subscribe_trial_price">Zahájit 1měsíční bezplatnou zkušební verzi, poté %1$s měsíčně</string>
+    <string name="btn_subscribe_price">Předplatit: %1$s měsíčně</string>
+    <string name="btn_buy_forever_price">Koupit navždy (verze 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Koupit navždy (cena zatím není k dispozici)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Jazyky</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - slovník není nainstalován</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - není nainstalován</string>
+    <string name="cd_remove_language">Odebrat: %1$s</string>
+    <string name="toast_keep_one_language">Ponechte alespoň jeden jazyk</string>
+    <string name="toast_dictionary_not_installed">Slovník %1$s není nainstalován</string>
+    <string name="lang_switch_hint">Jazyk na klávesnici přepnete klepnutím na klávesu jazyka (vedle čárky).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Motiv</string>
+    <string name="theme_default">Výchozí</string>
+    <string name="theme_light">Světlý</string>
+    <string name="theme_dark">Tmavý</string>
+    <string name="theme_auto">Automaticky (podle systému)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Odhadování</string>
+    <string name="guessing_desc">Jak daleko od písmene může klepnutí na jednořádkové klávesnici minout a přesto se započítat. Přísné více věří vašim klepnutím, volné odpustí větší minutí.</string>
+    <string name="guessing_tight">Přísné – nejvýš ~2½ písmene daleko</string>
+    <string name="guessing_normal">Normální – nejvýš ~4 písmena daleko</string>
+    <string name="guessing_loose">Volné – nejvýš ~5½ písmene daleko</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Přesnost psaní gesty</string>
+    <string name="swipe_precision_desc">Jak přesně musí křivka nakreslená přes plnou klávesnici sledovat písmena slova. Volné odpustí nepřesnou křivku, přísné jí věří více.</string>
+    <string name="swipe_precision_tight">Přísné – přesně po písmenech</string>
+    <string name="swipe_precision_normal">Normální</string>
+    <string name="swipe_precision_loose">Volné – stačí přibližná křivka</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Plná klávesnice</string>
+    <string name="number_row">Samostatný řádek číslic</string>
+    <string name="number_row_desc">Řádek číslic nad písmeny. Podržením číslice zadáte horní indexy a zlomky (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Kontrola pravopisu</string>
+    <string name="spell_checker_desc">Android podtrhává slova červeně pomocí vlastní kontroly pravopisu, která zná jen jeden jazyk. OneRow má vlastní: zná všechny jazyky, které sem přidáte (i slova, která jste ji naučili), takže se označí jen opravdu neznámá slova.</string>
+    <string name="btn_spell_on">Použít kontrolu pravopisu OneRow</string>
+    <string name="btn_spell_off">Vypnout kontrolu pravopisu</string>
+    <string name="toast_spell_on">Vybrána kontrola pravopisu OneRow</string>
+    <string name="toast_spell_off">Kontrola pravopisu je vypnutá</string>
+    <string name="toast_spell_manual">Na obrazovce, která se otevře, vyberte „OneRow Keyboard“ nebo jednou spusťte na počítači: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Korektura</string>
+    <string name="proofread_button">Tlačítko korektury</string>
+    <string name="proofread_checking">Zjišťuji, zda to tento telefon zvládne...</string>
+    <string name="proofread_available">Kruh se zaškrtnutím na pravém konci lišty návrhů: klepnutím opravíte gramatiku a pravopis textu napsaného v poli, dalším klepnutím vrátíte zpět. Angličtina, francouzština, němčina, italština a španělština. Běží v telefonu; při prvním použití se může stáhnout model.</string>
+    <string name="proofread_unavailable">Na tomto telefonu není k dispozici: vyžaduje umělou inteligenci Google běžící v zařízení (Gemini Nano), kterou mají jen některé novější telefony.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Odezva</string>
+    <string name="vibrate">Vibrovat při stisku klávesy</string>
+    <string name="header_gestures">Gesta</string>
+    <string name="swipe_typing">Psaní gesty na plné klávesnici</string>
+    <string name="gestures_desc">Slovo nakreslete přes písmena místo jejich klepání. Přejetím po liště návrhů dolů se vrátíte k jednomu řádku. Všechna gesta ukazuje tahák níže.</string>
+    <string name="header_cheat_sheet">Tahák</string>
+    <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture -->
+    <string name="cheat_1">Přejeďte doleva po řádku písmen: smazat</string>
+    <string name="cheat_2">Přejeďte nahoru a doleva: hlasové zadávání</string>
+    <string name="cheat_3">Přejeďte nahoru: plná klávesnice</string>
+    <string name="cheat_4">Přejeďte nahoru a doprava: Enter</string>
+    <string name="cheat_5">Přejeďte doprava: mezera</string>
+    <string name="cheat_6">Podržte písmeno a posuňte prst: po uvolnění se napíše přesně toto písmeno (bez odhadování)</string>
+    <string name="cheat_7">Podržte klávesu tečky a posuňte prst pro výběr základní interpunkce</string>
+    <string name="cheat_8">Podržte klávesu čárky a posuňte prst: nejprve nejčastěji používaná emodži. Přejeďte nahoru: všechna emodži (klepněte na vybrané)</string>
+    <string name="cheat_9">Táhněte po mezerníku: posun kurzoru</string>
+    <string name="cheat_10">Táhněte doleva po klávese Backspace: mazání po slovech</string>
+    <string name="cheat_11">Přejeďte po liště návrhů do strany: další návrhy</string>
+    <string name="cheat_12">Podržte návrh a přetáhněte ho na koš: slovo se zapomene</string>
+    <string name="cheat_13">Klepněte na klávesu jazyka: další jazyk</string>
+    <string name="cheat_14">Podržte klávesu jazyka a posuňte prst: nastavení, normální, plovoucí, rozdělená (jen tablety). Posunutím na ikonu normální znovu ukotvíte plovoucí klávesnici</string>
+    <string name="cheat_15">Plovoucí klávesnice: přetažením úchytu nahoře ji přesunete</string>
+    <string name="cheat_16">Plovoucí klávesnice: přetažením rohu změníte velikost</string>
+    <string name="cheat_17">Psaní gesty (volitelné, Nastavení &gt; Gesta): nakreslete slovo přes písmena, zde h-e-l-l-o. Klepnutím na návrh slovo nahradíte; Backspace smaže celé slovo</string>
+    <string name="cheat_18">Přejeďte z 123 na klávesy: zobrazí se symboly a značky měn; po uvolnění se jeden napíše a klávesnice se vrátí k písmenům</string>
+    <string name="cheat_19">Přejeďte po liště návrhů dolů: zpět k jednomu řádku. Přetažením nahoru z lišty návrhů nebo ze spodního řádku jednořádkové klávesnice: plná klávesnice</string>
+
+    <!-- About, try it -->
+    <string name="header_about">O aplikaci</string>
+    <string name="btn_attributions">Uvedení autorství a licence</string>
+    <string name="attributions_title">Uvedení autorství</string>
+    <string name="attributions_missing">Soubor attribution.md chybí.</string>
+    <string name="close">Zavřít</string>
+    <string name="header_try_it">Vyzkoušejte</string>
+    <string name="hint_type_here">Pište sem</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Není co opravovat</string>
+    <string name="toast_proofread_failed">Korektura se nezdařila</string>
+    <string name="toast_no_mistakes">Nenalezeny žádné chyby</string>
+    <string name="toast_model_downloading_start">Stahuji model korektury...</string>
+    <string name="toast_model_ready">Model je připraven - klepněte znovu</string>
+    <string name="toast_download_failed">Stažení se nezdařilo</string>
+    <string name="toast_model_still_downloading">Model korektury se stále stahuje</string>
+    <string name="toast_proofread_unavailable">Korektura není na tomto telefonu k dispozici</string>
+    <string name="toast_word_not_in_dictionary">Slovo „%1$s“ není ve slovníku</string>
+    <string name="toast_word_removed">Odebráno: „%1$s“</string>
+    <string name="toast_no_voice_input">Hlasové zadávání není zapnuto</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Zkušební doba skončila, předplaťte si</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Předplatné končí za %1$d den</item>
+        <item quantity="few">Předplatné končí za %1$d dny</item>
+        <item quantity="other">Předplatné končí za %1$d dní</item>
+    </plurals>
+</resources>

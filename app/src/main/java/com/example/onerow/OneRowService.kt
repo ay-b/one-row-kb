@@ -172,7 +172,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (kv.proof == KeyboardView.ProofState.BUSY) return
         finishComposing(); endGlide()
         val text = (ic.getTextBeforeCursor(5000, 0)?.toString() ?: "") + (ic.getTextAfterCursor(5000, 0)?.toString() ?: "")
-        if (text.isBlank()) { say("Nothing to proofread"); return }
+        if (text.isBlank()) { say(getString(R.string.toast_nothing_to_proofread)); return }
         kv.proof = KeyboardView.ProofState.BUSY
         val code = lang.code
         Proofread.status(this, code) { st ->
@@ -180,8 +180,8 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
                 Proofread.Status.AVAILABLE -> Proofread.fix(this, code, text) { out ->
                     val ic2 = currentInputConnection
                     when {
-                        out == null || ic2 == null -> { say("Proofreading failed"); syncProof() }
-                        out == text -> { say("No mistakes found"); syncProof() }
+                        out == null || ic2 == null -> { say(getString(R.string.toast_proofread_failed)); syncProof() }
+                        out == text -> { say(getString(R.string.toast_no_mistakes)); syncProof() }
                         else -> {
                             ic2.beginBatchEdit(); ic2.performContextMenuAction(android.R.id.selectAll); ic2.commitText(out, 1); ic2.endBatchEdit()
                             proofUndo = text; syncProof()
@@ -189,9 +189,9 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
                         }
                     }
                 }
-                Proofread.Status.DOWNLOADABLE -> { say("Downloading the proofreading model..."); Proofread.download(this, code) { ok -> say(if (ok) "Model ready - tap again" else "Download failed"); syncProof() } }
-                Proofread.Status.DOWNLOADING -> { say("The proofreading model is still downloading"); syncProof() }
-                Proofread.Status.UNAVAILABLE -> { say("Proofreading is not available on this phone"); syncProof() }
+                Proofread.Status.DOWNLOADABLE -> { say(getString(R.string.toast_model_downloading_start)); Proofread.download(this, code) { ok -> say(getString(if (ok) R.string.toast_model_ready else R.string.toast_download_failed)); syncProof() } }
+                Proofread.Status.DOWNLOADING -> { say(getString(R.string.toast_model_still_downloading)); syncProof() }
+                Proofread.Status.UNAVAILABLE -> { say(getString(R.string.toast_proofread_unavailable)); syncProof() }
             }
         }
     }
@@ -883,9 +883,9 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (kv.keypadActive) return
         val lx = lex ?: return; val ud = user ?: return
         val i = lx.indexOf(word)
-        if (i < 0) { Toast.makeText(this, "\"$word\" is not in the dictionary", Toast.LENGTH_SHORT).show(); return }
+        if (i < 0) { Toast.makeText(this, getString(R.string.toast_word_not_in_dictionary, word), Toast.LENGTH_SHORT).show(); return }
         lx.remove(i); ud.forget(word)
-        Toast.makeText(this, "Removed \"$word\"", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.toast_word_removed, word), Toast.LENGTH_SHORT).show()
         if (taps.isNotEmpty()) updateComposing() else refresh()
     }
 
@@ -904,7 +904,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
                 val st = ime.getSubtypeAt(i)
                 if (st.mode == "voice") { switchInputMethod(ime.id, st); return }
             }
-            android.widget.Toast.makeText(this, "No voice input enabled", android.widget.Toast.LENGTH_SHORT).show()
+            android.widget.Toast.makeText(this, getString(R.string.toast_no_voice_input), android.widget.Toast.LENGTH_SHORT).show()
         } catch (e: Exception) { /* voice not available */ }
     }
 

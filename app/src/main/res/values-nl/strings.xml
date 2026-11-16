@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings screen: header and setup -->
+    <string name="version_label">versie %1$s</string>
+    <string name="header_setup">Instellen</string>
+    <string name="btn_enable_keyboard">1. Toetsenbord inschakelen</string>
+    <string name="btn_switch_keyboard">2. Overschakelen naar OneRow</string>
+
+    <!-- Subscription -->
+    <string name="header_subscription">Abonnement</string>
+    <string name="btn_subscribe">Abonneren</string>
+    <string name="btn_buy_forever">Voorgoed kopen (versie 1)</string>
+    <string name="btn_manage_subscription">Abonnement beheren</string>
+    <string name="sub_status_locked">De proefperiode is verlopen. Het toetsenbord kan alleen nog typen totdat je een abonnement neemt of het koopt.</string>
+    <string name="sub_status_lifetime">OneRow is voorgoed van jou (versie 1). Bedankt!</string>
+    <string name="sub_status_subscribed">Geabonneerd. Bedankt!</string>
+    <plurals name="sub_status_cancelled">
+        <item quantity="one">Abonnement opgezegd: het eindigt over ongeveer %1$d dag.</item>
+        <item quantity="other">Abonnement opgezegd: het eindigt over ongeveer %1$d dagen.</item>
+    </plurals>
+    <plurals name="sub_status_free">
+        <item quantity="one">Gratis periode: nog %1$d dag. Daarna kun je de gratis proefperiode van 1 maand starten of het toetsenbord kopen om alle functies te houden.</item>
+        <item quantity="other">Gratis periode: nog %1$d dagen. Daarna kun je de gratis proefperiode van 1 maand starten of het toetsenbord kopen om alle functies te houden.</item>
+    </plurals>
+    <string name="btn_subscribe_no_price">Abonneren (prijs nog niet beschikbaar)</string>
+    <string name="btn_subscribe_trial_price">Start de gratis proefperiode van 1 maand, daarna %1$s per maand</string>
+    <string name="btn_subscribe_price">Abonneren: %1$s per maand</string>
+    <string name="btn_buy_forever_price">Voorgoed kopen (versie 1): %1$s</string>
+    <string name="btn_buy_forever_no_price">Voorgoed kopen (prijs nog niet beschikbaar)</string>
+
+    <!-- Languages -->
+    <string name="header_languages">Talen</string>
+    <string name="lang_dictionary_missing">%1$s  (%2$s)  - woordenboek niet geïnstalleerd</string>
+    <string name="lang_not_installed">%1$s  (%2$s)  - niet geïnstalleerd</string>
+    <string name="cd_remove_language">%1$s verwijderen</string>
+    <string name="toast_keep_one_language">Houd minstens één taal</string>
+    <string name="toast_dictionary_not_installed">Het woordenboek %1$s is niet geïnstalleerd</string>
+    <string name="lang_switch_hint">Van taal wisselen op het toetsenbord: tik op de taaltoets (naast de komma).</string>
+
+    <!-- Theme -->
+    <string name="header_theme">Thema</string>
+    <string name="theme_default">Standaard</string>
+    <string name="theme_light">Licht</string>
+    <string name="theme_dark">Donker</string>
+    <string name="theme_auto">Automatisch (volgt systeem)</string>
+
+    <!-- Guessing -->
+    <string name="header_guessing">Raden</string>
+    <string name="guessing_desc">Hoe ver een tik een letter op het toetsenbord met één rij mag missen en toch meetellen. Strak vertrouwt je tikken meer; ruim vergeeft grotere missers.</string>
+    <string name="guessing_tight">Strak – tot ~2½ letters ernaast</string>
+    <string name="guessing_normal">Normaal – tot ~4 letters ernaast</string>
+    <string name="guessing_loose">Ruim – tot ~5½ letters ernaast</string>
+
+    <!-- Swipe typing precision -->
+    <string name="header_swipe_precision">Precisie van swipend typen</string>
+    <string name="swipe_precision_desc">Hoe nauw de curve die je over het volledige toetsenbord tekent de letters van het woord moet volgen. Ruim vergeeft een slordige curve; strak vertrouwt hem meer.</string>
+    <string name="swipe_precision_tight">Strak – volg de letters nauwkeurig</string>
+    <string name="swipe_precision_normal">Normaal</string>
+    <string name="swipe_precision_loose">Ruim – een slordige curve volstaat</string>
+
+    <!-- Full keyboard -->
+    <string name="header_full_keyboard">Volledig toetsenbord</string>
+    <string name="number_row">Aparte cijferrij</string>
+    <string name="number_row_desc">Een rij cijfers boven de letters. Houd een cijfer ingedrukt voor superscripts en breuken (³, ½, ⅓, ¼ ...).</string>
+
+    <!-- Spell checker -->
+    <string name="header_spell_checker">Spellingcontrole</string>
+    <string name="spell_checker_desc">Android onderstreept woorden in rood met zijn eigen spellingcontrole, die maar één taal kent. OneRow heeft een eigen: die kent alle talen die je hier hebt toegevoegd (en de woorden die je haar hebt geleerd), zodat alleen echt onbekende woorden worden gemarkeerd.</string>
+    <string name="btn_spell_on">De OneRow-spellingcontrole gebruiken</string>
+    <string name="btn_spell_off">Spellingcontrole uitschakelen</string>
+    <string name="toast_spell_on">OneRow-spellingcontrole geselecteerd</string>
+    <string name="toast_spell_off">Spellingcontrole staat uit</string>
+    <string name="toast_spell_manual">Kies \"OneRow Keyboard\" in het scherm dat opent, of voer eenmalig op een computer uit: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+
+    <!-- Proofreading -->
+    <string name="header_proofreading">Corrigeren</string>
+    <string name="proofread_button">Correctieknop</string>
+    <string name="proofread_checking">Controleren of deze telefoon dit kan...</string>
+    <string name="proofread_available">Een vinkje in een cirkel aan het rechteruiteinde van de suggestiebalk: tik erop om de grammatica en spelling van wat je in het veld hebt getypt te corrigeren, tik nogmaals om ongedaan te maken. Engels, Frans, Duits, Italiaans en Spaans. Draait op de telefoon; bij het eerste gebruik wordt mogelijk een model gedownload.</string>
+    <string name="proofread_unavailable">Niet beschikbaar op deze telefoon: hiervoor is de AI op het apparaat van Google (Gemini Nano) nodig, die alleen sommige nieuwere telefoons hebben.</string>
+
+    <!-- Feedback, gestures -->
+    <string name="header_feedback">Feedback</string>
+    <string name="vibrate">Trillen bij toetsaanslag</string>
+    <string name="header_gestures">Gebaren</string>
+    <string name="swipe_typing">Swipend typen op het volledige toetsenbord</string>
+    <string name="gestures_desc">Teken een woord over de letters in plaats van ze aan te tikken. Veeg omlaag op de suggestiebalk om terug te keren naar één rij. Het spiekbriefje hieronder toont elk gebaar.</string>
+    <string name="header_cheat_sheet">Spiekbriefje</string>
+    <string name="cheat_1">Veeg naar links op de letterrij: wissen</string>
+    <string name="cheat_2">Veeg naar linksboven: spraakinvoer</string>
+    <string name="cheat_3">Veeg omhoog: volledig toetsenbord</string>
+    <string name="cheat_4">Veeg naar rechtsboven: enter</string>
+    <string name="cheat_5">Veeg naar rechts: spatie</string>
+    <string name="cheat_6">Houd een letter ingedrukt en schuif dan: loslaten typt precies die letter (zonder raden)</string>
+    <string name="cheat_7">Houd de punttoets ingedrukt en schuif dan om basisleestekens te kiezen</string>
+    <string name="cheat_8">Houd de komtoets ingedrukt en schuif dan: de emoji die je het vaakst gebruikt staan vooraan. Veeg omhoog: alle emoji (tik er een aan)</string>
+    <string name="cheat_9">Sleep op de spatiebalk: de cursor verplaatsen</string>
+    <string name="cheat_10">Sleep naar links op backspace: woord voor woord wissen</string>
+    <string name="cheat_11">Veeg zijwaarts over de suggestiebalk: meer suggesties</string>
+    <string name="cheat_12">Houd een suggestie ingedrukt en laat hem op de prullenbak vallen: het woord vergeten</string>
+    <string name="cheat_13">Tik op de taaltoets: volgende taal</string>
+    <string name="cheat_14">Houd de taaltoets ingedrukt en schuif dan: instellingen, normaal, zwevend, gesplitst (alleen tablets). Schuif naar het pictogram voor normaal om een zwevend toetsenbord weer vast te zetten</string>
+    <string name="cheat_15">Zwevend toetsenbord: sleep de greep bovenaan om het te verplaatsen</string>
+    <string name="cheat_16">Zwevend toetsenbord: sleep de hoek om het formaat te wijzigen</string>
+    <string name="cheat_17">Swipend typen (optioneel, Instellingen &gt; Gebaren): teken een woord over de letters, hier h-e-l-l-o. Tik op een suggestie om het woord te vervangen; backspace wist het hele woord</string>
+    <string name="cheat_18">Schuif van 123 naar de toetsen: symbolen en valutatekens verschijnen; loslaten typt er een en gaat terug naar de letters</string>
+    <string name="cheat_19">Veeg omlaag op de suggestiebalk: terug naar één rij. Trek omhoog vanaf de suggestiebalk of de onderste rij van het toetsenbord met één rij: volledig toetsenbord</string>
+
+    <!-- About, try it -->
+    <string name="header_about">Over</string>
+    <string name="btn_attributions">Bronvermeldingen en licenties</string>
+    <string name="attributions_title">Bronvermeldingen</string>
+    <string name="attributions_missing">attribution.md ontbreekt.</string>
+    <string name="close">Sluiten</string>
+    <string name="header_try_it">Uitproberen</string>
+    <string name="hint_type_here">Typ hier</string>
+
+    <!-- Keyboard: toasts -->
+    <string name="toast_nothing_to_proofread">Niets te corrigeren</string>
+    <string name="toast_proofread_failed">Corrigeren mislukt</string>
+    <string name="toast_no_mistakes">Geen fouten gevonden</string>
+    <string name="toast_model_downloading_start">Correctiemodel wordt gedownload...</string>
+    <string name="toast_model_ready">Model klaar - tik nogmaals</string>
+    <string name="toast_download_failed">Downloaden mislukt</string>
+    <string name="toast_model_still_downloading">Het correctiemodel wordt nog gedownload</string>
+    <string name="toast_proofread_unavailable">Corrigeren is niet beschikbaar op deze telefoon</string>
+    <string name="toast_word_not_in_dictionary">\"%1$s\" staat niet in het woordenboek</string>
+    <string name="toast_word_removed">\"%1$s\" verwijderd</string>
+    <string name="toast_no_voice_input">Geen spraakinvoer ingeschakeld</string>
+
+    <!-- Keyboard: guess bar (one line, keep it short) -->
+    <string name="bar_trial_expired">Proef verlopen, neem een abonnement</string>
+    <plurals name="bar_subscription_expiring">
+        <item quantity="one">Abonnement verloopt over %1$d dag</item>
+        <item quantity="other">Abonnement verloopt over %1$d dagen</item>
+    </plurals>
+</resources>

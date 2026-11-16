@@ -14,8 +14,8 @@ object Themes {
     const val DARK = "dark"
     const val AUTO = "auto"            // follows the system: light or dark
 
-    /** Code -> label, in the order shown in settings. */
-    val choices = listOf(DEFAULT to "Default", LIGHT to "Light", DARK to "Dark", AUTO to "Auto (follow system)")
+    /** Code -> label string resource, in the order shown in settings. */
+    val choices = listOf(DEFAULT to R.string.theme_default, LIGHT to R.string.theme_light, DARK to R.string.theme_dark, AUTO to R.string.theme_auto)
 
     private val slate = Palette(0xFF2E383E.toInt(), 0xFF3B474E.toInt(), 0xFF46545C.toInt(), 0xFF56646C.toInt(),
         0xFF80CBC4.toInt(), 0xFF9BDAD4.toInt(), 0xFFE9EFF1.toInt(), 0xFF98A8AE.toInt())
