@@ -179,13 +179,22 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         dock.requestLayout()
     }
 
-    private fun showFloatingSoon() {
-        dock.post {
-            if (layoutMode == "floating" && isInputViewShown) {
+    /**
+     * Shows the floating window. The input view may not be shown / attached yet at the moment we are asked (the system
+     * calls us while it is still setting the window up), and the popup can fail or have been dismissed by the system, so
+     * this retries for about a second until the window really is up.
+     */
+    private fun showFloatingSoon(attempt: Int = 0) {
+        dock.postDelayed({
+            if (layoutMode != "floating") return@postDelayed
+            if (isInputViewShown && dock.isAttachedToWindow) {
                 val p = Themes.palette(prefs.theme, resources.configuration)
                 floating.show(dock, kv, p.strip, p.dim)
+                if (floating.isShowing()) return@postDelayed
             }
-        }
+            if (attempt < 20) showFloatingSoon(attempt + 1)
+            else android.util.Log.w("OneRowFloat", "the floating window did not come up (shown=$isInputViewShown attached=${dock.isAttachedToWindow})")
+        }, if (attempt == 0) 0L else 60L)
     }
 
     override fun onWindowShown() { super.onWindowShown(); if (::floating.isInitialized && layoutMode == "floating") showFloatingSoon() }
@@ -235,6 +244,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         taps.clear(); exact.clear(); shown.clear()
         applyPrefs()
         applyNavBar()
+        if (layoutMode == "floating" && !floating.isShowing()) showFloatingSoon()       // insurance: the window-shown callback can come too early
         kv.resetForNewField()
         val v = info.inputType and InputType.TYPE_MASK_VARIATION
         val isText = (info.inputType and InputType.TYPE_MASK_CLASS) == InputType.TYPE_CLASS_TEXT

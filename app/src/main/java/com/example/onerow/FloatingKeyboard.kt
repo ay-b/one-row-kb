@@ -44,7 +44,7 @@ class FloatingKeyboard(private val ctx: Context, private val prefs: Prefs, priva
     private var winLeft = 0; private var winTop = 0
     private var w = 0; private var h = 0
 
-    fun isShowing() = popup != null
+    fun isShowing() = popup?.isShowing == true
 
     /** Shows the keyboard [kv] in a floating window, next to the window of [anchor] (the docked input view). */
     fun show(anchor: View, kv: KeyboardView, backColor: Int, hintColor: Int) {
@@ -59,7 +59,8 @@ class FloatingKeyboard(private val ctx: Context, private val prefs: Prefs, priva
         winLeft = if (prefs.floatX == Int.MIN_VALUE) (dm.widthPixels - w) / 2 else prefs.floatX
         winTop = if (prefs.floatY == Int.MIN_VALUE) dm.heightPixels - h - dp(96f).toInt() else prefs.floatY
         clamp()
-        if (popup != null) { place(); return }
+        if (popup?.isShowing == true) { place(); return }
+        popup = null                       // dismissed behind our back (or never came up): start again
         val a = offsets() ?: return
         val pw = PopupWindow(frame, w, ViewGroup.LayoutParams.WRAP_CONTENT, false).apply {
             isClippingEnabled = false; isTouchable = true; isFocusable = false
