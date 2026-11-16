@@ -69,6 +69,11 @@ class Prefs(context: Context) {
         get() = sp.getBoolean("number_row", false)
         set(v) = sp.edit().putBoolean("number_row", v).apply()
 
+    /** The proofread circle on the guess strip (on-device grammar fixing; only offered where the phone can do it). */
+    var proofread: Boolean
+        get() = sp.getBoolean("proofread", false)
+        set(v) = sp.edit().putBoolean("proofread", v).apply()
+
     var haptics: Boolean
         get() = sp.getBoolean("haptics", true)
         set(v) = sp.edit().putBoolean("haptics", v).apply()

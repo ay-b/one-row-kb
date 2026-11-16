@@ -44,6 +44,8 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         fun onGlide(xs: FloatArray, ys: FloatArray, n: Int, layout: GlideLayout)
         /** The user asked to delete [word] from the dictionary (hold a guess, then the bucket). */
         fun onRemoveWord(word: String)
+        /** The proofread circle at the right end of the guess strip was tapped. */
+        fun onProofread()
     }
 
     enum class Mode { MINI, FULL, SYMBOLS, SYMBOLS_FULL, SYMBOLS_FULL2, PEEK }
@@ -66,9 +68,18 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     private var suggDragX = 0f
     private fun maxSuggScroll(): Float {
         val r = placed.firstOrNull { it.key.kind == Kind.SUGG }?.rect ?: return 0f
-        suggLayout(r.width())
-        return maxOf(0f, suggTotal - r.width())
+        suggLayout(stripW(r))
+        return maxOf(0f, suggTotal - stripW(r))
     }
+
+    /** The proofread circle at the right end of the guess strip: off (not shown), ready (a check), busy, or undo (what it just did). */
+    enum class ProofState { OFF, READY, BUSY, UNDO }
+    var proof = ProofState.OFF
+        set(v) { if (v != field) { field = v; laidOut = null; invalidate() } }
+    private var proofDown = false
+    private fun proofW() = if (proof == ProofState.OFF) 0f else dp(34f)
+    /** The guess slots use the strip minus the circle. */
+    private fun stripW(r: RectF) = r.width() - proofW()
 
     // Guess slots are as wide as their words (never narrower than a quarter of the bar), so long words keep their size.
     private var slotLeft = FloatArray(0)
@@ -726,14 +737,15 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     /** Suggestions, or a lens (pressed key + neighbours) while a key is held. */
     private fun drawStrip(c: Canvas, r: RectF) {
         if (gesture == Gesture.SWIPE && swipe != Swipe.NONE) { drawSwipeHint(c, r); return }
-        suggLayout(r.width())
+        val sw0 = stripW(r)
+        suggLayout(sw0)
         if (scrollToBest) {                      // keep the highlighted best guess in view when the list is long
             scrollToBest = false
             val b = suggestions.indices.firstOrNull { it == bestIndex }
-            if (b != null && b < slotLeft.size && slotLeft[b] + slotWidth[b] > r.width())
-                suggScroll = minOf(maxOf(0f, suggTotal - r.width()), slotLeft[b] + slotWidth[b] - r.width())
+            if (b != null && b < slotLeft.size && slotLeft[b] + slotWidth[b] > sw0)
+                suggScroll = minOf(maxOf(0f, suggTotal - sw0), slotLeft[b] + slotWidth[b] - sw0)
         }
-        c.save(); c.clipRect(r)
+        c.save(); c.clipRect(r.left, r.top, r.left + sw0, r.bottom)
         for (i in suggestions.indices) {
             val s = suggestions[i].takeIf { it.isNotEmpty() } ?: continue
             val sw = slotWidth[i]
@@ -754,12 +766,35 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             drawCentered(c, s, l + sw / 2, r.centerY())
         }
         c.restore()
-        if (suggTotal > r.width() + 1f) {                                // thin position marker: more guesses to the side
-            val total = suggTotal; val vis = r.width() / total
+        if (suggTotal > sw0 + 1f) {                                // thin position marker: more guesses to the side
+            val total = suggTotal; val vis = sw0 / total
             fill.color = cDim
-            val x0 = r.left + (suggScroll / total) * r.width()
-            c.drawRoundRect(x0, r.bottom - dp(3f), x0 + vis * r.width(), r.bottom - dp(1.5f), dp(1f), dp(1f), fill)
+            val x0 = r.left + (suggScroll / total) * sw0
+            c.drawRoundRect(x0, r.bottom - dp(3f), x0 + vis * sw0, r.bottom - dp(1.5f), dp(1f), dp(1f), fill)
         }
+        if (proof != ProofState.OFF) drawProof(c, r)
+    }
+
+    /** A small colored circle: a check (ready), dots (working) or a back arrow (undo). */
+    private fun drawProof(c: Canvas, r: RectF) {
+        val rad = dp(11f); val cx = r.right - dp(17f); val cy = r.centerY()
+        fill.color = if (proofDown) cKeyDown else if (proof == ProofState.BUSY) cDim else cTeal
+        c.drawCircle(cx, cy, rad, fill)
+        val old = stroke.color; val sw = stroke.strokeWidth
+        stroke.color = cStrip; stroke.strokeWidth = dp(2f)
+        when (proof) {
+            ProofState.READY -> {
+                c.drawLine(cx - rad * 0.42f, cy + rad * 0.02f, cx - rad * 0.1f, cy + rad * 0.34f, stroke)
+                c.drawLine(cx - rad * 0.1f, cy + rad * 0.34f, cx + rad * 0.46f, cy - rad * 0.3f, stroke)
+            }
+            ProofState.UNDO -> {                                   // an arrow curving back
+                c.drawArc(RectF(cx - rad * 0.42f, cy - rad * 0.4f, cx + rad * 0.42f, cy + rad * 0.44f), 200f, 250f, false, stroke)
+                c.drawLine(cx - rad * 0.5f, cy - rad * 0.55f, cx - rad * 0.42f, cy - rad * 0.1f, stroke)
+                c.drawLine(cx - rad * 0.5f, cy - rad * 0.55f, cx - rad * 0.05f, cy - rad * 0.48f, stroke)
+            }
+            else -> { fill.color = cStrip; for (k in -1..1) c.drawCircle(cx + k * rad * 0.42f, cy, dp(1.4f), fill) }
+        }
+        stroke.color = old; stroke.strokeWidth = sw
     }
 
     /** Shows what the current swipe will do, in the strip. */
@@ -804,7 +839,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     }
 
     private fun suggSlot(p: Placed, x: Float): Int {
-        suggLayout(p.rect.width())
+        suggLayout(stripW(p.rect))
         val xx = x - p.rect.left + suggScroll
         for (i in slotLeft.indices) if (xx < slotLeft[i] + slotWidth[i]) return i
         return maxOf(0, slotLeft.size - 1)
@@ -857,6 +892,9 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 gesture = Gesture.NONE; swipe = Swipe.NONE
                 pressed = keyAt(e.x, e.y)
                 val p = pressed
+                if (p?.key?.kind == Kind.SUGG && proof != ProofState.OFF && e.x > p.rect.right - dp(36f)) {
+                    proofDown = true; haptic(); invalidate(); return true          // the circle at the strip's right end
+                }
                 if (p?.key?.kind == Kind.SUGG) {
                     suggDragging = false
                     suggDown = suggSlot(p, e.x)
@@ -871,8 +909,14 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 downTime = android.os.SystemClock.uptimeMillis(); handler.removeCallbacks(lensTick); handler.postDelayed(lensTick, PREVIEW_MS)
                 haptic(); invalidate()
             }
-            MotionEvent.ACTION_MOVE -> onMove(e)
+            MotionEvent.ACTION_MOVE -> if (!proofDown) onMove(e)
             MotionEvent.ACTION_UP -> {
+                if (proofDown) {
+                    proofDown = false
+                    val sg = pressed
+                    if (sg != null && e.x > sg.rect.right - dp(42f) && e.y < rowRects[0].bottom + dp(4f)) listener.onProofread()
+                    pressed = null; invalidate(); return true
+                }
                 handler.removeCallbacks(repeatStart); handler.removeCallbacks(repeatDelete); handler.removeCallbacks(holdToPrecise); handler.removeCallbacks(holdGuess)
                 if (gesture == Gesture.MENU) { removeUp(e); pressed = null; gesture = Gesture.NONE; invalidate(); return true }
                 val p = pressed
@@ -895,6 +939,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 pressed = null; gesture = Gesture.NONE; swipe = Swipe.NONE; invalidate()
             }
             MotionEvent.ACTION_CANCEL -> {
+                proofDown = false
                 handler.removeCallbacks(repeatStart); handler.removeCallbacks(repeatDelete); handler.removeCallbacks(holdToPrecise); handler.removeCallbacks(holdGuess)
                 if (gesture == Gesture.PEEK) setMode(Mode.FULL)
                 pressed = null; suggDown = -1; gesture = Gesture.NONE; swipe = Swipe.NONE; glideX.clear(); glideY.clear(); invalidate()

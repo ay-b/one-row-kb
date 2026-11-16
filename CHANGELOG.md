@@ -4,6 +4,12 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.16.0
+- New: proofreading. Turn on "Proofread button" in the settings and a small teal check circle appears at the right end of the guess bar. Tap it to have the whole field corrected (grammar and spelling); the circle turns into an undo arrow for 10 seconds. English, French, German, Italian and Spanish. It uses Google's on-device AI (ML Kit GenAI proofreading, Gemini Nano through AICore): nothing leaves the phone, the app gets no internet permission of its own, and the switch is greyed out on phones that do not have it.
+
+## 0.15.6
+- Settings: the notes under the spell-checker buttons are gone (messages show as a short toast instead), and every button on the page has the same flat look.
+
 ## 0.15.5
 - Fix: the floating keyboard sometimes did not come up when called. It is shown only once the input view is really up, retried for about a second if the system is not ready, rebuilt if the system dismissed its window, and also requested when a field starts input. (Logged under the tag OneRowFloat if it still fails.)
 

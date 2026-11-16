@@ -55,6 +55,17 @@ class MainActivity : Activity() {
         }
     }
 
+    /** One look for every button on the page: flat, rounded, a soft grey fill that works on light and dark. */
+    private fun button(label: String, onClick: () -> Unit) = Button(this).apply {
+        text = label; isAllCaps = false; textSize = 15f
+        stateListAnimator = null; elevation = 0f
+        val fill = android.graphics.drawable.GradientDrawable().apply { cornerRadius = dp(8).toFloat(); setColor(0x33808080) }
+        background = android.graphics.drawable.RippleDrawable(android.content.res.ColorStateList.valueOf(0x44808080), fill, null)
+        setPadding(dp(12), dp(10), dp(12), dp(10))
+        layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(6) }
+        setOnClickListener { onClick() }
+    }
+
     private fun header(text: String) = TextView(this).apply {
         this.text = text.uppercase(); textSize = 12f; setTextColor(teal); typeface = Typeface.DEFAULT_BOLD
         letterSpacing = 0.08f; setPadding(0, dp(22), 0, dp(6))
@@ -73,21 +84,15 @@ class MainActivity : Activity() {
         })
 
         col.addView(header("Setup"))
-        col.addView(Button(this).apply {
-            text = "1. Enable keyboard"
-            setOnClickListener { startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)) }
-        })
-        col.addView(Button(this).apply {
-            text = "2. Switch to OneRow"
-            setOnClickListener { (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).showInputMethodPicker() }
-        })
+        col.addView(button("1. Enable keyboard") { startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)) })
+        col.addView(button("2. Switch to OneRow") { (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).showInputMethodPicker() })
 
         col.addView(header("Languages"))
         // the added languages, each with a bin; below them a dropdown of the others and a + to add the chosen one
         val langList = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         col.addView(langList)
         val spinner = Spinner(this)
-        val plus = Button(this).apply { text = "+"; textSize = 18f }
+        val plus = button("+") { }.apply { textSize = 18f; (layoutParams as LinearLayout.LayoutParams).topMargin = 0 }
         val addRow = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL
             addView(spinner, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
@@ -184,40 +189,45 @@ class MainActivity : Activity() {
         })
 
         col.addView(header("Spell checker"))
-        val spellState = TextView(this).apply { textSize = 13f; setTextColor(Color.GRAY) }
         col.addView(TextView(this).apply {
             text = "Android underlines words in red using its own spell checker, which only knows one language. OneRow has its own: it knows every language you added here (and the words you taught it), so only really unknown words get marked."
             textSize = 13f; setPadding(0, 0, 0, dp(6))
         })
         val me = "$packageName/${OneRowSpellChecker::class.java.name}"
-        fun secure(key: String) = try { Settings.Secure.getString(contentResolver, key) } catch (e: Exception) { null }
-        fun showSpellState() {
-            val on = secure("spell_checker_enabled") != "0"
-            val cur = secure("selected_spell_checker")
-            spellState.text = when {
-                !on -> "Now: spell checking is off."
-                cur == me -> "Now: OneRow spell checker is in use."
-                else -> "Now: another spell checker is in use (${cur ?: "default"})."
-            }
-        }
-        showSpellState()
-        /** Writes the setting if this app was granted WRITE_SECURE_SETTINGS (adb, once); otherwise opens the system screen and tells how. */
+        /** Writes the setting if this app was granted WRITE_SECURE_SETTINGS (adb, once); otherwise opens the system screen and says how. */
         fun setSpell(select: Boolean) {
             try {
                 if (select) { Settings.Secure.putString(contentResolver, "selected_spell_checker", me); Settings.Secure.putInt(contentResolver, "spell_checker_enabled", 1) }
                 else Settings.Secure.putInt(contentResolver, "spell_checker_enabled", 0)
-                showSpellState()
+                Toast.makeText(this, if (select) "OneRow spell checker selected" else "Spell checking is off", Toast.LENGTH_SHORT).show()
             } catch (e: SecurityException) {
-                spellState.text = "Android only lets apps change this with a one-time permission. Either pick \"OneRow Keyboard\" yourself in the screen that just opened (Spell checker), or run this once on a computer:\nadb shell pm grant $packageName android.permission.WRITE_SECURE_SETTINGS\nand tap the button again."
+                Toast.makeText(this, "Pick \"OneRow Keyboard\" in the screen that opens, or run once on a computer: adb shell pm grant $packageName android.permission.WRITE_SECURE_SETTINGS", Toast.LENGTH_LONG).show()
                 val intents = listOf(
                     Intent().setClassName("com.android.settings", "com.android.settings.Settings\$SpellCheckersSettingsActivity"),
                     Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
                 for (i in intents) { try { startActivity(i); break } catch (_: Exception) { } }
             }
         }
-        col.addView(Button(this).apply { text = "Use the OneRow spell checker"; setOnClickListener { setSpell(true) } })
-        col.addView(Button(this).apply { text = "Turn spell checking off"; setOnClickListener { setSpell(false) } })
-        col.addView(spellState)
+        col.addView(button("Use the OneRow spell checker") { setSpell(true) })
+        col.addView(button("Turn spell checking off") { setSpell(false) })
+
+        col.addView(header("Proofreading"))
+        val proofSwitch = Switch(this).apply {
+            text = "Proofread button"; textSize = 16f; isChecked = false; isEnabled = false; alpha = 0.4f
+            setOnCheckedChangeListener { _, on -> prefs.proofread = on }
+        }
+        val proofNote = TextView(this).apply { textSize = 13f; setPadding(0, 0, 0, dp(12)); text = "Checking whether this phone can do it..." }
+        col.addView(proofSwitch)
+        col.addView(proofNote)
+        // greyed out unless the phone has Google's on-device AI (Gemini Nano through AICore) for the proofreading feature
+        Proofread.status(this, "en") { st ->
+            val ok = st != Proofread.Status.UNAVAILABLE
+            proofSwitch.isEnabled = ok; proofSwitch.alpha = if (ok) 1f else 0.4f
+            proofSwitch.isChecked = ok && prefs.proofread
+            if (!ok && prefs.proofread) prefs.proofread = false
+            proofNote.text = if (ok) "A check circle at the right end of the guess bar: tap it to fix the grammar and spelling of what you typed in the field, tap again to undo. English, French, German, Italian and Spanish. Runs on the phone; the first use may download a model."
+                             else "Not available on this phone: it needs Google's on-device AI (Gemini Nano), which only some newer phones have."
+        }
 
         col.addView(header("Feedback"))
         col.addView(Switch(this).apply {

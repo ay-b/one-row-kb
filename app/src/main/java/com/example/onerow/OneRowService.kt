@@ -110,9 +110,58 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         kv.themeMode = prefs.theme
         kv.swipeTyping = prefs.swipeTyping
         kv.numberRow = prefs.numberRow
+        syncProof()
         if (prefs.swipeTyping) loaded[lang.code]?.let { e -> Thread { e.glide.warmUp() }.start() }   // switched on after the engine loaded
         kv.tapSigma = floatArrayOf(0.62f, 0.9f, 1.3f)[prefs.tolerance]
         if (cur.code != lang.code) switchLanguage(cur)
+    }
+
+    // ---- proofreading (on-device, see Proofread) ----
+    private var proofUndo: String? = null           // the text before the last fix, while "undo" is offered
+    private val proofReset = Runnable { proofUndo = null; syncProof() }
+
+    private fun syncProof() {
+        kv.proof = when {
+            !prefs.proofread || !Proofread.supports(lang.code) -> KeyboardView.ProofState.OFF
+            proofUndo != null -> KeyboardView.ProofState.UNDO
+            else -> KeyboardView.ProofState.READY
+        }
+    }
+
+    private fun say(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+
+    override fun onProofread() {
+        val ic = currentInputConnection ?: return
+        proofUndo?.let { original ->                   // the circle is an "undo" for a few seconds after a fix
+            ui.removeCallbacks(proofReset)
+            ic.beginBatchEdit(); ic.performContextMenuAction(android.R.id.selectAll); ic.commitText(original, 1); ic.endBatchEdit()
+            proofUndo = null; syncProof(); return
+        }
+        if (kv.proof == KeyboardView.ProofState.BUSY) return
+        finishComposing(); endGlide()
+        val text = (ic.getTextBeforeCursor(5000, 0)?.toString() ?: "") + (ic.getTextAfterCursor(5000, 0)?.toString() ?: "")
+        if (text.isBlank()) { say("Nothing to proofread"); return }
+        kv.proof = KeyboardView.ProofState.BUSY
+        val code = lang.code
+        Proofread.status(this, code) { st ->
+            when (st) {
+                Proofread.Status.AVAILABLE -> Proofread.fix(this, code, text) { out ->
+                    val ic2 = currentInputConnection
+                    when {
+                        out == null || ic2 == null -> { say("Proofreading failed"); syncProof() }
+                        out == text -> { say("No mistakes found"); syncProof() }
+                        else -> {
+                            ic2.beginBatchEdit(); ic2.performContextMenuAction(android.R.id.selectAll); ic2.commitText(out, 1); ic2.endBatchEdit()
+                            proofUndo = text; syncProof()
+                            ui.removeCallbacks(proofReset); ui.postDelayed(proofReset, 10_000)
+                        }
+                    }
+                }
+                Proofread.Status.DOWNLOADABLE -> { say("Downloading the proofreading model..."); Proofread.download(this, code) { ok -> say(if (ok) "Model ready - tap again" else "Download failed"); syncProof() } }
+                Proofread.Status.DOWNLOADING -> { say("The proofreading model is still downloading"); syncProof() }
+                Proofread.Status.UNAVAILABLE -> { say("Proofreading is not available on this phone"); syncProof() }
+            }
+        }
     }
 
     private fun switchLanguage(l: Lang) {
@@ -120,6 +169,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         lang = l
         prefs.currentCode = l.code
         kv.setLanguage(l)
+        syncProof()
         loadEngine(l)
         refresh()
     }
