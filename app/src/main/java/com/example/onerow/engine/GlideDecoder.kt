@@ -30,6 +30,15 @@ class GlideDecoder(private val lex: Lexicon) {
     var tolerance = 0.25f         // distances below this (in key widths) cost nothing
     var otherFloor = -26f         // words whose end / missed-key penalty alone is worse than this are never the intended word
 
+    /** How exact the drawn curve has to be: 0 tight, 1 normal (the original values), 2 loose (a rough curve is enough). */
+    fun applyTolerance(level: Int) {
+        when (level) {
+            0 -> { tolerance = 0.15f; endRadius = 1.0f; visitTolerance = 0.3f; pathWeight = 16f; endWeight = 5f }
+            2 -> { tolerance = 0.5f; endRadius = 1.8f; visitTolerance = 0.8f; pathWeight = 9f; endWeight = 3f }
+            else -> { tolerance = 0.25f; endRadius = 1.2f; visitTolerance = 0.4f; pathWeight = 14f; endWeight = 4f }
+        }
+    }
+
     // ---- index: collapsed key sequence of every word (flat), and the words grouped by first key ----
     private var off = IntArray(1 shl 16)          // word -> start in [flat]
     private var len = ByteArray(1 shl 16)         // word -> number of keys (0 = not glideable)

@@ -69,6 +69,11 @@ class Prefs(context: Context) {
         get() = sp.getBoolean("number_row", false)
         set(v) = sp.edit().putBoolean("number_row", v).apply()
 
+    /** How exactly a swiped word has to be drawn: 0 tight, 1 normal, 2 loose. */
+    var swipeTolerance: Int
+        get() = sp.getInt("swipe_tol", 1).coerceIn(0, 2)
+        set(v) = sp.edit().putInt("swipe_tol", v).apply()
+
     /** The proofread circle on the guess strip (on-device grammar fixing; only offered where the phone can do it). */
     var proofread: Boolean
         get() = sp.getBoolean("proofread", false)

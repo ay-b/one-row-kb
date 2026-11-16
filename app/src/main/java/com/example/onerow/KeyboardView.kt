@@ -171,6 +171,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     private var preciseAnchorX = 0f
     private var preciseIdx = 0
     private var preciseEmoji = false
+    private var preciseDir = 1          // -1: the list runs to the left as the finger moves right-to-left (keys near the right edge, where there is no room to slide right)
     private var emojiPopup: android.widget.PopupWindow? = null
     private var swipe = Swipe.NONE
     private val handler = Handler(Looper.getMainLooper())
@@ -219,6 +220,9 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             preciseKeys = placed.filter { it.row == p.row && (it.key.kind == Kind.LETTER || it.key.kind == Kind.CHAR) }
             preciseIdx0 = preciseKeys.indexOf(p).coerceAtLeast(0)
         }
+        // a list that continues to the right of a key near the right edge is walked leftwards instead (the lens is mirrored)
+        val variantList = p.key.kind == Kind.LANG || preciseKeys.firstOrNull()?.rect === p.rect
+        preciseDir = if (variantList && p.rect.centerX() > width * 0.55f && preciseIdx0 <= (preciseKeys.size - 1) / 2) -1 else 1
         pressed = preciseKeys[preciseIdx0]
         preciseIdx = preciseIdx0
         preciseAnchorX = holdX
@@ -576,6 +580,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     private inner class LensContent(ctx: Context) : View(ctx) {
         var items: List<String> = emptyList(); var hi = 0; var tailX = 0f; var hint = false   // hint: "swipe up for all emoji"
+        var pad = 0f; var moreLeft = false; var moreRight = false               // a list longer than the bubble: arrows at the sides show where it continues
         private val p = Paint(Paint.ANTI_ALIAS_FLAG); private val t = Paint(Paint.ANTI_ALIAS_FLAG).apply { textAlign = Paint.Align.CENTER; typeface = face }
         override fun onDraw(c: Canvas) {
             val w = width.toFloat(); val cardH = dp(LENS_CARD_DP); val r = dp(14f)
@@ -593,8 +598,19 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 t.color = cDim; t.textSize = sp(10f); c.drawText("all", hx, cardH * 0.80f, t)
             }
             val step = dp(LENS_STEP_DP)
+            if (pad > 0f) {                               // the "more this way" chevrons
+                val cy = cardH / 2; val a = dp(5f)
+                p.style = Paint.Style.STROKE; p.strokeCap = Paint.Cap.ROUND; p.strokeJoin = Paint.Join.ROUND
+                val lx = dp(6f) + pad / 2 - dp(2f)
+                p.strokeWidth = if (moreLeft) dp(2.6f) else dp(1.2f); p.color = if (moreLeft) cTeal else (cDim and 0x00FFFFFF) or 0x55000000
+                c.drawPath(Path().apply { moveTo(lx + a * 0.6f, cy - a); lineTo(lx - a * 0.6f, cy); lineTo(lx + a * 0.6f, cy + a) }, p)
+                val rx = w - dp(6f) - pad / 2 + dp(2f) - (if (hint) dp(46f) else 0f)
+                p.strokeWidth = if (moreRight) dp(2.6f) else dp(1.2f); p.color = if (moreRight) cTeal else (cDim and 0x00FFFFFF) or 0x55000000
+                c.drawPath(Path().apply { moveTo(rx - a * 0.6f, cy - a); lineTo(rx + a * 0.6f, cy); lineTo(rx - a * 0.6f, cy + a) }, p)
+                p.strokeCap = Paint.Cap.BUTT
+            }
             for ((i, label) in items.withIndex()) {
-                val x = dp(8f) + (i + 0.5f) * step
+                val x = dp(8f) + pad + (i + 0.5f) * step
                 if (i == hi) {
                     p.style = Paint.Style.FILL; p.color = cTeal
                     c.drawRoundRect(x - dp(16f), dp(6f), x + dp(16f), cardH - dp(6f), dp(9f), dp(9f), p)
@@ -630,18 +646,26 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         val idx = keys.indexOf(down); if (idx < 0) { hideLens(); return }
         val span = if (precise) 3 else 2
         val from = maxOf(0, idx - span); val to = minOf(keys.size - 1, idx + span)
-        val items = (from..to).map { i ->
+        var items = (from..to).map { i ->
             val k = keys[i]
             if ((k.key.kind == Kind.LETTER || k.key.base != null) && shift != Shift.OFF) k.key.label.uppercase() else k.key.label
         }
+        val mirrored = precise && preciseDir < 0
+        var hiIdx = idx - from
+        if (mirrored) { items = items.reversed(); hiIdx = to - idx }          // the list is walked leftwards: show it that way
+        val scrollable = precise && keys.size > items.size
+        val before = from > 0; val after = to < keys.size - 1
+        val padArrow = if (scrollable) dp(14f) else 0f
         val step = dp(LENS_STEP_DP)
         val emojiHint = precise && preciseEmoji
-        val w = items.size * step + dp(16f) + (if (emojiHint) dp(46f) else 0f); val cardH = dp(LENS_CARD_DP); val tailH = dp(11f); val h = cardH + tailH
+        val w = items.size * step + dp(16f) + 2 * padArrow + (if (emojiHint) dp(46f) else 0f); val cardH = dp(LENS_CARD_DP); val tailH = dp(11f); val h = cardH + tailH
         val keyCx = down.rect.centerX()
         val left = (keyCx - w / 2).coerceIn(dp(4f), maxOf(dp(4f), width - w - dp(4f)))
         val top = down.rect.top - dp(3f) - h                                   // the pointer tip just above the key
         val content = lensContent ?: LensContent(context).also { lensContent = it }
-        content.items = items; content.hi = idx - from; content.hint = emojiHint; content.tailX = (keyCx - left).coerceIn(dp(16f), w - dp(16f))
+        content.items = items; content.hi = hiIdx; content.hint = emojiHint; content.pad = padArrow
+        content.moreLeft = if (mirrored) after else before; content.moreRight = if (mirrored) before else after
+         content.tailX = (keyCx - left).coerceIn(dp(16f), w - dp(16f))
         val geo = floatArrayOf(left, top, w, h)
         if (lensPopup == null) {
             val pw = android.widget.PopupWindow(content, w.toInt(), h.toInt(), false).apply { isTouchable = false; isFocusable = false; isClippingEnabled = false }
@@ -987,7 +1011,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 haptic(); invalidate(); showEmojiPalette(); return
             }
             // finger travel is amplified into the magnified lens: PRECISE_STEP dp = one letter
-            val idx = (preciseIdx0 + Math.round((e.x - preciseAnchorX) / dp(PRECISE_STEP_DP))).coerceIn(0, preciseKeys.size - 1)
+            val idx = (preciseIdx0 + preciseDir * Math.round((e.x - preciseAnchorX) / dp(PRECISE_STEP_DP))).coerceIn(0, preciseKeys.size - 1)
             if (idx != preciseIdx) { preciseIdx = idx; pressed = preciseKeys[idx]; haptic(); invalidate() }
             return
         }

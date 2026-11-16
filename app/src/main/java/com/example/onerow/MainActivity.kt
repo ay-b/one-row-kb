@@ -163,6 +163,19 @@ class MainActivity : Activity() {
             setOnCheckedChangeListener { g, id -> prefs.tolerance = g.findViewById<View>(id).tag as Int }
         })
 
+        col.addView(header("Swipe typing precision"))
+        col.addView(TextView(this).apply {
+            text = "How closely the curve you draw across the full keyboard has to follow the letters of the word. Loose forgives a rough curve; tight trusts it more."
+            textSize = 13f; setTextColor(Color.GRAY)
+        })
+        col.addView(RadioGroup(this).apply {
+            orientation = RadioGroup.VERTICAL
+            listOf("Tight \u2013 follow the letters closely", "Normal", "Loose \u2013 a rough curve is enough").forEachIndexed { i, label ->
+                addView(RadioButton(context).apply { id = View.generateViewId(); text = label; textSize = 16f; tag = i; isChecked = i == prefs.swipeTolerance })
+            }
+            setOnCheckedChangeListener { g, id -> prefs.swipeTolerance = g.findViewById<View>(id).tag as Int }
+        })
+
         col.addView(header("Height"))
         val heightLabel = TextView(this)
         col.addView(heightLabel)

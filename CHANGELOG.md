@@ -4,6 +4,13 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.17.0
+- New setting "Swipe typing precision" (Tight / Normal / Loose), next to the one-row guessing one. Loose forgives a rough curve: in a simulation with sloppy curves it finds the intended word in the top three 43% of the time against 25% for Normal, and stays at 99% on careful curves. Normal is the old behaviour.
+
+## 0.16.1
+- Fix: the zoom on keys near the right edge (the "0" of the number row, for one) could not reach the values to the right of the key: there was no room to slide right. Such lists are now walked leftwards, and the bubble is mirrored to match.
+- Zoom bubbles that hold more than they show now have a chevron at each side, bright on the side where the list continues.
+
 ## 0.16.0
 - New: proofreading. Turn on "Proofread button" in the settings and a small teal check circle appears at the right end of the guess bar. Tap it to have the whole field corrected (grammar and spelling); the circle turns into an undo arrow for 10 seconds. English, French, German, Italian and Spanish. It uses Google's on-device AI (ML Kit GenAI proofreading, Gemini Nano through AICore): nothing leaves the phone, the app gets no internet permission of its own, and the switch is greyed out on phones that do not have it.
 

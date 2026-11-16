@@ -84,6 +84,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
             }
             for (w in ud.removed) { val i = lx.indexOf(w); if (i >= 0) lx.remove(i) }
             val eng = Engine(lx, Decoder(lx), ud)
+            eng.glide.applyTolerance(prefs.swipeTolerance)
             // the bigrams and the swipe index are independent: build them side by side
             val idxThread = Thread { if (prefs.swipeTyping) eng.glide.sync() }.also { it.start() }
             val tb = System.nanoTime()
@@ -111,6 +112,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         kv.swipeTyping = prefs.swipeTyping
         kv.numberRow = prefs.numberRow
         syncProof()
+        loaded.values.forEach { it.glide.applyTolerance(prefs.swipeTolerance) }
         if (prefs.swipeTyping) loaded[lang.code]?.let { e -> Thread { e.glide.warmUp() }.start() }   // switched on after the engine loaded
         kv.tapSigma = floatArrayOf(0.62f, 0.9f, 1.3f)[prefs.tolerance]
         if (cur.code != lang.code) switchLanguage(cur)
