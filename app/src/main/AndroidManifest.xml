@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+        <!-- Optional: lets the settings screen switch the system spell checker itself. Grant once with adb, see the Spell checker section. -->
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
     <application android:label="@string/app_name" android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" android:exported="true" android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -7,7 +9,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <service android:name=".OneRowService" android:label="@string/app_name"
+        <service android:name=".OneRowService" android:label="@string/app_name" android:directBootAware="true"
             android:permission="android.permission.BIND_INPUT_METHOD" android:exported="true">
             <intent-filter><action android:name="android.view.InputMethod"/></intent-filter>
             <meta-data android:name="android.view.im" android:resource="@xml/method"/>

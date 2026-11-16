@@ -7,7 +7,7 @@ import android.graphics.Paint
 object Emojis {
     private val DEFAULT = listOf("😂", "😊", "😍", "👍", "😢", "😭", "😉", "🙏", "🎉", "❤️", "🔥", "😎", "🤔", "😀", "👋", "😡")
 
-    private fun prefs(c: Context) = c.getSharedPreferences("onerow_emoji", Context.MODE_PRIVATE)
+    private fun prefs(c: Context) = Storage.prefs(c, "onerow_emoji")
 
     fun bump(c: Context, e: String) {
         val p = prefs(c)

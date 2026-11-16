@@ -5,7 +5,7 @@ import android.content.Context
 /** Settings shared between the keyboard service and the settings screen. */
 class Prefs(context: Context) {
     private val appCtx = context.applicationContext
-    private val sp = context.applicationContext.getSharedPreferences("onerow", Context.MODE_PRIVATE)
+    private val sp = Storage.prefs(context, "onerow")
 
     var enabledCodes: List<String>
         get() = (sp.getString("langs", "en") ?: "en").split(',').filter { c -> Languages.all.any { it.code == c } }

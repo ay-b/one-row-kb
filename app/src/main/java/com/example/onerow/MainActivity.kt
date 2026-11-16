@@ -183,6 +183,42 @@ class MainActivity : Activity() {
             textSize = 13f; setPadding(0, 0, 0, dp(12))
         })
 
+        col.addView(header("Spell checker"))
+        val spellState = TextView(this).apply { textSize = 13f; setTextColor(Color.GRAY) }
+        col.addView(TextView(this).apply {
+            text = "Android underlines words in red using its own spell checker, which only knows one language. OneRow has its own: it knows every language you added here (and the words you taught it), so only really unknown words get marked."
+            textSize = 13f; setPadding(0, 0, 0, dp(6))
+        })
+        val me = "$packageName/${OneRowSpellChecker::class.java.name}"
+        fun secure(key: String) = try { Settings.Secure.getString(contentResolver, key) } catch (e: Exception) { null }
+        fun showSpellState() {
+            val on = secure("spell_checker_enabled") != "0"
+            val cur = secure("selected_spell_checker")
+            spellState.text = when {
+                !on -> "Now: spell checking is off."
+                cur == me -> "Now: OneRow spell checker is in use."
+                else -> "Now: another spell checker is in use (${cur ?: "default"})."
+            }
+        }
+        showSpellState()
+        /** Writes the setting if this app was granted WRITE_SECURE_SETTINGS (adb, once); otherwise opens the system screen and tells how. */
+        fun setSpell(select: Boolean) {
+            try {
+                if (select) { Settings.Secure.putString(contentResolver, "selected_spell_checker", me); Settings.Secure.putInt(contentResolver, "spell_checker_enabled", 1) }
+                else Settings.Secure.putInt(contentResolver, "spell_checker_enabled", 0)
+                showSpellState()
+            } catch (e: SecurityException) {
+                spellState.text = "Android only lets apps change this with a one-time permission. Either pick \"OneRow Keyboard\" yourself in the screen that just opened (Spell checker), or run this once on a computer:\nadb shell pm grant $packageName android.permission.WRITE_SECURE_SETTINGS\nand tap the button again."
+                val intents = listOf(
+                    Intent().setClassName("com.android.settings", "com.android.settings.Settings\$SpellCheckersSettingsActivity"),
+                    Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
+                for (i in intents) { try { startActivity(i); break } catch (_: Exception) { } }
+            }
+        }
+        col.addView(Button(this).apply { text = "Use the OneRow spell checker"; setOnClickListener { setSpell(true) } })
+        col.addView(Button(this).apply { text = "Turn spell checking off"; setOnClickListener { setSpell(false) } })
+        col.addView(spellState)
+
         col.addView(header("Feedback"))
         col.addView(Switch(this).apply {
             text = "Vibrate on key press"; textSize = 16f; isChecked = prefs.haptics

@@ -76,7 +76,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         Thread {
             val t0 = System.nanoTime()
             val lx = Lexicon.loadBinary(l.alphabet, Dictionaries.open(this, "${l.code}.lex")!!, null)
-            val ud = UserDictionary(File(filesDir, "user_${l.code}.txt"))
+            val ud = UserDictionary(File(Storage.filesDir(this), "user_${l.code}.txt"))
             // the user's own words outrank the shipped ones; words they removed stay gone
             for ((w, c) in ud.counts) {
                 val i = lx.indexOf(w); val lp = UserDictionary.logProb(c)
@@ -138,7 +138,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         kv.restoreFull(prefs.fullKeyboard)                      // come back the way it was left
         kv.onLetterMode = { full -> prefs.fullKeyboard = full }
         if (::floating.isInitialized) floating.hide()
-        floating = FloatingKeyboard(this, prefs) { requestHideSelf(0) }
+        floating = FloatingKeyboard(this, prefs, { requestHideSelf(0) }, { (getSystemService(INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager).showInputMethodPicker() })
         dock = FrameLayout(this)
         layoutMode = prefs.layoutMode.let { if (it in setOf("split", "left", "right") && !isTablet()) "docked" else it }
         arrange()
@@ -200,7 +200,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         val target = if (m in setOf("split", "left", "right") && !isTablet()) "docked" else m
         if (target == layoutMode) return
         layoutMode = target; prefs.layoutMode = target
-        arrange()
+        arrange(); applyNavBar()
         kv.invalidate()
     }
 
@@ -214,7 +214,13 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     private fun applyNavBar() {
         val w = window?.window ?: return
         val c = Themes.palette(prefs.theme, resources.configuration).panel
-        w.navigationBarColor = c
+        val floatingNow = layoutMode == "floating"
+        // floating: no bar under the screen at all (the system's buttons in it are not ours to remove, but its color is)
+        w.navigationBarColor = if (floatingNow) android.graphics.Color.TRANSPARENT else c
+        if (Build.VERSION.SDK_INT >= 29) w.isNavigationBarContrastEnforced = false
+        // the system's buttons (hide keyboard, switch input method) are views inside our own window: gone while floating
+        val navId = resources.getIdentifier("input_method_navigation_bar_view", "id", "android")
+        if (navId != 0) w.decorView.findViewById<View>(navId)?.visibility = if (floatingNow) View.GONE else View.VISIBLE
         if (Build.VERSION.SDK_INT >= 26) {
             val light = android.graphics.Color.luminance(c) > 0.5f
             val f = w.decorView.systemUiVisibility

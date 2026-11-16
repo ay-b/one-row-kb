@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.RectF
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -22,7 +23,7 @@ import android.widget.PopupWindow
  * floats), so it sits above the app and everything outside it still belongs to the app. The position is kept in screen
  * pixels (left, top), the width as a share of the screen, the height as the keyboard's own scale, all in [Prefs].
  */
-class FloatingKeyboard(private val ctx: Context, private val prefs: Prefs, private val onHide: () -> Unit) {
+class FloatingKeyboard(private val ctx: Context, private val prefs: Prefs, private val onHide: () -> Unit, private val onSwitch: () -> Unit) {
     private val dm = ctx.resources.displayMetrics
     private fun dp(v: Float) = v * dm.density
 
@@ -33,6 +34,13 @@ class FloatingKeyboard(private val ctx: Context, private val prefs: Prefs, priva
     private var column: LinearLayout? = null
     private var bar: Bar? = null
     private val corners = ArrayList<Corner>()
+    /** Resize mode: the corners are shown and take drags (a tap on the bar toggles it); otherwise they stay out of the keys' way. */
+    private var resizing = false
+    private fun setResizing(on: Boolean) {
+        resizing = on
+        corners.forEach { it.visibility = if (on) View.VISIBLE else View.GONE }
+        bar?.invalidate()
+    }
     private var winLeft = 0; private var winTop = 0
     private var w = 0; private var h = 0
 
@@ -62,7 +70,7 @@ class FloatingKeyboard(private val ctx: Context, private val prefs: Prefs, priva
     }
 
     /** Takes the floating window down; the keyboard stays inside it (see [release]). */
-    fun hide() { popup?.let { try { it.dismiss() } catch (_: Exception) { } }; popup = null }
+    fun hide() { setResizing(false); popup?.let { try { it.dismiss() } catch (_: Exception) { } }; popup = null }
 
     /** Takes the floating window down and gives the keyboard view back. */
     fun release(kv: KeyboardView) { hide(); column?.removeView(kv) }
@@ -103,9 +111,10 @@ class FloatingKeyboard(private val ctx: Context, private val prefs: Prefs, priva
         val col = LinearLayout(ctx).apply { orientation = LinearLayout.VERTICAL }
         col.addView(Bar(ctx).also { bar = it }, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(26f).toInt()))   // the keyboard goes above it
         f.addView(col, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
-        val sz = dp(30f).toInt()
-        for (g in listOf(Gravity.TOP or Gravity.START, Gravity.TOP or Gravity.END, Gravity.BOTTOM or Gravity.START, Gravity.BOTTOM or Gravity.END)) {
-            val cv = Corner(ctx, g).also { corners += it }
+        val sz = dp(24f).toInt()
+        for ((left, top) in listOf(true to true, false to true, true to false, false to false)) {
+            val g = (if (left) Gravity.START else Gravity.END) or (if (top) Gravity.TOP else Gravity.BOTTOM)
+            val cv = Corner(ctx, left, top).also { corners += it; it.visibility = View.GONE }
             f.addView(cv, FrameLayout.LayoutParams(sz, sz, g))
         }
         f.outlineProvider = object : ViewOutlineProvider() {
@@ -124,13 +133,18 @@ class FloatingKeyboard(private val ctx: Context, private val prefs: Prefs, priva
         var back = 0xFF2E383E.toInt(); var hint = 0xFF98A8AE.toInt()
         private val p = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE; strokeCap = Paint.Cap.ROUND; strokeJoin = Paint.Join.ROUND }
         private var downX = 0f; private var downY = 0f; private var startLeft = 0; private var startTop = 0; private var moved = false
-        private val chevronW get() = dp(78f)
+        private val chevronW get() = dp(56f)
         override fun onDraw(c: Canvas) {
             p.style = Paint.Style.FILL; p.color = back; c.drawRect(0f, 0f, width.toFloat(), height.toFloat(), p)
-            p.color = hint; c.drawRoundRect(width / 2f - dp(22f), height / 2f - dp(2f), width / 2f + dp(22f), height / 2f + dp(2f), dp(2f), dp(2f), p)
-            p.style = Paint.Style.STROKE; p.strokeWidth = dp(2.2f)
-            val cx = dp(54f); val cy = height / 2f
-            c.drawLine(cx - dp(7f), cy - dp(3f), cx, cy + dp(4f), p); c.drawLine(cx + dp(7f), cy - dp(3f), cx, cy + dp(4f), p)      // the "v"
+            p.color = if (resizing) 0xFF7FCFC6.toInt() else hint
+            val half = if (resizing) dp(30f) else dp(22f)
+            c.drawRoundRect(width / 2f - half, height / 2f - dp(2f), width / 2f + half, height / 2f + dp(2f), dp(2f), dp(2f), p)
+            p.style = Paint.Style.STROKE; p.strokeWidth = dp(1.8f)
+            val cx = dp(27f); val cy = height / 2f
+            c.drawLine(cx - dp(4.2f), cy - dp(1.8f), cx, cy + dp(2.4f), p); c.drawLine(cx + dp(4.2f), cy - dp(1.8f), cx, cy + dp(2.4f), p)
+            // the globe at the right: switch input method
+            val gx = width - dp(34f); val r = dp(6f); p.strokeWidth = dp(1.4f)
+            c.drawCircle(gx, cy, r, p); c.drawOval(RectF(gx - r * 0.45f, cy - r, gx + r * 0.45f, cy + r), p); c.drawLine(gx - r, cy, gx + r, cy, p)      // the "v"
         }
         override fun onTouchEvent(e: MotionEvent): Boolean {
             when (e.actionMasked) {
@@ -140,7 +154,7 @@ class FloatingKeyboard(private val ctx: Context, private val prefs: Prefs, priva
                     if (moved && e.x > chevronW) { winLeft = startLeft + (e.rawX - downX).toInt(); winTop = startTop + (e.rawY - downY).toInt(); clamp(); place() }
                     return true
                 }
-                MotionEvent.ACTION_UP -> { if (!moved && e.x < chevronW) onHide() else remember(); return true }
+                MotionEvent.ACTION_UP -> { if (!moved) { if (e.x < chevronW) onHide() else if (e.x > width - dp(60f)) onSwitch() else setResizing(!resizing) } else remember(); return true }
                 MotionEvent.ACTION_CANCEL -> { remember(); return true }
             }
             return true
@@ -148,11 +162,9 @@ class FloatingKeyboard(private val ctx: Context, private val prefs: Prefs, priva
     }
 
     /** A corner of the window: drag it to resize in any direction. A small corner mark shows where to grab. */
-    private inner class Corner(c: Context, private val g: Int) : View(c) {
+    private inner class Corner(c: Context, private val left: Boolean, private val top: Boolean) : View(c) {
         var hint = 0xFF98A8AE.toInt()
         private val p = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE; strokeCap = Paint.Cap.ROUND }
-        private val left = g and Gravity.HORIZONTAL_GRAVITY_MASK == Gravity.START
-        private val top = g and Gravity.VERTICAL_GRAVITY_MASK == Gravity.TOP
         private var downX = 0f; private var downY = 0f
         private var sLeft = 0; private var sTop = 0; private var sW = 0; private var sH = 0; private var sScale = 1f; private var sKvH = 1f
         override fun onDraw(c: Canvas) {

@@ -4,6 +4,22 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.15.4
+- Floating keyboard: no bar under the screen any more. The system's "hide keyboard" and "switch input method" buttons are hidden and the strip is transparent while the keyboard floats. The globe (switch input method) moved onto the floating keyboard's bar, at the right.
+
+## 0.15.3
+- Floating keyboard: the "v" (hide) sign is 40% smaller and sits half as far from the left edge; the resize corners are a little smaller so they do not cover it.
+
+## 0.15.2
+- The keyboard is direct-boot aware: its settings and files now live in device-protected storage (existing data is moved over on the first unlocked start), so Android no longer warns "won't launch until the device is unlocked after reboot" when it is enabled, and the keyboard works on the lock screen right after a reboot.
+
+## 0.15.1
+- Floating keyboard: tap the bar under the keyboard to switch resize mode on or off (the corners show only then, so they no longer sit over keys; the bar's pill turns teal while it is on).
+- Fix: both left corners resized the wrong way (they were treated as right corners).
+
+## 0.15.0
+- Spell checker: a new "Spell checker" section in the settings. "Use the OneRow spell checker" (knows all the languages you added, so words in another language are not red-underlined) and "Turn spell checking off". Android lets an app change this only with a one-time permission (`adb shell pm grant com.example.onerow android.permission.WRITE_SECURE_SETTINGS`); without it the buttons open the system's spell-checker screen and say what to do. All 26 languages are now offered to the system by the checker, not only the first seven.
+
 ## 0.14.0
 - Fix: after ":" or ";" the next word is no longer capitalized by the system's sentence rule.
 - Fix: split layout no longer leaves a see-through hole between the halves; the gap is keyboard-colored.

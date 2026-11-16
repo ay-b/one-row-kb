@@ -9,7 +9,7 @@ import java.io.InputStream
  * the app's private folder (files/dict). Languages without a dictionary cannot be enabled.
  */
 object Dictionaries {
-    fun dir(ctx: Context) = File(ctx.filesDir, "dict")
+    fun dir(ctx: Context) = File(Storage.filesDir(ctx), "dict")
 
     private var bundled: Set<String>? = null
     private fun bundled(ctx: Context): Set<String> =

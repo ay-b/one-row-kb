@@ -10,4 +10,23 @@
     <subtype android:label="Português" android:subtypeLocale="pt"/>
     <subtype android:label="Русский" android:subtypeLocale="ru"/>
     <subtype android:label="Українська" android:subtypeLocale="uk"/>
+    <subtype android:label="Italiano" android:subtypeLocale="it"/>
+    <subtype android:label="Nederlands" android:subtypeLocale="nl"/>
+    <subtype android:label="Svenska" android:subtypeLocale="sv"/>
+    <subtype android:label="Dansk" android:subtypeLocale="da"/>
+    <subtype android:label="Norsk bokmål" android:subtypeLocale="nb"/>
+    <subtype android:label="Suomi" android:subtypeLocale="fi"/>
+    <subtype android:label="Íslenska" android:subtypeLocale="is"/>
+    <subtype android:label="Ελληνικά" android:subtypeLocale="el"/>
+    <subtype android:label="Polski" android:subtypeLocale="pl"/>
+    <subtype android:label="Čeština" android:subtypeLocale="cs"/>
+    <subtype android:label="Slovenčina" android:subtypeLocale="sk"/>
+    <subtype android:label="Slovenščina" android:subtypeLocale="sl"/>
+    <subtype android:label="Hrvatski" android:subtypeLocale="hr"/>
+    <subtype android:label="Magyar" android:subtypeLocale="hu"/>
+    <subtype android:label="Română" android:subtypeLocale="ro"/>
+    <subtype android:label="Eesti" android:subtypeLocale="et"/>
+    <subtype android:label="Latviešu" android:subtypeLocale="lv"/>
+    <subtype android:label="Lietuvių" android:subtypeLocale="lt"/>
+    <subtype android:label="Català" android:subtypeLocale="ca"/>
 </spell-checker>
