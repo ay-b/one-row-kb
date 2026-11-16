@@ -17,6 +17,8 @@ class Lang(
     val fullRows: List<String>,
     /** National letters reachable by holding a key on the full keyboard: base letter -> variants. */
     val alternates: Map<Char, String> = emptyMap(),
+    /** Small symbols under the third letter row, one per key left to right (a space = none); null = the standard `* " ' : ; ! ?`. */
+    val row3Symbols: String? = null,
 )
 
 object Languages {
@@ -52,7 +54,8 @@ object Languages {
         Lang("ru", "Русский", cyrillic,
             listOf("йфя", "цыч", "увс", "кам", "епи", "нрт", "гоь", "шлб", "щдю", "зж", "хэ", "ъ"),
             listOf("йцукенгшщзх", "фывапролджэ", "ячсмитьбю"),            // ъ is under ь (hold), as on Gboard
-            mapOf('е' to "ё", 'ь' to "ъ")),
+            mapOf('е' to "ё", 'ь' to "ъ"),
+            row3Symbols = "*\"':;!ъ?"),                                     // ъ is the small hint on ь, "?" moved to б (the key right of ь)
         Lang("uk", "Українська", ukrainian,
             listOf("йфя", "ціч", "увс", "кам", "епи", "нрт", "гоь", "шлб", "щдю", "зж", "хє", "ї"),
             listOf("йцукенгшщзхї", "фівапролджє", "ячсмитьбюґ"),

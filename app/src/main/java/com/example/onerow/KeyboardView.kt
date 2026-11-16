@@ -223,12 +223,12 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             val ch = p.key.label[0]
             val items = ArrayList<Key>()
             p.key.hint?.let { h ->
-                items += Key(Kind.CHAR, h, 1f)
+                items += Key(Kind.CHAR, h, 1f, base = h[0].takeIf { lang.alphabet.index(it) >= 0 })      // a hint that is a letter (ъ on ь) counts as one for guessing
                 SYMBOL_VARIANTS[h[0]]?.forEach { items += Key(Kind.CHAR, it.toString(), 1f) }
             }
             val first = items.size
             // a variant that is itself a letter of the alphabet (ъ under ь) counts as that letter for guessing
-            lang.alternates[ch]?.forEach { v -> items += Key(Kind.CHAR, v.toString(), 1f, base = if (lang.alphabet.index(v) >= 0) v else ch) }
+            lang.alternates[ch]?.forEach { v -> if (v.toString() != p.key.hint) items += Key(Kind.CHAR, v.toString(), 1f, base = if (lang.alphabet.index(v) >= 0) v else ch) }
             if (items.isEmpty()) return@Runnable                  // nothing to offer: stay a plain tap
             preciseKeys = items.map { Placed(it, p.rect, p.row) }
             preciseIdx0 = if (first < items.size) first else 0
@@ -369,7 +369,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     /** Full-keyboard letters with a small standard symbol on each (digits on the top row). */
     private fun hinted(row: String, symbols: String) =
         row.mapIndexed { i, ch ->
-            val hint = symbols.getOrNull(i)?.toString()
+            val hint = symbols.getOrNull(i)?.takeIf { it != ' ' }?.toString()
             // a letter of the alphabet is a normal key; one that is not (ґ) is typed as a national letter of the plain letter it folds onto
             if (lang.alphabet.index(ch) >= 0) Key(Kind.LETTER, ch.toString(), 1f, hint = hint)
             else Key(Kind.CHAR, ch.toString(), 1f, hint = hint, base = lang.alphabet.folds[ch]?.firstOrNull())
@@ -406,7 +406,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 if (numberRow) Row(numberKeys(), fullRowH, inset = ((lang.fullRows[0].length - 10) / 2f).coerceAtLeast(0f), keyBg = true) else null,
                 Row(hinted(lang.fullRows[0], if (numberRow) TOP_ROW_SYMBOLS else "1234567890"), fullRowH, keyBg = true),
                 Row(hinted(lang.fullRows[1], if (numberRow) HINTS_ROW2_NUM else HINTS_ROW2), fullRowH, inset = ((lang.fullRows[0].length - lang.fullRows[1].length) / 2f).coerceAtLeast(0f), keyBg = true),
-                Row(listOf(Key(Kind.SHIFT, "", edgeKey())) + hinted(lang.fullRows[2], SYMBOLS_ROW3) + Key(Kind.BACKSPACE, "", edgeKey()), fullRowH, keyBg = true),
+                Row(listOf(Key(Kind.SHIFT, "", edgeKey())) + hinted(lang.fullRows[2], lang.row3Symbols ?: SYMBOLS_ROW3) + Key(Kind.BACKSPACE, "", edgeKey()), fullRowH, keyBg = true),
                 Row(listOf(Key(Kind.TO_SYMBOLS, "123", 1.5f), langKey, comma, Key(Kind.SPACE, "", 4f), period,
                     Key(Kind.ENTER, "", 1.5f)), fullRowH, keyBg = true)
             )

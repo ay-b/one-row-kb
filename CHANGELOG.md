@@ -4,6 +4,9 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.24.1
+- Russian full keyboard: the small "?" moved from ь to б, and ь now shows ъ as its small symbol (hold ь still types ъ, no duplicate in the zoom).
+
 ## 0.24.0
 - New: the interface (settings, toasts, the lock and countdown messages) speaks the phone's language in 25 languages (Android resources, `res/values-<code>/strings.xml`); every other language falls back to English. The translations were written without a native speaker: please have the billing and lock texts checked.
 - The cheat sheet picture has no words any more: numbers on the arrows, and the numbered legend is text under the picture, so it is translated too. Rebuild the picture with `tools/make_cheatsheet.py`.
