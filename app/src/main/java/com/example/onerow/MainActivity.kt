@@ -176,21 +176,6 @@ class MainActivity : Activity() {
             setOnCheckedChangeListener { g, id -> prefs.swipeTolerance = g.findViewById<View>(id).tag as Int }
         })
 
-        col.addView(header("Height"))
-        val heightLabel = TextView(this)
-        col.addView(heightLabel)
-        col.addView(SeekBar(this).apply {
-            max = 80   // 70% .. 150%
-            progress = ((prefs.heightScale * 100f) - 70f).toInt().coerceIn(0, 80)
-            fun show(p: Int) { heightLabel.text = "Keyboard height: ${70 + p}%" }
-            show(progress)
-            setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(s: SeekBar, p: Int, fromUser: Boolean) { show(p); prefs.heightScale = (70 + p) / 100f }
-                override fun onStartTrackingTouch(s: SeekBar) {}
-                override fun onStopTrackingTouch(s: SeekBar) {}
-            })
-        })
-
         col.addView(header("Full keyboard"))
         col.addView(Switch(this).apply {
             text = "Dedicated number row"; textSize = 16f; isChecked = prefs.numberRow

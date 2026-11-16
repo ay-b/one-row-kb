@@ -4,6 +4,10 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.17.1
+- Fix: automatic capital letter only at the start of a field or after a finished sentence (. ! ? … or a new line); no longer after %, :, ;, digits or commas. Fields that ask for capitalized words (names) are unchanged.
+- The Height slider is gone from the settings; the vertical-scaling control (hold the language key) replaces it.
+
 ## 0.17.0
 - New setting "Swipe typing precision" (Tight / Normal / Loose), next to the one-row guessing one. Loose forgives a rough curve: in a simulation with sloppy curves it finds the intended word in the top three 43% of the time against 25% for Normal, and stays at 99% on careful curves. Normal is the old behaviour.
 

@@ -356,9 +356,14 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         val ic = currentInputConnection ?: return
         val info = currentInputEditorInfo ?: return
         val isText = (info.inputType and InputType.TYPE_MASK_CLASS) == InputType.TYPE_CLASS_TEXT
-        // a colon or semicolon (plus spaces) before the caret does not end a sentence, whatever the system says
-        val afterColon = textBefore(4).trimEnd(' ').lastOrNull().let { it == ':' || it == ';' }
-        if (isText && !afterColon && kv.shift == KeyboardView.Shift.OFF && ic.getCursorCapsMode(info.inputType) != 0)
+        // Capitalize only at the start of a field or after a finished sentence (. ! ? … or a line break, closing quotes/brackets
+        // allowed in between); after ":" ";" "%" digits, commas and the like the word stays lower case. Fields that ask for
+        // every word/character capitalized (names) keep the system's rule.
+        val sentenceOnly = (info.inputType and (InputType.TYPE_TEXT_FLAG_CAP_WORDS or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS)) == 0
+        val before = textBefore(12).trimEnd(' ', '\u00a0').trimEnd('"', '\'', ')', ']', '}', '\u00bb', '\u201d', '\u2019')
+        val sentenceDone = before.isEmpty() || before.last() in ".!?\u2026\n\u3002"
+        val capOk = !sentenceOnly || sentenceDone
+        if (isText && capOk && kv.shift == KeyboardView.Shift.OFF && ic.getCursorCapsMode(info.inputType) != 0)
             kv.shift = KeyboardView.Shift.ONCE
         if (taps.isEmpty()) {
             kv.bestIndex = -1
