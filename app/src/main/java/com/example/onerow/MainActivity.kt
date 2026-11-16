@@ -11,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import android.net.Uri
+import com.example.onerow.billing.*
 
 /** Settings screen: setup, languages, height, haptics, and a box to try the keyboard. */
 class MainActivity : Activity() {
@@ -71,6 +73,12 @@ class MainActivity : Activity() {
         letterSpacing = 0.08f; setPadding(0, dp(22), 0, dp(6))
     }
 
+    private lateinit var billing: BillingManager
+    private var updateSub: () -> Unit = {}
+
+    override fun onResume() { super.onResume(); if (::billing.isInitialized) { billing.refresh(withPrices = true); updateSub() } }
+    override fun onDestroy() { if (::billing.isInitialized) billing.close(); super.onDestroy() }
+
     override fun onCreate(b: Bundle?) {
         super.onCreate(b)
         prefs = Prefs(this)
@@ -86,6 +94,45 @@ class MainActivity : Activity() {
         col.addView(header("Setup"))
         col.addView(button("1. Enable keyboard") { startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)) })
         col.addView(button("2. Switch to OneRow") { (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).showInputMethodPicker() })
+
+        // ---- subscription ----
+        col.addView(header("Subscription"))
+        val subStatus = TextView(this).apply { textSize = 14f; setPadding(0, 0, 0, dp(4)) }
+        col.addView(subStatus)
+        val buyMonthly = button("Subscribe") { billing.buyMonthly(this@MainActivity) }
+        val buyForever = button("Buy forever (version 1)") { billing.buyLifetime(this@MainActivity) }
+        val manage = button("Manage subscription") {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/account/subscriptions?sku=${Products.MONTHLY}&package=$packageName")))
+        }
+        col.addView(buyMonthly); col.addView(buyForever); col.addView(manage)
+        updateSub = {
+            val a = BillingStore.access(this)
+            val snap = BillingStore.load(this)
+            subStatus.text = when {
+                a is Access.Locked -> "The trial has expired. The keyboard only types until you subscribe or buy it."
+                a is Access.Full && a.reason == Reason.LIFETIME -> "You own OneRow forever (version 1). Thank you!"
+                a is Access.Full && a.reason == Reason.SUBSCRIBED && a.expiresInDays != null -> "Subscription cancelled: it ends in about ${a.expiresInDays} days."
+                a is Access.Full && a.reason == Reason.SUBSCRIBED -> "Subscribed. Thank you!"
+                a is Access.Full -> "Free period: ${a.freeDaysLeft} days left. After that, start the 1-month free trial or buy the keyboard to keep every feature."
+                else -> ""
+            }
+            val owns = a is Access.Full && a.reason == Reason.LIFETIME
+            val subbed = snap.subActive
+            val price = billing.monthlyPrice()
+            buyMonthly.text = when {
+                price == null -> "Subscribe (price not available yet)"
+                price.second -> "Start the 1-month free trial, then ${price.first} a month"
+                else -> "Subscribe: ${price.first} a month"
+            }
+            buyMonthly.isEnabled = price != null
+            buyForever.text = billing.lifetimePrice()?.let { "Buy forever (version 1): $it" } ?: "Buy forever (price not available yet)"
+            buyForever.isEnabled = billing.lifetimePrice() != null
+            buyMonthly.visibility = if (owns || subbed) View.GONE else View.VISIBLE
+            buyForever.visibility = if (owns) View.GONE else View.VISIBLE
+            manage.visibility = if (subbed) View.VISIBLE else View.GONE
+        }
+        billing = BillingManager(this) { runOnUiThread { updateSub() } }
+        updateSub()
 
         col.addView(header("Languages"))
         // the added languages, each with a bin; below them a dropdown of the others and a + to add the chosen one
@@ -250,6 +297,13 @@ class MainActivity : Activity() {
         }
         col.addView(cheat)
         showCheatSheet()
+
+        col.addView(header("About"))
+        col.addView(button("Attributions and licences") {
+            val text = try { assets.open("attribution.md").bufferedReader().readText() } catch (e: Exception) { "attribution.md is missing." }
+            val tv = TextView(this).apply { this.text = text; textSize = 12f; setPadding(dp(20), dp(12), dp(20), dp(12)); setTextIsSelectable(true) }
+            android.app.AlertDialog.Builder(this).setTitle("Attributions").setView(ScrollView(this).apply { addView(tv) }).setPositiveButton("Close", null).show()
+        })
 
         col.addView(header("Try it"))
         col.addView(EditText(this).apply {

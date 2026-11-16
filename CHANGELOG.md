@@ -4,6 +4,50 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.23.1
+- A cancelled subscription: "Subscription expiring in N days" now replaces the next-word guesses before anything is typed (it showed only when the bar was otherwise empty).
+
+## 0.23.0
+- New: payments through Google Play. The first 14 days after installing are free; then start the subscription's 1-month free trial, subscribe (EUR 1 a month, auto-renewing) or buy forever for version 1 (EUR 10). Settings has a new Subscription section.
+- When the trial is over the keyboard locks: plain typing only (no gestures, zoom, swipe typing, keypad, language switching, layouts); the guess bar says "Trial has expired, please subscribe" with a gear that opens the settings. A cancelled subscription keeps working to the end of its period and counts the days down in the guess bar before anything is typed.
+- The application id is now one.yb.onerow (a new app for Android: settings and learned words do not carry over from com.example.onerow).
+- Credits and licences: attribution.md (also shown under Settings > About), NOTICE-dictionaries.md settled. See docs/billing.md for the Play Console setup.
+
+## 0.22.3
+- Fix: a line that starts with numbers (typed after Enter) no longer capitalizes the first word after them; the digits use up the automatic capital.
+
+## 0.22.2
+- Fix: the keyboard could crash (and vanish) when the text under the caret changed while the guess bar was being built, as happened with brackets and an active selection.
+
+## 0.22.1
+- Adding up a selection: after the result or the expression is dropped into the text, the keyboard goes back to the letters.
+
+## 0.22.0
+- New: adding up a selection. Select text that holds at least two numbers and a small keypad icon pulses at the right end of the guess bar. Tap it: the keypad opens with the numbers added up (a number with a minus, like -5, is taken as subtraction: "25 for a kg with -5 discounted" is 25-5); numbers follow the regional settings (1,234.5 / 1.234,5 / 1 234,5). Keys edit that expression; the field is not touched. Tapping the result puts the result after the selection, tapping the expression (or "=" or Enter) puts "expression=result" there. Changing the selection ends it.
+
+## 0.21.3
+- Keypad: a held key's zoom shows only the extra symbols (just ")" on the period key), not the key's own value; the first one is highlighted, so hold and release types it.
+
+## 0.21.2
+- Keypad: the `,` and `.` keys show a small ( and ) in their corner, the symbols you get by holding them.
+
+## 0.21.1
+- Trimmed back: on the keypad the only hold-and-slide additions are the brackets: hold `,` and slide to `(`, hold `.` and slide to `)`. Nothing on the other keys. The calculator understands brackets, nothing more.
+
+## 0.21.0
+- Keypad: hold-and-slide lists and brackets in the calculator. A ")" typed with no "(" before it adds the "(" by itself: after the previous ")" and its operator ((1+2)*3+4) becomes (1+2)*(3+4)), else at the start of the expression (2+3) becomes (2+3)).
+
+## 0.20.0
+- Keypad follows the caret: put the caret in or at the end of an arithmetic expression in the text (not a lone number) and the keypad opens by itself with the expression and its result in the guess bar; move the caret away and it closes again (a keypad you opened yourself stays). Tapping the expression or result replaces the whole expression around the caret.
+- Keypad: with the caret at the end of a lone number, typing a digit or an operator continues that number (23, then 3 gives 233; 23, then + gives 23+ with its result).
+
+## 0.19.1
+- Keypad: an undo key right of the space bar takes back the last replacement (tapped expression or result, or the "=" key) and puts the typed expression back in the field, so you can keep editing it. It is dim when there is nothing to undo.
+
+## 0.19.0
+- New: keypad. On the first 123 page (full keyboard) the language key is now a keypad key (a small 3x3 grid): it opens a numeric pad with digits, a math column (+ - * /), and backspace, %, = and enter beside it. "123" on the pad goes back; Enter leaves to the letters.
+- New: calculator. While you type on the keypad and the text makes arithmetic sense, the guess bar shows the typed expression with "=" and the current result. Tap the result to replace what you typed with it; tap the expression to replace it with "expression=result". % works like a phone calculator (200+10% is 220); a trailing operator is ignored; the "=" key types "=" and the result.
+
 ## 0.18.0
 - Guesses: the bar tries to offer different words, not only more forms of the same word (walk, walked, walking; красный, красная); the extra forms come after the others. Swipe typing asks for twice as many candidates to choose from.
 - Russian: a word with ё is recognized and offered before its е spelling (всё before все, ещё before еще); the е form stays as the variant.

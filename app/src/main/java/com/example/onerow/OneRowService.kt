@@ -14,6 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.view.inputmethod.EditorInfo
+import com.example.onerow.billing.Access
+import com.example.onerow.billing.BillingManager
+import com.example.onerow.billing.BillingStore
+import com.example.onerow.engine.Calc
+import com.example.onerow.engine.Numbers
 import com.example.onerow.engine.Candidate
 import com.example.onerow.engine.Decoder
 import com.example.onerow.engine.GlideDecoder
@@ -124,8 +129,31 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     private var proofUndo: String? = null           // the text before the last fix, while "undo" is offered
     private val proofReset = Runnable { proofUndo = null; syncProof() }
 
+    // ---- subscription ----
+
+    private lateinit var billing: BillingManager
+    private var access: Access = Access.Locked
+
+    /** Reads what the user may do (free weeks, subscription, forever) and applies it: locked = plain typing and a message in the guess bar. */
+    private fun syncAccess() {
+        access = BillingStore.access(this)
+        val a = access
+        kv.locked = a is Access.Locked
+        kv.expiringDays = (a as? Access.Full)?.expiresInDays
+        if (a is Access.Locked) { exitSelMode(); keypadAuto = false; kv.selHint = false }
+        if (::kv.isInitialized && taps.isEmpty()) refresh()
+        syncProof()
+    }
+
+    /** Asks Google Play again when the saved answer is old (a few hours), in the background. */
+    private fun refreshBillingIfStale() {
+        if (!::billing.isInitialized) billing = BillingManager(this) { ui.post { syncAccess() } }
+        if (System.currentTimeMillis() - BillingStore.lastChecked(this) > 6L * 60 * 60 * 1000) billing.refresh()
+    }
+
     private fun syncProof() {
         kv.proof = when {
+            access is Access.Locked -> KeyboardView.ProofState.OFF
             !prefs.proofread || !Proofread.supports(lang.code) -> KeyboardView.ProofState.OFF
             proofUndo != null -> KeyboardView.ProofState.UNDO
             else -> KeyboardView.ProofState.READY
@@ -191,6 +219,8 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         kv.splitAvailable = isTablet()
         kv.restoreFull(prefs.fullKeyboard)                      // come back the way it was left
         kv.onLetterMode = { full -> prefs.fullKeyboard = full }
+        syncAccess()
+        kv.onKeypad = { opened -> keypadAuto = false; calcResult = null; setUndo(null); if (!opened) exitSelMode(); updateSelHint(); if (taps.isEmpty()) refresh() }
         if (::floating.isInitialized) floating.hide()
         floating = FloatingKeyboard(this, prefs, { requestHideSelf(0) }, { (getSystemService(INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager).showInputMethodPicker() })
         dock = FrameLayout(this)
@@ -293,6 +323,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
 
     override fun onStartInputView(info: EditorInfo, restarting: Boolean) {
         super.onStartInputView(info, restarting)
+        syncAccess(); refreshBillingIfStale()
         selStart = info.initialSelStart; selEnd = info.initialSelEnd
         endGlide()
         taps.clear(); exact.clear(); shown.clear()
@@ -323,6 +354,10 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
             if (cs >= 0 && ce >= 0) finishComposing() else { taps.clear(); exact.clear(); shown.clear(); cands = emptyList() }
         }
         if (::kv.isInitialized && taps.isEmpty()) refresh()
+        if (::kv.isInitialized && selMode && android.os.SystemClock.uptimeMillis() - ownEditAt > 400 &&
+            (minOf(newSs, newSe) != selAnchorS || maxOf(newSs, newSe) != selAnchorE)) { exitSelMode(); kv.closeKeypad() }   // the selection changed: the sum is off
+        updateSelHint()
+        if (::kv.isInitialized && newSs == newSe) keypadFollowsCaret()
     }
 
     // ---------- context helpers ----------
@@ -365,6 +400,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     private var noAutoCap = false
 
     private fun refresh() {
+        if (kv.keypadActive) { showCalc(); return }
         if (glideWord != null) return                    // the guesses for the glided word stay until the next input
         val ic = currentInputConnection ?: return
         val info = currentInputEditorInfo ?: return
@@ -381,10 +417,12 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (taps.isEmpty()) {
             kv.bestIndex = -1
             val l = lex
+            val comp = if (decoding && l != null) completionsForWordAtCaret(l) else null      // once: the text under the caret can change between two calls
             kv.suggestions = when {
                 !decoding -> emptyList()
                 l == null -> emptyList()
-                completionsForWordAtCaret(l) != null -> completionsForWordAtCaret(l)!!
+                comp != null -> comp
+                kv.expiringDays != null -> emptyList()          // a cancelled subscription: the countdown takes the place of next-word guesses
                 else -> {
                     val p = previousWordIdx()
                     val n = l.nextWords(p, 12)
@@ -488,12 +526,193 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (known < 0) lx.addWord(word, lp) else if (lx.logUni[known] < lp) lx.setLogProb(known, lp)
     }
 
+    // ---------- keypad calculator ----------
+
+    /** The arithmetic around the caret: [run] is all of it, [before] of its characters sit before the caret, [after] after. */
+    private class ExprCtx(val run: String, val before: Int, val after: Int)
+    private var calcResult: String? = null
+    /** The last replacement on the keypad: [inserted] went in where [removed] was. */
+    private class CalcUndo(val inserted: String, val removed: String)
+    private var calcUndo: CalcUndo? = null
+    private var keypadAuto = false                     // the keypad opened by itself because the caret reached an expression
+    private var ownEditAt = 0L                         // when a key of ours last changed the text (selection updates right after are ours)
+    private fun own() { ownEditAt = android.os.SystemClock.uptimeMillis() }
+    private fun setUndo(u: CalcUndo?) { calcUndo = u; kv.calcUndoReady = u != null }
+
+    private fun isCalcChar(c: Char) = c in "0123456789.,+-*/%()"
+
+    /** The expression the caret is in or at the end of: digits and + - * / % around it, not part of a word. */
+    private fun exprAtCaret(): ExprCtx {
+        val ic = currentInputConnection ?: return ExprCtx("", 0, 0)
+        val bt = textBefore(60)
+        var i = bt.length
+        while (i > 0 && isCalcChar(bt[i - 1])) i--
+        val glued = i > 0 && bt[i - 1].isLetter()                  // glued to a word (abc12): not an expression
+        if (glued) i = bt.length
+        var b = bt.substring(i)
+        val lead = b.indexOfFirst { it != '*' && it != '/' && it != '%' }.let { if (it < 0) b.length else it }
+        b = b.substring(lead)
+        val at = ic.getTextAfterCursor(60, 0)?.toString().orEmpty()
+        var k = 0
+        while (k < at.length && isCalcChar(at[k])) k++
+        var a = if (glued) "" else at.substring(0, k)
+        a = a.trimEnd('.', ',')                                   // sentence punctuation after the expression
+        return ExprCtx(b + a, b.length, a.length)
+    }
+
+    /** The guess bar on the keypad: the expression around the caret with "=" and the current result, when they make arithmetic sense. */
+    private fun showCalc() {
+        val s = if (selMode) selExpr.toString() else exprAtCaret().run
+        val v = if (Calc.worthIt(s)) Calc.eval(s) else null
+        if (v == null) { calcResult = null; kv.suggestions = emptyList(); kv.bestIndex = -1; return }
+        val r = Calc.format(v, if (selMode) decimalSep() == ',' else s.contains(',') && !s.contains('.'))
+        calcResult = r
+        kv.suggestions = listOf("$s=", r); kv.bestIndex = 1
+    }
+
+    /** Text typed on the keypad goes straight into the field (no word logic); true when handled. */
+    private fun calcText(t: String): Boolean {
+        val ic = currentInputConnection ?: return true
+        if (selMode) return selText(t)
+        finishComposing(); endGlide(); justAutoSpaced = false; wordAutoSpaced = false
+        setUndo(null)
+        if (t == ")") {
+            val x = exprAtCaret(); val bef = x.run.substring(0, x.before)
+            val at = openingIndex(bef)
+            if (at >= 0) {
+                ic.beginBatchEdit(); ic.deleteSurroundingText(bef.length - at, 0); ic.commitText("(" + bef.substring(at) + ")", 1); ic.endBatchEdit()
+                showCalc(); return true
+            }
+        }
+        if (t == "=") {
+            showCalc()
+            if (calcResult != null) { calcPick("${exprAtCaret().run}="); return true }
+            ic.commitText("=", 1)
+        } else ic.commitText(t, 1)
+        showCalc()
+        return true
+    }
+
+    /** A closing bracket with no opening one: where the "(" goes, after the previous ")" and its operator, else the start; -1 when none is needed. */
+    private fun openingIndex(bef: String): Int {
+        if (bef.isEmpty() || bef.count { it == '(' } > bef.count { it == ')' }) return -1
+        var at = 0
+        for (k in bef.indices) if (bef[k] == ')' && k + 1 < bef.length && bef[k + 1] in "+-*/") at = k + 2
+        return at
+    }
+
+    private fun calcBackspace(): Boolean {
+        if (selMode) { if (selExpr.isNotEmpty()) selExpr.setLength(selExpr.length - 1); showCalc(); return true }
+        val ic = currentInputConnection ?: return false
+        if (!ic.getSelectedText(0).isNullOrEmpty()) return false
+        val prev = textBefore(1)
+        if (prev.isEmpty() || !isCalcChar(prev[0])) return false
+        setUndo(null)
+        ic.deleteSurroundingText(1, 0)
+        showCalc()
+        return true
+    }
+
+    /** A tap on the expression slot types "expr=result" over the whole expression; on the result slot, just the result. */
+    private fun calcPick(word: String) {
+        if (selMode) { selPick(word); return }
+        val ic = currentInputConnection ?: return
+        val x = exprAtCaret(); if (x.run.isEmpty()) return
+        showCalc()
+        val r = calcResult
+        val text = when { word == "${x.run}=" -> if (r != null) "${x.run}=$r" else "${x.run}="; r != null && word == r -> r; else -> return }
+        ic.beginBatchEdit(); ic.deleteSurroundingText(x.before, x.after); ic.commitText(text, 1); ic.endBatchEdit()
+        setUndo(CalcUndo(text, x.run))
+        showCalc()
+    }
+
+    override fun onCalcUndo() {
+        val u = calcUndo ?: return
+        val ic = currentInputConnection ?: return
+        if (!textBefore(u.inserted.length).endsWith(u.inserted)) { setUndo(null); return }
+        own()
+        ic.beginBatchEdit(); ic.deleteSurroundingText(u.inserted.length, 0); if (u.removed.isNotEmpty()) ic.commitText(u.removed, 1); ic.endBatchEdit()
+        setUndo(null)
+        showCalc()
+    }
+
+    // ---- adding up the numbers of a selection ----
+
+    private var selMode = false                    // the keypad works on [selExpr], built from the selected numbers, not on the field
+    private val selExpr = StringBuilder()
+    private var selAnchorS = 0; private var selAnchorE = 0
+
+    private fun decimalSep(): Char = try { java.text.DecimalFormatSymbols.getInstance().decimalSeparator } catch (e: Exception) { '.' }
+    private fun groupingSep(): Char = try { java.text.DecimalFormatSymbols.getInstance().groupingSeparator } catch (e: Exception) { ',' }
+
+    private fun selectedNumbers(): Pair<String, Int>? {
+        val t = currentInputConnection?.getSelectedText(0)?.toString() ?: return null
+        if (t.isEmpty() || t.length > 2000) return null
+        return Numbers.expression(t, decimalSep(), groupingSep())
+    }
+
+    /** A blinking keypad icon in the guess strip while the selection holds at least two numbers. */
+    private fun updateSelHint() {
+        if (!::kv.isInitialized) return
+        kv.selHint = access !is Access.Locked && !selMode && !kv.keypadActive && kv.keypadAvailable && (selectedNumbers()?.second ?: 0) >= 2
+    }
+
+    private fun exitSelMode() { selMode = false; selExpr.setLength(0) }
+
+    override fun onSelCalc() {
+        val (e, n) = selectedNumbers() ?: return
+        if (n < 2) return
+        selAnchorS = minOf(selStart, selEnd); selAnchorE = maxOf(selStart, selEnd)
+        if (!kv.openKeypad()) return
+        selExpr.setLength(0); selExpr.append(e); selMode = true
+        kv.selHint = false
+        showCalc()
+    }
+
+    private fun selText(t: String): Boolean {
+        when {
+            t == ")" -> { val bef = selExpr.toString(); val at = openingIndex(bef)
+                if (at >= 0) { selExpr.setLength(0); selExpr.append(bef.substring(0, at)).append('(').append(bef.substring(at)).append(')') } else selExpr.append(')') }
+            t == "=" -> { showCalc(); selPick("$selExpr="); return true }
+            t.length == 1 && isCalcChar(t[0]) -> selExpr.append(t)
+        }
+        showCalc()
+        return true
+    }
+
+    /** The tapped slot (or "=") goes after the end of the selection: the whole expression with its result, or the result alone. */
+    private fun selPick(word: String) {
+        val ic = currentInputConnection ?: return
+        showCalc()
+        val r = calcResult
+        val text = when { word == "$selExpr=" -> if (r != null) "$selExpr=$r" else return; r != null && word == r -> r; else -> return }
+        val sel = ic.getSelectedText(0)?.toString().orEmpty()
+        val end = maxOf(selStart, selEnd)
+        exitSelMode()
+        own()
+        ic.beginBatchEdit(); ic.setSelection(end, end)
+        ic.commitText((if (sel.isNotEmpty() && !sel.last().isWhitespace()) " " else "") + text, 1)
+        ic.endBatchEdit()
+        kv.closeKeypad()                                   // done: back to the letters
+    }
+
+    /** The caret moved (not by our own typing): open the keypad when it reached an expression, close it again when it left one. */
+    private fun keypadFollowsCaret() {
+        if (selMode) return
+        if (android.os.SystemClock.uptimeMillis() - ownEditAt < 400 || taps.isNotEmpty()) return
+        val s = exprAtCaret().run
+        val expr = Calc.worthIt(s) && Calc.eval(s) != null
+        if (!kv.keypadActive) { if (expr && kv.openKeypad()) keypadAuto = true }
+        else if (keypadAuto && !expr) kv.closeKeypad()
+    }
+
     // ---------- KeyboardView.Listener ----------
 
-    override fun onLetter(ch: Char, logp: FloatArray, exactPick: Boolean) { noAutoCap = false; addTap(ch, logp, exactPick, null) }
+    override fun onLetter(ch: Char, logp: FloatArray, exactPick: Boolean) { own(); noAutoCap = false; addTap(ch, logp, exactPick, null) }
 
     /** A national letter (ü, ñ, ç ...) picked with hold-and-slide: exact, and typed as itself. */
     override fun onAccent(base: Char, shown: String) {
+        own()
         noAutoCap = false
         val n = lang.alphabet.n
         addTap(base, FloatArray(n) { -30f }.also { it[lang.alphabet.index(base)] = 0f }, true, shown)
@@ -529,7 +748,11 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     override fun onText(text: String) {
+        own()
         noAutoCap = false
+        // a line that starts with numbers: the automatic capital is used up by the digits, the word after them stays lower case
+        if (text.isNotEmpty() && text[0].isDigit() && kv.shift == KeyboardView.Shift.ONCE) kv.shift = KeyboardView.Shift.OFF
+        if (kv.keypadActive && calcText(text)) return
         endGlide()
         // French elision (l', d', qu'): the apostrophe is already in the word, so no space after it
         if (text == " " && taps.isNotEmpty() && cands.firstOrNull()?.word?.endsWith("'") == true) { finishComposing(); return }
@@ -578,6 +801,8 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     override fun onBackspace() {
+        own()
+        if (kv.keypadActive && calcBackspace()) return
         justAutoSpaced = false; wordAutoSpaced = false
         noAutoCap = false
         if (glideWord != null && taps.isEmpty() && glideIntact()) {          // delete the whole glided word
@@ -640,6 +865,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     override fun onDeleteWord() {
+        own()
         justAutoSpaced = false; wordAutoSpaced = false
         endGlide()
         taps.clear(); exact.clear(); shown.clear()
@@ -654,6 +880,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     override fun onRemoveWord(word: String) {
+        if (kv.keypadActive) return
         val lx = lex ?: return; val ud = user ?: return
         val i = lx.indexOf(word)
         if (i < 0) { Toast.makeText(this, "\"$word\" is not in the dictionary", Toast.LENGTH_SHORT).show(); return }
@@ -682,6 +909,8 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     override fun onEnter() {
+        own()
+        if (selMode) { calcText("="); return }
         noAutoCap = false
         justAutoSpaced = false; wordAutoSpaced = false
         endGlide()
@@ -725,6 +954,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
 
     /** A word drawn across the letters of the full keyboard: type the best match, offer the others as guesses. */
     override fun onGlide(xs: FloatArray, ys: FloatArray, n: Int, layout: GlideLayout) {
+        own()
         noAutoCap = false
         val eng = loaded[lang.code] ?: return           // dictionary still loading
         val ic = currentInputConnection ?: return
@@ -751,6 +981,8 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     override fun onSuggestion(word: String) {
+        own()
+        if (kv.keypadActive) { calcPick(word); return }
         noAutoCap = false
         justAutoSpaced = false; wordAutoSpaced = false
         val ic = currentInputConnection ?: return

@@ -5,7 +5,7 @@ plugins {
 // Semantic versioning (MAJOR.MINOR.PATCH). Bump this ONE line for every build you hand out:
 //   PATCH = bug fix, MINOR = new feature (backwards compatible), MAJOR = breaking change / 1.0 = first public release.
 // versionCode is derived from it (M*10000 + m*100 + p) so Android always sees newer builds as upgrades.
-val appVersion = "0.18.0"
+val appVersion = "0.23.1"
 val (vMajor, vMinor, vPatch) = appVersion.split(".").map { it.toInt() }
 
 base { archivesName.set("onerow-$appVersion") }
@@ -14,7 +14,7 @@ android {
     namespace = "com.example.onerow"
     compileSdk = 34
     defaultConfig {
-        applicationId = "com.example.onerow"
+        applicationId = "one.yb.onerow"
         minSdk = 24
         targetSdk = 34
         versionCode = vMajor * 10000 + vMinor * 100 + vPatch
@@ -29,6 +29,7 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+    buildFeatures { buildConfig = true }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -38,5 +39,6 @@ android {
 
 dependencies {
     implementation("com.google.mlkit:genai-proofreading:1.0.0-beta1")
+    implementation("com.android.billingclient:billing:7.1.1")
     testImplementation("junit:junit:4.13.2")
 }

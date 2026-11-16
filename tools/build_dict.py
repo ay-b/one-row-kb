@@ -2,8 +2,7 @@
 
 Unigrams: wordfreq (token frequency), casing recovered from the corpus (German nouns, names, "I").
 Bigrams: Tatoeba sentences (conversational) [+ NLTK corpora for English]; "^" = sentence start.
-LICENSES (ignored for dev, MUST be resolved before release): wordfreq data mixes CC sources (see its
-NOTICE); Tatoeba sentences are CC BY 2.0 FR (attribution required); NLTK corpora have own terms.
+LICENCES: see attribution.md at the repository root (wordfreq CC BY-SA 4.0, Tatoeba CC BY 2.0 FR with attribution, NLTK own terms).
 
 Usage: python build_dict.py <out_dir> <tatoeba_dir> [lang ...]
 """

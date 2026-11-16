@@ -46,11 +46,15 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         fun onRemoveWord(word: String)
         /** The proofread circle at the right end of the guess strip was tapped. */
         fun onProofread()
+        /** The keypad icon in the guess strip (shown when the selection holds numbers) was tapped. */
+        fun onSelCalc()
+        /** The keypad's undo key: take back the last replacement so the expression can be edited. */
+        fun onCalcUndo()
     }
 
-    enum class Mode { MINI, FULL, SYMBOLS, SYMBOLS_FULL, SYMBOLS_FULL2, PEEK }
+    enum class Mode { MINI, FULL, SYMBOLS, SYMBOLS_FULL, SYMBOLS_FULL2, PEEK, KEYPAD }
     enum class Shift { OFF, ONCE, LOCK }
-    private enum class Kind { LETTER, CHAR, SHIFT, BACKSPACE, SPACE, ENTER, TO_SYMBOLS, TO_LETTERS, SYM_PAGE2, SYM_PAGE1, SUGG, LANG, NONE }
+    private enum class Kind { LETTER, CHAR, SHIFT, BACKSPACE, SPACE, ENTER, TO_SYMBOLS, TO_LETTERS, SYM_PAGE2, SYM_PAGE1, SUGG, LANG, KEYPAD, UNDO, NONE }
 
     /** [dy] = vertical position of the glyph inside its cell (0 top .. 1 bottom). */
     private class Key(val kind: Kind, val label: String, val weight: Float, val hint: String? = null, val dy: Float = 0.5f, val base: Char? = null)
@@ -77,7 +81,18 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     var proof = ProofState.OFF
         set(v) { if (v != field) { field = v; laidOut = null; invalidate() } }
     private var proofDown = false
-    private fun proofW() = if (proof == ProofState.OFF) 0f else dp(34f)
+    /** Trial over: plain typing only (no gestures, zoom, swipe typing, keypad, language switch); the guess bar asks to subscribe. */
+    var locked = false
+        set(v) { if (v != field) { field = v; if (v) { hideLens(); gesture = Gesture.NONE; pressed = null; if (mode == Mode.PEEK) setMode(letterMode); closeKeypad() }; laidOut = null; invalidate() } }
+    /** Days left of a cancelled subscription: shown in the guess bar while nothing else is there to show. */
+    var expiringDays: Int? = null
+        set(v) { if (v != field) { field = v; invalidate() } }
+    /** A selection with numbers in it: the same circle shows a blinking keypad icon instead. */
+    var selHint = false
+        set(v) { if (v != field) { field = v; if (v) selHintSince = android.os.SystemClock.uptimeMillis(); laidOut = null; invalidate() } }
+    private var selHintSince = 0L
+    val keypadAvailable: Boolean get() = letterMode == Mode.FULL
+    private fun proofW() = if (proof == ProofState.OFF && !selHint) 0f else dp(34f)
     /** The guess slots use the strip minus the circle. */
     private fun stripW(r: RectF) = r.width() - proofW()
 
@@ -146,6 +161,17 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     private var removeWord: String? = null   // a guess was held: show the bucket
 
     private var mode = Mode.MINI
+    /** True while the numeric keypad (the calculator) is showing. */
+    val keypadActive: Boolean get() = mode == Mode.KEYPAD
+    /** Called when the keypad opens (true) or closes (false). */
+    var onKeypad: ((Boolean) -> Unit)? = null
+    /** Opens the keypad (only from the full keyboard's pages); false when this layout has no room for it. */
+    fun openKeypad(): Boolean { if (mode == Mode.KEYPAD) return true; if (letterMode != Mode.FULL) return false; setMode(Mode.KEYPAD); return true }
+    fun closeKeypad() { if (mode == Mode.KEYPAD) setMode(letterMode) }
+    /** Whether the keypad's undo key has something to take back (drawn dim otherwise). */
+    var calcUndoReady = false
+        set(v) { if (field != v) { field = v; invalidate() } }
+    private fun isSymbolMode(m: Mode) = m == Mode.SYMBOLS || m == Mode.SYMBOLS_FULL || m == Mode.SYMBOLS_FULL2 || m == Mode.PEEK || m == Mode.KEYPAD
     private var letterMode = Mode.MINI
     /** Told when the keyboard changes between one row and the full keyboard (true = full), so it can be remembered. */
     var onLetterMode: ((Boolean) -> Unit)? = null
@@ -206,9 +232,10 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             if (items.isEmpty()) return@Runnable                  // nothing to offer: stay a plain tap
             preciseKeys = items.map { Placed(it, p.rect, p.row) }
             preciseIdx0 = if (first < items.size) first else 0
-        } else if ((mode == Mode.SYMBOLS_FULL || mode == Mode.SYMBOLS_FULL2 || mode == Mode.FULL) && p.key.kind == Kind.CHAR && p.key.label.length == 1 &&
-            SYMBOL_VARIANTS.containsKey(p.key.label[0])) {
-            val items = listOf(p.key.label) + SYMBOL_VARIANTS.getValue(p.key.label[0]).map { it.toString() }
+        } else if ((mode == Mode.SYMBOLS_FULL || mode == Mode.SYMBOLS_FULL2 || mode == Mode.FULL || mode == Mode.KEYPAD) && p.key.kind == Kind.CHAR && p.key.label.length == 1 &&
+            variantsOf(p.key.label[0]) != null) {
+            val own = if (mode == Mode.KEYPAD) emptyList() else listOf(p.key.label)          // on the keypad the zoom offers only what a tap does not type
+            val items = own + variantsOf(p.key.label[0])!!.map { it.toString() }
             preciseKeys = items.map { Placed(Key(Kind.CHAR, it, 1f), p.rect, p.row) }
             preciseIdx0 = 0
         } else if (set != null) {
@@ -330,7 +357,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         scaling = false
         emojiPopup?.dismiss(); emojiPopup = null
         removeWord = null
-        if (mode == Mode.SYMBOLS || mode == Mode.SYMBOLS_FULL || mode == Mode.SYMBOLS_FULL2 || mode == Mode.PEEK) setMode(letterMode)
+        if (isSymbolMode(mode)) setMode(letterMode)
         shift = Shift.OFF
         suggestions = emptyList()
     }
@@ -363,6 +390,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     private fun buildRows() {
         val langKey = Key(Kind.LANG, "", 1f)                    // tap: next language; hold: settings
+        val keypadKey = Key(Kind.KEYPAD, "", 1f)                // on the 123 page the language key opens the keypad
         val comma = Key(Kind.CHAR, ",", 1f, hint = "☺", dy = 0.40f)
         val period = Key(Kind.CHAR, ".", 1f, hint = ",!?", dy = 0.40f)
         rows = when (mode) {
@@ -390,7 +418,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 Row(chars(SYMBOLS_ROW2), fullRowH, keyBg = true),
                 if (numberRow) Row(chars(CURRENCY), fullRowH, inset = ((lang.fullRows[0].length - CURRENCY.length) / 2f).coerceAtLeast(0f), keyBg = true) else null,
                 Row(listOf(Key(Kind.SYM_PAGE2, "=\\<", 1.5f)) + chars("*\"':;!?") + Key(Kind.BACKSPACE, "", 1.5f), fullRowH, keyBg = true),
-                Row(listOf(Key(Kind.TO_LETTERS, "abc", 1.5f), langKey, comma, Key(Kind.SPACE, "", 4f), period,
+                Row(listOf(Key(Kind.TO_LETTERS, "abc", 1.5f), keypadKey, comma, Key(Kind.SPACE, "", 4f), period,
                     Key(Kind.ENTER, "", 1.5f)), fullRowH, keyBg = true)
             )
             // Page 2: ~`|•√π÷×¶∆ / £¢€¥^°={}\ / [?123] %©®™✓[] [bksp] / ABC < space > enter
@@ -417,6 +445,20 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                         Key(Kind.ENTER, "", 1.5f)), fullRowH, keyBg = true)
                 )
             }
+            // The keypad: digits, then the math column, then backspace / percent / equals / enter; as tall as the 123 pages.
+            Mode.KEYPAD -> {
+                val kh = fullRowH * (if (numberRow) 5f else 4f) / 5f
+                fun r(vararg k: Key) = Row(k.toList(), kh, keyBg = true)
+                fun c(t: String) = Key(Kind.CHAR, t, 1f)
+                listOf(
+                    Row(listOf(Key(Kind.SUGG, "", 1f)), stripH, panel = false),
+                    r(c("1"), c("2"), c("3"), c("+"), Key(Kind.BACKSPACE, "", 1f)),
+                    r(c("4"), c("5"), c("6"), c("-"), c("%")),
+                    r(c("7"), c("8"), c("9"), c("*"), c("=")),
+                    r(Key(Kind.CHAR, ",", 1f, hint = "("), c("0"), Key(Kind.CHAR, ".", 1f, hint = ")"), c("/"), Key(Kind.ENTER, "", 1f)),
+                    Row(listOf(Key(Kind.SYM_PAGE1, "123", 1.5f), Key(Kind.SPACE, "", 2.5f), Key(Kind.UNDO, "", 1f)), kh, keyBg = true)
+                )
+            }
             Mode.SYMBOLS -> listOf(
                 Row(listOf(Key(Kind.NONE, "", 1.3f), Key(Kind.SUGG, "", 6f), Key(Kind.BACKSPACE, "", 1.3f)), stripH, panel = false),
                 Row(zigzag("1234567890-/:;()\$&@\".,?!'#".chunked(3), Kind.CHAR), rowH, inset = 0.5f),
@@ -428,8 +470,10 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     private fun setMode(m: Mode) {
         if (m == mode) return
-        if (m != Mode.SYMBOLS && m != Mode.SYMBOLS_FULL && m != Mode.SYMBOLS_FULL2 && m != Mode.PEEK) { letterMode = m; onLetterMode?.invoke(m == Mode.FULL) }
+        if (!isSymbolMode(m)) { letterMode = m; onLetterMode?.invoke(m == Mode.FULL) }
+        val wasPad = mode == Mode.KEYPAD
         mode = m
+        if (wasPad != (m == Mode.KEYPAD)) onKeypad?.invoke(m == Mode.KEYPAD)
         buildRows()
         layoutKeys(width.toFloat())   // same-height modes don't trigger onSizeChanged
         requestLayout()
@@ -547,6 +591,11 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                     stroke.strokeWidth = dp(if (down) 2.4f else 1.4f); c.drawRoundRect(b, dp(4f), dp(4f), stroke)
                     stroke.strokeWidth = sw
                 }
+                Kind.KEYPAD -> {                              // a little 3x3 keypad
+                    val d = dp(1.4f); val gap = dp(5.2f)
+                    fill.color = cTeal
+                    for (i in -1..1) for (j in -1..1) c.drawCircle(r.centerX() + i * gap, r.centerY() + j * gap, d, fill)
+                }
                 Kind.LANG -> {                                // current language, with a small gear: hold = settings
                     text.color = cTeal; text.textSize = sp(13f) * fs
                     drawCentered(c, this.lang.code.uppercase(), r.centerX(), r.centerY())
@@ -560,6 +609,19 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 Kind.SHIFT -> { drawShift(c, r); k.hint?.let { drawHint(c, it, r, k) } }
                 Kind.BACKSPACE -> drawBackspace(c, r, down)
                 Kind.ENTER -> drawEnter(c, r)
+                Kind.UNDO -> {
+                    val keep = stroke.color; val sw = stroke.strokeWidth
+                    stroke.color = if (calcUndoReady) cTeal else cDim; stroke.strokeWidth = dp(2f)
+                    val cx = r.centerX(); val cy = r.centerY(); val s0 = dp(8f)
+                    val a = Path().apply {
+                        moveTo(cx - s0, cy - s0 * 0.2f)
+                        cubicTo(cx - s0 * 0.5f, cy - s0 * 1.1f, cx + s0 * 1.1f, cy - s0 * 0.9f, cx + s0, cy + s0 * 0.6f)
+                        moveTo(cx - s0, cy - s0 * 0.2f); lineTo(cx - s0, cy - s0 * 1.0f)
+                        moveTo(cx - s0, cy - s0 * 0.2f); lineTo(cx - s0 * 0.1f, cy - s0 * 0.2f)
+                    }
+                    c.drawPath(a, stroke)
+                    stroke.color = keep; stroke.strokeWidth = sw
+                }
                 else -> {}
             }
         }
@@ -760,7 +822,18 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     /** Suggestions, or a lens (pressed key + neighbours) while a key is held. */
     private fun drawStrip(c: Canvas, r: RectF) {
+        if (locked) { drawLockedStrip(c, r); return }
         if (gesture == Gesture.SWIPE && swipe != Swipe.NONE) { drawSwipeHint(c, r); return }
+        val days = expiringDays
+        if (days != null && suggestions.all { it.isEmpty() }) {                      // before anything is typed: the countdown
+            text.color = cDim; text.textSize = sp(14f)
+            val msg = "Subscription expiring in $days " + (if (days == 1) "day" else "days")
+            val avail = stripW(r) - dp(12f); val w = text.measureText(msg)
+            if (w > avail) text.textSize = (sp(14f) * avail / w).coerceAtLeast(sp(9f))
+            drawCentered(c, msg, r.left + stripW(r) / 2, r.centerY())
+            if (proof != ProofState.OFF || selHint) drawProof(c, r)
+            return
+        }
         val sw0 = stripW(r)
         suggLayout(sw0)
         if (scrollToBest) {                      // keep the highlighted best guess in view when the list is long
@@ -796,12 +869,40 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             val x0 = r.left + (suggScroll / total) * sw0
             c.drawRoundRect(x0, r.bottom - dp(3f), x0 + vis * sw0, r.bottom - dp(1.5f), dp(1f), dp(1f), fill)
         }
-        if (proof != ProofState.OFF) drawProof(c, r)
+        if (proof != ProofState.OFF || selHint) drawProof(c, r)
+    }
+
+    /** The trial is over: the message and a gear that opens the settings (a tap anywhere on the bar does too). */
+    private fun drawLockedStrip(c: Canvas, r: RectF) {
+        val rad = dp(11f); val cx = r.right - dp(20f); val cy = r.centerY()
+        fill.color = cTeal; c.drawCircle(cx, cy, rad, fill)
+        val old = stroke.color; val sw = stroke.strokeWidth
+        stroke.color = cStrip; stroke.strokeWidth = dp(1.4f)
+        drawGear(c, RectF(cx - rad, cy - rad, cx + rad, cy + rad), 0.95f)
+        stroke.color = old; stroke.strokeWidth = sw
+        text.color = cInk; text.textSize = sp(14f)
+        val msg = "Trial has expired, please subscribe"
+        val avail = r.width() - dp(52f); val w = text.measureText(msg)
+        if (w > avail) text.textSize = (sp(14f) * avail / w).coerceAtLeast(sp(9f))
+        drawCentered(c, msg, r.left + (r.width() - dp(40f)) / 2, r.centerY())
     }
 
     /** A small colored circle: a check (ready), dots (working) or a back arrow (undo). */
     private fun drawProof(c: Canvas, r: RectF) {
         val rad = dp(11f); val cx = r.right - dp(17f); val cy = r.centerY()
+        if (selHint) {                                              // a small keypad, pulsing for the first seconds
+            val t = android.os.SystemClock.uptimeMillis() - selHintSince
+            val a = if (t < 3500) 0.4f + 0.6f * Math.abs(Math.sin(t / 1000.0 * Math.PI * 1.4)).toFloat() else 1f
+            if (t < 3500) postInvalidateOnAnimation()
+            fill.color = if (proofDown) cKeyDown else cTeal
+            fill.alpha = (255 * a).toInt()
+            c.drawCircle(cx, cy, rad, fill)
+            fill.color = cStrip
+            val g = dp(4.2f)
+            for (i in -1..1) for (j in -1..1) c.drawCircle(cx + i * g, cy + j * g, dp(1.3f), fill)
+            fill.alpha = 255
+            return
+        }
         fill.color = if (proofDown) cKeyDown else if (proof == ProofState.BUSY) cDim else cTeal
         c.drawCircle(cx, cy, rad, fill)
         val old = stroke.color; val sw = stroke.strokeWidth
@@ -906,8 +1007,34 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     override fun onTouchEvent(e: MotionEvent): Boolean { val r = handleTouch(e); syncLens(); return r }
 
+    /** Trial over: taps on keys type, backspace repeats; the guess bar and the language key open the settings; nothing else. */
+    private fun lockedTouch(e: MotionEvent): Boolean {
+        when (e.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                downX = e.x; downY = e.y; gesture = Gesture.NONE; swipe = Swipe.NONE
+                pressed = keyAt(e.x, e.y)
+                if (pressed?.key?.kind == Kind.BACKSPACE) handler.postDelayed(repeatStart, 400)
+                haptic(); invalidate()
+            }
+            MotionEvent.ACTION_UP -> {
+                handler.removeCallbacks(repeatStart); handler.removeCallbacks(repeatDelete)
+                val p = pressed; pressed = null
+                if (p != null && hypot(e.x - downX, e.y - downY) < dp(26f)) when (p.key.kind) {
+                    Kind.SUGG, Kind.LANG -> listener.onSettings()
+                    Kind.LETTER, Kind.CHAR, Kind.SHIFT, Kind.BACKSPACE, Kind.SPACE, Kind.ENTER,
+                    Kind.TO_SYMBOLS, Kind.TO_LETTERS, Kind.SYM_PAGE1, Kind.SYM_PAGE2 -> commit(p, e.x, e.y)
+                    else -> {}
+                }
+                invalidate()
+            }
+            MotionEvent.ACTION_CANCEL -> { handler.removeCallbacks(repeatStart); handler.removeCallbacks(repeatDelete); pressed = null; invalidate() }
+        }
+        return true
+    }
+
     private fun handleTouch(e: MotionEvent): Boolean {
         if (scaling) return scaleTouch(e)
+        if (locked) return lockedTouch(e)
         when (e.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 emojiPopup?.dismiss(); emojiPopup = null
@@ -916,7 +1043,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 gesture = Gesture.NONE; swipe = Swipe.NONE
                 pressed = keyAt(e.x, e.y)
                 val p = pressed
-                if (p?.key?.kind == Kind.SUGG && proof != ProofState.OFF && e.x > p.rect.right - dp(36f)) {
+                if (p?.key?.kind == Kind.SUGG && (proof != ProofState.OFF || selHint) && e.x > p.rect.right - dp(36f)) {
                     proofDown = true; haptic(); invalidate(); return true          // the circle at the strip's right end
                 }
                 if (p?.key?.kind == Kind.SUGG) {
@@ -938,7 +1065,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 if (proofDown) {
                     proofDown = false
                     val sg = pressed
-                    if (sg != null && e.x > sg.rect.right - dp(42f) && e.y < rowRects[0].bottom + dp(4f)) listener.onProofread()
+                    if (sg != null && e.x > sg.rect.right - dp(42f) && e.y < rowRects[0].bottom + dp(4f)) { if (selHint) listener.onSelCalc() else listener.onProofread() }
                     pressed = null; invalidate(); return true
                 }
                 handler.removeCallbacks(repeatStart); handler.removeCallbacks(repeatDelete); handler.removeCallbacks(holdToPrecise); handler.removeCallbacks(holdGuess)
@@ -1231,7 +1358,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             Kind.BACKSPACE -> listener.onBackspace()
             Kind.ENTER -> {
                 listener.onEnter()
-                if (mode == Mode.SYMBOLS || mode == Mode.SYMBOLS_FULL || mode == Mode.SYMBOLS_FULL2) setMode(letterMode)   // Enter leaves the 123 pages
+                if (isSymbolMode(mode) && mode != Mode.PEEK) setMode(letterMode)   // Enter leaves the 123 pages and the keypad
             }
             Kind.SHIFT -> {
                 val now = System.currentTimeMillis()
@@ -1246,6 +1373,8 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             Kind.TO_LETTERS -> setMode(letterMode)
             Kind.SYM_PAGE2 -> setMode(Mode.SYMBOLS_FULL2)
             Kind.SYM_PAGE1 -> setMode(Mode.SYMBOLS_FULL)
+            Kind.KEYPAD -> setMode(Mode.KEYPAD)
+            Kind.UNDO -> listener.onCalcUndo()
             else -> {}
         }
     }
@@ -1296,6 +1425,10 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         '#' to "№", '\$' to "¢£€¥₱", '%' to "‰", '-' to "—–", '+' to "±", '(' to "[{<", ')' to "]}>",
         '*' to "†‡★", '"' to "„“”«»", '\'' to "‘’‚‹›", '!' to "¡", '?' to "¿", '=' to "≠≈∞", '<' to "≤«‹", '>' to "≥»›",
     )
+
+    /** The keypad's own zoom lists: the brackets: hold , for ( and . for ). The other keys keep the usual ones. */
+    private val KEYPAD_VARIANTS = mapOf(',' to "(", '.' to ")")
+    private fun variantsOf(c: Char): String? = (if (mode == Mode.KEYPAD) KEYPAD_VARIANTS[c] else null) ?: SYMBOL_VARIANTS[c]
 
     private class HoldSet(val items: List<String>, val start: Int)
 
