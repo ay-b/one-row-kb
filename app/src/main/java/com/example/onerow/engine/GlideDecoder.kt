@@ -73,7 +73,7 @@ class GlideDecoder(private val lex: Lexicon) {
         }
         indexed = total
         val tm = System.nanoTime()
-        if (fresh) maxLogUni = lex.logUni.max()
+        if (fresh) maxLogUni = lex.logUni.max() + 1.6f      // slack for words the user promoted later
         if (fresh) for (b in byPair) {              // most frequent words first: good matches are found early, so pruning bites sooner
             if (b.n < 2) continue
             val packed = LongArray(b.n) {           // order-preserving float bits, inverted = descending; ties keep index order

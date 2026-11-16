@@ -602,11 +602,11 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 val cy = cardH / 2; val a = dp(5f)
                 p.style = Paint.Style.STROKE; p.strokeCap = Paint.Cap.ROUND; p.strokeJoin = Paint.Join.ROUND
                 val lx = dp(6f) + pad / 2 - dp(2f)
-                p.strokeWidth = if (moreLeft) dp(2.6f) else dp(1.2f); p.color = if (moreLeft) cTeal else (cDim and 0x00FFFFFF) or 0x55000000
-                c.drawPath(Path().apply { moveTo(lx + a * 0.6f, cy - a); lineTo(lx - a * 0.6f, cy); lineTo(lx + a * 0.6f, cy + a) }, p)
+                p.strokeWidth = dp(2.6f); p.color = cTeal
+                if (moreLeft) c.drawPath(Path().apply { moveTo(lx + a * 0.6f, cy - a); lineTo(lx - a * 0.6f, cy); lineTo(lx + a * 0.6f, cy + a) }, p)
                 val rx = w - dp(6f) - pad / 2 + dp(2f) - (if (hint) dp(46f) else 0f)
-                p.strokeWidth = if (moreRight) dp(2.6f) else dp(1.2f); p.color = if (moreRight) cTeal else (cDim and 0x00FFFFFF) or 0x55000000
-                c.drawPath(Path().apply { moveTo(rx - a * 0.6f, cy - a); lineTo(rx + a * 0.6f, cy); lineTo(rx - a * 0.6f, cy + a) }, p)
+                p.strokeWidth = dp(2.6f); p.color = cTeal
+                if (moreRight) c.drawPath(Path().apply { moveTo(rx - a * 0.6f, cy - a); lineTo(rx + a * 0.6f, cy); lineTo(rx - a * 0.6f, cy + a) }, p)
                 p.strokeCap = Paint.Cap.BUTT
             }
             for ((i, label) in items.withIndex()) {
@@ -1229,7 +1229,10 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             }
             Kind.SPACE -> listener.onText(" ")
             Kind.BACKSPACE -> listener.onBackspace()
-            Kind.ENTER -> listener.onEnter()
+            Kind.ENTER -> {
+                listener.onEnter()
+                if (mode == Mode.SYMBOLS || mode == Mode.SYMBOLS_FULL || mode == Mode.SYMBOLS_FULL2) setMode(letterMode)   // Enter leaves the 123 pages
+            }
             Kind.SHIFT -> {
                 val now = System.currentTimeMillis()
                 shift = when {

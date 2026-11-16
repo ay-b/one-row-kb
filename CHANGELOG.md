@@ -4,6 +4,26 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.18.0
+- Guesses: the bar tries to offer different words, not only more forms of the same word (walk, walked, walking; красный, красная); the extra forms come after the others. Swipe typing asks for twice as many candidates to choose from.
+- Russian: a word with ё is recognized and offered before its е spelling (всё before все, ещё before еще); the е form stays as the variant.
+- Choosing another guess for a swiped word (or another word of the same length for tapped letters) is remembered: it becomes the first guess the next time, and the choice is kept between sessions.
+
+## 0.17.6
+- Fix: with the caret inside a word, the guesses are for the whole word and a tapped guess replaces all of it (it used to replace only the part before the caret and leave the rest behind).
+
+## 0.17.5
+- On the 123 pages, Enter now switches back to the letters.
+
+## 0.17.4
+- Picking one of the guesses for a swiped word now returns the guess bar to next-word predictions (the alternatives used to stay until the next input).
+
+## 0.17.3
+- Fix: after deleting a line break (backspace over Enter) the next word is no longer auto-capitalized; capitals resume once something else is typed.
+
+## 0.17.2
+- Zoom bubbles: the scroll chevron is hidden (not dimmed) on a side where the list has already reached its end.
+
 ## 0.17.1
 - Fix: automatic capital letter only at the start of a field or after a finished sentence (. ! ? … or a new line); no longer after %, :, ;, digits or commas. Fields that ask for capitalized words (names) are unchanged.
 - The Height slider is gone from the settings; the vertical-scaling control (hold the language key) replaces it.

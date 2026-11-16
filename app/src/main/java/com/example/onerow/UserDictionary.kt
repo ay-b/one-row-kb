@@ -11,6 +11,7 @@ import kotlin.math.min
 class UserDictionary(private val file: File) {
     val counts = LinkedHashMap<String, Int>()     // surface -> times used
     val removed = LinkedHashSet<String>()         // lowercase words hidden from guesses
+    val preferred = LinkedHashMap<String, String>()   // chosen word -> the word that was offered first and lost
 
     init {
         try {
@@ -18,6 +19,7 @@ class UserDictionary(private val file: File) {
                 val t = it.split('\t')
                 if (t.size >= 3 && t[0] == "+") counts[t[1]] = t[2].toIntOrNull() ?: 1
                 else if (t.size >= 2 && t[0] == "-") removed += t[1]
+                else if (t.size >= 3 && t[0] == "*") preferred[t[1]] = t[2]
             }
         } catch (e: Exception) { /* start empty */ }
     }
@@ -34,6 +36,9 @@ class UserDictionary(private val file: File) {
         return c
     }
 
+    /** Remembers that [word] was picked where [over] came first. */
+    fun prefer(word: String, over: String) { preferred[word] = over; save() }
+
     /** Forgets a learned word and hides it (and any shipped word of the same spelling) from guesses. */
     fun forget(word: String) {
         counts.keys.removeAll { it.equals(word, ignoreCase = true) }
@@ -46,6 +51,7 @@ class UserDictionary(private val file: File) {
             file.writeText(buildString {
                 counts.forEach { (w, c) -> append("+\t$w\t$c\n") }
                 removed.forEach { append("-\t$it\n") }
+                preferred.forEach { (w, o) -> append("*\t$w\t$o\n") }
             })
         } catch (e: Exception) { /* best effort */ }
     }

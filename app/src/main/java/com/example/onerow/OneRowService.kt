@@ -83,6 +83,8 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
                 if (i < 0) lx.addWord(w, lp) else if (lx.logUni[i] < lp) lx.setLogProb(i, lp)
             }
             for (w in ud.removed) { val i = lx.indexOf(w); if (i >= 0) lx.remove(i) }
+            if (l.alphabet.folds.containsKey('ё')) lx.preferYo()
+            for ((w, o) in ud.preferred) lx.promote(lx.indexOf(w), lx.indexOf(o))     // corrections the user made earlier
             val eng = Engine(lx, Decoder(lx), ud)
             eng.glide.applyTolerance(prefs.swipeTolerance)
             // the bigrams and the swipe index are independent: build them side by side
@@ -335,6 +337,14 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         return t.substring(i)
     }
 
+    /** Letters/apostrophes directly after the caret (the rest of a word the caret sits inside), or "". */
+    private fun wordTail(): String {
+        val t = currentInputConnection?.getTextAfterCursor(40, 0)?.toString() ?: return ""
+        var i = 0
+        while (i < t.length && (t[i].isLetter() || t[i] == '\'')) i++
+        return t.substring(0, i)
+    }
+
     /** Index of the word before the cursor (ignoring the composing word), or -1 at sentence start. */
     private fun previousWordIdx(): Int {
         val l = lex ?: return -1
@@ -351,6 +361,9 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         else -> w
     }
 
+    /** Set when the last action was deleting a line break: no automatic capital until something else is typed. */
+    private var noAutoCap = false
+
     private fun refresh() {
         if (glideWord != null) return                    // the guesses for the glided word stay until the next input
         val ic = currentInputConnection ?: return
@@ -362,7 +375,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         val sentenceOnly = (info.inputType and (InputType.TYPE_TEXT_FLAG_CAP_WORDS or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS)) == 0
         val before = textBefore(12).trimEnd(' ', '\u00a0').trimEnd('"', '\'', ')', ']', '}', '\u00bb', '\u201d', '\u2019')
         val sentenceDone = before.isEmpty() || before.last() in ".!?\u2026\n\u3002"
-        val capOk = !sentenceOnly || sentenceDone
+        val capOk = !noAutoCap && (!sentenceOnly || sentenceDone)
         if (isText && capOk && kv.shift == KeyboardView.Shift.OFF && ic.getCursorCapsMode(info.inputType) != 0)
             kv.shift = KeyboardView.Shift.ONCE
         if (taps.isEmpty()) {
@@ -385,13 +398,43 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     /** Guesses completing the word the caret touches (not composing, e.g. after tapping into text). */
     private fun completionsForWordAtCaret(l: Lexicon): List<String>? {
         val dec = decoder ?: return null
-        val w = currentWord()
+        val w = currentWord() + wordTail()
         if (w.isEmpty()) return null
         val key = l.alphabet.key(w)
         if (key.isEmpty()) return null
         val taps = key.map { k -> FloatArray(l.alphabet.n) { -30f }.also { it[k] = 0f } }
         val out = dec.decode(taps, -1, 12).map { it.word }.filter { !it.equals(w, ignoreCase = true) }
         return (listOf(w) + out).take(12)
+    }
+
+    /** Whether two guesses are just forms of one word (walk/walked/walking, красный/красная); ё/е twins are not. */
+    private fun sameStem(a: String, b: String): Boolean {
+        val x = a.lowercase(); val y = b.lowercase()
+        if (x.replace('ё', 'е') == y.replace('ё', 'е')) return false
+        val m = minOf(x.length, y.length)
+        var cp = 0
+        while (cp < m && x[cp] == y[cp]) cp++
+        return cp >= 4 && cp >= m - 1
+    }
+
+    /** Keeps the first guess, then prefers different words over more forms of one already offered; the forms fill what is left. */
+    private fun diversify(words: List<String>, keep: Int = 1): List<String> {
+        val out = ArrayList<String>(); val later = ArrayList<String>()
+        for ((i, w) in words.withIndex()) {
+            if (i < keep || out.none { sameStem(it, w) }) out += w else later += w
+        }
+        return out + later
+    }
+
+    /** The user picked [word] where [first] was offered first: remember it so that it ranks first from now on. */
+    private fun prefer(word: String, first: String) {
+        val lx = lex ?: return; val ud = user ?: return
+        if (word.equals(first, ignoreCase = true) || word.isEmpty() || first.isEmpty()) return
+        val c = lx.indexOf(word.lowercase()).takeIf { it >= 0 } ?: lx.indexOf(word)
+        val f = lx.indexOf(first.lowercase()).takeIf { it >= 0 } ?: lx.indexOf(first)
+        if (c < 0 || f < 0) return
+        lx.promote(c, f)
+        ud.prefer(lx.words[c], lx.words[f])
     }
 
     // ---------- composing ----------
@@ -402,6 +445,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         val lx = lex ?: return
         var list = dec.decode(taps, prevIdx, 14)
         if (list.isEmpty()) return
+        run { val order = diversify(list.map { it.word }); list = list.sortedBy { order.indexOf(it.word) } }
         // Full keyboard / hold-and-slide: the input gets exactly what was typed. Guesses are only offered.
         val deliberate = exact.all { it }
         if (deliberate) {
@@ -446,10 +490,11 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
 
     // ---------- KeyboardView.Listener ----------
 
-    override fun onLetter(ch: Char, logp: FloatArray, exactPick: Boolean) = addTap(ch, logp, exactPick, null)
+    override fun onLetter(ch: Char, logp: FloatArray, exactPick: Boolean) { noAutoCap = false; addTap(ch, logp, exactPick, null) }
 
     /** A national letter (ü, ñ, ç ...) picked with hold-and-slide: exact, and typed as itself. */
     override fun onAccent(base: Char, shown: String) {
+        noAutoCap = false
         val n = lang.alphabet.n
         addTap(base, FloatArray(n) { -30f }.also { it[lang.alphabet.index(base)] = 0f }, true, shown)
     }
@@ -484,6 +529,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     override fun onText(text: String) {
+        noAutoCap = false
         endGlide()
         // French elision (l', d', qu'): the apostrophe is already in the word, so no space after it
         if (text == " " && taps.isNotEmpty() && cands.firstOrNull()?.word?.endsWith("'") == true) { finishComposing(); return }
@@ -533,6 +579,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
 
     override fun onBackspace() {
         justAutoSpaced = false; wordAutoSpaced = false
+        noAutoCap = false
         if (glideWord != null && taps.isEmpty() && glideIntact()) {          // delete the whole glided word
             currentInputConnection?.deleteSurroundingText(glideWord!!.length + 1, 0)
             endGlide(); refresh(); return
@@ -551,6 +598,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (!ic.getSelectedText(0).isNullOrEmpty()) { ic.commitText("", 1); return }       // delete the selection
         if (ic.getTextBeforeCursor(1, 0).isNullOrEmpty()) { sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL); return }
         // Delete directly (a DEL key event is processed later, so the text would still look unchanged below).
+        if (ic.getTextBeforeCursor(1, 0)?.toString() == "\n") { noAutoCap = true; if (kv.shift == KeyboardView.Shift.ONCE) kv.shift = KeyboardView.Shift.OFF }   // took back a line break: the caret is not at a new sentence
         ic.deleteSurroundingTextInCodePoints(1, 0)
         resumeWordAtCaret()
     }
@@ -634,6 +682,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     override fun onEnter() {
+        noAutoCap = false
         justAutoSpaced = false; wordAutoSpaced = false
         endGlide()
         finishComposing()
@@ -676,6 +725,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
 
     /** A word drawn across the letters of the full keyboard: type the best match, offer the others as guesses. */
     override fun onGlide(xs: FloatArray, ys: FloatArray, n: Int, layout: GlideLayout) {
+        noAutoCap = false
         val eng = loaded[lang.code] ?: return           // dictionary still loading
         val ic = currentInputConnection ?: return
         if (!decoding) return
@@ -684,11 +734,11 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         justAutoSpaced = false; wordAutoSpaced = false
         val prevW = previousWordIdx()
         val t1 = System.nanoTime()
-        val list = eng.glide.decode(xs, ys, n, layout, prevW, 8)
+        val list = eng.glide.decode(xs, ys, n, layout, prevW, 16)
         val t2 = System.nanoTime()
         if (list.isEmpty()) return
         capFirst = kv.shift != KeyboardView.Shift.OFF; capAll = kv.shift == KeyboardView.Shift.LOCK
-        val words = list.map { styled(it.word) }.distinct()
+        val words = diversify(list.map { styled(it.word) }.distinct()).take(8)
         ic.beginBatchEdit()
         val b = textBefore(1)
         if (b.isNotEmpty() && !b.last().isWhitespace() && b.last() !in "([{\"'\u00AB\u201C-") ic.commitText(" ", 1)
@@ -701,19 +751,22 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     override fun onSuggestion(word: String) {
+        noAutoCap = false
         justAutoSpaced = false; wordAutoSpaced = false
         val ic = currentInputConnection ?: return
         val gw = glideWord
         if (gw != null && taps.isEmpty() && glideIntact()) {         // a guess for a glided word replaces it
             ic.beginBatchEdit(); ic.deleteSurroundingText(gw.length + 1, 0); ic.commitText("$word ", 1); ic.endBatchEdit()
-            glideWord = word; kv.bestIndex = glideAlts.indexOf(word)
-            wordAutoSpaced = true
+            prefer(word, glideAlts.firstOrNull() ?: gw)
+            endGlide(); wordAutoSpaced = true
+            refresh()                                                // back to next-word prediction
             return
         }
         endGlide()
         ic.beginBatchEdit()
         if (taps.isNotEmpty()) {
             // composing: the guess replaces the composing text; then only the space is added
+            if (lex?.alphabet?.key(word)?.size == taps.size) prefer(word, cands.firstOrNull()?.word ?: "")   // a correction, not a longer completion
             if (decoding && lex?.indexOf(word) == -1) learn(word.lowercase())   // picked the 'typed' slot: deliberate
             ic.setComposingText(word, 1)
             ic.finishComposingText()
@@ -722,10 +775,12 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         } else {
             // Not composing (the app dropped the composing region, or the caret sits at a word's end):
             // a tapped guess replaces the word touching the caret instead of being appended to it.
-            val typed = currentWord()
-            if (typed.isNotEmpty()) ic.deleteSurroundingText(typed.length, 0)
+            // Tapped inside the word: the whole word is replaced, not just the part before the caret.
+            val typed = currentWord(); val tail = wordTail()
+            if (typed.isNotEmpty() || tail.isNotEmpty()) ic.deleteSurroundingText(typed.length, tail.length)
             if (decoding && lex?.indexOf(word) == -1) learn(word.lowercase())   // the typed slot again: silent, no prompt
-            ic.commitText("$word ", 1)
+            val next = ic.getTextAfterCursor(1, 0)?.toString().orEmpty()
+            ic.commitText(if (tail.isNotEmpty() && next.isNotEmpty() && !next[0].isLetterOrDigit()) word else "$word ", 1)
         }
         ic.endBatchEdit()
         wordAutoSpaced = true

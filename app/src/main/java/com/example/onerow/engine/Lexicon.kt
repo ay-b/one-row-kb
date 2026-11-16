@@ -166,12 +166,40 @@ class Lexicon private constructor(
         for (node in pathOf(alphabet.key(surfaceOf(i)))) pushTop(node, i)
     }
 
+    private val yoWords = HashSet<Int>()              // words with ё that have an е twin (все/всё): they win ties
+
+    /** For Russian: a word with ё outranks its е spelling (всё before все); the е form stays as the variant. */
+    fun preferYo() {
+        for (i in 0 until staticWords) {
+            var has = false
+            var k = wordOff[i]; val e = wordOff[i + 1]
+            while (k < e - 1) {
+                val b0 = pool[k].toInt() and 0xFF; val b1 = pool[k + 1].toInt() and 0xFF
+                if ((b0 == 0xD1 && b1 == 0x91) || (b0 == 0xD0 && b1 == 0x81)) { has = true; break }
+                k++
+            }
+            if (!has) continue
+            val twin = indexOf(surfaceOf(i).replace('ё', 'е').replace('Ё', 'Е'))
+            if (twin < 0 || twin == i) continue
+            yoWords += i
+            if (logUni[i] < logUni[twin] + 1.0f) logUni[i] = logUni[twin] + 1.0f
+        }
+        for (i in yoWords) for (node in pathOf(alphabet.key(surfaceOf(i)))) pushTop(node, i)
+    }
+
+    /** The user chose [chosen] where [over] was offered first: from now on it ranks above it. */
+    fun promote(chosen: Int, over: Int) {
+        if (chosen < 0 || over < 0 || chosen == over) return
+        val want = logUni[over] + 1.5f
+        if (logUni[chosen] < want) setLogProb(chosen, want)
+    }
+
     /** ln P(word | prev); prev < 0 means sentence start / no context. Interpolated with the unigram. */
     fun lm(word: Int, prev: Int): Float {
         val pu = Math.exp(logUni[word].toDouble())
         val pc = if (prev < 0) starts[word] else bigram[key(prev, word)]
         val p = if (pc != null) 0.5 * pc + 0.5 * pu else 0.5 * pu
-        return ln(p).toFloat()
+        return ln(p).toFloat() + (if (word in yoWords) 1.0f else 0f)
     }
 
     /** Largest P(word | prev) over all words (prev < 0: sentence start); an upper bound for pruning. */
