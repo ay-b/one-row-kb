@@ -4,6 +4,9 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.23.2
+- Play bundle: release build type (R8, upload-key signing from `~/.android/onerow-upload.properties`, outside the repo) so `./gradlew :app:bundleRelease` makes an `.aab`; target and compile SDK raised to 35, which Play requires for new apps.
+
 ## 0.23.1
 - A cancelled subscription: "Subscription expiring in N days" now replaces the next-word guesses before anything is typed (it showed only when the bar was otherwise empty).
 
