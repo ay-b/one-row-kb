@@ -21,7 +21,7 @@ class Prefs(context: Context) {
 
     /** Keyboard height multiplier, 0.7 .. 1.5. */
     var heightScale: Float
-        get() = sp.getFloat("height", 1f)
+        get() = sp.getFloat("height", 1f).coerceIn(0.5f, 1.6f)
         set(v) = sp.edit().putFloat("height", v).apply()
 
     /** One of [Themes]: default (original look), light, dark, auto (follows the system). */
@@ -39,15 +39,19 @@ class Prefs(context: Context) {
         get() = sp.getBoolean("swipe_typing", false)
         set(v) = sp.edit().putBoolean("swipe_typing", v).apply()
 
-    /** How the keyboard sits on screen: "docked" (normal), "floating" (movable, resizable window) or "split" (two halves, tablets). */
+    /** How the keyboard sits on screen: "docked" (normal), "floating" (movable, resizable window), "split" (two halves, tablets) or "left" / "right" (smaller, pushed to one side, tablets). */
     var layoutMode: String
-        get() = (sp.getString("layout", "docked") ?: "docked").takeIf { it == "floating" || it == "split" } ?: "docked"
+        get() = (sp.getString("layout", "docked") ?: "docked").takeIf { it in setOf("floating", "split", "left", "right") } ?: "docked"
         set(v) = sp.edit().putString("layout", v).apply()
 
     /** Floating keyboard: width as a share of the screen, and where it was left (offsets, see FloatingKeyboard). */
     var floatWidth: Float
         get() = sp.getFloat("float_w", 0.8f).coerceIn(0.4f, 1f)
         set(v) = sp.edit().putFloat("float_w", v).apply()
+    /** Floating keyboard: its own height multiplier (corner drags change it). */
+    var floatHeight: Float
+        get() = sp.getFloat("float_h", 1f).coerceIn(0.5f, 1.6f)
+        set(v) = sp.edit().putFloat("float_h", v).apply()
     var floatX: Int
         get() = sp.getInt("float_x", Int.MIN_VALUE)
         set(v) = sp.edit().putInt("float_x", v).apply()

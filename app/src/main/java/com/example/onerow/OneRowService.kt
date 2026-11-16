@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Build
 import android.os.Looper
 import android.text.InputType
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
@@ -104,7 +105,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     private fun applyPrefs() {
         val cur = prefs.current()
         kv.languages = prefs.enabled
-        kv.heightScale = prefs.heightScale
+        kv.heightScale = scaleFor(layoutMode)
         kv.hapticsOn = prefs.haptics
         kv.themeMode = prefs.theme
         kv.swipeTyping = prefs.swipeTyping
@@ -128,6 +129,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         kv = KeyboardView(this, this, lang)
         kv.languages = prefs.enabled
         kv.heightScale = prefs.heightScale
+        kv.onHeightScale = { v -> if (layoutMode == "floating") prefs.floatHeight = v else prefs.heightScale = v }
         kv.hapticsOn = prefs.haptics
         kv.themeMode = prefs.theme
         kv.swipeTyping = prefs.swipeTyping
@@ -136,9 +138,9 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         kv.restoreFull(prefs.fullKeyboard)                      // come back the way it was left
         kv.onLetterMode = { full -> prefs.fullKeyboard = full }
         if (::floating.isInitialized) floating.hide()
-        floating = FloatingKeyboard(this, prefs)
+        floating = FloatingKeyboard(this, prefs) { requestHideSelf(0) }
         dock = FrameLayout(this)
-        layoutMode = prefs.layoutMode.let { if (it == "split" && !isTablet()) "docked" else it }
+        layoutMode = prefs.layoutMode.let { if (it in setOf("split", "left", "right") && !isTablet()) "docked" else it }
         arrange()
         android.util.Log.d("OneRowStartup", "input view built in ${(System.nanoTime() - tv) / 1_000_000} ms, ${sinceBirth()} ms after service start")
         return dock
@@ -147,8 +149,16 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     private fun isTablet() = resources.configuration.smallestScreenWidthDp >= 600
 
     /** Puts the keyboard where [layoutMode] says: in the input view (docked or split) or in the floating window. */
+    private fun scaleFor(mode: String) = if (mode == "floating") prefs.floatHeight else prefs.heightScale
+
     private fun arrange() {
         kv.split = layoutMode == "split"
+        kv.floating = layoutMode == "floating"
+        kv.scaling = false
+        kv.heightScale = scaleFor(layoutMode)
+        val side = layoutMode == "left" || layoutMode == "right"
+        kv.shrink = if (side) 0.85f else 1f
+        dock.setBackgroundColor(if (side) Themes.palette(prefs.theme, resources.configuration).panel else 0)
         if (layoutMode == "floating") {
             (kv.parent as? ViewGroup)?.let { if (it !== dock) it.removeView(kv) }
             dock.removeAllViews()
@@ -159,8 +169,12 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
             if (kv.parent !== dock) {
                 (kv.parent as? ViewGroup)?.removeView(kv)
                 dock.removeAllViews()
-                dock.addView(kv, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+                dock.addView(kv)
             }
+            // one-hand layouts: the keyboard is narrower and sits against one side; the rest of the input view is panel color
+            val w = if (side) (resources.displayMetrics.widthPixels * 0.62f).toInt() else ViewGroup.LayoutParams.MATCH_PARENT
+            kv.layoutParams = FrameLayout.LayoutParams(w, ViewGroup.LayoutParams.WRAP_CONTENT,
+                when (layoutMode) { "left" -> Gravity.START; "right" -> Gravity.END; else -> Gravity.NO_GRAVITY } or Gravity.BOTTOM)
         }
         dock.requestLayout()
     }
@@ -180,21 +194,10 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
 
     override fun onDestroy() { if (::floating.isInitialized) floating.hide(); super.onDestroy() }
 
-    /** In split layout only the two halves (and the guess strip) take touches; the gap between them belongs to the app. */
-    override fun onComputeInsets(outInsets: Insets) {
-        super.onComputeInsets(outInsets)
-        if (layoutMode == "split" && ::kv.isInitialized && kv.isShown) {
-            val loc = IntArray(2); kv.getLocationInWindow(loc)
-            outInsets.touchableRegion.setEmpty()
-            for (r in kv.touchRects()) { r.offset(loc[0], loc[1]); outInsets.touchableRegion.union(r) }
-            outInsets.touchableInsets = Insets.TOUCHABLE_INSETS_REGION
-        }
-    }
-
     override fun onMode(mode: String) { ui.post { setLayoutMode(mode) } }
 
     private fun setLayoutMode(m: String) {
-        val target = if (m == "split" && !isTablet()) "docked" else m
+        val target = if (m in setOf("split", "left", "right") && !isTablet()) "docked" else m
         if (target == layoutMode) return
         layoutMode = target; prefs.layoutMode = target
         arrange()
@@ -285,7 +288,9 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         val ic = currentInputConnection ?: return
         val info = currentInputEditorInfo ?: return
         val isText = (info.inputType and InputType.TYPE_MASK_CLASS) == InputType.TYPE_CLASS_TEXT
-        if (isText && kv.shift == KeyboardView.Shift.OFF && ic.getCursorCapsMode(info.inputType) != 0)
+        // a colon or semicolon (plus spaces) before the caret does not end a sentence, whatever the system says
+        val afterColon = textBefore(4).trimEnd(' ').lastOrNull().let { it == ':' || it == ';' }
+        if (isText && !afterColon && kv.shift == KeyboardView.Shift.OFF && ic.getCursorCapsMode(info.inputType) != 0)
             kv.shift = KeyboardView.Shift.ONCE
         if (taps.isEmpty()) {
             kv.bestIndex = -1

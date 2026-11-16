@@ -4,6 +4,13 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.14.0
+- Fix: after ":" or ";" the next word is no longer capitalized by the system's sentence rule.
+- Fix: split layout no longer leaves a see-through hole between the halves; the gap is keyboard-colored.
+- New (tablets): "left" and "right" layouts, a smaller keyboard pushed to one side of the full-width input view, for typing with one hand. Hold the language key and slide to the new icons.
+- New: vertical scaling. Hold the language key, slide to the arrows icon, then drag up or down anywhere on the keyboard; the check mark ends it. Key labels scale with the height. The value is the same as the Height setting.
+- Floating keyboard: the handle moved under the space bar, with a "v" at its left that hides the keyboard, and every corner resizes (width and height, labels scale). Its height is remembered separately from the docked one.
+
 ## 0.13.0
 - With the dedicated number row on, the "123" pages of the full keyboard no longer shrink the keyboard: page 1 gets a row of currency signs, page 2 keeps a row of digits. (Without the number row nothing changes.)
 

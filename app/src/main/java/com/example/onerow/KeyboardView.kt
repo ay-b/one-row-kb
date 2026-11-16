@@ -101,6 +101,21 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     var heightScale = 1f
         set(v) { if (v != field) { field = v; layoutKeys(width.toFloat()); requestLayout(); invalidate() } }
     var hapticsOn = true
+    /** Extra vertical factor on top of [heightScale] (one-hand layouts are a bit lower), and whether the keyboard floats (no vertical scaling button then). */
+    var shrink = 1f
+        set(v) { if (v != field) { field = v; layoutKeys(width.toFloat()); requestLayout(); invalidate() } }
+    var floating = false
+    /** Called with the new height scale when the user drags it with the vertical-scaling button. */
+    var onHeightScale: ((Float) -> Unit)? = null
+    /** Vertical scaling is active: a drag anywhere makes the keyboard lower or taller; the check mark ends it. */
+    var scaling = false
+        set(v) { if (v != field) { field = v; invalidate() } }
+    private val vs get() = heightScale * shrink
+    /** Key labels follow the keyboard's height. */
+    private val fs get() = vs.coerceIn(0.62f, 1.35f)
+    private var scaleStartY = 0f; private var scaleStartScale = 1f; private var scaleStartH = 1f
+    private var scaleDragging = false
+    private val doneRect = RectF()
     /** Width of the tap-scatter model, in key widths (tight / normal / loose). Normal is the original 0.9. */
     var tapSigma = 0.9f
     /** Glide typing on the full keyboard. */
@@ -162,7 +177,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             else -> null
         } else null
         if (p.key.kind == Kind.LANG) {
-            val items = listOf(L_GEAR, L_DOCKED, L_FLOAT) + (if (splitAvailable) listOf(L_SPLIT) else emptyList())      // settings, then the layouts
+            val items = listOf(L_GEAR, L_DOCKED, L_FLOAT) + (if (splitAvailable) listOf(L_SPLIT, L_LEFT, L_RIGHT) else emptyList()) + (if (floating) emptyList() else listOf(L_VSCALE))      // settings, the layouts, vertical scaling
             preciseKeys = items.map { Placed(Key(Kind.LANG, it, 1f), p.rect, p.row) }; preciseIdx0 = 0
         } else if (mode == Mode.FULL && p.key.kind == Kind.LETTER) {
             // full keyboard: [its small symbol] [national letters ...] -- not the letter itself (a tap types that).
@@ -297,6 +312,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     }
 
     fun resetForNewField() {
+        scaling = false
         emojiPopup?.dismiss(); emojiPopup = null
         removeWord = null
         if (mode == Mode.SYMBOLS || mode == Mode.SYMBOLS_FULL || mode == Mode.SYMBOLS_FULL2 || mode == Mode.PEEK) setMode(letterMode)
@@ -406,7 +422,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     }
 
     override fun onMeasure(wSpec: Int, hSpec: Int) {
-        val h = rows.sumOf { dp(it.heightDp).toDouble() }.toFloat() * heightScale + dp(bottomPad)
+        val h = rows.sumOf { dp(it.heightDp).toDouble() }.toFloat() * vs + dp(bottomPad)
         setMeasuredDimension(MeasureSpec.getSize(wSpec), h.toInt())
     }
 
@@ -420,7 +436,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         val side = (w - 2 * padH - gap) / 2
         var blockTop = -1f; var blockBottom = 0f
         for ((ri, row) in rows.withIndex()) {
-            val rh = dp(row.heightDp) * heightScale
+            val rh = dp(row.heightDp) * vs
             val total = row.keys.sumOf { it.weight.toDouble() }.toFloat() + 2 * row.inset
             rects += RectF(0f, y, w, y + rh)
             if (split && row.panel) {
@@ -472,8 +488,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     override fun onDraw(c: Canvas) {
         if (placed.isEmpty()) layoutKeys(width.toFloat())
-        if (split) { fill.color = cPanel; leftBlock?.let { c.drawRoundRect(it, dp(10f), dp(10f), fill) }; rightBlock?.let { c.drawRoundRect(it, dp(10f), dp(10f), fill) } }
-        else c.drawColor(cPanel)
+        c.drawColor(cPanel)                                   // also in split layout: the gap between the halves is panel, not a hole
         fill.color = cStrip
         c.drawRect(0f, 0f, width.toFloat(), rowRects[0].bottom, fill)
 
@@ -503,12 +518,12 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                     }
                     val s = if ((k.kind == Kind.LETTER || k.base != null) && (inRow || shift != Shift.OFF)) k.label.uppercase() else k.label
                     text.color = if (k.kind == Kind.CHAR && !inRow && k.hint != null && !k.label[0].isDigit()) cTeal else cInk
-                    text.textSize = sp(if (inRow) (if (lang.alphabet.n > 28) 12f else 14f) else 20f)
+                    text.textSize = sp(if (inRow) (if (lang.alphabet.n > 28) 12f else 14f) else 20f) * fs
                     drawCentered(c, s, r.centerX(), r.top + k.dy * r.height())
                     k.hint?.let { drawHint(c, it, r, k) }
                 }
                 Kind.TO_SYMBOLS, Kind.TO_LETTERS, Kind.SYM_PAGE2, Kind.SYM_PAGE1 -> {
-                    text.color = cTeal; text.textSize = sp(15f)
+                    text.color = cTeal; text.textSize = sp(15f) * fs
                     drawCentered(c, k.label, r.centerX(), r.centerY())
                 }
                 Kind.SPACE -> if (!row.keyBg) {               // one row: an outline only, nothing filled; thicker while pressed (the full keyboard draws it like any key)
@@ -518,7 +533,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                     stroke.strokeWidth = sw
                 }
                 Kind.LANG -> {                                // current language, with a small gear: hold = settings
-                    text.color = cTeal; text.textSize = sp(13f)
+                    text.color = cTeal; text.textSize = sp(13f) * fs
                     drawCentered(c, this.lang.code.uppercase(), r.centerX(), r.centerY())
                     val gs = dp(4.2f)
                     val gx = minOf(r.centerX() + r.width() * 0.34f, r.right - dp(4f) - gs)
@@ -535,6 +550,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         }
         drawLensDim(c)
         drawTrail(c)
+        if (scaling) drawScaling(c)
         text.color = cInk
     }
 
@@ -577,7 +593,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                     val old = stroke.color; stroke.color = if (i == hi) cStrip else cDim
                     drawGear(c, RectF(x - dp(10f), cardH / 2 - dp(10f), x + dp(10f), cardH / 2 + dp(10f)))
                     stroke.color = old
-                } else if (label == L_DOCKED || label == L_FLOAT || label == L_SPLIT) {
+                } else if (label == L_DOCKED || label == L_FLOAT || label == L_SPLIT || label == L_LEFT || label == L_RIGHT || label == L_VSCALE) {
                     drawLayoutIcon(c, label, RectF(x - dp(10f), cardH / 2 - dp(8f), x + dp(10f), cardH / 2 + dp(8f)), if (i == hi) cStrip else cDim)
                 } else { val fm = t.fontMetrics; c.drawText(label, x, cardH / 2 - (fm.ascent + fm.descent) / 2, t) }
             }
@@ -666,7 +682,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             c.drawCircle(hx + rad * 0.4f, hy - rad * 0.2f, dp(0.7f), fill)
             c.drawArc(RectF(hx - rad * 0.5f, hy - rad * 0.2f, hx + rad * 0.5f, hy + rad * 0.55f), 20f, 140f, false, stroke)
         } else {
-            text.color = if (k.kind == Kind.LETTER) cDim else cTeal; text.textSize = sp(9f)
+            text.color = if (k.kind == Kind.LETTER) cDim else cTeal; text.textSize = sp(9f) * fs
             val half = text.measureText(h) / 2
             drawCentered(c, h, minOf(preferred, r.right - margin - half), hy)   // wide hints like ",!?" slide left
         }
@@ -794,9 +810,45 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         return maxOf(0, slotLeft.size - 1)
     }
 
+    /** Vertical scaling: drag up = taller, down = lower (the keyboard sits at the bottom, its top edge follows the finger). */
+    private fun scaleTouch(e: MotionEvent): Boolean {
+        when (e.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                if (doneRect.contains(e.x, e.y)) { scaling = false; return true }
+                scaleStartY = e.rawY; scaleStartScale = heightScale; scaleStartH = height.toFloat().coerceAtLeast(1f); scaleDragging = true
+            }
+            MotionEvent.ACTION_MOVE -> if (scaleDragging) {
+                val h = (scaleStartH - (e.rawY - scaleStartY)).coerceAtLeast(dp(40f))
+                heightScale = (scaleStartScale * h / scaleStartH).coerceIn(0.5f, 1.6f)
+            }
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> if (scaleDragging) { scaleDragging = false; onHeightScale?.invoke(heightScale) }
+        }
+        return true
+    }
+
+    private fun drawScaling(c: Canvas) {
+        fill.color = (cTeal and 0x00FFFFFF) or 0x30000000
+        c.drawRect(0f, 0f, width.toFloat(), height.toFloat(), fill)
+        val s = dp(36f); val m = dp(8f)
+        doneRect.set(width - m - s, m, width - m, m + s)
+        fill.color = cTeal; c.drawRoundRect(doneRect, dp(8f), dp(8f), fill)
+        val old = stroke.color; val sw = stroke.strokeWidth
+        stroke.color = cStrip; stroke.strokeWidth = dp(2.4f)
+        c.drawLine(doneRect.left + s * 0.26f, doneRect.centerY(), doneRect.left + s * 0.43f, doneRect.centerY() + s * 0.17f, stroke)
+        c.drawLine(doneRect.left + s * 0.43f, doneRect.centerY() + s * 0.17f, doneRect.left + s * 0.76f, doneRect.centerY() - s * 0.18f, stroke)
+        // the drag cue in the middle: a double arrow and a line for the top edge
+        stroke.color = cInk; stroke.strokeWidth = dp(2f)
+        val cx = width / 2f; val cy = height / 2f; val a = dp(7f); val l = dp(22f)
+        c.drawLine(cx, cy - l, cx, cy + l, stroke)
+        c.drawLine(cx - a, cy - l + a, cx, cy - l, stroke); c.drawLine(cx + a, cy - l + a, cx, cy - l, stroke)
+        c.drawLine(cx - a, cy + l - a, cx, cy + l, stroke); c.drawLine(cx + a, cy + l - a, cx, cy + l, stroke)
+        stroke.color = old; stroke.strokeWidth = sw
+    }
+
     override fun onTouchEvent(e: MotionEvent): Boolean { val r = handleTouch(e); syncLens(); return r }
 
     private fun handleTouch(e: MotionEvent): Boolean {
+        if (scaling) return scaleTouch(e)
         when (e.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 emojiPopup?.dismiss(); emojiPopup = null
@@ -1072,6 +1124,14 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 c.drawRect(r.left + dp(1.5f), r.bottom - h * 0.34f, r.left + w * 0.40f, r.bottom - dp(1.5f), fill)
                 c.drawRect(r.right - w * 0.40f, r.bottom - h * 0.34f, r.right - dp(1.5f), r.bottom - dp(1.5f), fill)
             }
+            L_LEFT -> c.drawRect(r.left + dp(1.5f), r.bottom - h * 0.34f, r.left + w * 0.62f, r.bottom - dp(1.5f), fill)
+            L_RIGHT -> c.drawRect(r.right - w * 0.62f, r.bottom - h * 0.34f, r.right - dp(1.5f), r.bottom - dp(1.5f), fill)
+            L_VSCALE -> {                                   // a double arrow, up and down
+                val cx = r.centerX(); val t = r.top + dp(2f); val b = r.bottom - dp(2f); val a = dp(3.2f)
+                c.drawLine(cx, t, cx, b, stroke)
+                c.drawLine(cx - a, t + a, cx, t, stroke); c.drawLine(cx + a, t + a, cx, t, stroke)
+                c.drawLine(cx - a, b - a, cx, b, stroke); c.drawLine(cx + a, b - a, cx, b, stroke)
+            }
         }
         stroke.strokeWidth = sw; stroke.color = col; fill.color = fc
     }
@@ -1136,6 +1196,9 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 L_DOCKED -> listener.onMode("docked")
                 L_FLOAT -> listener.onMode("floating")
                 L_SPLIT -> listener.onMode("split")
+                L_LEFT -> listener.onMode("left")
+                L_RIGHT -> listener.onMode("right")
+                L_VSCALE -> { scaling = true; setMode(letterMode); invalidate() }
                 else -> listener.onSettings()
             }
             else -> {}
@@ -1188,6 +1251,9 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         const val L_DOCKED = "\uE000"
         const val L_FLOAT = "\uE001"
         const val L_SPLIT = "\uE002"
+        const val L_LEFT = "\uE003"        // keyboard shifted to the left / right side (one-hand layouts), and vertical scaling
+        const val L_RIGHT = "\uE004"
+        const val L_VSCALE = "\uE005"
         const val LENS_CARD_DP = 46f
         const val LENS_STEP_DP = 36f
         const val GLIDE_START_DP = 16f    // finger travel that turns a press on a letter into a glide
