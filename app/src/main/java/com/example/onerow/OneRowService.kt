@@ -283,9 +283,21 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
 
     override fun onWindowShown() { super.onWindowShown(); if (::floating.isInitialized && layoutMode == "floating") showFloatingSoon() }
 
-    override fun onWindowHidden() { super.onWindowHidden(); if (::floating.isInitialized) floating.hide() }
+    override fun onWindowHidden() { super.onWindowHidden(); syncShake(false); if (::floating.isInitialized) floating.hide() }
 
-    override fun onDestroy() { if (::floating.isInitialized) floating.hide(); super.onDestroy() }
+    override fun onDestroy() { shake?.stop(); if (::floating.isInitialized) floating.hide(); super.onDestroy() }
+
+    // ---- shake the phone (keyboard open) -> the crash report screen; the sensor runs only while the keyboard is on screen ----
+    private var shake: com.example.onerow.report.ShakeListener? = null
+    private fun syncShake(on: Boolean) {
+        if (on && prefs.shakeReport) {
+            if (shake == null) shake = com.example.onerow.report.ShakeListener(this) { ui.post { openReport() } }
+            shake?.start()
+        } else shake?.stop()
+    }
+    private fun openReport() {
+        try { startActivity(android.content.Intent(this, com.example.onerow.report.ReportActivity::class.java).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)) } catch (_: Exception) { }
+    }
 
     override fun onMode(mode: String) { ui.post { setLayoutMode(mode) } }
 
@@ -323,7 +335,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
 
     override fun onStartInputView(info: EditorInfo, restarting: Boolean) {
         super.onStartInputView(info, restarting)
-        syncAccess(); refreshBillingIfStale()
+        syncAccess(); refreshBillingIfStale(); syncShake(true)
         selStart = info.initialSelStart; selEnd = info.initialSelEnd
         endGlide()
         taps.clear(); exact.clear(); shown.clear()
@@ -926,6 +938,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
 
     override fun onFinishInputView(finishingInput: Boolean) {
         finishComposing()                          // a word still being typed when the field is left is not lost
+        syncShake(false)
         super.onFinishInputView(finishingInput)
     }
 

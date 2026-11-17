@@ -135,4 +135,16 @@
         <item quantity="one">Abonnement expire dans %1$d jour</item>
         <item quantity="other">Abonnement expire dans %1$d jours</item>
     </plurals>
+    <!-- Crash report (shake screen) -->
+    <string name="header_crash_reports">Rapports de plantage</string>
+    <string name="shake_report">Secouez le téléphone pour voir le rapport de plantage</string>
+    <string name="shake_report_desc">Une secousse ferme pendant que le clavier est ouvert affiche le dernier rapport de plantage. Vous pouvez le lire et nous l\'envoyer par e-mail. Rien n\'est envoyé tant que vous n\'envoyez pas vous-même l\'e-mail.</string>
+    <string name="btn_show_report">Rapport de plantage</string>
+    <string name="report_title">Rapport de plantage</string>
+    <string name="report_explainer">Si le clavier a planté, vous pouvez nous envoyer les détails techniques pour que nous puissions corriger le problème. Le rapport ci-dessous est tout ce qui sera envoyé : les versions de l\'application et d\'Android, le modèle du téléphone, la langue et la trace technique du plantage (quelles parties du programme étaient en cours d\'exécution). Il ne contient rien de ce que vous avez saisi, ni presse-papiers, ni contacts, ni réglages, ni dictionnaire. Appuyer sur « Envoyer par e-mail » ouvre seulement votre application de messagerie avec ce texte déjà rempli ; rien ne quitte le téléphone tant que vous n\'envoyez pas vous-même l\'e-mail.</string>
+    <string name="report_none">Aucun plantage n\'a été enregistré sur ce téléphone, il n\'y a donc rien à envoyer.</string>
+    <string name="report_show_all">Tout afficher</string>
+    <string name="report_show_less">Afficher moins</string>
+    <string name="report_send">Envoyer par e-mail</string>
+    <string name="report_no_mail">Aucune application de messagerie trouvée</string>
 </resources>

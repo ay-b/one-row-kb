@@ -310,6 +310,14 @@ class MainActivity : Activity() {
             })
         }
 
+        col.addView(header(getString(R.string.header_crash_reports)))
+        col.addView(Switch(this).apply {
+            text = getString(R.string.shake_report); textSize = 16f; isChecked = prefs.shakeReport
+            setOnCheckedChangeListener { _, on -> prefs.shakeReport = on }
+        })
+        col.addView(TextView(this).apply { text = getString(R.string.shake_report_desc); textSize = 13f; setPadding(0, 0, 0, dp(6)) })
+        col.addView(button(getString(R.string.btn_show_report)) { startActivity(Intent(this, com.example.onerow.report.ReportActivity::class.java)) })
+
         col.addView(header(getString(R.string.header_about)))
         col.addView(button(getString(R.string.btn_attributions)) {
             val text = try { assets.open("attribution.md").bufferedReader().readText() } catch (e: Exception) { getString(R.string.attributions_missing) }

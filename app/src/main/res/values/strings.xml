@@ -124,6 +124,19 @@
     <string name="header_try_it">Try it</string>
     <string name="hint_type_here">Type here</string>
 
+    <!-- Crash report (shake screen); the report text itself stays English, it is for the developers -->
+    <string name="header_crash_reports">Crash reports</string>
+    <string name="shake_report">Shake the phone to see the crash report</string>
+    <string name="shake_report_desc">A firm shake while the keyboard is open shows the last crash report. You can read it and email it to us. Nothing is sent unless you send the email yourself.</string>
+    <string name="btn_show_report">Crash report</string>
+    <string name="report_title">Crash report</string>
+    <string name="report_explainer">If the keyboard crashed, you can send us the technical details so we can fix it. The report below is everything that will be sent: the app and Android versions, the phone model, the language and the technical trace of the crash (which parts of the program were running). It contains nothing you typed, no clipboard, no contacts, no settings and no dictionary. Pressing Send only opens your email app with this text filled in; nothing leaves the phone until you send the email yourself.</string>
+    <string name="report_none">No crash has been recorded on this phone, so there is nothing to send.</string>
+    <string name="report_show_all">Show all</string>
+    <string name="report_show_less">Show less</string>
+    <string name="report_send">Send by email</string>
+    <string name="report_no_mail">No email app found</string>
+
     <!-- Keyboard: toasts -->
     <string name="toast_nothing_to_proofread">Nothing to proofread</string>
     <string name="toast_proofread_failed">Proofreading failed</string>

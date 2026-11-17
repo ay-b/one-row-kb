@@ -138,4 +138,16 @@
         <item quantity="few">Předplatné končí za %1$d dny</item>
         <item quantity="other">Předplatné končí za %1$d dní</item>
     </plurals>
+    <!-- Crash report (shake screen) -->
+    <string name="header_crash_reports">Hlášení o pádech</string>
+    <string name="shake_report">Zatřeste telefonem a zobrazí se hlášení o pádu</string>
+    <string name="shake_report_desc">Silné zatřesení při otevřené klávesnici zobrazí poslední hlášení o pádu. Můžete si ho přečíst a poslat nám ho e-mailem. Nic se neodešle, dokud e-mail sami neodešlete.</string>
+    <string name="btn_show_report">Hlášení o pádu</string>
+    <string name="report_title">Hlášení o pádu</string>
+    <string name="report_explainer">Pokud klávesnice spadla, můžete nám poslat technické podrobnosti, abychom to mohli opravit. Hlášení níže je vše, co se odešle: verze aplikace a Androidu, model telefonu, jazyk a technická stopa pádu (které části programu právě běžely). Neobsahuje nic, co jste napsali, žádnou schránku, žádné kontakty, žádná nastavení a žádný slovník. Stisknutí tlačítka „Odeslat e-mailem“ pouze otevře vaši e-mailovou aplikaci s tímto textem; nic neopustí telefon, dokud e-mail sami neodešlete.</string>
+    <string name="report_none">V tomto telefonu nebyl zaznamenán žádný pád, takže není co odesílat.</string>
+    <string name="report_show_all">Zobrazit vše</string>
+    <string name="report_show_less">Zobrazit méně</string>
+    <string name="report_send">Odeslat e-mailem</string>
+    <string name="report_no_mail">Nebyla nalezena žádná e-mailová aplikace</string>
 </resources>

@@ -135,4 +135,16 @@
         <item quantity="one">Subscripció caduca en %1$d dia</item>
         <item quantity="other">Subscripció caduca en %1$d dies</item>
     </plurals>
+    <!-- Crash report (shake screen) -->
+    <string name="header_crash_reports">Informes d\'error</string>
+    <string name="shake_report">Sacseja el telèfon per veure l\'informe d\'error</string>
+    <string name="shake_report_desc">Una sacsejada ferma amb el teclat obert mostra l\'últim informe d\'error. Pots llegir-lo i enviar-nos-el per correu electrònic. No s\'envia res si no envies tu mateix el correu.</string>
+    <string name="btn_show_report">Informe d\'error</string>
+    <string name="report_title">Informe d\'error</string>
+    <string name="report_explainer">Si el teclat ha fallat, ens pots enviar els detalls tècnics perquè ho puguem solucionar. L\'informe de sota és tot el que s\'enviarà: les versions de l\'aplicació i d\'Android, el model del telèfon, l\'idioma i el rastre tècnic de l\'error (quines parts del programa s\'estaven executant). No conté res del que has escrit, ni porta-retalls, ni contactes, ni paràmetres, ni diccionari. Tocar «Envia per correu» només obre la teva aplicació de correu amb aquest text ja emplenat; res no surt del telèfon fins que envies tu mateix el correu.</string>
+    <string name="report_none">No s\'ha registrat cap error en aquest telèfon, així que no hi ha res per enviar.</string>
+    <string name="report_show_all">Mostra-ho tot</string>
+    <string name="report_show_less">Mostra\'n menys</string>
+    <string name="report_send">Envia per correu</string>
+    <string name="report_no_mail">No s\'ha trobat cap aplicació de correu</string>
 </resources>

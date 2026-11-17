@@ -95,6 +95,11 @@ class Prefs(context: Context) {
         get() = sp.getBoolean("proofread", false)
         set(v) = sp.edit().putBoolean("proofread", v).apply()
 
+    /** Shake the phone (keyboard open) to see the last crash report. */
+    var shakeReport: Boolean
+        get() = sp.getBoolean("shake_report", true)
+        set(v) = sp.edit().putBoolean("shake_report", v).apply()
+
     var haptics: Boolean
         get() = sp.getBoolean("haptics", true)
         set(v) = sp.edit().putBoolean("haptics", v).apply()

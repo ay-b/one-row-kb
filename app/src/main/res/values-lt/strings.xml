@@ -138,4 +138,16 @@
         <item quantity="few">Prenumerata baigsis po %1$d dienų</item>
         <item quantity="other">Prenumerata baigsis po %1$d dienų</item>
     </plurals>
+    <!-- Crash report (shake screen) -->
+    <string name="header_crash_reports">Strigčių ataskaitos</string>
+    <string name="shake_report">Papurtykite telefoną, kad pamatytumėte strigties ataskaitą</string>
+    <string name="shake_report_desc">Stipriai papurčius telefoną, kai klaviatūra atidaryta, parodoma paskutinė strigties ataskaita. Galite ją perskaityti ir atsiųsti mums el. paštu. Nieko nesiunčiama, nebent patys išsiųstumėte el. laišką.</string>
+    <string name="btn_show_report">Strigties ataskaita</string>
+    <string name="report_title">Strigties ataskaita</string>
+    <string name="report_explainer">Jei klaviatūra sustriko, galite atsiųsti mums techninę informaciją, kad ją pataisytume. Žemiau pateikta ataskaita yra viskas, kas bus išsiųsta: programos ir „Android“ versijos, telefono modelis, kalba ir techninis strigties pėdsakas (kurios programos dalys veikė). Joje nėra nieko, ką įvedėte, nėra mainų srities, kontaktų, nustatymų ar žodyno. Paspaudus „Siųsti el. paštu“, tik atidaroma jūsų el. pašto programa su šiuo tekstu; nieko nepalieka telefono, kol patys neišsiunčiate el. laiško.</string>
+    <string name="report_none">Šiame telefone neužfiksuota jokia strigtis, todėl nėra ką siųsti.</string>
+    <string name="report_show_all">Rodyti viską</string>
+    <string name="report_show_less">Rodyti mažiau</string>
+    <string name="report_send">Siųsti el. paštu</string>
+    <string name="report_no_mail">El. pašto programa nerasta</string>
 </resources>

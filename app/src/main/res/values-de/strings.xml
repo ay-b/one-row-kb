@@ -134,4 +134,16 @@
         <item quantity="one">Abo endet in %1$d Tag</item>
         <item quantity="other">Abo endet in %1$d Tagen</item>
     </plurals>
+    <!-- Crash report (shake screen) -->
+    <string name="header_crash_reports">Absturzberichte</string>
+    <string name="shake_report">Telefon schütteln, um den Absturzbericht zu sehen</string>
+    <string name="shake_report_desc">Ein kräftiges Schütteln bei geöffneter Tastatur zeigt den letzten Absturzbericht. Du kannst ihn lesen und per E-Mail an uns senden. Es wird nichts gesendet, solange du die E-Mail nicht selbst abschickst.</string>
+    <string name="btn_show_report">Absturzbericht</string>
+    <string name="report_title">Absturzbericht</string>
+    <string name="report_explainer">Wenn die Tastatur abgestürzt ist, kannst du uns die technischen Details senden, damit wir den Fehler beheben können. Der Bericht unten ist alles, was gesendet wird: die App- und Android-Version, das Telefonmodell, die Sprache und der technische Ablauf des Absturzes (welche Teile des Programms liefen). Er enthält nichts, was du getippt hast, keine Zwischenablage, keine Kontakte, keine Einstellungen und kein Wörterbuch. Mit \"Per E-Mail senden\" öffnet sich nur deine E-Mail-App mit diesem Text; nichts verlässt das Telefon, bis du die E-Mail selbst abschickst.</string>
+    <string name="report_none">Auf diesem Telefon wurde kein Absturz aufgezeichnet, daher gibt es nichts zu senden.</string>
+    <string name="report_show_all">Alles anzeigen</string>
+    <string name="report_show_less">Weniger anzeigen</string>
+    <string name="report_send">Per E-Mail senden</string>
+    <string name="report_no_mail">Keine E-Mail-App gefunden</string>
 </resources>

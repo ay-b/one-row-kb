@@ -138,4 +138,16 @@
         <item quantity="few">Pretplata istječe za %1$d dana</item>
         <item quantity="other">Pretplata istječe za %1$d dana</item>
     </plurals>
+    <!-- Crash report (shake screen) -->
+    <string name="header_crash_reports">Izvješća o rušenju</string>
+    <string name="shake_report">Protresite telefon za prikaz izvješća o rušenju</string>
+    <string name="shake_report_desc">Snažno protresanje dok je tipkovnica otvorena prikazuje posljednje izvješće o rušenju. Možete ga pročitati i poslati nam e-poštom. Ništa se ne šalje ako e-poštu ne pošaljete sami.</string>
+    <string name="btn_show_report">Izvješće o rušenju</string>
+    <string name="report_title">Izvješće o rušenju</string>
+    <string name="report_explainer">Ako se tipkovnica srušila, možete nam poslati tehničke podatke kako bismo je popravili. Izvješće u nastavku sve je što će biti poslano: verzije aplikacije i Androida, model telefona, jezik i tehnički trag rušenja (koji su dijelovi programa bili pokrenuti). Ne sadrži ništa što ste upisali, ni međuspremnik, ni kontakte, ni postavke, ni rječnik. Pritiskom na „Pošaljite e-poštom” samo se otvara vaša aplikacija za e-poštu s ovim tekstom; ništa ne napušta telefon dok sami ne pošaljete e-poštu.</string>
+    <string name="report_none">Na ovom telefonu nije zabilježeno nijedno rušenje, pa nema što poslati.</string>
+    <string name="report_show_all">Prikažite sve</string>
+    <string name="report_show_less">Prikažite manje</string>
+    <string name="report_send">Pošaljite e-poštom</string>
+    <string name="report_no_mail">Aplikacija za e-poštu nije pronađena</string>
 </resources>

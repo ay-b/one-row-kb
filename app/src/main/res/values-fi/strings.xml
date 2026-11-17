@@ -134,4 +134,16 @@
         <item quantity="one">Tilaus päättyy %1$d päivässä</item>
         <item quantity="other">Tilaus päättyy %1$d päivässä</item>
     </plurals>
+    <!-- Crash report (shake screen) -->
+    <string name="header_crash_reports">Kaatumisraportit</string>
+    <string name="shake_report">Ravista puhelinta nähdäksesi kaatumisraportin</string>
+    <string name="shake_report_desc">Napakka ravistus näppäimistön ollessa auki näyttää viimeisimmän kaatumisraportin. Voit lukea sen ja lähettää sen meille sähköpostilla. Mitään ei lähetetä, ellet itse lähetä sähköpostia.</string>
+    <string name="btn_show_report">Kaatumisraportti</string>
+    <string name="report_title">Kaatumisraportti</string>
+    <string name="report_explainer">Jos näppäimistö kaatui, voit lähettää meille tekniset tiedot, jotta voimme korjata vian. Alla oleva raportti on kaikki, mitä lähetetään: sovelluksen ja Androidin versiot, puhelimen malli, kieli ja kaatumisen tekninen jäljitys (mitkä ohjelman osat olivat käynnissä). Se ei sisällä mitään kirjoittamaasi, ei leikepöytää, ei yhteystietoja, ei asetuksia eikä sanakirjaa. Kun painat painiketta Lähetä sähköpostilla, vain sähköpostisovelluksesi avautuu tämä teksti valmiiksi täytettynä; mitään ei poistu puhelimesta, ennen kuin lähetät sähköpostin itse.</string>
+    <string name="report_none">Tähän puhelimeen ei ole tallennettu kaatumista, joten lähetettävää ei ole.</string>
+    <string name="report_show_all">Näytä kaikki</string>
+    <string name="report_show_less">Näytä vähemmän</string>
+    <string name="report_send">Lähetä sähköpostilla</string>
+    <string name="report_no_mail">Sähköpostisovellusta ei löytynyt</string>
 </resources>

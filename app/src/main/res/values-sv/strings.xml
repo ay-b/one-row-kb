@@ -134,4 +134,16 @@
         <item quantity="one">Prenumerationen upphör om %1$d dag</item>
         <item quantity="other">Prenumerationen upphör om %1$d dagar</item>
     </plurals>
+    <!-- Crash report (shake screen) -->
+    <string name="header_crash_reports">Kraschrapporter</string>
+    <string name="shake_report">Skaka telefonen för att se kraschrapporten</string>
+    <string name="shake_report_desc">En ordentlig skakning medan tangentbordet är öppet visar den senaste kraschrapporten. Du kan läsa den och e-posta den till oss. Inget skickas om du inte skickar e-postmeddelandet själv.</string>
+    <string name="btn_show_report">Kraschrapport</string>
+    <string name="report_title">Kraschrapport</string>
+    <string name="report_explainer">Om tangentbordet kraschade kan du skicka de tekniska uppgifterna till oss så att vi kan rätta felet. Rapporten nedan är allt som skickas: app- och Android-versionerna, telefonmodellen, språket och den tekniska spårningen av kraschen (vilka delar av programmet som kördes). Den innehåller inget du har skrivit, ingen urklippsdata, inga kontakter, inga inställningar och ingen ordbok. När du trycker på \"Skicka med e-post\" öppnas bara din e-postapp med den här texten ifylld; ingenting lämnar telefonen förrän du själv skickar e-postmeddelandet.</string>
+    <string name="report_none">Ingen krasch har registrerats på den här telefonen, så det finns inget att skicka.</string>
+    <string name="report_show_all">Visa alla</string>
+    <string name="report_show_less">Visa mindre</string>
+    <string name="report_send">Skicka med e-post</string>
+    <string name="report_no_mail">Ingen e-postapp hittades</string>
 </resources>
