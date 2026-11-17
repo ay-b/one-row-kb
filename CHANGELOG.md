@@ -4,6 +4,9 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.25.1
+- New app icon: a guess bar over a row of keys (adaptive icon with a themed-icon layer for Android 13+, plain PNGs for Android 7). The alternative "one row" icon is kept in the app (not selectable) and both designs, as SVG and 512 px PNG, are in the `icons/` folder. Rebuild everything with `tools/make_icons.py`.
+
 ## 0.25.0
 - New: crash reports. When the keyboard crashes it saves a small report on the phone (app, Android and phone model, language, time, and the technical trace: class names and code locations only, never messages or anything typed). Shake the phone while the keyboard is open to see it: a short explainer, the first 300 characters with "Show all", and a Send button that opens the mail app addressed to apps@y-b.one. The app still has no internet permission; nothing leaves the phone unless the user sends the email. Settings has a switch for the shake and a button that opens the same screen.
 - New: the crash report screen is translated like the rest of the UI (the report text itself stays English).
