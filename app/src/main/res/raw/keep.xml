@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- The alternative "one row" icon is not used by the app yet; keep it from being stripped by the resource shrinker. -->
+<!-- The alternative icon is not used by the app yet; keep it from being stripped by the resource shrinker. -->
 <resources xmlns:tools="http://schemas.android.com/tools"
-    tools:keep="@mipmap/ic_launcher_one_row,@drawable/ic_launcher_one_row_fg" />
+    tools:keep="@mipmap/ic_launcher_alt,@drawable/ic_launcher_alt_fg" />

@@ -1,16 +1,17 @@
 """App icons, from one description. Run from the project root:  python tools/make_icons.py   (needs Pillow)
 
 Two designs, both drawn in a 100 x 100 box (slate square, teal keys):
-  9 "guess bar"  -> THE launcher icon (default)
-  1 "one row"    -> kept in the app (not selectable) and in icons/
+  1 "one row"    -> THE launcher icon (default)
+  9 "guess bar"  -> kept in the app (not selectable) and in icons/
+(To swap them, change LAUNCHER / ALT below.)
 
 Writes:
   icons/icon-<n>-<name>.svg           square, full bleed (source)
   icons/icon-<n>-<name>-512.png       512 x 512, square, full bleed (Play listing icon)
-  app/src/main/res/drawable/ic_launcher_fg.xml, ic_launcher_mono.xml      adaptive launcher icon (9) layers
-  app/src/main/res/drawable/ic_launcher_one_row_fg.xml                    icon 1 layer
-  app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml, ic_launcher_one_row.xml
-  app/src/main/res/mipmap-*dpi/ic_launcher.png                            legacy (Android 7) rounded-square PNGs of icon 9
+  app/src/main/res/drawable/ic_launcher_fg.xml, ic_launcher_mono.xml      adaptive launcher icon (LAUNCHER) layers
+  app/src/main/res/drawable/ic_launcher_alt_fg.xml                        ALT icon layer
+  app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml, ic_launcher_alt.xml
+  app/src/main/res/mipmap-*dpi/ic_launcher.png                            legacy (Android 7) rounded-square PNGs of the LAUNCHER icon
   app/src/main/res/values/ic_launcher_colors.xml
 """
 import os
@@ -31,6 +32,7 @@ ICONS = {
         shapes=[("key", 9.5 + 14 * i, 38, 11, 24, 4, "teal", 0.45 if i == 5 else 1.0) for i in range(6)]),
 }
 COLORS = {"dark": DARK, "teal": TEAL}
+LAUNCHER, ALT = "1-one-row", "9-guess-bar"
 
 
 def rrect_path(x, y, w, h, r):
@@ -91,21 +93,21 @@ def main():
     for key, d in ICONS.items():
         write(f"icons/icon-{key}.svg", svg(d))
         p = f"icons/icon-{key}-512.png"; raster(d, 512, False).convert("RGB").save(p, optimize=True); print("wrote", p)
-    nine, one = ICONS["9-guess-bar"], ICONS["1-one-row"]
-    write(f"{res}/drawable/ic_launcher_fg.xml", vector(nine))
-    write(f"{res}/drawable/ic_launcher_mono.xml", vector(nine, mono=True))
-    write(f"{res}/drawable/ic_launcher_one_row_fg.xml", vector(one))
+    main_icon, alt_icon = ICONS[LAUNCHER], ICONS[ALT]
+    write(f"{res}/drawable/ic_launcher_fg.xml", vector(main_icon))
+    write(f"{res}/drawable/ic_launcher_mono.xml", vector(main_icon, mono=True))
+    write(f"{res}/drawable/ic_launcher_alt_fg.xml", vector(alt_icon))
     write(f"{res}/values/ic_launcher_colors.xml", f'<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_bg">{hexc(SLATE)}</color>\n</resources>\n')
     write(f"{res}/mipmap-anydpi-v26/ic_launcher.xml",
           '<?xml version="1.0" encoding="utf-8"?>\n<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n'
           '    <background android:drawable="@color/ic_launcher_bg"/>\n    <foreground android:drawable="@drawable/ic_launcher_fg"/>\n'
           '    <monochrome android:drawable="@drawable/ic_launcher_mono"/>\n</adaptive-icon>\n')
-    write(f"{res}/mipmap-anydpi-v26/ic_launcher_one_row.xml",
+    write(f"{res}/mipmap-anydpi-v26/ic_launcher_alt.xml",
           '<?xml version="1.0" encoding="utf-8"?>\n<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n'
-          '    <background android:drawable="@color/ic_launcher_bg"/>\n    <foreground android:drawable="@drawable/ic_launcher_one_row_fg"/>\n</adaptive-icon>\n')
+          '    <background android:drawable="@color/ic_launcher_bg"/>\n    <foreground android:drawable="@drawable/ic_launcher_alt_fg"/>\n</adaptive-icon>\n')
     for dens, px in (("mdpi", 48), ("hdpi", 72), ("xhdpi", 96), ("xxhdpi", 144), ("xxxhdpi", 192)):
         p = f"{res}/mipmap-{dens}/ic_launcher.png"; os.makedirs(os.path.dirname(p), exist_ok=True)
-        raster(nine, px, True).save(p, optimize=True); print("wrote", p)
+        raster(main_icon, px, True).save(p, optimize=True); print("wrote", p)
 
 
 if __name__ == "__main__":
