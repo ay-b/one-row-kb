@@ -70,10 +70,7 @@
     <string name="header_spell_checker">Pareizrakstības pārbaude</string>
     <string name="spell_checker_desc">Android pasvītro vārdus sarkanā krāsā, izmantojot savu pareizrakstības pārbaudītāju, kas pārzina tikai vienu valodu. OneRow ir savs: tas pārzina visas šeit pievienotās valodas (un vārdus, ko tam iemācījāties), tāpēc tiek atzīmēti tikai patiešām nezināmi vārdi.</string>
     <string name="btn_spell_on">Izmantojiet OneRow pareizrakstības pārbaudi</string>
-    <string name="btn_spell_off">Izslēdziet pareizrakstības pārbaudi</string>
-    <string name="toast_spell_on">Atlasīta OneRow pareizrakstības pārbaude</string>
-    <string name="toast_spell_off">Pareizrakstības pārbaude ir izslēgta</string>
-    <string name="toast_spell_manual">Atlasiet \"OneRow Keyboard\" ekrānā, kas tiks atvērts, vai vienreiz palaidiet datorā: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Atvērtajā ekrānā izvēlieties \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Korektūra</string>

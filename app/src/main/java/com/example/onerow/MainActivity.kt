@@ -254,23 +254,14 @@ class MainActivity : Activity() {
             text = getString(R.string.spell_checker_desc)
             textSize = 13f; setPadding(0, 0, 0, dp(6))
         })
-        val me = "$packageName/${OneRowSpellChecker::class.java.name}"
-        /** Writes the setting if this app was granted WRITE_SECURE_SETTINGS (adb, once); otherwise opens the system screen and says how. */
-        fun setSpell(select: Boolean) {
-            try {
-                if (select) { Settings.Secure.putString(contentResolver, "selected_spell_checker", me); Settings.Secure.putInt(contentResolver, "spell_checker_enabled", 1) }
-                else Settings.Secure.putInt(contentResolver, "spell_checker_enabled", 0)
-                Toast.makeText(this, getString(if (select) R.string.toast_spell_on else R.string.toast_spell_off), Toast.LENGTH_SHORT).show()
-            } catch (e: SecurityException) {
-                Toast.makeText(this, getString(R.string.toast_spell_manual, packageName), Toast.LENGTH_LONG).show()
-                val intents = listOf(
-                    Intent().setClassName("com.android.settings", "com.android.settings.Settings\$SpellCheckersSettingsActivity"),
-                    Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
-                for (i in intents) { try { startActivity(i); break } catch (_: Exception) { } }
-            }
-        }
-        col.addView(button(getString(R.string.btn_spell_on)) { setSpell(true) })
-        col.addView(button(getString(R.string.btn_spell_off)) { setSpell(false) })
+        /** Opens Android's own spell-checker screen; the user picks OneRow there (an app cannot switch it for them). */
+        col.addView(button(getString(R.string.btn_spell_on)) {
+            Toast.makeText(this, getString(R.string.toast_spell_pick), Toast.LENGTH_LONG).show()
+            val intents = listOf(
+                Intent().setClassName("com.android.settings", "com.android.settings.Settings\$SpellCheckersSettingsActivity"),
+                Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
+            for (i in intents) { try { startActivity(i); break } catch (_: Exception) { } }
+        })
 
         col.addView(header(getString(R.string.header_proofreading)))
         val proofSwitch = Switch(this).apply {

@@ -67,10 +67,7 @@
     <string name="header_spell_checker">Õigekirjakontroll</string>
     <string name="spell_checker_desc">Android allajoonib sõnu punasega oma õigekirjakontrolliga, mis tunneb ainult ühte keelt. Rakendusel OneRow on oma kontroll: see tunneb kõiki siia lisatud keeli (ja sõnu, mida sa talle õpetasid), nii et märgitakse ainult tõesti tundmatud sõnad.</string>
     <string name="btn_spell_on">Kasuta OneRow õigekirjakontrolli</string>
-    <string name="btn_spell_off">Lülita õigekirjakontroll välja</string>
-    <string name="toast_spell_on">OneRow õigekirjakontroll valitud</string>
-    <string name="toast_spell_off">Õigekirjakontroll on väljas</string>
-    <string name="toast_spell_manual">Vali avanevas vaates \"OneRow Keyboard\" või käivita ühe korra arvutis: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Vali avanevas vaates \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Korrektuur</string>

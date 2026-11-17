@@ -71,10 +71,7 @@
     <string name="header_spell_checker">Проверка орфографии</string>
     <string name="spell_checker_desc">Android подчёркивает слова красным с помощью собственной проверки орфографии, которая знает только один язык. У OneRow есть своя: она знает все добавленные здесь языки (и слова, которым вы её научили), поэтому отмечаются только действительно незнакомые слова.</string>
     <string name="btn_spell_on">Использовать проверку орфографии OneRow</string>
-    <string name="btn_spell_off">Отключить проверку орфографии</string>
-    <string name="toast_spell_on">Выбрана проверка орфографии OneRow</string>
-    <string name="toast_spell_off">Проверка орфографии отключена</string>
-    <string name="toast_spell_manual">Выберите «OneRow Keyboard» на открывшемся экране или один раз выполните на компьютере: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Выберите \"OneRow Keyboard\" на открывшемся экране</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Проверка текста</string>

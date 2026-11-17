@@ -67,10 +67,7 @@
     <string name="header_spell_checker">Controllo ortografico</string>
     <string name="spell_checker_desc">Android sottolinea in rosso le parole con il proprio controllo ortografico, che conosce una sola lingua. OneRow ha il suo: conosce tutte le lingue che hai aggiunto qui (e le parole che gli hai insegnato), quindi vengono segnate solo le parole davvero sconosciute.</string>
     <string name="btn_spell_on">Usa il controllo ortografico di OneRow</string>
-    <string name="btn_spell_off">Disattiva il controllo ortografico</string>
-    <string name="toast_spell_on">Controllo ortografico di OneRow selezionato</string>
-    <string name="toast_spell_off">Il controllo ortografico è disattivato</string>
-    <string name="toast_spell_manual">Scegli \"OneRow Keyboard\" nella schermata che si apre, oppure esegui una volta su un computer: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Scegli \"OneRow Keyboard\" nella schermata che si apre</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Correzione del testo</string>

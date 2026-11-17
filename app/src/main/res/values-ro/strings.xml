@@ -70,10 +70,7 @@
     <string name="header_spell_checker">Verificare ortografică</string>
     <string name="spell_checker_desc">Android subliniază cuvintele cu roșu folosind propriul verificator ortografic, care cunoaște o singură limbă. OneRow are unul al său: cunoaște toate limbile adăugate aici (și cuvintele pe care l-ați învățat), așa că sunt marcate doar cuvintele cu adevărat necunoscute.</string>
     <string name="btn_spell_on">Folosiți verificatorul ortografic OneRow</string>
-    <string name="btn_spell_off">Dezactivați verificarea ortografică</string>
-    <string name="toast_spell_on">Verificator ortografic OneRow selectat</string>
-    <string name="toast_spell_off">Verificarea ortografică este dezactivată</string>
-    <string name="toast_spell_manual">Alegeți \"OneRow Keyboard\" în ecranul care se deschide sau rulați o dată pe un computer: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Alege \"OneRow Keyboard\" pe ecranul care se deschide</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Corectare text</string>

@@ -69,10 +69,7 @@
     <string name="header_spell_checker">Kontrola pravopisu</string>
     <string name="spell_checker_desc">Android podčiarkuje slová načerveno pomocou vlastnej kontroly pravopisu, ktorá pozná len jeden jazyk. OneRow má vlastnú: pozná všetky jazyky, ktoré sem pridáte (aj slová, ktoré ste ju naučili), takže sa označia len naozaj neznáme slová.</string>
     <string name="btn_spell_on">Použiť kontrolu pravopisu OneRow</string>
-    <string name="btn_spell_off">Vypnúť kontrolu pravopisu</string>
-    <string name="toast_spell_on">Vybraná kontrola pravopisu OneRow</string>
-    <string name="toast_spell_off">Kontrola pravopisu je vypnutá</string>
-    <string name="toast_spell_manual">Na obrazovke, ktorá sa otvorí, vyberte „OneRow Keyboard“ alebo raz spustite na počítači: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Na obrazovke, ktorá sa otvorí, vyberte \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Korektúra</string>

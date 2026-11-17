@@ -67,10 +67,7 @@
     <string name="header_spell_checker">Oikoluku</string>
     <string name="spell_checker_desc">Android alleviivaa sanat punaisella oman oikolukunsa avulla, joka tuntee vain yhden kielen. OneRow-näppäimistöllä on oma: se tuntee kaikki tänne lisäämäsi kielet (ja sanat, jotka olet opettanut sille), joten vain todella tuntemattomat sanat merkitään.</string>
     <string name="btn_spell_on">Käytä OneRow-oikolukua</string>
-    <string name="btn_spell_off">Poista oikoluku käytöstä</string>
-    <string name="toast_spell_on">OneRow-oikoluku valittu</string>
-    <string name="toast_spell_off">Oikoluku on pois käytöstä</string>
-    <string name="toast_spell_manual">Valitse \"OneRow Keyboard\" avautuvassa näkymässä tai suorita kerran tietokoneella: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Valitse avautuvalta näytöltä \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Tekstin tarkistus</string>

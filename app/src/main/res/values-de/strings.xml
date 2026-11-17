@@ -67,10 +67,7 @@
     <string name="header_spell_checker">Rechtschreibprüfung</string>
     <string name="spell_checker_desc">Android unterstreicht Wörter rot mit der eigenen Rechtschreibprüfung, die nur eine Sprache kennt. OneRow hat eine eigene: Sie kennt alle hier hinzugefügten Sprachen (und die Wörter, die du ihr beigebracht hast), sodass nur wirklich unbekannte Wörter markiert werden.</string>
     <string name="btn_spell_on">OneRow-Rechtschreibprüfung verwenden</string>
-    <string name="btn_spell_off">Rechtschreibprüfung ausschalten</string>
-    <string name="toast_spell_on">OneRow-Rechtschreibprüfung ausgewählt</string>
-    <string name="toast_spell_off">Rechtschreibprüfung ist aus</string>
-    <string name="toast_spell_manual">Wähle \"OneRow Keyboard\" im sich öffnenden Bildschirm oder führe einmal auf einem Computer aus: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Wähle auf dem sich öffnenden Bildschirm \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Korrekturlesen</string>

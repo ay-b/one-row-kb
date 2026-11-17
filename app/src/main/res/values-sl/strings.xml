@@ -72,10 +72,7 @@
     <string name="header_spell_checker">Črkovalnik</string>
     <string name="spell_checker_desc">Android z rdečo črto podčrta besede s svojim črkovalnikom, ki pozna samo en jezik. OneRow ima svojega: pozna vse jezike, ki ste jih dodali tukaj (in besede, ki ste jih naučili), zato so označene samo res neznane besede.</string>
     <string name="btn_spell_on">Uporabite črkovalnik OneRow</string>
-    <string name="btn_spell_off">Izklopite preverjanje črkovanja</string>
-    <string name="toast_spell_on">Izbran je črkovalnik OneRow</string>
-    <string name="toast_spell_off">Preverjanje črkovanja je izklopljeno</string>
-    <string name="toast_spell_manual">Na zaslonu, ki se odpre, izberite \"OneRow Keyboard\" ali enkrat zaženite v računalniku: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Na zaslonu, ki se odpre, izberite \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Lektoriranje</string>

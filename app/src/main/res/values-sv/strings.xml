@@ -67,10 +67,7 @@
     <string name="header_spell_checker">Stavningskontroll</string>
     <string name="spell_checker_desc">Android understryker ord med rött med sin egen stavningskontroll, som bara kan ett språk. OneRow har en egen: den kan alla språk du lagt till här (och orden du lärt den), så bara riktigt okända ord markeras.</string>
     <string name="btn_spell_on">Använd OneRows stavningskontroll</string>
-    <string name="btn_spell_off">Stäng av stavningskontrollen</string>
-    <string name="toast_spell_on">OneRows stavningskontroll vald</string>
-    <string name="toast_spell_off">Stavningskontrollen är avstängd</string>
-    <string name="toast_spell_manual">Välj \"OneRow Keyboard\" på skärmen som öppnas, eller kör en gång på en dator: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Välj \"OneRow Keyboard\" på skärmen som öppnas</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Korrekturläsning</string>

@@ -4,6 +4,15 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.25.8
+- Swipe typing: the guess bar after a glide no longer repeats the word that was just typed; it lists only the other, less certain guesses (tap one to replace the word).
+
+## 0.25.7
+- Russian and Ukrainian full keyboard: `%` is now the small hint on the ю key; hold ю to type `%` (or slide to `‰`).
+
+## 0.25.6
+- Removed the `WRITE_SECURE_SETTINGS` permission and the adb instructions. The Spell checker section now has one button that opens Android's own spell-checker screen with a plain hint ("Pick OneRow Keyboard on the screen that opens"); the "Turn spell checking off" button and its toasts are gone (Android's screen does that). New hint translated into all 25 languages. Privacy policy draft updated.
+
 ## 0.25.5
 - Removed the alternative "guess bar" icon (it looked like a face): its files, the generator entry and the unused copy that was kept inside the app. The app icon is unchanged (one row of keys). The Play feature graphics are rebuilt around the real app icon.
 

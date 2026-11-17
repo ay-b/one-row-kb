@@ -67,10 +67,7 @@
     <string name="header_spell_checker">Spellingcontrole</string>
     <string name="spell_checker_desc">Android onderstreept woorden in rood met zijn eigen spellingcontrole, die maar één taal kent. OneRow heeft een eigen: die kent alle talen die je hier hebt toegevoegd (en de woorden die je haar hebt geleerd), zodat alleen echt onbekende woorden worden gemarkeerd.</string>
     <string name="btn_spell_on">De OneRow-spellingcontrole gebruiken</string>
-    <string name="btn_spell_off">Spellingcontrole uitschakelen</string>
-    <string name="toast_spell_on">OneRow-spellingcontrole geselecteerd</string>
-    <string name="toast_spell_off">Spellingcontrole staat uit</string>
-    <string name="toast_spell_manual">Kies \"OneRow Keyboard\" in het scherm dat opent, of voer eenmalig op een computer uit: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Kies \"OneRow Keyboard\" op het scherm dat opent</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Corrigeren</string>

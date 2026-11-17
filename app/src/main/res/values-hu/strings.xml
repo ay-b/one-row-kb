@@ -67,10 +67,7 @@
     <string name="header_spell_checker">Helyesírás-ellenőrző</string>
     <string name="spell_checker_desc">Az Android a saját helyesírás-ellenőrzőjével húzza alá pirossal a szavakat, amely csak egy nyelvet ismer. A OneRow-nak saját van: ismeri az összes itt hozzáadott nyelvet (és a megtanított szavakat is), így csak a valóban ismeretlen szavak vannak megjelölve.</string>
     <string name="btn_spell_on">A OneRow helyesírás-ellenőrzőjének használata</string>
-    <string name="btn_spell_off">Helyesírás-ellenőrzés kikapcsolása</string>
-    <string name="toast_spell_on">OneRow helyesírás-ellenőrző kiválasztva</string>
-    <string name="toast_spell_off">A helyesírás-ellenőrzés ki van kapcsolva</string>
-    <string name="toast_spell_manual">Válassza ki a \"OneRow Keyboard\" elemet a megnyíló képernyőn, vagy futtassa egyszer számítógépen: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Válassza ki a \"OneRow Keyboard\" elemet a megnyíló képernyőn</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Korrektúra</string>

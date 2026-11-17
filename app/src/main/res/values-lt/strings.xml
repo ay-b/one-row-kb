@@ -70,10 +70,7 @@
     <string name="header_spell_checker">Rašybos tikrinimas</string>
     <string name="spell_checker_desc">Android raudonai pabraukia žodžius naudodama savo rašybos tikrinimo priemonę, kuri žino tik vieną kalbą. OneRow turi savo: ji žino visas čia pridėtas kalbas (ir žodžius, kuriuos ją išmokėte), todėl pažymimi tik tikrai nežinomi žodžiai.</string>
     <string name="btn_spell_on">Naudokite OneRow rašybos tikrinimo priemonę</string>
-    <string name="btn_spell_off">Išjunkite rašybos tikrinimą</string>
-    <string name="toast_spell_on">Pasirinkta OneRow rašybos tikrinimo priemonė</string>
-    <string name="toast_spell_off">Rašybos tikrinimas išjungtas</string>
-    <string name="toast_spell_manual">Pasirinkite \"OneRow Keyboard\" atsidariusiame ekrane arba kartą paleiskite kompiuteryje: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Atsidariusiame ekrane pasirinkite \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Korektūra</string>

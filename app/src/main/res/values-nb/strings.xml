@@ -67,10 +67,7 @@
     <string name="header_spell_checker">Stavekontroll</string>
     <string name="spell_checker_desc">Android understreker ord med rødt med sin egen stavekontroll, som bare kan ett språk. OneRow har sin egen: den kan alle språkene du har lagt til her (og ordene du har lært den), så bare helt ukjente ord blir markert.</string>
     <string name="btn_spell_on">Bruk OneRows stavekontroll</string>
-    <string name="btn_spell_off">Slå av stavekontroll</string>
-    <string name="toast_spell_on">OneRows stavekontroll valgt</string>
-    <string name="toast_spell_off">Stavekontroll er slått av</string>
-    <string name="toast_spell_manual">Velg \"OneRow Keyboard\" på skjermen som åpnes, eller kjør én gang på en datamaskin: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Velg \"OneRow Keyboard\" på skjermen som åpnes</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Korrekturlesing</string>

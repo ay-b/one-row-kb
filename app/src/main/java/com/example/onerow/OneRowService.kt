@@ -1014,7 +1014,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         ic.endBatchEdit()
         wordAutoSpaced = true
         glideWord = words[0]; glideAlts = words
-        kv.suggestions = words; kv.bestIndex = 0
+        kv.suggestions = words.drop(1); kv.bestIndex = -1          // the typed word is not repeated in the bar: only the other, less certain guesses
         android.util.Log.d("OneRowGlide", "ipc+prev=${(t1 - t0) / 1000}us decode=${(t2 - t1) / 1000}us commit=${(System.nanoTime() - t2) / 1000}us | ${eng.glide.stats}")
     }
 

@@ -67,10 +67,7 @@
     <string name="header_spell_checker">Ορθογραφικός έλεγχος</string>
     <string name="spell_checker_desc">Το Android υπογραμμίζει με κόκκινο τις λέξεις χρησιμοποιώντας τον δικό του ορθογραφικό έλεγχο, ο οποίος γνωρίζει μόνο μία γλώσσα. Το OneRow έχει δικό του: γνωρίζει όλες τις γλώσσες που προσθέσατε εδώ (και τις λέξεις που του μάθατε), ώστε να επισημαίνονται μόνο οι πραγματικά άγνωστες λέξεις.</string>
     <string name="btn_spell_on">Χρήση ορθογραφικού ελέγχου OneRow</string>
-    <string name="btn_spell_off">Απενεργοποίηση ορθογραφικού ελέγχου</string>
-    <string name="toast_spell_on">Επιλέχθηκε ο ορθογραφικός έλεγχος OneRow</string>
-    <string name="toast_spell_off">Ο ορθογραφικός έλεγχος είναι απενεργοποιημένος</string>
-    <string name="toast_spell_manual">Επιλέξτε \"OneRow Keyboard\" στην οθόνη που ανοίγει ή εκτελέστε μία φορά σε υπολογιστή: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Επιλέξτε \"OneRow Keyboard\" στην οθόνη που θα ανοίξει</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Διόρθωση κειμένου</string>

@@ -75,10 +75,7 @@
     <string name="header_spell_checker">Spell checker</string>
     <string name="spell_checker_desc">Android underlines words in red using its own spell checker, which only knows one language. OneRow has its own: it knows every language you added here (and the words you taught it), so only really unknown words get marked.</string>
     <string name="btn_spell_on">Use the OneRow spell checker</string>
-    <string name="btn_spell_off">Turn spell checking off</string>
-    <string name="toast_spell_on">OneRow spell checker selected</string>
-    <string name="toast_spell_off">Spell checking is off</string>
-    <string name="toast_spell_manual">Pick \"OneRow Keyboard\" in the screen that opens, or run once on a computer: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Pick \"OneRow Keyboard\" on the screen that opens</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Proofreading</string>

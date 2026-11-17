@@ -55,12 +55,12 @@ object Languages {
             listOf("йфя", "цыч", "увс", "кам", "епи", "нрт", "гоь", "шлб", "щдю", "зж", "хэ", "ъ"),
             listOf("йцукенгшщзх", "фывапролджэ", "ячсмитьбю"),            // ъ is under ь (hold), as on Gboard
             mapOf('е' to "ё", 'ь' to "ъ"),
-            row3Symbols = "*\"':;!ъ?"),                                     // ъ is the small hint on ь, "?" moved to б (the key right of ь)
+            row3Symbols = "*\"':;!ъ?%"),                                    // ъ is the small hint on ь, "?" moved to б (the key right of ь), % on ю (hold: % and ‰)
         Lang("uk", "Українська", ukrainian,
             listOf("йфя", "ціч", "увс", "кам", "епи", "нрт", "гоь", "шлб", "щдю", "зж", "хє", "ї"),
             listOf("йцукенгшщзхї", "фівапролджє", "ячсмитьбюґ"),
             mapOf('г' to "ґ"),
-            row3Symbols = "*\"':;! ?"),                                      // "?" on б (the key right of ь), nothing on ь, as in Russian
+            row3Symbols = "*\"':;! ?%"),                                     // "?" on б (the key right of ь), nothing on ь, % on ю, as in Russian
         // ---- more languages (dictionaries are not part of the app: see docs/on-demand-dictionaries.md) ----
         Lang("it", "Italiano", latin, qwerty, qwertyRows,
             mapOf('a' to "à", 'e' to "èé", 'i' to "ìí", 'o' to "òó", 'u' to "ùú")),

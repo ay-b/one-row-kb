@@ -70,10 +70,7 @@
     <string name="header_spell_checker">Provjera pravopisa</string>
     <string name="spell_checker_desc">Android crvenom crtom podcrtava riječi pomoću vlastite provjere pravopisa, koja zna samo jedan jezik. OneRow ima svoju: zna sve jezike koje ste ovdje dodali (i riječi koje ste ju naučili), pa se označavaju samo doista nepoznate riječi.</string>
     <string name="btn_spell_on">Koristite provjeru pravopisa OneRow</string>
-    <string name="btn_spell_off">Isključite provjeru pravopisa</string>
-    <string name="toast_spell_on">Odabrana je provjera pravopisa OneRow</string>
-    <string name="toast_spell_off">Provjera pravopisa je isključena</string>
-    <string name="toast_spell_manual">Odaberite \"OneRow Keyboard\" na zaslonu koji se otvori ili jednom pokrenite na računalu: adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="toast_spell_pick">Na zaslonu koji se otvori odaberite \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->
     <string name="header_proofreading">Lektura</string>
