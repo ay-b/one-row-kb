@@ -224,6 +224,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (::floating.isInitialized) floating.hide()
         floating = FloatingKeyboard(this, prefs, { requestHideSelf(0) }, { (getSystemService(INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager).showInputMethodPicker() })
         dock = FrameLayout(this)
+        watchSystemBars()
         layoutMode = prefs.layoutMode.let { if (it in setOf("split", "left", "right") && !isTablet()) "docked" else it }
         arrange()
         android.util.Log.d("OneRowStartup", "input view built in ${(System.nanoTime() - tv) / 1_000_000} ms, ${sinceBirth()} ms after service start")
@@ -231,6 +232,29 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     private fun isTablet() = resources.configuration.smallestScreenWidthDp >= 600
+
+    // ---- Android 15+ draws the system buttons / the home-gesture zone OVER the bottom of our window (edge-to-edge is enforced for apps
+    // targeting 35+). Older Android reserves that strip itself, so we add nothing there. ----
+    private var navInset = 0
+
+    private fun watchSystemBars() {
+        if (Build.VERSION.SDK_INT < 35) return
+        dock.setOnApplyWindowInsetsListener { _, insets ->
+            val kinds = android.view.WindowInsets.Type.navigationBars() or android.view.WindowInsets.Type.systemGestures()
+            val b = insets.getInsets(kinds).bottom
+            if (b != navInset) { navInset = b; updateDockLook() }
+            insets
+        }
+    }
+
+    /** The input view keeps the strip under the keys clear and paints it in the keyboard's color (docked / split / one-hand; not while floating). */
+    private fun updateDockLook() {
+        if (!::dock.isInitialized) return
+        val floatingNow = layoutMode == "floating"
+        val side = layoutMode == "left" || layoutMode == "right"
+        dock.setPadding(0, 0, 0, if (floatingNow) 0 else navInset)
+        dock.setBackgroundColor(if (side || (!floatingNow && navInset > 0)) Themes.palette(prefs.theme, resources.configuration).panel else 0)
+    }
 
     /** Puts the keyboard where [layoutMode] says: in the input view (docked or split) or in the floating window. */
     private fun scaleFor(mode: String) = if (mode == "floating") prefs.floatHeight else prefs.heightScale
@@ -242,7 +266,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         kv.heightScale = scaleFor(layoutMode)
         val side = layoutMode == "left" || layoutMode == "right"
         kv.shrink = if (side) 0.85f else 1f
-        dock.setBackgroundColor(if (side) Themes.palette(prefs.theme, resources.configuration).panel else 0)
+        updateDockLook()
         if (layoutMode == "floating") {
             (kv.parent as? ViewGroup)?.let { if (it !== dock) it.removeView(kv) }
             dock.removeAllViews()
@@ -317,6 +341,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     /** Paints the system navigation bar under the keyboard in the keyboard's color (otherwise each phone picks its own: black, white...). */
     @Suppress("DEPRECATION")
     private fun applyNavBar() {
+        updateDockLook()
         val w = window?.window ?: return
         val c = Themes.palette(prefs.theme, resources.configuration).panel
         val floatingNow = layoutMode == "floating"

@@ -4,6 +4,9 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.25.4
+- Fix (since 0.23.2, which moved to target SDK 35/36): on Android 15+ the system draws the navigation buttons / home-gesture zone over the bottom of the keyboard. The keyboard now keeps that strip clear and paints it in its own color, so the hide-keyboard and switcher buttons are back below the keys, no key sits under the system controls, and a swipe along the space bar no longer starts the app switcher. Same for the bottom of the Settings page. Older Android (which reserves the strip itself) and the floating keyboard are unchanged.
+
 ## 0.25.3
 - The app icon is now the "one row" design (a single row of keys). The "guess bar" icon is kept in the app (not selectable) and in `icons/`.
 

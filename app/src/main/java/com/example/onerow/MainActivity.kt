@@ -346,5 +346,11 @@ class MainActivity : Activity() {
                 android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
         })
         setContentView(scroll)
+        // Android 15+ draws the page edge-to-edge: keep the last items clear of the navigation bar / gesture zone
+        if (android.os.Build.VERSION.SDK_INT >= 35) scroll.setOnApplyWindowInsetsListener { _, insets ->
+            val b = insets.getInsets(android.view.WindowInsets.Type.navigationBars()).bottom
+            col.setPadding(dp(20), dp(12), dp(20), dp(24) + b)
+            insets
+        }
     }
 }
