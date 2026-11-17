@@ -31,12 +31,13 @@ class Canvas:
                 col = tuple(int(a * 0.45 + b * 0.55) for a, b in zip(fill, self.bg_under))
             self.rrect(x + i * (w + gap), y, w, h, r, col)
 
-    def guess_bar(self, x, y, w, h, bar, pill):
-        self.rrect(x, y, w, h, h / 2, bar)
-        pw, ph = (w - 4 * 12) / 3 * 0.9, h * 0.42
-        gap = (w - 3 * pw) / 4
-        for i in range(3):
-            self.rrect(x + gap + i * (pw + gap), y + (h - ph) / 2, pw, ph, ph / 2, pill)
+    def icon_tile(self, x, y, size):
+        """The app icon itself (icons/icon-1-one-row.svg): a slate rounded square with one row of six keys, the last one dimmed."""
+        u = size / 100.0
+        self.rrect(x, y, size, size, size * 0.22, SLATE)
+        for i in range(6):
+            col = TEAL if i < 5 else tuple(int(a * 0.45 + b * 0.55) for a, b in zip(TEAL, SLATE))
+            self.rrect(x + (9.5 + 14 * i) * u, y + 38 * u, 11 * u, 24 * u, 4 * u, col)
 
     def save(self, name):
         im = self.im.resize((W, H), Image.LANCZOS)
@@ -46,12 +47,11 @@ class Canvas:
 
 
 def v1_row():
-    c = Canvas(SLATE); c.bg_under = SLATE
+    c = Canvas((0x1B, 0x23, 0x2A)); c.bg_under = SLATE
     c.text(64, 150, "OneRow", 84, INK); c.text(64, 244, "Keyboard", 84, INK)
     c.text(66, 352, "One row. Every word.", 32, TEAL)
     c.text(66, 400, "Fast · Private · Zero bytes out", 22, DIM)
-    c.guess_bar(530, 138, 430, 52, DARK, TEAL)
-    c.keys(530, 214, 6, 56, 140, 19, 14, TEAL)
+    c.icon_tile(600, 80, 340)
     return c.save("feature-1-row")
 
 
@@ -80,9 +80,7 @@ def v4_light():
     c = Canvas(LIGHT_BG); c.bg_under = SLATE
     c.text(64, 150, "OneRow", 84, SLATE); c.text(64, 244, "Keyboard", 84, SLATE)
     c.text(66, 352, "Fast. Private. One row.", 32, TEAL_DK)
-    c.rrect(500, 80, 470, 340, 36, SLATE)
-    c.guess_bar(536, 118, 398, 52, DARK, TEAL)
-    c.keys(536, 200, 6, 52, 160, 17, 13, TEAL)
+    c.icon_tile(600, 80, 340)
     return c.save("feature-4-light")
 
 

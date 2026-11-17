@@ -6,7 +6,7 @@ plugins {
 // Semantic versioning (MAJOR.MINOR.PATCH). Bump this ONE line for every build you hand out:
 //   PATCH = bug fix, MINOR = new feature (backwards compatible), MAJOR = breaking change / 1.0 = first public release.
 // versionCode is derived from it (M*10000 + m*100 + p) so Android always sees newer builds as upgrades.
-val appVersion = "0.25.4"
+val appVersion = "0.25.5"
 val (vMajor, vMinor, vPatch) = appVersion.split(".").map { it.toInt() }
 
 base { archivesName.set("onerow-$appVersion") }

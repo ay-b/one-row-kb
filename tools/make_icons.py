@@ -1,17 +1,14 @@
 """App icons, from one description. Run from the project root:  python tools/make_icons.py   (needs Pillow)
 
-Two designs, both drawn in a 100 x 100 box (slate square, teal keys):
-  1 "one row"    -> THE launcher icon (default)
-  9 "guess bar"  -> kept in the app (not selectable) and in icons/
-(To swap them, change LAUNCHER / ALT below.)
+One design, drawn in a 100 x 100 box (slate square, teal keys): "one row" (six keys, the last one dimmed).
+(An earlier "guess bar" design was dropped: it looked like a face.)
 
 Writes:
   icons/icon-<n>-<name>.svg           square, full bleed (source)
   icons/icon-<n>-<name>-512.png       512 x 512, square, full bleed (Play listing icon)
-  app/src/main/res/drawable/ic_launcher_fg.xml, ic_launcher_mono.xml      adaptive launcher icon (LAUNCHER) layers
-  app/src/main/res/drawable/ic_launcher_alt_fg.xml                        ALT icon layer
-  app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml, ic_launcher_alt.xml
-  app/src/main/res/mipmap-*dpi/ic_launcher.png                            legacy (Android 7) rounded-square PNGs of the LAUNCHER icon
+  app/src/main/res/drawable/ic_launcher_fg.xml, ic_launcher_mono.xml      adaptive launcher icon layers (plain + themed)
+  app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+  app/src/main/res/mipmap-*dpi/ic_launcher.png                            legacy (Android 7) rounded-square PNGs
   app/src/main/res/values/ic_launcher_colors.xml
 """
 import os
@@ -22,17 +19,12 @@ hexc = lambda c: "#%02X%02X%02X" % c
 
 # (kind, x, y, w, h, radius, color-name, alpha) in the 100-box
 ICONS = {
-    "9-guess-bar": dict(
-        name="guess_bar", cx=50, cy=49, scale=0.68,
-        shapes=[("strip", 12, 22, 76, 18, 9, "dark", 1.0),
-                ("pill", 21, 27, 18, 8, 4, "teal", 1.0), ("pill", 41, 27, 18, 8, 4, "teal", 1.0), ("pill", 61, 27, 18, 8, 4, "teal", 1.0)] +
-               [("key", 9.5 + 14 * i, 54, 11, 22, 4, "teal", 1.0) for i in range(6)]),
     "1-one-row": dict(
         name="one_row", cx=50, cy=50, scale=0.78,
         shapes=[("key", 9.5 + 14 * i, 38, 11, 24, 4, "teal", 0.45 if i == 5 else 1.0) for i in range(6)]),
 }
 COLORS = {"dark": DARK, "teal": TEAL}
-LAUNCHER, ALT = "1-one-row", "9-guess-bar"
+LAUNCHER = "1-one-row"
 
 
 def rrect_path(x, y, w, h, r):
@@ -93,18 +85,14 @@ def main():
     for key, d in ICONS.items():
         write(f"icons/icon-{key}.svg", svg(d))
         p = f"icons/icon-{key}-512.png"; raster(d, 512, False).convert("RGB").save(p, optimize=True); print("wrote", p)
-    main_icon, alt_icon = ICONS[LAUNCHER], ICONS[ALT]
+    main_icon = ICONS[LAUNCHER]
     write(f"{res}/drawable/ic_launcher_fg.xml", vector(main_icon))
     write(f"{res}/drawable/ic_launcher_mono.xml", vector(main_icon, mono=True))
-    write(f"{res}/drawable/ic_launcher_alt_fg.xml", vector(alt_icon))
     write(f"{res}/values/ic_launcher_colors.xml", f'<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_bg">{hexc(SLATE)}</color>\n</resources>\n')
     write(f"{res}/mipmap-anydpi-v26/ic_launcher.xml",
           '<?xml version="1.0" encoding="utf-8"?>\n<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n'
           '    <background android:drawable="@color/ic_launcher_bg"/>\n    <foreground android:drawable="@drawable/ic_launcher_fg"/>\n'
           '    <monochrome android:drawable="@drawable/ic_launcher_mono"/>\n</adaptive-icon>\n')
-    write(f"{res}/mipmap-anydpi-v26/ic_launcher_alt.xml",
-          '<?xml version="1.0" encoding="utf-8"?>\n<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n'
-          '    <background android:drawable="@color/ic_launcher_bg"/>\n    <foreground android:drawable="@drawable/ic_launcher_alt_fg"/>\n</adaptive-icon>\n')
     for dens, px in (("mdpi", 48), ("hdpi", 72), ("xhdpi", 96), ("xxhdpi", 144), ("xxxhdpi", 192)):
         p = f"{res}/mipmap-{dens}/ic_launcher.png"; os.makedirs(os.path.dirname(p), exist_ok=True)
         raster(main_icon, px, True).save(p, optimize=True); print("wrote", p)
