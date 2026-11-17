@@ -19,18 +19,34 @@ class MainActivity : Activity() {
     private lateinit var prefs: Prefs
     private val teal = 0xFF2E8B83.toInt()
 
-    private var cheat: ImageView? = null
+    /** The cheat sheet is 11 short pictures, each followed by the legend lines that describe it (never one tall picture with a far-away legend). */
+    private var cheatViews: List<ImageView> = emptyList()
+
+    /** Pictures per theme, in order. Explicit references, so the resource shrinker keeps every one. */
+    private val cheatPictures = mapOf(
+        "default" to intArrayOf(R.drawable.cheatsheet_default_1, R.drawable.cheatsheet_default_2, R.drawable.cheatsheet_default_3, R.drawable.cheatsheet_default_4, R.drawable.cheatsheet_default_5, R.drawable.cheatsheet_default_6, R.drawable.cheatsheet_default_7, R.drawable.cheatsheet_default_8, R.drawable.cheatsheet_default_9, R.drawable.cheatsheet_default_10, R.drawable.cheatsheet_default_11),
+        "light" to intArrayOf(R.drawable.cheatsheet_light_1, R.drawable.cheatsheet_light_2, R.drawable.cheatsheet_light_3, R.drawable.cheatsheet_light_4, R.drawable.cheatsheet_light_5, R.drawable.cheatsheet_light_6, R.drawable.cheatsheet_light_7, R.drawable.cheatsheet_light_8, R.drawable.cheatsheet_light_9, R.drawable.cheatsheet_light_10, R.drawable.cheatsheet_light_11),
+        "dark" to intArrayOf(R.drawable.cheatsheet_dark_1, R.drawable.cheatsheet_dark_2, R.drawable.cheatsheet_dark_3, R.drawable.cheatsheet_dark_4, R.drawable.cheatsheet_dark_5, R.drawable.cheatsheet_dark_6, R.drawable.cheatsheet_dark_7, R.drawable.cheatsheet_dark_8, R.drawable.cheatsheet_dark_9, R.drawable.cheatsheet_dark_10, R.drawable.cheatsheet_dark_11),
+    )
+
+    /** Which legend numbers (the badges drawn on the picture) belong under which picture. Numbers match R.string.cheat_<n>. */
+    private val cheatGroups = listOf(listOf(1, 2, 3, 4, 5), listOf(6), listOf(7), listOf(8), listOf(9, 10), listOf(11, 12), listOf(13, 14),
+        listOf(15, 16), listOf(17), listOf(18), listOf(19))
+    private val cheatTexts = listOf(R.string.cheat_1, R.string.cheat_2, R.string.cheat_3, R.string.cheat_4, R.string.cheat_5, R.string.cheat_6, R.string.cheat_7,
+        R.string.cheat_8, R.string.cheat_9, R.string.cheat_10, R.string.cheat_11, R.string.cheat_12, R.string.cheat_13, R.string.cheat_14,
+        R.string.cheat_15, R.string.cheat_16, R.string.cheat_17, R.string.cheat_18, R.string.cheat_19)
 
     /** The gesture cheat sheet drawn in the colors of the chosen keyboard theme (Auto follows the system). */
     private fun showCheatSheet() {
         val dark = (resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES
-        val res = when (Prefs(this).theme) {
-            Themes.LIGHT -> R.drawable.cheatsheet_light
-            Themes.DARK -> R.drawable.cheatsheet_dark
-            Themes.AUTO -> if (dark) R.drawable.cheatsheet_dark else R.drawable.cheatsheet_light
-            else -> R.drawable.cheatsheet_default
+        val set = when (Prefs(this).theme) {
+            Themes.LIGHT -> "light"
+            Themes.DARK -> "dark"
+            Themes.AUTO -> if (dark) "dark" else "light"
+            else -> "default"
         }
-        cheat?.setImageResource(res)
+        val pics = cheatPictures.getValue(set)
+        cheatViews.forEachIndexed { i, v -> v.setImageResource(pics[i]) }
     }
 
     private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
@@ -290,25 +306,22 @@ class MainActivity : Activity() {
         })
 
         col.addView(header(getString(R.string.header_cheat_sheet)))
-        cheat = ImageView(this).apply {
-            adjustViewBounds = true
-            scaleType = ImageView.ScaleType.FIT_CENTER
-        }
-        col.addView(cheat)
-        showCheatSheet()
-        // the legend: number N here is the badge N on the picture (the picture itself has no words, so it needs no translation)
-        listOf(R.string.cheat_1, R.string.cheat_2, R.string.cheat_3, R.string.cheat_4, R.string.cheat_5, R.string.cheat_6, R.string.cheat_7,
-            R.string.cheat_8, R.string.cheat_9, R.string.cheat_10, R.string.cheat_11, R.string.cheat_12, R.string.cheat_13, R.string.cheat_14,
-            R.string.cheat_15, R.string.cheat_16, R.string.cheat_17, R.string.cheat_18, R.string.cheat_19).forEachIndexed { i, res ->
-            col.addView(LinearLayout(this).apply {
+        // each picture, then right under it only the legend lines for the numbers drawn on it
+        val views = ArrayList<ImageView>()
+        for (group in cheatGroups) {
+            val pic = ImageView(this).apply { adjustViewBounds = true; scaleType = ImageView.ScaleType.FIT_CENTER }
+            views += pic; col.addView(pic, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(14) })
+            for (n in group) col.addView(LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
-                setPadding(0, dp(6), 0, 0)
-                addView(TextView(context).apply { text = "${i + 1}"; textSize = 14f; setTextColor(teal); typeface = Typeface.DEFAULT_BOLD; gravity = Gravity.END },
+                setPadding(0, dp(4), 0, dp(2))
+                addView(TextView(context).apply { text = "$n"; textSize = 14f; setTextColor(teal); typeface = Typeface.DEFAULT_BOLD; gravity = Gravity.END },
                     LinearLayout.LayoutParams(dp(26), ViewGroup.LayoutParams.WRAP_CONTENT))
-                addView(TextView(context).apply { text = getString(res); textSize = 14f; setPadding(dp(10), 0, 0, 0) },
+                addView(TextView(context).apply { text = getString(cheatTexts[n - 1]); textSize = 14f; setPadding(dp(10), 0, 0, 0) },
                     LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
             })
         }
+        cheatViews = views
+        showCheatSheet()
 
         col.addView(header(getString(R.string.header_crash_reports)))
         col.addView(Switch(this).apply {

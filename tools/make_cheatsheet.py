@@ -2,8 +2,8 @@
 keyboard (tools/cheatsheet_src/<theme>/*.png, cut out by crop_phone_shots.py) plus drawn arrows. The picture holds NO words: every
 arrow carries a number, and the numbered legend is text in the app (res/values*/strings.xml, keys cheat_1..cheat_19), so it can be translated.
 
-Usage (from the project root):  python tools/make_cheatsheet.py            -> app/src/main/res/drawable-nodpi/cheatsheet_<theme>.png
-                                python tools/make_cheatsheet.py light out.png"""
+Usage (from the project root):  python tools/make_cheatsheet.py            -> app/src/main/res/drawable-nodpi/cheatsheet_<theme>_<card>.png (11 per theme)
+                                python tools/make_cheatsheet.py light some_dir"""
 import math, os, sys
 from PIL import Image, ImageDraw, ImageFont
 
@@ -58,23 +58,20 @@ class Sheet:
         self.cards.append((shot, annotate, head))
 
     def render(self):
-        t = self.t; pad = 30; inner = 22
-        parts = []
+        """One picture per card (each is shown in the app right above its own legend lines, so it never scrolls apart from them)."""
+        t = self.t; gap = 14; inner = 22
+        pieces = []
         for shot, annotate, head in self.cards:
             im = self.src(shot); ov = Image.new("RGBA", im.size, (0, 0, 0, 0))
             annotate(ImageDraw.Draw(ov), im.size, head)
             im = Image.alpha_composite(im, ov)
             im = im.resize((IMG_W, round(im.height * IMG_W / im.width)), Image.LANCZOS)
-            parts.append(im)
-        total = pad + sum(im.height + 2 * inner + pad for im in parts)
-        page = Image.new("RGB", (W, total), t["page"]); d = ImageDraw.Draw(page)
-        y = pad
-        for im in parts:
             h = im.height + 2 * inner
-            d.rounded_rectangle([30, y, W - 30, y + h], 24, fill=t["card"])
-            page.paste(im.convert("RGB"), (60, y + inner))
-            y += h + pad
-        return page.crop((0, 0, W, y))
+            page = Image.new("RGB", (W, h + 2 * gap), t["page"]); d = ImageDraw.Draw(page)
+            d.rounded_rectangle([30, gap, W - 30, gap + h], 24, fill=t["card"])
+            page.paste(im.convert("RGB"), (60, gap + inner))
+            pieces.append(page)
+        return pieces
 
 def build(theme):
     S = Sheet(theme)
@@ -134,6 +131,8 @@ def build(theme):
 
 if __name__ == "__main__":
     themes = [sys.argv[1]] if len(sys.argv) > 1 else list(THEMES)
+    outdir = sys.argv[2] if len(sys.argv) > 2 else "app/src/main/res/drawable-nodpi"
     for th in themes:
-        out = sys.argv[2] if len(sys.argv) > 2 else f"app/src/main/res/drawable-nodpi/cheatsheet_{th}.png"
-        build(th).save(out, optimize=True); print("wrote", out)
+        for n, piece in enumerate(build(th), 1):
+            out = f"{outdir}/cheatsheet_{th}_{n}.png"
+            piece.save(out, optimize=True); print("wrote", out, piece.size)

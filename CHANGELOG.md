@@ -4,6 +4,9 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.25.2
+- The cheat sheet is no longer one tall picture with a legend at the very end: it is 11 short pictures, each followed right away by only the legend lines for the numbers drawn on it, so a picture and its explanation are always on screen together. `tools/make_cheatsheet.py` now writes `cheatsheet_<theme>_<n>.png` (11 per theme).
+
 ## 0.25.1
 - New app icon: a guess bar over a row of keys (adaptive icon with a themed-icon layer for Android 13+, plain PNGs for Android 7). The alternative "one row" icon is kept in the app (not selectable) and both designs, as SVG and 512 px PNG, are in the `icons/` folder. Rebuild everything with `tools/make_icons.py`.
 
