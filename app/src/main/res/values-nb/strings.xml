@@ -101,8 +101,8 @@
     <string name="cheat_12">Hold inne et forslag og slipp det på søppelkassen: glem ordet</string>
     <string name="cheat_13">Trykk på språktasten: neste språk</string>
     <string name="cheat_14">Hold inne språktasten og gli deretter: innstillinger, normal, flytende, delt (bare nettbrett). Gli til ikonet for normal for å feste et flytende tastatur igjen</string>
-    <string name="cheat_15">Flytende tastatur: dra i håndtaket øverst for å flytte det</string>
-    <string name="cheat_16">Flytende tastatur: dra i hjørnet for å endre størrelsen</string>
+    <string name="cheat_15">Flytende tastatur: dra i linjen under tastene for å flytte det</string>
+    <string name="cheat_16">Flytende tastatur: trykk på merket med kryssede piler ved siden av kloden for å vise hjørnene, og dra så i et hjørne for å endre størrelsen</string>
     <string name="cheat_17">Sveipeskriving (valgfritt, Innstillinger &gt; Bevegelser): tegn et ord over bokstavene, her h-e-l-l-o. Trykk på et forslag for å erstatte ordet; slettetasten sletter hele ordet</string>
     <string name="cheat_18">Gli fra 123 til tastene: symboler og valutategn vises; når du slipper, skrives ett, og du går tilbake til bokstavene</string>
     <string name="cheat_19">Sveip ned på forslagsfeltet: tilbake til én rad. Dra opp fra forslagsfeltet eller nederste rad på tastaturet med én rad: fullt tastatur</string>

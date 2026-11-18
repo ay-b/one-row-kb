@@ -102,8 +102,8 @@
     <string name="cheat_12">Mantén pulsada una sugerencia y suéltala sobre la papelera: olvidar la palabra</string>
     <string name="cheat_13">Toca la tecla de idioma: siguiente idioma</string>
     <string name="cheat_14">Mantén pulsada la tecla de idioma y desliza: ajustes, normal, flotante, dividido (solo tabletas). Desliza hasta el icono normal para acoplar de nuevo un teclado flotante</string>
-    <string name="cheat_15">Teclado flotante: arrastra el asa de arriba para moverlo</string>
-    <string name="cheat_16">Teclado flotante: arrastra la esquina para cambiar su tamaño</string>
+    <string name="cheat_15">Teclado flotante: arrastra la barra bajo las teclas para moverlo</string>
+    <string name="cheat_16">Teclado flotante: toca la marca de flechas cruzadas junto al globo para mostrar las esquinas y arrastra una esquina para cambiar el tamaño</string>
     <string name="cheat_17">Escritura por gestos (opcional, Ajustes &gt; Gestos): dibuja una palabra sobre las letras, aquí h-e-l-l-o. Toca una sugerencia para reemplazar la palabra; retroceso borra la palabra entera</string>
     <string name="cheat_18">Desliza desde 123 hasta las teclas: aparecen símbolos y signos de moneda; al soltar se escribe uno y se vuelve a las letras</string>
     <string name="cheat_19">Desliza hacia abajo en la barra de sugerencias: volver a una fila. Tira hacia arriba desde la barra de sugerencias o la fila inferior del teclado de una fila: teclado completo</string>

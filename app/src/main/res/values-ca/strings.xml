@@ -102,8 +102,8 @@
     <string name="cheat_12">Mantén premut un suggeriment i deixa\'l anar a la paperera: oblida la paraula</string>
     <string name="cheat_13">Toca la tecla de llengua: llengua següent</string>
     <string name="cheat_14">Mantén premuda la tecla de llengua i llisca: configuració, normal, flotant, dividit (només tauletes). Llisca fins a la icona normal per tornar a acoblar un teclat flotant</string>
-    <string name="cheat_15">Teclat flotant: arrossega la nansa de dalt per moure\'l</string>
-    <string name="cheat_16">Teclat flotant: arrossega la cantonada per canviar-ne la mida</string>
+    <string name="cheat_15">Teclat flotant: arrossega la barra sota les tecles per moure\'l</string>
+    <string name="cheat_16">Teclat flotant: toca la marca de fletxes creuades al costat del globus per mostrar les cantonades i arrossega\'n una per canviar la mida</string>
     <string name="cheat_17">Escriptura gestual (opcional, Configuració &gt; Gestos): dibuixa una paraula sobre les lletres, aquí h-e-l-l-o. Toca un suggeriment per substituir la paraula; el retrocés esborra la paraula sencera</string>
     <string name="cheat_18">Llisca des de 123 fins a les tecles: apareixen símbols i signes de moneda; en deixar anar se n\'escriu un i es torna a les lletres</string>
     <string name="cheat_19">Llisca cap avall a la barra de suggeriments: torna a una fila. Estira cap amunt des de la barra de suggeriments o la fila inferior del teclat d\'una fila: teclat complet</string>

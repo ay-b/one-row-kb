@@ -101,8 +101,8 @@
     <string name="cheat_12">Pidä ehdotusta painettuna ja pudota se roskakoriin: unohda sana</string>
     <string name="cheat_13">Napauta kielinäppäintä: seuraava kieli</string>
     <string name="cheat_14">Pidä kielinäppäintä painettuna ja vedä: asetukset, normaali, kelluva, jaettu (vain tableteissa). Vedä normaali-kuvakkeeseen kiinnittääksesi kelluvan näppäimistön takaisin</string>
-    <string name="cheat_15">Kelluva näppäimistö: siirrä vetämällä yläreunan kahvasta</string>
-    <string name="cheat_16">Kelluva näppäimistö: muuta kokoa vetämällä kulmasta</string>
+    <string name="cheat_15">Kelluva näppäimistö: siirrä vetämällä näppäinten alla olevaa palkkia</string>
+    <string name="cheat_16">Kelluva näppäimistö: näytä kulmat napauttamalla maapallon vieressä olevaa ristikkäisten nuolten merkkiä ja muuta kokoa vetämällä kulmasta</string>
     <string name="cheat_17">Pyyhkäisykirjoitus (valinnainen, Asetukset &gt; Eleet): piirrä sana kirjainten yli, tässä h-e-l-l-o. Korvaa sana napauttamalla ehdotusta; askelpalautin poistaa koko sanan</string>
     <string name="cheat_18">Vedä 123-näppäimestä näppäimille: näkyviin tulee symboleja ja valuuttamerkkejä; vapauttaminen kirjoittaa yhden ja palaa kirjaimiin</string>
     <string name="cheat_19">Pyyhkäise ehdotuspalkista alas: takaisin yhteen riviin. Vedä ylös ehdotuspalkista tai yhden rivin näppäimistön alimmalta riviltä: täysi näppäimistö</string>

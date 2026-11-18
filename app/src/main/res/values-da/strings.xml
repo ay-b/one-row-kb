@@ -101,8 +101,8 @@
     <string name="cheat_12">Hold et forslag nede, og slip det på skraldespanden: glem ordet</string>
     <string name="cheat_13">Tryk på sprogtasten: næste sprog</string>
     <string name="cheat_14">Hold sprogtasten nede, og glid derefter: indstillinger, normal, svævende, delt (kun tablets). Glid til ikonet for normal for at fastgøre et svævende tastatur igen</string>
-    <string name="cheat_15">Svævende tastatur: træk i håndtaget øverst for at flytte det</string>
-    <string name="cheat_16">Svævende tastatur: træk i hjørnet for at ændre størrelsen</string>
+    <string name="cheat_15">Svævende tastatur: træk i bjælken under tasterne for at flytte det</string>
+    <string name="cheat_16">Svævende tastatur: tryk på mærket med krydsede pile ved siden af globussen for at vise hjørnerne, og træk derefter i et hjørne for at ændre størrelsen</string>
     <string name="cheat_17">Strygeskrivning (valgfrit, Indstillinger &gt; Bevægelser): tegn et ord hen over bogstaverne, her h-e-l-l-o. Tryk på et forslag for at erstatte ordet; slettetasten sletter hele ordet</string>
     <string name="cheat_18">Glid fra 123 hen på tasterne: symboler og valutategn vises; når du slipper, skrives ét, og du vender tilbage til bogstaverne</string>
     <string name="cheat_19">Stryg nedad på forslagslinjen: tilbage til én række. Træk opad fra forslagslinjen eller nederste række på tastaturet med én række: fuldt tastatur</string>

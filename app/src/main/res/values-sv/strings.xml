@@ -101,8 +101,8 @@
     <string name="cheat_12">Håll in ett förslag och släpp det på papperskorgen: glöm ordet</string>
     <string name="cheat_13">Tryck på språktangenten: nästa språk</string>
     <string name="cheat_14">Håll in språktangenten och glid sedan: inställningar, normal, flytande, delad (bara surfplattor). Glid till ikonen för normal för att docka ett flytande tangentbord igen</string>
-    <string name="cheat_15">Flytande tangentbord: dra i handtaget högst upp för att flytta det</string>
-    <string name="cheat_16">Flytande tangentbord: dra i hörnet för att ändra storlek</string>
+    <string name="cheat_15">Flytande tangentbord: dra i fältet under tangenterna för att flytta det</string>
+    <string name="cheat_16">Flytande tangentbord: tryck på märket med korsade pilar bredvid jordgloben för att visa hörnen och dra sedan i ett hörn för att ändra storleken</string>
     <string name="cheat_17">Svepskrivning (valfritt, Inställningar &gt; Gester): dra ett ord över bokstäverna, här h-e-l-l-o. Tryck på ett förslag för att ersätta ordet; backsteg raderar hela ordet</string>
     <string name="cheat_18">Glid från 123 till tangenterna: symboler och valutatecken visas; när du släpper skrivs en och du återgår till bokstäverna</string>
     <string name="cheat_19">Svep nedåt i förslagsfältet: tillbaka till en rad. Dra uppåt från förslagsfältet eller nedersta raden på tangentbordet med en rad: fullt tangentbord</string>

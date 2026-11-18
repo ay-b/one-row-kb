@@ -102,8 +102,8 @@
     <string name="cheat_12">Mantenha uma sugestão pressionada e solte-a na lixeira: esquecer a palavra</string>
     <string name="cheat_13">Toque na tecla de idioma: próximo idioma</string>
     <string name="cheat_14">Mantenha a tecla de idioma pressionada e deslize: configurações, normal, flutuante, dividido (somente tablets). Deslize até o ícone normal para encaixar de novo um teclado flutuante</string>
-    <string name="cheat_15">Teclado flutuante: arraste a alça no alto para movê-lo</string>
-    <string name="cheat_16">Teclado flutuante: arraste o canto para redimensioná-lo</string>
+    <string name="cheat_15">Teclado flutuante: arraste a barra sob as teclas para movê-lo</string>
+    <string name="cheat_16">Teclado flutuante: toque na marca de setas cruzadas ao lado do globo para mostrar os cantos e arraste um canto para redimensionar</string>
     <string name="cheat_17">Digitação por gestos (opcional, Configurações &gt; Gestos): desenhe uma palavra sobre as letras, aqui h-e-l-l-o. Toque em uma sugestão para substituir a palavra; o backspace apaga a palavra inteira</string>
     <string name="cheat_18">Deslize de 123 até as teclas: aparecem símbolos e sinais de moeda; ao soltar, digita um e volta para as letras</string>
     <string name="cheat_19">Deslize para baixo na barra de sugestões: voltar a uma linha. Puxe para cima a partir da barra de sugestões ou da linha de baixo do teclado de uma linha: teclado completo</string>

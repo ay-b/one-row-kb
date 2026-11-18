@@ -104,8 +104,8 @@
     <string name="cheat_12">Podržte návrh a presuňte ho na kôš: slovo sa zabudne</string>
     <string name="cheat_13">Klepnite na kláves jazyka: ďalší jazyk</string>
     <string name="cheat_14">Podržte kláves jazyka a posuňte prst: nastavenia, normálna, plávajúca, rozdelená (len tablety). Posunutím na ikonu normálnej znova ukotvíte plávajúcu klávesnicu</string>
-    <string name="cheat_15">Plávajúca klávesnica: presunutím úchytu hore ju premiestnite</string>
-    <string name="cheat_16">Plávajúca klávesnica: presunutím rohu zmeníte veľkosť</string>
+    <string name="cheat_15">Plávajúca klávesnica: presunutím lišty pod klávesmi ju premiestnite</string>
+    <string name="cheat_16">Plávajúca klávesnica: klepnutím na značku skrížených šípok vedľa glóbusu zobrazíte rohy a ťahaním rohu zmeníte veľkosť</string>
     <string name="cheat_17">Písanie gestami (voliteľné, Nastavenia &gt; Gestá): nakreslite slovo cez písmená, tu h-e-l-l-o. Klepnutím na návrh slovo nahradíte; Backspace zmaže celé slovo</string>
     <string name="cheat_18">Potiahnite z 123 na klávesy: zobrazia sa symboly a značky mien; po uvoľnení sa jeden napíše a klávesnica sa vráti k písmenám</string>
     <string name="cheat_19">Potiahnite po lište návrhov nadol: späť k jednému riadku. Potiahnutím nahor z lišty návrhov alebo zo spodného riadka jednoradovej klávesnice: plná klávesnica</string>

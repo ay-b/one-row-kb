@@ -102,8 +102,8 @@
     <string name="cheat_12">Tieni premuto un suggerimento, rilascialo sul cestino: dimentica la parola</string>
     <string name="cheat_13">Tocca il tasto della lingua: lingua successiva</string>
     <string name="cheat_14">Tieni premuto il tasto della lingua, poi scorri: impostazioni, normale, mobile, diviso (solo tablet). Scorri sull\'icona normale per riagganciare una tastiera mobile</string>
-    <string name="cheat_15">Tastiera mobile: trascina la maniglia in alto per spostarla</string>
-    <string name="cheat_16">Tastiera mobile: trascina l\'angolo per ridimensionarla</string>
+    <string name="cheat_15">Tastiera mobile: trascina la barra sotto i tasti per spostarla</string>
+    <string name="cheat_16">Tastiera mobile: tocca il segno con le frecce incrociate accanto al globo per mostrare gli angoli, poi trascina un angolo per ridimensionarla</string>
     <string name="cheat_17">Digitazione gestuale (facoltativa, Impostazioni &gt; Gesti): traccia una parola sulle lettere, qui h-e-l-l-o. Tocca un suggerimento per sostituire la parola; backspace cancella l\'intera parola</string>
     <string name="cheat_18">Scorri da 123 sui tasti: compaiono simboli e segni di valuta; rilasciando se ne scrive uno e si torna alle lettere</string>
     <string name="cheat_19">Scorri verso il basso sulla barra dei suggerimenti: torna a una riga. Tira verso l\'alto dalla barra dei suggerimenti o dalla riga in basso della tastiera a una riga: tastiera completa</string>

@@ -67,8 +67,8 @@ class Sheet:
             im = Image.alpha_composite(im, ov)
             im = im.resize((IMG_W, round(im.height * IMG_W / im.width)), Image.LANCZOS)
             h = im.height + 2 * inner
-            page = Image.new("RGB", (W, h + 2 * gap), t["page"]); d = ImageDraw.Draw(page)
-            d.rounded_rectangle([30, gap, W - 30, gap + h], 24, fill=t["card"])
+            page = Image.new("RGBA", (W, h + 2 * gap), (0, 0, 0, 0)); d = ImageDraw.Draw(page)      # transparent around the card: the app's themed background shows
+            d.rounded_rectangle([30, gap, W - 30, gap + h], 24, fill=t["card"] + (255,))
             page.paste(im.convert("RGB"), (60, gap + inner))
             pieces.append(page)
         return pieces
@@ -76,7 +76,7 @@ class Sheet:
 def build(theme):
     S = Sheet(theme)
     # geometry of the phone keyboard in the mini crop: y measured from the top of the crop (keyboard starts at HEAD)
-    strip = HEAD + 44; row = HEAD + 150; ctl = HEAD + 236
+    strip = HEAD + 42; row = HEAD + 133; ctl = HEAD + 221
 
     def c1(d, size, head):                                                        # 1..5: swipes from the middle of the letter row
         cx = 540; S.finger(d, cx, row)
@@ -94,7 +94,7 @@ def build(theme):
     S.card("punct", lambda d, s, h: S.num(d, 560, 150, 7))                        # 7: punctuation popup
 
     def c4(d, size, head):                                                        # 8: emoji
-        S.narrow(d, 328, ctl - 70, 328, 24, 8, 7, at=0.75)
+        S.narrow(d, 352, ctl - 70, 352, 24, 8, 7, at=0.75)
     S.card("emoji", c4)
 
     def c5(d, size, head):                                                        # 9, 10: cursor and word delete
@@ -108,19 +108,19 @@ def build(theme):
     S.card("bucket", c6)
 
     def c7(d, size, head):                                                        # 13, 14: language key
-        S.num(d, 310, 354, 13); S.num(d, 62, 150, 14)
+        S.num(d, 300, 345, 13); S.num(d, 62, 150, 14)
     S.card("lang", c7)
 
     def c7b(d, size, head):                                                       # 15, 16: floating keyboard
-        S.arrow(d, 615, 132, 780, 132, 6); S.narrow(d, 465, 132, 300, 132, 15, 6)  # drag the handle on top
-        S.narrow(d, 955, 432, 1015, 490, 16, 6)                                    # drag the corner
+        S.arrow(d, 622, 391, 710, 391, 6); S.narrow(d, 458, 391, 370, 391, 15, 6)  # drag the handle (the bar under the keys) to move
+        S.narrow(d, 768, 404, 735, 458, 16, 6)                                     # the resize mark next to the globe
     S.card("float", c7b)
 
     S.card("trail", lambda d, s, h: S.num(d, 640, 235, 17), HEAD_FULL)            # 17: swipe typing
 
     def c8(d, size, head):                                                        # 18: symbols from 123
-        y = HEAD_FULL + 503
-        S.finger(d, 90, y); S.narrow(d, 118, y - 18, 250, HEAD_FULL + 384, 18, 7)
+        y = HEAD_FULL + 471
+        S.finger(d, 90, y); S.narrow(d, 118, y - 18, 250, HEAD_FULL + 372, 18, 7)
     S.card("peek", c8, HEAD_FULL)
 
     def c9(d, size, head):                                                        # 19: back to one row

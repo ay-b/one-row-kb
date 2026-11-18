@@ -110,8 +110,8 @@
     <string name="cheat_12">Hold a guess, drop it on the bin: forget the word</string>
     <string name="cheat_13">Tap the language key: next language</string>
     <string name="cheat_14">Hold the language key, then slide: settings, normal, floating, split (tablets only). Slide to the normal icon to dock a floating keyboard again</string>
-    <string name="cheat_15">Floating keyboard: drag the handle on top to move it</string>
-    <string name="cheat_16">Floating keyboard: drag the corner to resize it</string>
+    <string name="cheat_15">Floating keyboard: drag the bar under the keys to move it</string>
+    <string name="cheat_16">Floating keyboard: tap the crossed-arrows mark next to the globe to show the corners, then drag a corner to resize it</string>
     <string name="cheat_17">Swipe typing (optional, Settings &gt; Gestures): draw a word across the letters, here h-e-l-l-o. Tap a guess to replace the word; backspace deletes the whole word</string>
     <string name="cheat_18">Slide from 123 onto the keys: symbols and currency signs appear; release types one and goes back to the letters</string>
     <string name="cheat_19">Swipe down on the guess bar: back to one row. Pull up from the guess bar or the bottom row of the one-row keyboard: full keyboard</string>

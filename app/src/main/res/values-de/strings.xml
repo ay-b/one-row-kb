@@ -101,8 +101,8 @@
     <string name="cheat_12">Einen Vorschlag gedrückt halten und auf den Papierkorb ziehen: Wort vergessen</string>
     <string name="cheat_13">Die Sprachtaste tippen: nächste Sprache</string>
     <string name="cheat_14">Die Sprachtaste gedrückt halten, dann gleiten: Einstellungen, normal, schwebend, geteilt (nur Tablets). Zum Symbol für normal gleiten, um eine schwebende Tastatur wieder anzudocken</string>
-    <string name="cheat_15">Schwebende Tastatur: den Griff oben ziehen, um sie zu verschieben</string>
-    <string name="cheat_16">Schwebende Tastatur: die Ecke ziehen, um die Größe zu ändern</string>
+    <string name="cheat_15">Schwebende Tastatur: die Leiste unter den Tasten ziehen, um sie zu verschieben</string>
+    <string name="cheat_16">Schwebende Tastatur: auf das Pfeilkreuz neben dem Globus tippen, um die Ecken anzuzeigen, dann eine Ecke ziehen, um die Größe zu ändern</string>
     <string name="cheat_17">Wischeingabe (optional, Einstellungen &gt; Gesten): ein Wort über die Buchstaben zeichnen, hier h-e-l-l-o. Einen Vorschlag tippen, um das Wort zu ersetzen; die Rücktaste löscht das ganze Wort</string>
     <string name="cheat_18">Von 123 auf die Tasten gleiten: Symbole und Währungszeichen erscheinen; Loslassen tippt eines und kehrt zu den Buchstaben zurück</string>
     <string name="cheat_19">Auf der Vorschlagsleiste nach unten wischen: zurück zur einen Zeile. Von der Vorschlagsleiste oder der unteren Reihe der einzeiligen Tastatur nach oben ziehen: volle Tastatur</string>

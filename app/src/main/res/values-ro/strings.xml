@@ -104,8 +104,8 @@
     <string name="cheat_12">Țineți apăsată o sugestie și plasați-o pe coș: uitați cuvântul</string>
     <string name="cheat_13">Atingeți tasta de limbă: limba următoare</string>
     <string name="cheat_14">Țineți apăsată tasta de limbă, apoi glisați: setări, normală, flotantă, divizată (doar tablete). Glisați la pictograma normală pentru a ancora din nou tastatura flotantă</string>
-    <string name="cheat_15">Tastatură flotantă: trageți mânerul de sus pentru a o muta</string>
-    <string name="cheat_16">Tastatură flotantă: trageți colțul pentru a o redimensiona</string>
+    <string name="cheat_15">Tastatură flotantă: trageți bara de sub taste pentru a o muta</string>
+    <string name="cheat_16">Tastatură flotantă: atingeți semnul cu săgeți încrucișate de lângă glob pentru a afișa colțurile, apoi trageți un colț pentru a o redimensiona</string>
     <string name="cheat_17">Tastare prin glisare (opțional, Setări &gt; Gesturi): trasați un cuvânt peste litere, aici h-e-l-l-o. Atingeți o sugestie pentru a înlocui cuvântul; tasta de ștergere elimină tot cuvântul</string>
     <string name="cheat_18">Glisați de la 123 pe taste: apar simboluri și semne de monedă; la eliberare se tastează unul și se revine la litere</string>
     <string name="cheat_19">Glisați în jos pe bara de sugestii: înapoi la un singur rând. Trageți în sus din bara de sugestii sau din rândul de jos al tastaturii cu un singur rând: tastatură completă</string>

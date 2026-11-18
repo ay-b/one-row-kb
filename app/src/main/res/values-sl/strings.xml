@@ -106,8 +106,8 @@
     <string name="cheat_12">Pridržite predlog in ga spustite na koš: pozabi besedo</string>
     <string name="cheat_13">Tapnite tipko za jezik: naslednji jezik</string>
     <string name="cheat_14">Pridržite tipko za jezik, nato podrsnite: nastavitve, običajna, plavajoča, razdeljena (samo tablični računalniki). Podrsnite na ikono običajne, da plavajočo tipkovnico znova zasidrate</string>
-    <string name="cheat_15">Plavajoča tipkovnica: povlecite ročaj na vrhu, da jo premaknete</string>
-    <string name="cheat_16">Plavajoča tipkovnica: povlecite vogal, da ji spremenite velikost</string>
+    <string name="cheat_15">Plavajoča tipkovnica: povlecite vrstico pod tipkami, da jo premaknete</string>
+    <string name="cheat_16">Plavajoča tipkovnica: tapnite znak prekrižanih puščic ob globusu, da prikažete vogale, nato povlecite vogal za spremembo velikosti</string>
     <string name="cheat_17">Tipkanje z drsenjem (neobvezno, Nastavitve &gt; Kretnje): narišite besedo čez črke, tukaj h-e-l-l-o. Tapnite predlog, da zamenjate besedo; tipka za brisanje izbriše celo besedo</string>
     <string name="cheat_18">Podrsnite z 123 na tipke: prikažejo se simboli in valutni znaki; ob spustu se vnese eden in vrnete se na črke</string>
     <string name="cheat_19">Podrsnite navzdol po vrstici predlogov: nazaj na eno vrstico. Povlecite navzgor z vrstice predlogov ali spodnje vrstice enovrstične tipkovnice: polna tipkovnica</string>

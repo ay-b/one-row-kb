@@ -102,8 +102,8 @@
     <string name="cheat_12">Maintenez une suggestion, déposez-la sur la corbeille : oublier le mot</string>
     <string name="cheat_13">Touchez la touche de langue : langue suivante</string>
     <string name="cheat_14">Maintenez la touche de langue, puis glissez : paramètres, normal, flottant, scindé (tablettes uniquement). Glissez vers l\'icône normal pour réancrer un clavier flottant</string>
-    <string name="cheat_15">Clavier flottant : faites glisser la poignée en haut pour le déplacer</string>
-    <string name="cheat_16">Clavier flottant : faites glisser le coin pour le redimensionner</string>
+    <string name="cheat_15">Clavier flottant : faites glisser la barre sous les touches pour le déplacer</string>
+    <string name="cheat_16">Clavier flottant : touchez la marque aux flèches croisées à côté du globe pour afficher les coins, puis faites glisser un coin pour le redimensionner</string>
     <string name="cheat_17">Saisie gestuelle (facultative, Paramètres &gt; Gestes) : tracez un mot sur les lettres, ici h-e-l-l-o. Touchez une suggestion pour remplacer le mot ; retour arrière efface le mot entier</string>
     <string name="cheat_18">Glissez de 123 vers les touches : les symboles et les signes de devise apparaissent ; le relâcher en saisit un et revient aux lettres</string>
     <string name="cheat_19">Balayez vers le bas sur la barre de suggestions : retour à une rangée. Tirez vers le haut depuis la barre de suggestions ou la rangée du bas du clavier à une rangée : clavier complet</string>

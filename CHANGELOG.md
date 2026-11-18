@@ -4,6 +4,18 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.29.4
+- Help tab, floating keyboard: the two legend lines now match the picture and the real behaviour (drag the bar under the keys to move; tap the crossed-arrows mark next to the globe to show the corners, then drag a corner to resize). Updated in all 26 languages (translations from memory, not native-checked).
+
+## 0.29.3
+- Help tab: all 33 cheat-sheet pictures retaken from the current keyboard (even thin zoom-bubble outline, current floating-keyboard bar, current letter bubble), in all three themes. The picture-making tools (tools/cheatsheet_shots.py, tools/cheatsheet_host) are now in the repository.
+
+## 0.29.2
+- Zoom bubble (hold a key): the outline is now the same thin width all the way round (the left, top and right edges were half-clipped, the bottom and the tail were not).
+
+## 0.29.1
+- Help tab: the cheat-sheet pictures no longer have a dark frame around them; they are transparent around the rounded card, so the page's own theme color shows through.
+
 ## 0.29.0
 - The settings, help, about and crash-report pages and their dialogs now look like the keyboard: the chosen keyboard theme's colors (they change at once when you pick a theme) and the keyboard's font, rounded key-like buttons, matching action bar, tab bar and status-bar icons.
 

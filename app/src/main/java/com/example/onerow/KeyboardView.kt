@@ -671,11 +671,13 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         private val p = Paint(Paint.ANTI_ALIAS_FLAG); private val t = Paint(Paint.ANTI_ALIAS_FLAG).apply { textAlign = Paint.Align.CENTER; typeface = face }
         override fun onDraw(c: Canvas) {
             val w = width.toFloat(); val cardH = dp(LENS_CARD_DP); val r = dp(14f)
-            val shape = Path().apply { addRoundRect(RectF(0f, 0f, w, cardH), r, r, Path.Direction.CW) }
-            val tail = Path().apply { moveTo(tailX - dp(9f), cardH - dp(1f)); lineTo(tailX + dp(9f), cardH - dp(1f)); lineTo(tailX, height.toFloat() - dp(1f)); close() }
+            // the outline is centred on the path: inset the path by half its width, or the edges on the window border (left, top, right) lose half of it
+            val sw = dp(1.5f); val ins = sw / 2
+            val shape = Path().apply { addRoundRect(RectF(ins, ins, w - ins, cardH - ins), r, r, Path.Direction.CW) }
+            val tail = Path().apply { moveTo(tailX - dp(9f), cardH - ins - dp(1f)); lineTo(tailX + dp(9f), cardH - ins - dp(1f)); lineTo(tailX, height.toFloat() - ins); close() }
             shape.op(tail, Path.Op.UNION)
             p.style = Paint.Style.FILL; p.color = cKey; c.drawPath(shape, p)
-            p.style = Paint.Style.STROKE; p.strokeWidth = dp(1.5f); p.color = cTeal; c.drawPath(shape, p)
+            p.style = Paint.Style.STROKE; p.strokeWidth = sw; p.color = cTeal; c.drawPath(shape, p)
             if (hint) {                                   // swipe-up hint at the right end of the emoji bubble
                 val hx = w - dp(30f)
                 p.style = Paint.Style.STROKE; p.strokeWidth = dp(1f); p.color = cDim; c.drawLine(hx - dp(24f), dp(9f), hx - dp(24f), cardH - dp(9f), p)

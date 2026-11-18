@@ -104,8 +104,8 @@
     <string name="cheat_12">Držite prijedlog i ispustite ga na koš: zaboravi riječ</string>
     <string name="cheat_13">Dodirnite tipku jezika: sljedeći jezik</string>
     <string name="cheat_14">Držite tipku jezika, zatim kliznite: postavke, normalna, plutajuća, podijeljena (samo tableti). Kliznite na ikonu normalne da plutajuću tipkovnicu ponovno usidrite</string>
-    <string name="cheat_15">Plutajuća tipkovnica: povucite ručku na vrhu da je premjestite</string>
-    <string name="cheat_16">Plutajuća tipkovnica: povucite kut da joj promijenite veličinu</string>
+    <string name="cheat_15">Plutajuća tipkovnica: povucite traku ispod tipki da je premjestite</string>
+    <string name="cheat_16">Plutajuća tipkovnica: dodirnite oznaku ukrštenih strelica pokraj globusa da prikažete kutove, zatim povucite kut za promjenu veličine</string>
     <string name="cheat_17">Tipkanje pokretima (neobavezno, Postavke &gt; Pokreti): povucite prstom preko slova da napišete riječ, ovdje h-e-l-l-o. Dodirnite prijedlog da zamijenite riječ; tipka za brisanje briše cijelu riječ</string>
     <string name="cheat_18">Kliznite s 123 na tipke: pojave se simboli i znakovi valuta; otpuštanje upisuje jedan i vraća na slova</string>
     <string name="cheat_19">Povucite prema dolje po traci prijedloga: natrag na jedan red. Povucite prema gore od trake prijedloga ili donjeg reda tipkovnice s jednim redom: puna tipkovnica</string>
