@@ -4,6 +4,17 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.31.0
+- Full emoji palette: one column narrower, so it keeps a margin to the screen edges, with rounded upper corners.
+- Full emoji palette: search. While the palette is open the guess bar turns into a search field (magnifier, blinking cursor, an x at the right end that closes the search and brings the guess bar back). A one-row keyboard switches to the expanded one meanwhile (exact letters) and returns afterwards. The keys type into the search, not the text; backspace edits it; the palette shows the emoji whose English Unicode name has a word starting with each word you typed ("tear", "face tear", "heart"), plus a few everyday words ("lol", "love", "thanks"). Tapping an emoji types it and closes the search.
+- Full emoji palette: the missing symbols block (fire, bell, lock, arrows-and-signs emoji and more) is in the list now, so e.g. 🔥 is found.
+
+## 0.30.0
+- Help tab: the cheat sheet is split into three sections that fold away by tapping the title (one-row keyboard open, the others closed): One-row keyboard, Expanded keyboard and Nice features. The emoji and floating-keyboard entries moved to Nice features, and the legend numbers were renumbered to run in the order shown.
+- Help tab, Nice features: new calculator pictures and legends (the keypad key on the 123 page, the sum with its result and the undo key, and adding up selected numbers). 3 new pictures per theme, 7 new texts in all 26 languages (translations from memory, not native-checked).
+- The picture tools (tools/cheatsheet_shots.py) also take the calculator shots.
+- Help tab, "Try it" field: fixed its background (it was filled bright accent blue since 0.29.0, hiding the text).
+
 ## 0.29.4
 - Help tab, floating keyboard: the two legend lines now match the picture and the real behaviour (drag the bar under the keys to move; tap the crossed-arrows mark next to the globe to show the corners, then drag a corner to resize). Updated in all 26 languages (translations from memory, not native-checked).
 

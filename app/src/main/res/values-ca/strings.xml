@@ -86,6 +86,13 @@
     <string name="tab_settings">Ajustos</string>
     <string name="tab_about">Quant a</string>
     <string name="tab_help">Ajuda</string>
+    <string name="cheat_20">Calculadora: toca 123 i després la tecla del teclat numèric (la petita graella al costat d\'abc) per obrir-lo</string>
+    <string name="cheat_21">Al teclat numèric, la barra de suggeriments mostra el resultat del que escrius (%1$s funciona com en una calculadora). Toca el resultat per escriure\'l, toca l\'expressió per escriure-la amb el resultat</string>
+    <string name="cheat_22">La tecla desfés (a la dreta de la barra d\'espai) desfà l\'últim reemplaçament</string>
+    <string name="cheat_23">Selecciona text amb diversos números i toca la icona del teclat numèric a l\'extrem dret de la barra de suggeriments: s\'obre amb els números sumats</string>
+    <string name="help_one_row">Teclat d\'una fila</string>
+    <string name="help_expanded">Teclat ampliat</string>
+    <string name="help_nice">Funcions útils</string>
     <string name="header_cheat_sheet">Guia ràpida</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture (tools/make_cheatsheet.py) -->
     <string name="cheat_1">Llisca cap a l\'esquerra a la fila de lletres: esborra</string>
@@ -95,18 +102,18 @@
     <string name="cheat_5">Llisca cap a la dreta: espai</string>
     <string name="cheat_6">Mantén premuda una lletra i llisca: en deixar anar s\'escriu exactament aquesta lletra (sense predicció)</string>
     <string name="cheat_7">Mantén premuda la tecla del punt i llisca per triar la puntuació bàsica</string>
-    <string name="cheat_8">Mantén premuda la tecla de la coma i llisca: primer van els emojis que més fas servir. Llisca cap amunt: tots els emojis (toca\'n un)</string>
-    <string name="cheat_9">Arrossega sobre la barra d\'espai: mou el cursor</string>
-    <string name="cheat_10">Arrossega cap a l\'esquerra sobre el retrocés: esborra paraula per paraula</string>
-    <string name="cheat_11">Llisca la barra de suggeriments cap als costats: més suggeriments</string>
-    <string name="cheat_12">Mantén premut un suggeriment i deixa\'l anar a la paperera: oblida la paraula</string>
-    <string name="cheat_13">Toca la tecla de llengua: llengua següent</string>
-    <string name="cheat_14">Mantén premuda la tecla de llengua i llisca: configuració, normal, flotant, dividit (només tauletes). Llisca fins a la icona normal per tornar a acoblar un teclat flotant</string>
-    <string name="cheat_15">Teclat flotant: arrossega la barra sota les tecles per moure\'l</string>
-    <string name="cheat_16">Teclat flotant: toca la marca de fletxes creuades al costat del globus per mostrar les cantonades i arrossega\'n una per canviar la mida</string>
-    <string name="cheat_17">Escriptura gestual (opcional, Configuració &gt; Gestos): dibuixa una paraula sobre les lletres, aquí h-e-l-l-o. Toca un suggeriment per substituir la paraula; el retrocés esborra la paraula sencera</string>
-    <string name="cheat_18">Llisca des de 123 fins a les tecles: apareixen símbols i signes de moneda; en deixar anar se n\'escriu un i es torna a les lletres</string>
-    <string name="cheat_19">Llisca cap avall a la barra de suggeriments: torna a una fila. Estira cap amunt des de la barra de suggeriments o la fila inferior del teclat d\'una fila: teclat complet</string>
+    <string name="cheat_17">Mantén premuda la tecla de la coma i llisca: primer van els emojis que més fas servir. Llisca cap amunt: tots els emojis (toca\'n un)</string>
+    <string name="cheat_8">Arrossega sobre la barra d\'espai: mou el cursor</string>
+    <string name="cheat_9">Arrossega cap a l\'esquerra sobre el retrocés: esborra paraula per paraula</string>
+    <string name="cheat_10">Llisca la barra de suggeriments cap als costats: més suggeriments</string>
+    <string name="cheat_11">Mantén premut un suggeriment i deixa\'l anar a la paperera: oblida la paraula</string>
+    <string name="cheat_12">Toca la tecla de llengua: llengua següent</string>
+    <string name="cheat_13">Mantén premuda la tecla de llengua i llisca: configuració, normal, flotant, dividit (només tauletes). Llisca fins a la icona normal per tornar a acoblar un teclat flotant</string>
+    <string name="cheat_18">Teclat flotant: arrossega la barra sota les tecles per moure\'l</string>
+    <string name="cheat_19">Teclat flotant: toca la marca de fletxes creuades al costat del globus per mostrar les cantonades i arrossega\'n una per canviar la mida</string>
+    <string name="cheat_14">Escriptura gestual (opcional, Configuració &gt; Gestos): dibuixa una paraula sobre les lletres, aquí h-e-l-l-o. Toca un suggeriment per substituir la paraula; el retrocés esborra la paraula sencera</string>
+    <string name="cheat_15">Llisca des de 123 fins a les tecles: apareixen símbols i signes de moneda; en deixar anar se n\'escriu un i es torna a les lletres</string>
+    <string name="cheat_16">Llisca cap avall a la barra de suggeriments: torna a una fila. Estira cap amunt des de la barra de suggeriments o la fila inferior del teclat d\'una fila: teclat complet</string>
 
     <!-- About, try it -->
     <string name="header_about">Quant a</string>

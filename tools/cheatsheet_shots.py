@@ -85,7 +85,33 @@ def full_shots(raw, theme):
     for k in range(1, 9): motion("MOVE", 90 + (276 - 90) * k / 8, 2215 + (2105 - 2215) * k / 8); time.sleep(0.05)
     time.sleep(0.6); snap(p("peek")); motion("UP", 276, 2105)
 
+KEYPAD = {"1": (116, 1872), "2": (328, 1872), "3": (540, 1872), "+": (752, 1872), "4": (116, 1960), "5": (328, 1960), "6": (540, 1960), "-": (752, 1960),
+          "%": (964, 1960), "7": (116, 2049), "8": (328, 2049), "9": (540, 2049), "*": (752, 2049), "=": (964, 2049), "0": (328, 2137), "/": (752, 2137)}
+
+def calc_shots(raw, theme):
+    """The calculator: the keypad key on the first 123 page, the keypad with a sum, and a selection with numbers (keypad icon in the guess bar)."""
+    p = lambda n: f"{raw}/{theme}_{n}.png"
+    prep(theme, full=True)
+    tap(90, 2215); time.sleep(1); snap(p("calc123"))                    # 123: the language key is now the keypad key
+    tap(222, 2215); time.sleep(1)                                       # the keypad
+    for ch in "200+10%": tap(*KEYPAD[ch]); time.sleep(0.3)
+    time.sleep(0.8); snap(p("calcpad"))
+    prep(theme, full=True)
+    sh("input text 12%sapples%sand%s30%spears"); time.sleep(1)
+    sh("input keycombination CTRL_LEFT A"); time.sleep(0.6)
+    for k in range(4):                                                  # the icon pulses: keep the brightest frame
+        snap(f"{raw}/_sel{k}.png"); time.sleep(0.25)
+    best = max(range(4), key=lambda k: sum(Image.open(f"{raw}/_sel{k}.png").convert("RGB").crop((990, 1735, 1060, 1780)).resize((1, 1)).getpixel((0, 0))))
+    os.replace(f"{raw}/_sel{best}.png", p("calcsel"))
+    for k in range(4): 
+        try: os.remove(f"{raw}/_sel{k}.png")
+        except OSError: pass
+
 if __name__ == "__main__":
     raw = sys.argv[1]; os.makedirs(raw, exist_ok=True)
-    for theme in (sys.argv[2:] or ["default", "light", "dark"]):
-        print(theme); one_row_shots(raw, theme); full_shots(raw, theme)
+    only_calc = "--calc" in sys.argv
+    themes = [a for a in sys.argv[2:] if not a.startswith("--")] or ["default", "light", "dark"]
+    for theme in themes:
+        print(theme)
+        if only_calc: calc_shots(raw, theme)
+        else: one_row_shots(raw, theme); full_shots(raw, theme); calc_shots(raw, theme)

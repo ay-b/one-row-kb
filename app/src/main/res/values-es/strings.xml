@@ -86,6 +86,13 @@
     <string name="tab_settings">Ajustes</string>
     <string name="tab_about">Acerca de</string>
     <string name="tab_help">Ayuda</string>
+    <string name="cheat_20">Calculadora: toca 123 y luego la tecla del teclado numérico (la pequeña cuadrícula junto a abc) para abrirlo</string>
+    <string name="cheat_21">En el teclado numérico, la barra de sugerencias muestra el resultado de lo que escribes (%1$s funciona como en una calculadora). Toca el resultado para escribirlo, toca la expresión para escribirla con su resultado</string>
+    <string name="cheat_22">La tecla deshacer (a la derecha de la barra espaciadora) revierte la última sustitución</string>
+    <string name="cheat_23">Selecciona texto con varios números y toca el icono del teclado numérico al final derecho de la barra de sugerencias: se abre con los números sumados</string>
+    <string name="help_one_row">Teclado de una fila</string>
+    <string name="help_expanded">Teclado ampliado</string>
+    <string name="help_nice">Funciones útiles</string>
     <string name="header_cheat_sheet">Guía rápida</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture (tools/make_cheatsheet.py) -->
     <string name="cheat_1">Desliza a la izquierda en la fila de letras: borrar</string>
@@ -95,18 +102,18 @@
     <string name="cheat_5">Desliza a la derecha: espacio</string>
     <string name="cheat_6">Mantén pulsada una letra y desliza: al soltar se escribe exactamente esa letra (sin predicción)</string>
     <string name="cheat_7">Mantén pulsada la tecla del punto y desliza para elegir la puntuación básica</string>
-    <string name="cheat_8">Mantén pulsada la tecla de la coma y desliza: primero van los emoji que más usas. Desliza hacia arriba: todos los emoji (toca uno)</string>
-    <string name="cheat_9">Arrastra sobre la barra espaciadora: mover el cursor</string>
-    <string name="cheat_10">Arrastra a la izquierda sobre retroceso: borrar palabra por palabra</string>
-    <string name="cheat_11">Desliza la barra de sugerencias hacia los lados: más sugerencias</string>
-    <string name="cheat_12">Mantén pulsada una sugerencia y suéltala sobre la papelera: olvidar la palabra</string>
-    <string name="cheat_13">Toca la tecla de idioma: siguiente idioma</string>
-    <string name="cheat_14">Mantén pulsada la tecla de idioma y desliza: ajustes, normal, flotante, dividido (solo tabletas). Desliza hasta el icono normal para acoplar de nuevo un teclado flotante</string>
-    <string name="cheat_15">Teclado flotante: arrastra la barra bajo las teclas para moverlo</string>
-    <string name="cheat_16">Teclado flotante: toca la marca de flechas cruzadas junto al globo para mostrar las esquinas y arrastra una esquina para cambiar el tamaño</string>
-    <string name="cheat_17">Escritura por gestos (opcional, Ajustes &gt; Gestos): dibuja una palabra sobre las letras, aquí h-e-l-l-o. Toca una sugerencia para reemplazar la palabra; retroceso borra la palabra entera</string>
-    <string name="cheat_18">Desliza desde 123 hasta las teclas: aparecen símbolos y signos de moneda; al soltar se escribe uno y se vuelve a las letras</string>
-    <string name="cheat_19">Desliza hacia abajo en la barra de sugerencias: volver a una fila. Tira hacia arriba desde la barra de sugerencias o la fila inferior del teclado de una fila: teclado completo</string>
+    <string name="cheat_17">Mantén pulsada la tecla de la coma y desliza: primero van los emoji que más usas. Desliza hacia arriba: todos los emoji (toca uno)</string>
+    <string name="cheat_8">Arrastra sobre la barra espaciadora: mover el cursor</string>
+    <string name="cheat_9">Arrastra a la izquierda sobre retroceso: borrar palabra por palabra</string>
+    <string name="cheat_10">Desliza la barra de sugerencias hacia los lados: más sugerencias</string>
+    <string name="cheat_11">Mantén pulsada una sugerencia y suéltala sobre la papelera: olvidar la palabra</string>
+    <string name="cheat_12">Toca la tecla de idioma: siguiente idioma</string>
+    <string name="cheat_13">Mantén pulsada la tecla de idioma y desliza: ajustes, normal, flotante, dividido (solo tabletas). Desliza hasta el icono normal para acoplar de nuevo un teclado flotante</string>
+    <string name="cheat_18">Teclado flotante: arrastra la barra bajo las teclas para moverlo</string>
+    <string name="cheat_19">Teclado flotante: toca la marca de flechas cruzadas junto al globo para mostrar las esquinas y arrastra una esquina para cambiar el tamaño</string>
+    <string name="cheat_14">Escritura por gestos (opcional, Ajustes &gt; Gestos): dibuja una palabra sobre las letras, aquí h-e-l-l-o. Toca una sugerencia para reemplazar la palabra; retroceso borra la palabra entera</string>
+    <string name="cheat_15">Desliza desde 123 hasta las teclas: aparecen símbolos y signos de moneda; al soltar se escribe uno y se vuelve a las letras</string>
+    <string name="cheat_16">Desliza hacia abajo en la barra de sugerencias: volver a una fila. Tira hacia arriba desde la barra de sugerencias o la fila inferior del teclado de una fila: teclado completo</string>
 
     <!-- About, try it -->
     <string name="header_about">Acerca de</string>

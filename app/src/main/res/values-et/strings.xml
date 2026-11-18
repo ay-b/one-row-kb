@@ -86,6 +86,13 @@
     <string name="tab_settings">Seaded</string>
     <string name="tab_about">Teave</string>
     <string name="tab_help">Abi</string>
+    <string name="cheat_20">Kalkulaator: puuduta 123 ja seejärel numbriklahvistiku klahvi (väike ruudustik abc kõrval), et see avada</string>
+    <string name="cheat_21">Numbriklahvistikul näitab soovituseriba sisestatu tulemust (%1$s töötab nagu kalkulaatoris). Puuduta tulemust, et see sisestada, puuduta avaldist, et sisestada see koos tulemusega</string>
+    <string name="cheat_22">Tühistusklahv (tühiku paremal pool) võtab viimase asenduse tagasi</string>
+    <string name="cheat_23">Vali tekst mitme arvuga ja puuduta numbriklahvistiku ikooni soovituseriba paremas otsas: klahvistik avaneb arvude summaga</string>
+    <string name="help_one_row">Ühe reaga klaviatuur</string>
+    <string name="help_expanded">Laiendatud klaviatuur</string>
+    <string name="help_nice">Kasulikud funktsioonid</string>
     <string name="header_cheat_sheet">Spikker</string>
     <string name="cheat_1">Pühi tähereal vasakule: kustuta</string>
     <string name="cheat_2">Pühi üles vasakule: häälsisend</string>
@@ -94,18 +101,18 @@
     <string name="cheat_5">Pühi paremale: tühik</string>
     <string name="cheat_6">Hoia tähte all, siis libista: vabastamine kirjutab täpselt selle tähe (ilma äraarvamiseta)</string>
     <string name="cheat_7">Hoia punktiklahvi all, siis libista põhiliste kirjavahemärkide valimiseks</string>
-    <string name="cheat_8">Hoia komaklahvi all, siis libista: enim kasutatud emoji on esimesed. Pühi üles: kõik emoji (puuduta ühte)</string>
-    <string name="cheat_9">Lohista tühikul: liiguta kursorit</string>
-    <string name="cheat_10">Lohista tagasilükkeklahvil vasakule: kustuta sõna haaval</string>
-    <string name="cheat_11">Pühi soovituseribal küljele: rohkem soovitusi</string>
-    <string name="cheat_12">Hoia soovitust all ja lase prügikasti: unusta sõna</string>
-    <string name="cheat_13">Puuduta keeleklahvi: järgmine keel</string>
-    <string name="cheat_14">Hoia keeleklahvi all, siis libista: seaded, tavaline, hõljuv, poolitatud (ainult tahvelarvutites). Libista tavalise ikoonile, et hõljuv klaviatuur uuesti kinnitada</string>
-    <string name="cheat_15">Hõljuv klaviatuur: lohista klahvide all olevat riba, et seda liigutada</string>
-    <string name="cheat_16">Hõljuv klaviatuur: puuduta ristatud nooltega märki gloobuse kõrval, et nurgad nähtavale tuua, ja muuda suurust nurka lohistades</string>
-    <string name="cheat_17">Pühkimissisestus (valikuline, Seaded &gt; Žestid): joonista sõna tähtede kohal, siin h-e-l-l-o. Puuduta soovitust, et sõna asendada; tagasilükkeklahv kustutab kogu sõna</string>
-    <string name="cheat_18">Libista 123-lt klahvidele: ilmuvad sümbolid ja valuutamärgid; vabastamine kirjutab ühe ja läheb tagasi tähtede juurde</string>
-    <string name="cheat_19">Pühi soovituseribal alla: tagasi ühe rea juurde. Tõmba üles soovituseribalt või ühe rea klaviatuuri alumiselt realt: täisklaviatuur</string>
+    <string name="cheat_17">Hoia komaklahvi all, siis libista: enim kasutatud emoji on esimesed. Pühi üles: kõik emoji (puuduta ühte)</string>
+    <string name="cheat_8">Lohista tühikul: liiguta kursorit</string>
+    <string name="cheat_9">Lohista tagasilükkeklahvil vasakule: kustuta sõna haaval</string>
+    <string name="cheat_10">Pühi soovituseribal küljele: rohkem soovitusi</string>
+    <string name="cheat_11">Hoia soovitust all ja lase prügikasti: unusta sõna</string>
+    <string name="cheat_12">Puuduta keeleklahvi: järgmine keel</string>
+    <string name="cheat_13">Hoia keeleklahvi all, siis libista: seaded, tavaline, hõljuv, poolitatud (ainult tahvelarvutites). Libista tavalise ikoonile, et hõljuv klaviatuur uuesti kinnitada</string>
+    <string name="cheat_18">Hõljuv klaviatuur: lohista klahvide all olevat riba, et seda liigutada</string>
+    <string name="cheat_19">Hõljuv klaviatuur: puuduta ristatud nooltega märki gloobuse kõrval, et nurgad nähtavale tuua, ja muuda suurust nurka lohistades</string>
+    <string name="cheat_14">Pühkimissisestus (valikuline, Seaded &gt; Žestid): joonista sõna tähtede kohal, siin h-e-l-l-o. Puuduta soovitust, et sõna asendada; tagasilükkeklahv kustutab kogu sõna</string>
+    <string name="cheat_15">Libista 123-lt klahvidele: ilmuvad sümbolid ja valuutamärgid; vabastamine kirjutab ühe ja läheb tagasi tähtede juurde</string>
+    <string name="cheat_16">Pühi soovituseribal alla: tagasi ühe rea juurde. Tõmba üles soovituseribalt või ühe rea klaviatuuri alumiselt realt: täisklaviatuur</string>
 
     <!-- About, try it -->
     <string name="header_about">Teave</string>

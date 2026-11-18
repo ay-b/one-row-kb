@@ -94,39 +94,47 @@ def build(theme):
     S.card("punct", lambda d, s, h: S.num(d, 560, 150, 7))                        # 7: punctuation popup
 
     def c4(d, size, head):                                                        # 8: emoji
-        S.narrow(d, 352, ctl - 70, 352, 24, 8, 7, at=0.75)
+        S.narrow(d, 352, ctl - 70, 352, 24, 17, 7, at=0.75)
     S.card("emoji", c4)
 
     def c5(d, size, head):                                                        # 9, 10: cursor and word delete
-        S.arrow(d, 620, ctl, 770, ctl, 7); S.narrow(d, 470, ctl, 320, ctl, 9, 7)
-        S.narrow(d, 960, strip, 700, strip, 10, 6)
+        S.arrow(d, 620, ctl, 770, ctl, 7); S.narrow(d, 470, ctl, 320, ctl, 8, 7)
+        S.narrow(d, 960, strip, 700, strip, 9, 6)
     S.card("mini", c5)
 
     def c6(d, size, head):                                                        # 11, 12: guess bar, bin
-        S.narrow(d, 250, strip + 34, 700, strip + 34, 11, 6)
-        S.num(d, 1010, 168, 12)
+        S.narrow(d, 250, strip + 34, 700, strip + 34, 10, 6)
+        S.num(d, 1010, 168, 11)
     S.card("bucket", c6)
 
     def c7(d, size, head):                                                        # 13, 14: language key
-        S.num(d, 300, 345, 13); S.num(d, 62, 150, 14)
+        S.num(d, 300, 345, 12); S.num(d, 62, 150, 13)
     S.card("lang", c7)
 
     def c7b(d, size, head):                                                       # 15, 16: floating keyboard
-        S.arrow(d, 622, 391, 710, 391, 6); S.narrow(d, 458, 391, 370, 391, 15, 6)  # drag the handle (the bar under the keys) to move
-        S.narrow(d, 768, 404, 735, 458, 16, 6)                                     # the resize mark next to the globe
+        S.arrow(d, 622, 391, 710, 391, 6); S.narrow(d, 458, 391, 370, 391, 18, 6)  # drag the handle (the bar under the keys) to move
+        S.narrow(d, 768, 404, 735, 458, 19, 6)                                     # the resize mark next to the globe
     S.card("float", c7b)
 
-    S.card("trail", lambda d, s, h: S.num(d, 640, 235, 17), HEAD_FULL)            # 17: swipe typing
+    S.card("trail", lambda d, s, h: S.num(d, 640, 235, 14), HEAD_FULL)            # 14: swipe typing
 
     def c8(d, size, head):                                                        # 18: symbols from 123
         y = HEAD_FULL + 471
-        S.finger(d, 90, y); S.narrow(d, 118, y - 18, 250, HEAD_FULL + 372, 18, 7)
+        S.finger(d, 90, y); S.narrow(d, 118, y - 18, 250, HEAD_FULL + 372, 15, 7)
     S.card("peek", c8, HEAD_FULL)
 
     def c9(d, size, head):                                                        # 19: back to one row
         y0 = HEAD_FULL + 44
-        S.narrow(d, 760, y0, 760, y0 + 190, 19, 8)
+        S.narrow(d, 760, y0, 760, y0 + 190, 16, 8)
     S.card("fullidle", c9, HEAD_FULL)
+
+    # the calculator (legend numbers 20..23); crops are the full keyboard's size, 30 px above the guess bar
+    S.card("calc123", lambda d, s, h: S.narrow(d, 360, 430, 245, 488, 20, 7), HEAD_FULL)    # 20: the keypad key on the 123 page
+    def c11(d, size, head):                                                                  # 21: result in the guess bar, 22: undo key
+        S.narrow(d, 760, 71, 550, 71, 21, 7)
+        S.narrow(d, 760, 511, 900, 511, 22, 7)
+    S.card("calcpad", c11, HEAD_FULL)
+    S.card("calcsel", lambda d, s, h: S.narrow(d, 1025, 205, 1025, 78, 23, 7, at=0.5), HEAD_FULL)       # 23: the keypad icon after selecting numbers
     return S.render()
 
 if __name__ == "__main__":

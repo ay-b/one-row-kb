@@ -91,6 +91,13 @@
     <string name="tab_settings">Nastavitve</string>
     <string name="tab_about">O aplikaciji</string>
     <string name="tab_help">Pomoč</string>
+    <string name="cheat_20">Računalo: tapnite 123 in nato tipko številčnice (majhna mreža ob abc), da jo odprete</string>
+    <string name="cheat_21">Na številčnici vrstica predlogov prikazuje rezultat vnesenega (%1$s deluje kot na računalu). Tapnite rezultat, da ga vnesete, tapnite izraz, da ga vnesete z rezultatom</string>
+    <string name="cheat_22">Tipka za razveljavitev (desno od preslednice) razveljavi zadnjo zamenjavo</string>
+    <string name="cheat_23">Izberite besedilo z več števili in tapnite ikono številčnice na desnem koncu vrstice predlogov: številčnica se odpre z vsoto števil</string>
+    <string name="help_one_row">Enovrstična tipkovnica</string>
+    <string name="help_expanded">Razširjena tipkovnica</string>
+    <string name="help_nice">Uporabne funkcije</string>
     <string name="header_cheat_sheet">Povzetek</string>
     <string name="cheat_1">Podrsnite levo po vrstici črk: brisanje</string>
     <string name="cheat_2">Podrsnite navzgor in levo: glasovni vnos</string>
@@ -99,18 +106,18 @@
     <string name="cheat_5">Podrsnite desno: preslednica</string>
     <string name="cheat_6">Pridržite črko, nato podrsnite: ob spustu se vnese natanko ta črka (brez ugibanja)</string>
     <string name="cheat_7">Pridržite tipko za piko, nato podrsnite, da izberete osnovna ločila</string>
-    <string name="cheat_8">Pridržite tipko za vejico, nato podrsnite: najprej so emojiji, ki jih največ uporabljate. Podrsnite navzgor: vsi emojiji (tapnite enega)</string>
-    <string name="cheat_9">Vlecite po preslednici: premikanje kazalke</string>
-    <string name="cheat_10">Vlecite levo po tipki za brisanje: brisanje po besedah</string>
-    <string name="cheat_11">Podrsnite vstran po vrstici predlogov: več predlogov</string>
-    <string name="cheat_12">Pridržite predlog in ga spustite na koš: pozabi besedo</string>
-    <string name="cheat_13">Tapnite tipko za jezik: naslednji jezik</string>
-    <string name="cheat_14">Pridržite tipko za jezik, nato podrsnite: nastavitve, običajna, plavajoča, razdeljena (samo tablični računalniki). Podrsnite na ikono običajne, da plavajočo tipkovnico znova zasidrate</string>
-    <string name="cheat_15">Plavajoča tipkovnica: povlecite vrstico pod tipkami, da jo premaknete</string>
-    <string name="cheat_16">Plavajoča tipkovnica: tapnite znak prekrižanih puščic ob globusu, da prikažete vogale, nato povlecite vogal za spremembo velikosti</string>
-    <string name="cheat_17">Tipkanje z drsenjem (neobvezno, Nastavitve &gt; Kretnje): narišite besedo čez črke, tukaj h-e-l-l-o. Tapnite predlog, da zamenjate besedo; tipka za brisanje izbriše celo besedo</string>
-    <string name="cheat_18">Podrsnite z 123 na tipke: prikažejo se simboli in valutni znaki; ob spustu se vnese eden in vrnete se na črke</string>
-    <string name="cheat_19">Podrsnite navzdol po vrstici predlogov: nazaj na eno vrstico. Povlecite navzgor z vrstice predlogov ali spodnje vrstice enovrstične tipkovnice: polna tipkovnica</string>
+    <string name="cheat_17">Pridržite tipko za vejico, nato podrsnite: najprej so emojiji, ki jih največ uporabljate. Podrsnite navzgor: vsi emojiji (tapnite enega)</string>
+    <string name="cheat_8">Vlecite po preslednici: premikanje kazalke</string>
+    <string name="cheat_9">Vlecite levo po tipki za brisanje: brisanje po besedah</string>
+    <string name="cheat_10">Podrsnite vstran po vrstici predlogov: več predlogov</string>
+    <string name="cheat_11">Pridržite predlog in ga spustite na koš: pozabi besedo</string>
+    <string name="cheat_12">Tapnite tipko za jezik: naslednji jezik</string>
+    <string name="cheat_13">Pridržite tipko za jezik, nato podrsnite: nastavitve, običajna, plavajoča, razdeljena (samo tablični računalniki). Podrsnite na ikono običajne, da plavajočo tipkovnico znova zasidrate</string>
+    <string name="cheat_18">Plavajoča tipkovnica: povlecite vrstico pod tipkami, da jo premaknete</string>
+    <string name="cheat_19">Plavajoča tipkovnica: tapnite znak prekrižanih puščic ob globusu, da prikažete vogale, nato povlecite vogal za spremembo velikosti</string>
+    <string name="cheat_14">Tipkanje z drsenjem (neobvezno, Nastavitve &gt; Kretnje): narišite besedo čez črke, tukaj h-e-l-l-o. Tapnite predlog, da zamenjate besedo; tipka za brisanje izbriše celo besedo</string>
+    <string name="cheat_15">Podrsnite z 123 na tipke: prikažejo se simboli in valutni znaki; ob spustu se vnese eden in vrnete se na črke</string>
+    <string name="cheat_16">Podrsnite navzdol po vrstici predlogov: nazaj na eno vrstico. Povlecite navzgor z vrstice predlogov ali spodnje vrstice enovrstične tipkovnice: polna tipkovnica</string>
 
     <!-- About, try it -->
     <string name="header_about">O aplikaciji</string>

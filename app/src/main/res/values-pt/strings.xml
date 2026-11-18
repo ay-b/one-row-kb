@@ -86,6 +86,13 @@
     <string name="tab_settings">Definições</string>
     <string name="tab_about">Acerca</string>
     <string name="tab_help">Ajuda</string>
+    <string name="cheat_20">Calculadora: toque em 123 e depois na tecla do teclado numérico (a pequena grelha junto a abc) para abrir um teclado numérico</string>
+    <string name="cheat_21">No teclado numérico, a barra de sugestões mostra o resultado do que escreve (%1$s funciona como numa calculadora). Toque no resultado para o escrever, toque na expressão para a escrever com o resultado</string>
+    <string name="cheat_22">A tecla desfazer (à direita do espaço) anula a última substituição</string>
+    <string name="cheat_23">Selecione texto com vários números e toque no ícone do teclado numérico na extremidade direita da barra de sugestões: o teclado abre com os números somados</string>
+    <string name="help_one_row">Teclado de uma linha</string>
+    <string name="help_expanded">Teclado expandido</string>
+    <string name="help_nice">Funcionalidades úteis</string>
     <string name="header_cheat_sheet">Guia rápido</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture (tools/make_cheatsheet.py) -->
     <string name="cheat_1">Deslize para a esquerda na linha de letras: apagar</string>
@@ -95,18 +102,18 @@
     <string name="cheat_5">Deslize para a direita: espaço</string>
     <string name="cheat_6">Mantenha uma letra pressionada e deslize: ao soltar, digita exatamente essa letra (sem previsão)</string>
     <string name="cheat_7">Mantenha a tecla de ponto pressionada e deslize para escolher a pontuação básica</string>
-    <string name="cheat_8">Mantenha a tecla de vírgula pressionada e deslize: os emojis que você mais usa vêm primeiro. Deslize para cima: todos os emojis (toque em um)</string>
-    <string name="cheat_9">Arraste sobre o espaço: mover o cursor</string>
-    <string name="cheat_10">Arraste para a esquerda sobre o backspace: apagar palavra por palavra</string>
-    <string name="cheat_11">Deslize a barra de sugestões para os lados: mais sugestões</string>
-    <string name="cheat_12">Mantenha uma sugestão pressionada e solte-a na lixeira: esquecer a palavra</string>
-    <string name="cheat_13">Toque na tecla de idioma: próximo idioma</string>
-    <string name="cheat_14">Mantenha a tecla de idioma pressionada e deslize: configurações, normal, flutuante, dividido (somente tablets). Deslize até o ícone normal para encaixar de novo um teclado flutuante</string>
-    <string name="cheat_15">Teclado flutuante: arraste a barra sob as teclas para movê-lo</string>
-    <string name="cheat_16">Teclado flutuante: toque na marca de setas cruzadas ao lado do globo para mostrar os cantos e arraste um canto para redimensionar</string>
-    <string name="cheat_17">Digitação por gestos (opcional, Configurações &gt; Gestos): desenhe uma palavra sobre as letras, aqui h-e-l-l-o. Toque em uma sugestão para substituir a palavra; o backspace apaga a palavra inteira</string>
-    <string name="cheat_18">Deslize de 123 até as teclas: aparecem símbolos e sinais de moeda; ao soltar, digita um e volta para as letras</string>
-    <string name="cheat_19">Deslize para baixo na barra de sugestões: voltar a uma linha. Puxe para cima a partir da barra de sugestões ou da linha de baixo do teclado de uma linha: teclado completo</string>
+    <string name="cheat_17">Mantenha a tecla de vírgula pressionada e deslize: os emojis que você mais usa vêm primeiro. Deslize para cima: todos os emojis (toque em um)</string>
+    <string name="cheat_8">Arraste sobre o espaço: mover o cursor</string>
+    <string name="cheat_9">Arraste para a esquerda sobre o backspace: apagar palavra por palavra</string>
+    <string name="cheat_10">Deslize a barra de sugestões para os lados: mais sugestões</string>
+    <string name="cheat_11">Mantenha uma sugestão pressionada e solte-a na lixeira: esquecer a palavra</string>
+    <string name="cheat_12">Toque na tecla de idioma: próximo idioma</string>
+    <string name="cheat_13">Mantenha a tecla de idioma pressionada e deslize: configurações, normal, flutuante, dividido (somente tablets). Deslize até o ícone normal para encaixar de novo um teclado flutuante</string>
+    <string name="cheat_18">Teclado flutuante: arraste a barra sob as teclas para movê-lo</string>
+    <string name="cheat_19">Teclado flutuante: toque na marca de setas cruzadas ao lado do globo para mostrar os cantos e arraste um canto para redimensionar</string>
+    <string name="cheat_14">Digitação por gestos (opcional, Configurações &gt; Gestos): desenhe uma palavra sobre as letras, aqui h-e-l-l-o. Toque em uma sugestão para substituir a palavra; o backspace apaga a palavra inteira</string>
+    <string name="cheat_15">Deslize de 123 até as teclas: aparecem símbolos e sinais de moeda; ao soltar, digita um e volta para as letras</string>
+    <string name="cheat_16">Deslize para baixo na barra de sugestões: voltar a uma linha. Puxe para cima a partir da barra de sugestões ou da linha de baixo do teclado de uma linha: teclado completo</string>
 
     <!-- About, try it -->
     <string name="header_about">Sobre</string>

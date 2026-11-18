@@ -88,6 +88,13 @@
     <string name="tab_settings">Nastavenia</string>
     <string name="tab_about">O aplikácii</string>
     <string name="tab_help">Pomocník</string>
+    <string name="cheat_20">Kalkulačka: klepnite na 123 a potom na kláves číselníka (malá mriežka vedľa abc), čím číselník otvoríte</string>
+    <string name="cheat_21">Na číselníku lišta návrhov zobrazuje výsledok toho, čo píšete (%1$s funguje ako na kalkulačke). Klepnutím na výsledok ho napíšete, klepnutím na výraz ho napíšete aj s výsledkom</string>
+    <string name="cheat_22">Kláves späť (vpravo od medzerníka) vráti poslednú náhradu</string>
+    <string name="cheat_23">Označte text s niekoľkými číslami a klepnite na ikonu číselníka na pravom konci lišty návrhov: číselník sa otvorí so súčtom čísel</string>
+    <string name="help_one_row">Jednoradová klávesnica</string>
+    <string name="help_expanded">Rozšírená klávesnica</string>
+    <string name="help_nice">Užitočné funkcie</string>
     <string name="header_cheat_sheet">Ťahák</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture -->
     <string name="cheat_1">Potiahnite doľava po riadku písmen: zmazať</string>
@@ -97,18 +104,18 @@
     <string name="cheat_5">Potiahnite doprava: medzera</string>
     <string name="cheat_6">Podržte písmeno a posuňte prst: po uvoľnení sa napíše presne toto písmeno (bez odhadovania)</string>
     <string name="cheat_7">Podržte kláves bodky a posuňte prst na výber základnej interpunkcie</string>
-    <string name="cheat_8">Podržte kláves čiarky a posuňte prst: najprv najčastejšie používané emodži. Potiahnite nahor: všetky emodži (klepnite na vybrané)</string>
-    <string name="cheat_9">Ťahajte po medzerníku: posun kurzora</string>
-    <string name="cheat_10">Ťahajte doľava po klávese Backspace: mazanie po slovách</string>
-    <string name="cheat_11">Potiahnite po lište návrhov nabok: ďalšie návrhy</string>
-    <string name="cheat_12">Podržte návrh a presuňte ho na kôš: slovo sa zabudne</string>
-    <string name="cheat_13">Klepnite na kláves jazyka: ďalší jazyk</string>
-    <string name="cheat_14">Podržte kláves jazyka a posuňte prst: nastavenia, normálna, plávajúca, rozdelená (len tablety). Posunutím na ikonu normálnej znova ukotvíte plávajúcu klávesnicu</string>
-    <string name="cheat_15">Plávajúca klávesnica: presunutím lišty pod klávesmi ju premiestnite</string>
-    <string name="cheat_16">Plávajúca klávesnica: klepnutím na značku skrížených šípok vedľa glóbusu zobrazíte rohy a ťahaním rohu zmeníte veľkosť</string>
-    <string name="cheat_17">Písanie gestami (voliteľné, Nastavenia &gt; Gestá): nakreslite slovo cez písmená, tu h-e-l-l-o. Klepnutím na návrh slovo nahradíte; Backspace zmaže celé slovo</string>
-    <string name="cheat_18">Potiahnite z 123 na klávesy: zobrazia sa symboly a značky mien; po uvoľnení sa jeden napíše a klávesnica sa vráti k písmenám</string>
-    <string name="cheat_19">Potiahnite po lište návrhov nadol: späť k jednému riadku. Potiahnutím nahor z lišty návrhov alebo zo spodného riadka jednoradovej klávesnice: plná klávesnica</string>
+    <string name="cheat_17">Podržte kláves čiarky a posuňte prst: najprv najčastejšie používané emodži. Potiahnite nahor: všetky emodži (klepnite na vybrané)</string>
+    <string name="cheat_8">Ťahajte po medzerníku: posun kurzora</string>
+    <string name="cheat_9">Ťahajte doľava po klávese Backspace: mazanie po slovách</string>
+    <string name="cheat_10">Potiahnite po lište návrhov nabok: ďalšie návrhy</string>
+    <string name="cheat_11">Podržte návrh a presuňte ho na kôš: slovo sa zabudne</string>
+    <string name="cheat_12">Klepnite na kláves jazyka: ďalší jazyk</string>
+    <string name="cheat_13">Podržte kláves jazyka a posuňte prst: nastavenia, normálna, plávajúca, rozdelená (len tablety). Posunutím na ikonu normálnej znova ukotvíte plávajúcu klávesnicu</string>
+    <string name="cheat_18">Plávajúca klávesnica: presunutím lišty pod klávesmi ju premiestnite</string>
+    <string name="cheat_19">Plávajúca klávesnica: klepnutím na značku skrížených šípok vedľa glóbusu zobrazíte rohy a ťahaním rohu zmeníte veľkosť</string>
+    <string name="cheat_14">Písanie gestami (voliteľné, Nastavenia &gt; Gestá): nakreslite slovo cez písmená, tu h-e-l-l-o. Klepnutím na návrh slovo nahradíte; Backspace zmaže celé slovo</string>
+    <string name="cheat_15">Potiahnite z 123 na klávesy: zobrazia sa symboly a značky mien; po uvoľnení sa jeden napíše a klávesnica sa vráti k písmenám</string>
+    <string name="cheat_16">Potiahnite po lište návrhov nadol: späť k jednému riadku. Potiahnutím nahor z lišty návrhov alebo zo spodného riadka jednoradovej klávesnice: plná klávesnica</string>
 
     <!-- About, try it -->
     <string name="header_about">O aplikácii</string>

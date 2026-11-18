@@ -89,6 +89,13 @@
     <string name="tab_settings">Nustatymai</string>
     <string name="tab_about">Apie</string>
     <string name="tab_help">Pagalba</string>
+    <string name="cheat_20">Skaičiuotuvas: palieskite 123, tada skaičių klaviatūros klavišą (mažas tinklelis šalia abc), kad ją atidarytumėte</string>
+    <string name="cheat_21">Skaičių klaviatūroje pasiūlymų juosta rodo įvedamo reiškinio rezultatą (%1$s veikia kaip skaičiuotuve). Palieskite rezultatą, kad jį įvestumėte, palieskite reiškinį, kad įvestumėte jį su rezultatu</string>
+    <string name="cheat_22">Atšaukimo klavišas (dešinėje nuo tarpo klavišo) atšaukia paskutinį pakeitimą</string>
+    <string name="cheat_23">Pasirinkite tekstą su keliais skaičiais ir palieskite skaičių klaviatūros piktogramą dešiniajame pasiūlymų juostos gale: klaviatūra atsidaro su skaičių suma</string>
+    <string name="help_one_row">Vienos eilutės klaviatūra</string>
+    <string name="help_expanded">Išplėstinė klaviatūra</string>
+    <string name="help_nice">Naudingos funkcijos</string>
     <string name="header_cheat_sheet">Atmintinė</string>
     <string name="cheat_1">Perbraukite kairėn raidžių eilutėje: trynimas</string>
     <string name="cheat_2">Perbraukite aukštyn ir kairėn: balso įvestis</string>
@@ -97,18 +104,18 @@
     <string name="cheat_5">Perbraukite dešinėn: tarpas</string>
     <string name="cheat_6">Palaikykite raidę, tada braukite: atleidus įvedama būtent ta raidė (be spėjimo)</string>
     <string name="cheat_7">Palaikykite taško klavišą, tada braukite, kad pasirinktumėte pagrindinius skyrybos ženklus</string>
-    <string name="cheat_8">Palaikykite kablelio klavišą, tada braukite: pirmiausia rodomi dažniausiai naudojami jaustukai. Perbraukite aukštyn: visi jaustukai (palieskite vieną)</string>
-    <string name="cheat_9">Vilkite tarpo klavišu: žymeklio perkėlimas</string>
-    <string name="cheat_10">Vilkite kairėn naikinimo klavišu: trynimas po žodį</string>
-    <string name="cheat_11">Perbraukite pasiūlymų juostą į šoną: daugiau pasiūlymų</string>
-    <string name="cheat_12">Palaikykite pasiūlymą ir numeskite ant šiukšliadėžės: pamiršti žodį</string>
-    <string name="cheat_13">Palieskite kalbos klavišą: kita kalba</string>
-    <string name="cheat_14">Palaikykite kalbos klavišą, tada braukite: nustatymai, įprasta, plaukiojanti, išskaidyta (tik planšetėms). Perbraukite ant įprastos piktogramos, kad plaukiojančią klaviatūrą vėl prijungtumėte</string>
-    <string name="cheat_15">Plaukiojanti klaviatūra: vilkite juostą po klavišais, kad ją perkeltumėte</string>
-    <string name="cheat_16">Plaukiojanti klaviatūra: palieskite sukryžiuotų rodyklių ženklą šalia gaublio, kad būtų parodyti kampai, tada vilkite kampą, kad pakeistumėte dydį</string>
-    <string name="cheat_17">Rašymas braukiant (pasirinktinai, Nustatymai &gt; Gestai): nubrėžkite žodį per raides, čia h-e-l-l-o. Palieskite pasiūlymą, kad pakeistumėte žodį; naikinimo klavišas ištrina visą žodį</string>
-    <string name="cheat_18">Perbraukite nuo 123 ant klavišų: atsiranda simboliai ir valiutų ženklai; atleidus įvedamas vienas ir grįžtama prie raidžių</string>
-    <string name="cheat_19">Perbraukite žemyn pasiūlymų juostoje: atgal į vieną eilutę. Patraukite aukštyn nuo pasiūlymų juostos arba apatinės vienos eilutės klaviatūros eilutės: pilna klaviatūra</string>
+    <string name="cheat_17">Palaikykite kablelio klavišą, tada braukite: pirmiausia rodomi dažniausiai naudojami jaustukai. Perbraukite aukštyn: visi jaustukai (palieskite vieną)</string>
+    <string name="cheat_8">Vilkite tarpo klavišu: žymeklio perkėlimas</string>
+    <string name="cheat_9">Vilkite kairėn naikinimo klavišu: trynimas po žodį</string>
+    <string name="cheat_10">Perbraukite pasiūlymų juostą į šoną: daugiau pasiūlymų</string>
+    <string name="cheat_11">Palaikykite pasiūlymą ir numeskite ant šiukšliadėžės: pamiršti žodį</string>
+    <string name="cheat_12">Palieskite kalbos klavišą: kita kalba</string>
+    <string name="cheat_13">Palaikykite kalbos klavišą, tada braukite: nustatymai, įprasta, plaukiojanti, išskaidyta (tik planšetėms). Perbraukite ant įprastos piktogramos, kad plaukiojančią klaviatūrą vėl prijungtumėte</string>
+    <string name="cheat_18">Plaukiojanti klaviatūra: vilkite juostą po klavišais, kad ją perkeltumėte</string>
+    <string name="cheat_19">Plaukiojanti klaviatūra: palieskite sukryžiuotų rodyklių ženklą šalia gaublio, kad būtų parodyti kampai, tada vilkite kampą, kad pakeistumėte dydį</string>
+    <string name="cheat_14">Rašymas braukiant (pasirinktinai, Nustatymai &gt; Gestai): nubrėžkite žodį per raides, čia h-e-l-l-o. Palieskite pasiūlymą, kad pakeistumėte žodį; naikinimo klavišas ištrina visą žodį</string>
+    <string name="cheat_15">Perbraukite nuo 123 ant klavišų: atsiranda simboliai ir valiutų ženklai; atleidus įvedamas vienas ir grįžtama prie raidžių</string>
+    <string name="cheat_16">Perbraukite žemyn pasiūlymų juostoje: atgal į vieną eilutę. Patraukite aukštyn nuo pasiūlymų juostos arba apatinės vienos eilutės klaviatūros eilutės: pilna klaviatūra</string>
 
     <!-- About, try it -->
     <string name="header_about">Apie</string>

@@ -86,6 +86,13 @@
     <string name="tab_settings">Inställningar</string>
     <string name="tab_about">Om</string>
     <string name="tab_help">Hjälp</string>
+    <string name="cheat_20">Miniräknare: tryck på 123 och sedan på sifferknappen (det lilla rutnätet bredvid abc) för att öppna ett sifferfält</string>
+    <string name="cheat_21">På sifferfältet visar förslagsfältet resultatet av det du skriver (%1$s fungerar som på en miniräknare). Tryck på resultatet för att skriva det, tryck på uttrycket för att skriva det med resultatet</string>
+    <string name="cheat_22">Ångra-knappen (till höger om blanksteg) tar tillbaka den senaste ersättningen</string>
+    <string name="cheat_23">Markera text med flera tal och tryck på sifferfältsikonen längst till höger i förslagsfältet: fältet öppnas med talen sammanräknade</string>
+    <string name="help_one_row">Tangentbord med en rad</string>
+    <string name="help_expanded">Utökat tangentbord</string>
+    <string name="help_nice">Smarta funktioner</string>
     <string name="header_cheat_sheet">Fusklapp</string>
     <string name="cheat_1">Svep åt vänster på bokstavsraden: radera</string>
     <string name="cheat_2">Svep uppåt vänster: röstinmatning</string>
@@ -94,18 +101,18 @@
     <string name="cheat_5">Svep åt höger: blanksteg</string>
     <string name="cheat_6">Håll in en bokstav och glid sedan: när du släpper skrivs exakt den bokstaven (ingen gissning)</string>
     <string name="cheat_7">Håll in punkttangenten och glid sedan för att välja vanliga skiljetecken</string>
-    <string name="cheat_8">Håll in komma-tangenten och glid sedan: de emojier du använder mest kommer först. Svep uppåt: alla emojier (tryck på en)</string>
-    <string name="cheat_9">Dra på blanksteg: flytta markören</string>
-    <string name="cheat_10">Dra åt vänster på backsteg: radera ord för ord</string>
-    <string name="cheat_11">Svep förslagsfältet åt sidan: fler förslag</string>
-    <string name="cheat_12">Håll in ett förslag och släpp det på papperskorgen: glöm ordet</string>
-    <string name="cheat_13">Tryck på språktangenten: nästa språk</string>
-    <string name="cheat_14">Håll in språktangenten och glid sedan: inställningar, normal, flytande, delad (bara surfplattor). Glid till ikonen för normal för att docka ett flytande tangentbord igen</string>
-    <string name="cheat_15">Flytande tangentbord: dra i fältet under tangenterna för att flytta det</string>
-    <string name="cheat_16">Flytande tangentbord: tryck på märket med korsade pilar bredvid jordgloben för att visa hörnen och dra sedan i ett hörn för att ändra storleken</string>
-    <string name="cheat_17">Svepskrivning (valfritt, Inställningar &gt; Gester): dra ett ord över bokstäverna, här h-e-l-l-o. Tryck på ett förslag för att ersätta ordet; backsteg raderar hela ordet</string>
-    <string name="cheat_18">Glid från 123 till tangenterna: symboler och valutatecken visas; när du släpper skrivs en och du återgår till bokstäverna</string>
-    <string name="cheat_19">Svep nedåt i förslagsfältet: tillbaka till en rad. Dra uppåt från förslagsfältet eller nedersta raden på tangentbordet med en rad: fullt tangentbord</string>
+    <string name="cheat_17">Håll in komma-tangenten och glid sedan: de emojier du använder mest kommer först. Svep uppåt: alla emojier (tryck på en)</string>
+    <string name="cheat_8">Dra på blanksteg: flytta markören</string>
+    <string name="cheat_9">Dra åt vänster på backsteg: radera ord för ord</string>
+    <string name="cheat_10">Svep förslagsfältet åt sidan: fler förslag</string>
+    <string name="cheat_11">Håll in ett förslag och släpp det på papperskorgen: glöm ordet</string>
+    <string name="cheat_12">Tryck på språktangenten: nästa språk</string>
+    <string name="cheat_13">Håll in språktangenten och glid sedan: inställningar, normal, flytande, delad (bara surfplattor). Glid till ikonen för normal för att docka ett flytande tangentbord igen</string>
+    <string name="cheat_18">Flytande tangentbord: dra i fältet under tangenterna för att flytta det</string>
+    <string name="cheat_19">Flytande tangentbord: tryck på märket med korsade pilar bredvid jordgloben för att visa hörnen och dra sedan i ett hörn för att ändra storleken</string>
+    <string name="cheat_14">Svepskrivning (valfritt, Inställningar &gt; Gester): dra ett ord över bokstäverna, här h-e-l-l-o. Tryck på ett förslag för att ersätta ordet; backsteg raderar hela ordet</string>
+    <string name="cheat_15">Glid från 123 till tangenterna: symboler och valutatecken visas; när du släpper skrivs en och du återgår till bokstäverna</string>
+    <string name="cheat_16">Svep nedåt i förslagsfältet: tillbaka till en rad. Dra uppåt från förslagsfältet eller nedersta raden på tangentbordet med en rad: fullt tangentbord</string>
 
     <!-- About, try it -->
     <string name="header_about">Om</string>

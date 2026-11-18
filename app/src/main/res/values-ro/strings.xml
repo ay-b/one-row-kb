@@ -89,6 +89,13 @@
     <string name="tab_settings">Setări</string>
     <string name="tab_about">Despre</string>
     <string name="tab_help">Ajutor</string>
+    <string name="cheat_20">Calculator: atingeți 123, apoi tasta tastaturii numerice (grila mică de lângă abc) pentru a o deschide</string>
+    <string name="cheat_21">Pe tastatura numerică, bara de sugestii arată rezultatul a ceea ce tastați (%1$s funcționează ca la un calculator). Atingeți rezultatul pentru a-l tasta, atingeți expresia pentru a o tasta cu tot cu rezultat</string>
+    <string name="cheat_22">Tasta de anulare (la dreapta spațiului) anulează ultima înlocuire</string>
+    <string name="cheat_23">Selectați text cu mai multe numere și atingeți pictograma tastaturii numerice de la capătul din dreapta al barei de sugestii: tastatura se deschide cu numerele adunate</string>
+    <string name="help_one_row">Tastatură cu un singur rând</string>
+    <string name="help_expanded">Tastatură extinsă</string>
+    <string name="help_nice">Funcții utile</string>
     <string name="header_cheat_sheet">Ghid rapid</string>
     <string name="cheat_1">Glisați la stânga pe rândul de litere: ștergere</string>
     <string name="cheat_2">Glisați în sus și la stânga: introducere vocală</string>
@@ -97,18 +104,18 @@
     <string name="cheat_5">Glisați la dreapta: spațiu</string>
     <string name="cheat_6">Țineți apăsată o literă, apoi glisați: la eliberare se tastează exact litera respectivă (fără ghicire)</string>
     <string name="cheat_7">Țineți apăsată tasta punct, apoi glisați pentru a alege punctuația de bază</string>
-    <string name="cheat_8">Țineți apăsată tasta virgulă, apoi glisați: mai întâi emoji-urile folosite cel mai des. Glisați în sus: toate emoji-urile (atingeți unul)</string>
-    <string name="cheat_9">Trageți pe spațiu: mutarea cursorului</string>
-    <string name="cheat_10">Trageți la stânga pe tasta de ștergere: ștergere cuvânt cu cuvânt</string>
-    <string name="cheat_11">Glisați lateral pe bara de sugestii: mai multe sugestii</string>
-    <string name="cheat_12">Țineți apăsată o sugestie și plasați-o pe coș: uitați cuvântul</string>
-    <string name="cheat_13">Atingeți tasta de limbă: limba următoare</string>
-    <string name="cheat_14">Țineți apăsată tasta de limbă, apoi glisați: setări, normală, flotantă, divizată (doar tablete). Glisați la pictograma normală pentru a ancora din nou tastatura flotantă</string>
-    <string name="cheat_15">Tastatură flotantă: trageți bara de sub taste pentru a o muta</string>
-    <string name="cheat_16">Tastatură flotantă: atingeți semnul cu săgeți încrucișate de lângă glob pentru a afișa colțurile, apoi trageți un colț pentru a o redimensiona</string>
-    <string name="cheat_17">Tastare prin glisare (opțional, Setări &gt; Gesturi): trasați un cuvânt peste litere, aici h-e-l-l-o. Atingeți o sugestie pentru a înlocui cuvântul; tasta de ștergere elimină tot cuvântul</string>
-    <string name="cheat_18">Glisați de la 123 pe taste: apar simboluri și semne de monedă; la eliberare se tastează unul și se revine la litere</string>
-    <string name="cheat_19">Glisați în jos pe bara de sugestii: înapoi la un singur rând. Trageți în sus din bara de sugestii sau din rândul de jos al tastaturii cu un singur rând: tastatură completă</string>
+    <string name="cheat_17">Țineți apăsată tasta virgulă, apoi glisați: mai întâi emoji-urile folosite cel mai des. Glisați în sus: toate emoji-urile (atingeți unul)</string>
+    <string name="cheat_8">Trageți pe spațiu: mutarea cursorului</string>
+    <string name="cheat_9">Trageți la stânga pe tasta de ștergere: ștergere cuvânt cu cuvânt</string>
+    <string name="cheat_10">Glisați lateral pe bara de sugestii: mai multe sugestii</string>
+    <string name="cheat_11">Țineți apăsată o sugestie și plasați-o pe coș: uitați cuvântul</string>
+    <string name="cheat_12">Atingeți tasta de limbă: limba următoare</string>
+    <string name="cheat_13">Țineți apăsată tasta de limbă, apoi glisați: setări, normală, flotantă, divizată (doar tablete). Glisați la pictograma normală pentru a ancora din nou tastatura flotantă</string>
+    <string name="cheat_18">Tastatură flotantă: trageți bara de sub taste pentru a o muta</string>
+    <string name="cheat_19">Tastatură flotantă: atingeți semnul cu săgeți încrucișate de lângă glob pentru a afișa colțurile, apoi trageți un colț pentru a o redimensiona</string>
+    <string name="cheat_14">Tastare prin glisare (opțional, Setări &gt; Gesturi): trasați un cuvânt peste litere, aici h-e-l-l-o. Atingeți o sugestie pentru a înlocui cuvântul; tasta de ștergere elimină tot cuvântul</string>
+    <string name="cheat_15">Glisați de la 123 pe taste: apar simboluri și semne de monedă; la eliberare se tastează unul și se revine la litere</string>
+    <string name="cheat_16">Glisați în jos pe bara de sugestii: înapoi la un singur rând. Trageți în sus din bara de sugestii sau din rândul de jos al tastaturii cu un singur rând: tastatură completă</string>
 
     <!-- About, try it -->
     <string name="header_about">Despre</string>

@@ -86,6 +86,13 @@
     <string name="tab_settings">Beállítások</string>
     <string name="tab_about">Névjegy</string>
     <string name="tab_help">Súgó</string>
+    <string name="cheat_20">Számológép: koppintson a 123-ra, majd a számbillentyűzet gombjára (az abc melletti kis rács) a megnyitásához</string>
+    <string name="cheat_21">A számbillentyűzeten a javaslatsáv megmutatja a beírt művelet eredményét (a %1$s úgy működik, mint a zsebszámológépen). Koppintson az eredményre a beírásához, a kifejezésre az eredménnyel együtt történő beírásához</string>
+    <string name="cheat_22">A visszavonás gomb (a szóköz jobb oldalán) visszavonja az utolsó cserét</string>
+    <string name="cheat_23">Jelöljön ki több számot tartalmazó szöveget, majd koppintson a számbillentyűzet ikonjára a javaslatsáv jobb szélén: a billentyűzet a számok összegével nyílik meg</string>
+    <string name="help_one_row">Egysoros billentyűzet</string>
+    <string name="help_expanded">Bővített billentyűzet</string>
+    <string name="help_nice">Hasznos funkciók</string>
     <string name="header_cheat_sheet">Puska</string>
     <string name="cheat_1">Húzás balra a betűsoron: törlés</string>
     <string name="cheat_2">Húzás balra fel: hangbevitel</string>
@@ -94,18 +101,18 @@
     <string name="cheat_5">Húzás jobbra: szóköz</string>
     <string name="cheat_6">Tartson lenyomva egy betűt, majd csúsztasson: az elengedés pontosan azt a betűt írja be (találgatás nélkül)</string>
     <string name="cheat_7">Tartsa lenyomva a pont billentyűt, majd csúsztasson az alapvető írásjelek kiválasztásához</string>
-    <string name="cheat_8">Tartsa lenyomva a vessző billentyűt, majd csúsztasson: a leggyakrabban használt emojik vannak elöl. Húzás fel: az összes emoji (koppintson egyre)</string>
-    <string name="cheat_9">Húzás a szóközön: a kurzor mozgatása</string>
-    <string name="cheat_10">Húzás balra a backspace-en: törlés szavanként</string>
-    <string name="cheat_11">Húzza oldalra a javaslatsávot: további javaslatok</string>
-    <string name="cheat_12">Tartson lenyomva egy javaslatot, és ejtse a kukába: a szó elfelejtése</string>
-    <string name="cheat_13">Koppintás a nyelv billentyűre: következő nyelv</string>
-    <string name="cheat_14">Tartsa lenyomva a nyelv billentyűt, majd csúsztasson: beállítások, normál, lebegő, osztott (csak táblagépen). Csúsztasson a normál ikonra, hogy a lebegő billentyűzetet újra rögzítse</string>
-    <string name="cheat_15">Lebegő billentyűzet: húzza a billentyűk alatti sávot az áthelyezéshez</string>
-    <string name="cheat_16">Lebegő billentyűzet: koppintson a földgömb melletti keresztezett nyilak jelére a sarkok megjelenítéséhez, majd húzzon egy sarkot az átméretezéshez</string>
-    <string name="cheat_17">Csúsztatásos gépelés (opcionális, Beállítások &gt; Gesztusok): rajzoljon egy szót a betűk fölött, itt h-e-l-l-o. Koppintson egy javaslatra a szó cseréjéhez; a backspace az egész szót törli</string>
-    <string name="cheat_18">Csúsztasson a 123-ról a billentyűkre: szimbólumok és pénznemjelek jelennek meg; az elengedés egyet beír, és visszatér a betűkhöz</string>
-    <string name="cheat_19">Húzás le a javaslatsávon: vissza az egy sorhoz. Húzás fel a javaslatsávról vagy az egysoros billentyűzet alsó sorából: teljes billentyűzet</string>
+    <string name="cheat_17">Tartsa lenyomva a vessző billentyűt, majd csúsztasson: a leggyakrabban használt emojik vannak elöl. Húzás fel: az összes emoji (koppintson egyre)</string>
+    <string name="cheat_8">Húzás a szóközön: a kurzor mozgatása</string>
+    <string name="cheat_9">Húzás balra a backspace-en: törlés szavanként</string>
+    <string name="cheat_10">Húzza oldalra a javaslatsávot: további javaslatok</string>
+    <string name="cheat_11">Tartson lenyomva egy javaslatot, és ejtse a kukába: a szó elfelejtése</string>
+    <string name="cheat_12">Koppintás a nyelv billentyűre: következő nyelv</string>
+    <string name="cheat_13">Tartsa lenyomva a nyelv billentyűt, majd csúsztasson: beállítások, normál, lebegő, osztott (csak táblagépen). Csúsztasson a normál ikonra, hogy a lebegő billentyűzetet újra rögzítse</string>
+    <string name="cheat_18">Lebegő billentyűzet: húzza a billentyűk alatti sávot az áthelyezéshez</string>
+    <string name="cheat_19">Lebegő billentyűzet: koppintson a földgömb melletti keresztezett nyilak jelére a sarkok megjelenítéséhez, majd húzzon egy sarkot az átméretezéshez</string>
+    <string name="cheat_14">Csúsztatásos gépelés (opcionális, Beállítások &gt; Gesztusok): rajzoljon egy szót a betűk fölött, itt h-e-l-l-o. Koppintson egy javaslatra a szó cseréjéhez; a backspace az egész szót törli</string>
+    <string name="cheat_15">Csúsztasson a 123-ról a billentyűkre: szimbólumok és pénznemjelek jelennek meg; az elengedés egyet beír, és visszatér a betűkhöz</string>
+    <string name="cheat_16">Húzás le a javaslatsávon: vissza az egy sorhoz. Húzás fel a javaslatsávról vagy az egysoros billentyűzet alsó sorából: teljes billentyűzet</string>
 
     <!-- About, try it -->
     <string name="header_about">Névjegy</string>

@@ -53,4 +53,5 @@ for theme in ("default", "light", "dark"):
     Image.open(f"{raw}/{theme}_float.png").convert("RGB").crop((0, FLOAT_BOX[0], 1080, FLOAT_BOX[1])).save(f"{out}/float.png")
     for shot in ("fullidle", "trail"):
         Image.open(f"{raw}/{theme}_{shot}.png").convert("RGB").crop((0, tf - HEAD_FULL, 1080, bf)).save(f"{out}/{shot}.png")
-    Image.open(f"{raw}/{theme}_peek.png").convert("RGB").crop((0, tf - HEAD_FULL, 1080, bf)).save(f"{out}/peek.png")
+    for shot in ("peek", "calc123", "calcpad", "calcsel"):
+        Image.open(f"{raw}/{theme}_{shot}.png").convert("RGB").crop((0, tf - HEAD_FULL, 1080, bf)).save(f"{out}/{shot}.png")

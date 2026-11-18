@@ -49,8 +49,7 @@ object AppStyle {
         fun walk(v: View) {
             when (v) {
                 is EditText -> {
-                    v.setTextColor(p.ink); v.setHintTextColor(p.dim); v.backgroundTintList = ColorStateList.valueOf(p.accent)
-                    v.setBackgroundColor(p.panel); v.typeface = face
+                    v.setTextColor(p.ink); v.setHintTextColor(p.dim); v.typeface = face
                     v.background = GradientDrawable().apply { cornerRadius = dp(ctx, 8); setColor(p.key) }
                     v.setPadding(dp(ctx, 12).toInt(), dp(ctx, 10).toInt(), dp(ctx, 12).toInt(), dp(ctx, 10).toInt())
                 }

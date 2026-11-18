@@ -86,6 +86,13 @@
     <string name="tab_settings">Instellingen</string>
     <string name="tab_about">Over</string>
     <string name="tab_help">Help</string>
+    <string name="cheat_20">Rekenmachine: tik op 123 en dan op de cijfertoets (het kleine raster naast abc) om een numeriek toetsenbord te openen</string>
+    <string name="cheat_21">Op het numerieke toetsenbord toont de suggestiebalk het resultaat van wat je typt (%1$s werkt zoals op een rekenmachine). Tik op het resultaat om het te typen, tik op de uitdrukking om die met het resultaat te typen</string>
+    <string name="cheat_22">De ongedaan-maken-toets (rechts van de spatiebalk) herstelt de laatste vervanging</string>
+    <string name="cheat_23">Selecteer tekst met meerdere getallen en tik op het cijferpad-icoon rechts op de suggestiebalk: het toetsenbord opent met de getallen opgeteld</string>
+    <string name="help_one_row">Toetsenbord met één rij</string>
+    <string name="help_expanded">Uitgebreid toetsenbord</string>
+    <string name="help_nice">Handige functies</string>
     <string name="header_cheat_sheet">Spiekbriefje</string>
     <string name="cheat_1">Veeg naar links op de letterrij: wissen</string>
     <string name="cheat_2">Veeg naar linksboven: spraakinvoer</string>
@@ -94,18 +101,18 @@
     <string name="cheat_5">Veeg naar rechts: spatie</string>
     <string name="cheat_6">Houd een letter ingedrukt en schuif dan: loslaten typt precies die letter (zonder raden)</string>
     <string name="cheat_7">Houd de punttoets ingedrukt en schuif dan om basisleestekens te kiezen</string>
-    <string name="cheat_8">Houd de komtoets ingedrukt en schuif dan: de emoji die je het vaakst gebruikt staan vooraan. Veeg omhoog: alle emoji (tik er een aan)</string>
-    <string name="cheat_9">Sleep op de spatiebalk: de cursor verplaatsen</string>
-    <string name="cheat_10">Sleep naar links op backspace: woord voor woord wissen</string>
-    <string name="cheat_11">Veeg zijwaarts over de suggestiebalk: meer suggesties</string>
-    <string name="cheat_12">Houd een suggestie ingedrukt en laat hem op de prullenbak vallen: het woord vergeten</string>
-    <string name="cheat_13">Tik op de taaltoets: volgende taal</string>
-    <string name="cheat_14">Houd de taaltoets ingedrukt en schuif dan: instellingen, normaal, zwevend, gesplitst (alleen tablets). Schuif naar het pictogram voor normaal om een zwevend toetsenbord weer vast te zetten</string>
-    <string name="cheat_15">Zwevend toetsenbord: sleep de balk onder de toetsen om het te verplaatsen</string>
-    <string name="cheat_16">Zwevend toetsenbord: tik op het teken met gekruiste pijlen naast de wereldbol om de hoeken te tonen en sleep dan een hoek om het formaat te wijzigen</string>
-    <string name="cheat_17">Swipend typen (optioneel, Instellingen &gt; Gebaren): teken een woord over de letters, hier h-e-l-l-o. Tik op een suggestie om het woord te vervangen; backspace wist het hele woord</string>
-    <string name="cheat_18">Schuif van 123 naar de toetsen: symbolen en valutatekens verschijnen; loslaten typt er een en gaat terug naar de letters</string>
-    <string name="cheat_19">Veeg omlaag op de suggestiebalk: terug naar één rij. Trek omhoog vanaf de suggestiebalk of de onderste rij van het toetsenbord met één rij: volledig toetsenbord</string>
+    <string name="cheat_17">Houd de komtoets ingedrukt en schuif dan: de emoji die je het vaakst gebruikt staan vooraan. Veeg omhoog: alle emoji (tik er een aan)</string>
+    <string name="cheat_8">Sleep op de spatiebalk: de cursor verplaatsen</string>
+    <string name="cheat_9">Sleep naar links op backspace: woord voor woord wissen</string>
+    <string name="cheat_10">Veeg zijwaarts over de suggestiebalk: meer suggesties</string>
+    <string name="cheat_11">Houd een suggestie ingedrukt en laat hem op de prullenbak vallen: het woord vergeten</string>
+    <string name="cheat_12">Tik op de taaltoets: volgende taal</string>
+    <string name="cheat_13">Houd de taaltoets ingedrukt en schuif dan: instellingen, normaal, zwevend, gesplitst (alleen tablets). Schuif naar het pictogram voor normaal om een zwevend toetsenbord weer vast te zetten</string>
+    <string name="cheat_18">Zwevend toetsenbord: sleep de balk onder de toetsen om het te verplaatsen</string>
+    <string name="cheat_19">Zwevend toetsenbord: tik op het teken met gekruiste pijlen naast de wereldbol om de hoeken te tonen en sleep dan een hoek om het formaat te wijzigen</string>
+    <string name="cheat_14">Swipend typen (optioneel, Instellingen &gt; Gebaren): teken een woord over de letters, hier h-e-l-l-o. Tik op een suggestie om het woord te vervangen; backspace wist het hele woord</string>
+    <string name="cheat_15">Schuif van 123 naar de toetsen: symbolen en valutatekens verschijnen; loslaten typt er een en gaat terug naar de letters</string>
+    <string name="cheat_16">Veeg omlaag op de suggestiebalk: terug naar één rij. Trek omhoog vanaf de suggestiebalk of de onderste rij van het toetsenbord met één rij: volledig toetsenbord</string>
 
     <!-- About, try it -->
     <string name="header_about">Over</string>

@@ -94,6 +94,13 @@
     <string name="tab_settings">Settings</string>
     <string name="tab_about">About</string>
     <string name="tab_help">Help</string>
+    <string name="cheat_20">Calculator: tap 123, then the keypad key (the little grid next to abc) to open a number pad</string>
+    <string name="cheat_21">On the number pad the guess bar shows the result of what you type (%1$s works like on a phone calculator). Tap the result to type it, tap the expression to type it with the result</string>
+    <string name="cheat_22">The undo key (right of the space bar) takes back the last replacement</string>
+    <string name="cheat_23">Select text that holds several numbers, then tap the keypad icon at the right end of the guess bar: the pad opens with the numbers added up</string>
+    <string name="help_one_row">One-row keyboard</string>
+    <string name="help_expanded">Expanded keyboard</string>
+    <string name="help_nice">Nice features</string>
     <string name="header_cheat_sheet">Cheat sheet</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture (tools/make_cheatsheet.py) -->
     <string name="cheat_1">Swipe left on the letter row: delete</string>
@@ -103,18 +110,18 @@
     <string name="cheat_5">Swipe right: space</string>
     <string name="cheat_6">Hold a letter, then slide: release types exactly that letter (no guessing)</string>
     <string name="cheat_7">Hold the period key, then slide to choose basic punctuation</string>
-    <string name="cheat_8">Hold the comma key, then slide: the emoji you use most come first. Swipe up: all emoji (tap one)</string>
-    <string name="cheat_9">Drag on space: move the cursor</string>
-    <string name="cheat_10">Drag left on backspace: delete word by word</string>
-    <string name="cheat_11">Swipe the guess bar sideways: more guesses</string>
-    <string name="cheat_12">Hold a guess, drop it on the bin: forget the word</string>
-    <string name="cheat_13">Tap the language key: next language</string>
-    <string name="cheat_14">Hold the language key, then slide: settings, normal, floating, split (tablets only). Slide to the normal icon to dock a floating keyboard again</string>
-    <string name="cheat_15">Floating keyboard: drag the bar under the keys to move it</string>
-    <string name="cheat_16">Floating keyboard: tap the crossed-arrows mark next to the globe to show the corners, then drag a corner to resize it</string>
-    <string name="cheat_17">Swipe typing (optional, Settings &gt; Gestures): draw a word across the letters, here h-e-l-l-o. Tap a guess to replace the word; backspace deletes the whole word</string>
-    <string name="cheat_18">Slide from 123 onto the keys: symbols and currency signs appear; release types one and goes back to the letters</string>
-    <string name="cheat_19">Swipe down on the guess bar: back to one row. Pull up from the guess bar or the bottom row of the one-row keyboard: full keyboard</string>
+    <string name="cheat_17">Hold the comma key, then slide: the emoji you use most come first. Swipe up: all emoji (tap one)</string>
+    <string name="cheat_8">Drag on space: move the cursor</string>
+    <string name="cheat_9">Drag left on backspace: delete word by word</string>
+    <string name="cheat_10">Swipe the guess bar sideways: more guesses</string>
+    <string name="cheat_11">Hold a guess, drop it on the bin: forget the word</string>
+    <string name="cheat_12">Tap the language key: next language</string>
+    <string name="cheat_13">Hold the language key, then slide: settings, normal, floating, split (tablets only). Slide to the normal icon to dock a floating keyboard again</string>
+    <string name="cheat_18">Floating keyboard: drag the bar under the keys to move it</string>
+    <string name="cheat_19">Floating keyboard: tap the crossed-arrows mark next to the globe to show the corners, then drag a corner to resize it</string>
+    <string name="cheat_14">Swipe typing (optional, Settings &gt; Gestures): draw a word across the letters, here h-e-l-l-o. Tap a guess to replace the word; backspace deletes the whole word</string>
+    <string name="cheat_15">Slide from 123 onto the keys: symbols and currency signs appear; release types one and goes back to the letters</string>
+    <string name="cheat_16">Swipe down on the guess bar: back to one row. Pull up from the guess bar or the bottom row of the one-row keyboard: full keyboard</string>
 
     <!-- About, try it -->
     <string name="header_about">About</string>

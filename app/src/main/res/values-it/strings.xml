@@ -86,6 +86,13 @@
     <string name="tab_settings">Impostazioni</string>
     <string name="tab_about">Info</string>
     <string name="tab_help">Aiuto</string>
+    <string name="cheat_20">Calcolatrice: tocca 123, poi il tasto tastierino (la piccola griglia accanto ad abc) per aprire un tastierino numerico</string>
+    <string name="cheat_21">Sul tastierino la barra dei suggerimenti mostra il risultato di ciò che scrivi (%1$s funziona come in una calcolatrice). Tocca il risultato per scriverlo, tocca l\'espressione per scriverla con il risultato</string>
+    <string name="cheat_22">Il tasto annulla (a destra della barra spaziatrice) annulla l\'ultima sostituzione</string>
+    <string name="cheat_23">Seleziona un testo con più numeri, poi tocca l\'icona del tastierino all\'estremità destra della barra dei suggerimenti: il tastierino si apre con i numeri sommati</string>
+    <string name="help_one_row">Tastiera a una riga</string>
+    <string name="help_expanded">Tastiera estesa</string>
+    <string name="help_nice">Funzioni utili</string>
     <string name="header_cheat_sheet">Guida rapida</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture (tools/make_cheatsheet.py) -->
     <string name="cheat_1">Scorri a sinistra sulla riga delle lettere: cancella</string>
@@ -95,18 +102,18 @@
     <string name="cheat_5">Scorri a destra: spazio</string>
     <string name="cheat_6">Tieni premuta una lettera, poi scorri: rilasciando si scrive esattamente quella lettera (senza previsione)</string>
     <string name="cheat_7">Tieni premuto il tasto del punto, poi scorri per scegliere la punteggiatura di base</string>
-    <string name="cheat_8">Tieni premuto il tasto della virgola, poi scorri: le emoji che usi di più vengono per prime. Scorri verso l\'alto: tutte le emoji (toccane una)</string>
-    <string name="cheat_9">Trascina sulla barra spaziatrice: sposta il cursore</string>
-    <string name="cheat_10">Trascina a sinistra sul tasto backspace: cancella parola per parola</string>
-    <string name="cheat_11">Scorri la barra dei suggerimenti di lato: più suggerimenti</string>
-    <string name="cheat_12">Tieni premuto un suggerimento, rilascialo sul cestino: dimentica la parola</string>
-    <string name="cheat_13">Tocca il tasto della lingua: lingua successiva</string>
-    <string name="cheat_14">Tieni premuto il tasto della lingua, poi scorri: impostazioni, normale, mobile, diviso (solo tablet). Scorri sull\'icona normale per riagganciare una tastiera mobile</string>
-    <string name="cheat_15">Tastiera mobile: trascina la barra sotto i tasti per spostarla</string>
-    <string name="cheat_16">Tastiera mobile: tocca il segno con le frecce incrociate accanto al globo per mostrare gli angoli, poi trascina un angolo per ridimensionarla</string>
-    <string name="cheat_17">Digitazione gestuale (facoltativa, Impostazioni &gt; Gesti): traccia una parola sulle lettere, qui h-e-l-l-o. Tocca un suggerimento per sostituire la parola; backspace cancella l\'intera parola</string>
-    <string name="cheat_18">Scorri da 123 sui tasti: compaiono simboli e segni di valuta; rilasciando se ne scrive uno e si torna alle lettere</string>
-    <string name="cheat_19">Scorri verso il basso sulla barra dei suggerimenti: torna a una riga. Tira verso l\'alto dalla barra dei suggerimenti o dalla riga in basso della tastiera a una riga: tastiera completa</string>
+    <string name="cheat_17">Tieni premuto il tasto della virgola, poi scorri: le emoji che usi di più vengono per prime. Scorri verso l\'alto: tutte le emoji (toccane una)</string>
+    <string name="cheat_8">Trascina sulla barra spaziatrice: sposta il cursore</string>
+    <string name="cheat_9">Trascina a sinistra sul tasto backspace: cancella parola per parola</string>
+    <string name="cheat_10">Scorri la barra dei suggerimenti di lato: più suggerimenti</string>
+    <string name="cheat_11">Tieni premuto un suggerimento, rilascialo sul cestino: dimentica la parola</string>
+    <string name="cheat_12">Tocca il tasto della lingua: lingua successiva</string>
+    <string name="cheat_13">Tieni premuto il tasto della lingua, poi scorri: impostazioni, normale, mobile, diviso (solo tablet). Scorri sull\'icona normale per riagganciare una tastiera mobile</string>
+    <string name="cheat_18">Tastiera mobile: trascina la barra sotto i tasti per spostarla</string>
+    <string name="cheat_19">Tastiera mobile: tocca il segno con le frecce incrociate accanto al globo per mostrare gli angoli, poi trascina un angolo per ridimensionarla</string>
+    <string name="cheat_14">Digitazione gestuale (facoltativa, Impostazioni &gt; Gesti): traccia una parola sulle lettere, qui h-e-l-l-o. Tocca un suggerimento per sostituire la parola; backspace cancella l\'intera parola</string>
+    <string name="cheat_15">Scorri da 123 sui tasti: compaiono simboli e segni di valuta; rilasciando se ne scrive uno e si torna alle lettere</string>
+    <string name="cheat_16">Scorri verso il basso sulla barra dei suggerimenti: torna a una riga. Tira verso l\'alto dalla barra dei suggerimenti o dalla riga in basso della tastiera a una riga: tastiera completa</string>
 
     <!-- About, try it -->
     <string name="header_about">Informazioni</string>

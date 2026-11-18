@@ -86,6 +86,13 @@
     <string name="tab_settings">Innstillinger</string>
     <string name="tab_about">Om</string>
     <string name="tab_help">Hjelp</string>
+    <string name="cheat_20">Kalkulator: trykk på 123 og deretter på talltastaturtasten (det lille rutenettet ved siden av abc) for å åpne et talltastatur</string>
+    <string name="cheat_21">På talltastaturet viser forslagsfeltet resultatet av det du skriver (%1$s fungerer som på en kalkulator). Trykk på resultatet for å skrive det, trykk på uttrykket for å skrive det med resultatet</string>
+    <string name="cheat_22">Angre-tasten (til høyre for mellomrom) tar tilbake siste erstatning</string>
+    <string name="cheat_23">Merk tekst med flere tall, og trykk på talltastaturikonet lengst til høyre i forslagsfeltet: tastaturet åpnes med tallene summert</string>
+    <string name="help_one_row">Tastatur med én rad</string>
+    <string name="help_expanded">Utvidet tastatur</string>
+    <string name="help_nice">Nyttige funksjoner</string>
     <string name="header_cheat_sheet">Jukselapp</string>
     <string name="cheat_1">Sveip til venstre på bokstavraden: slett</string>
     <string name="cheat_2">Sveip opp til venstre: taleinndata</string>
@@ -94,18 +101,18 @@
     <string name="cheat_5">Sveip til høyre: mellomrom</string>
     <string name="cheat_6">Hold inne en bokstav og gli deretter: når du slipper, skrives akkurat den bokstaven (ingen gjetting)</string>
     <string name="cheat_7">Hold inne punktumtasten og gli deretter for å velge vanlige skilletegn</string>
-    <string name="cheat_8">Hold inne komma-tasten og gli deretter: emojiene du bruker mest kommer først. Sveip opp: alle emojier (trykk på en)</string>
-    <string name="cheat_9">Dra på mellomrom: flytt markøren</string>
-    <string name="cheat_10">Dra til venstre på slettetasten: slett ord for ord</string>
-    <string name="cheat_11">Sveip forslagsfeltet sideveis: flere forslag</string>
-    <string name="cheat_12">Hold inne et forslag og slipp det på søppelkassen: glem ordet</string>
-    <string name="cheat_13">Trykk på språktasten: neste språk</string>
-    <string name="cheat_14">Hold inne språktasten og gli deretter: innstillinger, normal, flytende, delt (bare nettbrett). Gli til ikonet for normal for å feste et flytende tastatur igjen</string>
-    <string name="cheat_15">Flytende tastatur: dra i linjen under tastene for å flytte det</string>
-    <string name="cheat_16">Flytende tastatur: trykk på merket med kryssede piler ved siden av kloden for å vise hjørnene, og dra så i et hjørne for å endre størrelsen</string>
-    <string name="cheat_17">Sveipeskriving (valgfritt, Innstillinger &gt; Bevegelser): tegn et ord over bokstavene, her h-e-l-l-o. Trykk på et forslag for å erstatte ordet; slettetasten sletter hele ordet</string>
-    <string name="cheat_18">Gli fra 123 til tastene: symboler og valutategn vises; når du slipper, skrives ett, og du går tilbake til bokstavene</string>
-    <string name="cheat_19">Sveip ned på forslagsfeltet: tilbake til én rad. Dra opp fra forslagsfeltet eller nederste rad på tastaturet med én rad: fullt tastatur</string>
+    <string name="cheat_17">Hold inne komma-tasten og gli deretter: emojiene du bruker mest kommer først. Sveip opp: alle emojier (trykk på en)</string>
+    <string name="cheat_8">Dra på mellomrom: flytt markøren</string>
+    <string name="cheat_9">Dra til venstre på slettetasten: slett ord for ord</string>
+    <string name="cheat_10">Sveip forslagsfeltet sideveis: flere forslag</string>
+    <string name="cheat_11">Hold inne et forslag og slipp det på søppelkassen: glem ordet</string>
+    <string name="cheat_12">Trykk på språktasten: neste språk</string>
+    <string name="cheat_13">Hold inne språktasten og gli deretter: innstillinger, normal, flytende, delt (bare nettbrett). Gli til ikonet for normal for å feste et flytende tastatur igjen</string>
+    <string name="cheat_18">Flytende tastatur: dra i linjen under tastene for å flytte det</string>
+    <string name="cheat_19">Flytende tastatur: trykk på merket med kryssede piler ved siden av kloden for å vise hjørnene, og dra så i et hjørne for å endre størrelsen</string>
+    <string name="cheat_14">Sveipeskriving (valgfritt, Innstillinger &gt; Bevegelser): tegn et ord over bokstavene, her h-e-l-l-o. Trykk på et forslag for å erstatte ordet; slettetasten sletter hele ordet</string>
+    <string name="cheat_15">Gli fra 123 til tastene: symboler og valutategn vises; når du slipper, skrives ett, og du går tilbake til bokstavene</string>
+    <string name="cheat_16">Sveip ned på forslagsfeltet: tilbake til én rad. Dra opp fra forslagsfeltet eller nederste rad på tastaturet med én rad: fullt tastatur</string>
 
     <!-- About, try it -->
     <string name="header_about">Om</string>

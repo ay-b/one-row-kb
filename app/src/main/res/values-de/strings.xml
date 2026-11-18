@@ -86,6 +86,13 @@
     <string name="tab_settings">Einstellungen</string>
     <string name="tab_about">Info</string>
     <string name="tab_help">Hilfe</string>
+    <string name="cheat_20">Rechner: 123 tippen, dann die Zahlenblock-Taste (das kleine Raster neben abc), um einen Zahlenblock zu öffnen</string>
+    <string name="cheat_21">Auf dem Zahlenblock zeigt die Vorschlagsleiste das Ergebnis des Eingegebenen (%1$s funktioniert wie beim Taschenrechner). Das Ergebnis antippen, um es einzufügen, den Ausdruck antippen, um ihn samt Ergebnis einzufügen</string>
+    <string name="cheat_22">Die Rückgängig-Taste (rechts der Leertaste) nimmt die letzte Ersetzung zurück</string>
+    <string name="cheat_23">Text mit mehreren Zahlen markieren, dann das Zahlenblock-Symbol am rechten Ende der Vorschlagsleiste antippen: der Block öffnet sich mit der Summe der Zahlen</string>
+    <string name="help_one_row">Einzeilige Tastatur</string>
+    <string name="help_expanded">Erweiterte Tastatur</string>
+    <string name="help_nice">Praktische Funktionen</string>
     <string name="header_cheat_sheet">Spickzettel</string>
     <string name="cheat_1">Auf der Buchstabenreihe nach links wischen: löschen</string>
     <string name="cheat_2">Nach links oben wischen: Spracheingabe</string>
@@ -94,18 +101,18 @@
     <string name="cheat_5">Nach rechts wischen: Leerzeichen</string>
     <string name="cheat_6">Einen Buchstaben gedrückt halten, dann gleiten: Loslassen tippt genau diesen Buchstaben (ohne Raten)</string>
     <string name="cheat_7">Die Punkttaste gedrückt halten, dann gleiten, um einfache Satzzeichen zu wählen</string>
-    <string name="cheat_8">Die Kommataste gedrückt halten, dann gleiten: Deine meistgenutzten Emojis stehen zuerst. Nach oben wischen: alle Emojis (eines antippen)</string>
-    <string name="cheat_9">Auf der Leertaste ziehen: Cursor bewegen</string>
-    <string name="cheat_10">Auf der Rücktaste nach links ziehen: wortweise löschen</string>
-    <string name="cheat_11">Die Vorschlagsleiste seitlich wischen: weitere Vorschläge</string>
-    <string name="cheat_12">Einen Vorschlag gedrückt halten und auf den Papierkorb ziehen: Wort vergessen</string>
-    <string name="cheat_13">Die Sprachtaste tippen: nächste Sprache</string>
-    <string name="cheat_14">Die Sprachtaste gedrückt halten, dann gleiten: Einstellungen, normal, schwebend, geteilt (nur Tablets). Zum Symbol für normal gleiten, um eine schwebende Tastatur wieder anzudocken</string>
-    <string name="cheat_15">Schwebende Tastatur: die Leiste unter den Tasten ziehen, um sie zu verschieben</string>
-    <string name="cheat_16">Schwebende Tastatur: auf das Pfeilkreuz neben dem Globus tippen, um die Ecken anzuzeigen, dann eine Ecke ziehen, um die Größe zu ändern</string>
-    <string name="cheat_17">Wischeingabe (optional, Einstellungen &gt; Gesten): ein Wort über die Buchstaben zeichnen, hier h-e-l-l-o. Einen Vorschlag tippen, um das Wort zu ersetzen; die Rücktaste löscht das ganze Wort</string>
-    <string name="cheat_18">Von 123 auf die Tasten gleiten: Symbole und Währungszeichen erscheinen; Loslassen tippt eines und kehrt zu den Buchstaben zurück</string>
-    <string name="cheat_19">Auf der Vorschlagsleiste nach unten wischen: zurück zur einen Zeile. Von der Vorschlagsleiste oder der unteren Reihe der einzeiligen Tastatur nach oben ziehen: volle Tastatur</string>
+    <string name="cheat_17">Die Kommataste gedrückt halten, dann gleiten: Deine meistgenutzten Emojis stehen zuerst. Nach oben wischen: alle Emojis (eines antippen)</string>
+    <string name="cheat_8">Auf der Leertaste ziehen: Cursor bewegen</string>
+    <string name="cheat_9">Auf der Rücktaste nach links ziehen: wortweise löschen</string>
+    <string name="cheat_10">Die Vorschlagsleiste seitlich wischen: weitere Vorschläge</string>
+    <string name="cheat_11">Einen Vorschlag gedrückt halten und auf den Papierkorb ziehen: Wort vergessen</string>
+    <string name="cheat_12">Die Sprachtaste tippen: nächste Sprache</string>
+    <string name="cheat_13">Die Sprachtaste gedrückt halten, dann gleiten: Einstellungen, normal, schwebend, geteilt (nur Tablets). Zum Symbol für normal gleiten, um eine schwebende Tastatur wieder anzudocken</string>
+    <string name="cheat_18">Schwebende Tastatur: die Leiste unter den Tasten ziehen, um sie zu verschieben</string>
+    <string name="cheat_19">Schwebende Tastatur: auf das Pfeilkreuz neben dem Globus tippen, um die Ecken anzuzeigen, dann eine Ecke ziehen, um die Größe zu ändern</string>
+    <string name="cheat_14">Wischeingabe (optional, Einstellungen &gt; Gesten): ein Wort über die Buchstaben zeichnen, hier h-e-l-l-o. Einen Vorschlag tippen, um das Wort zu ersetzen; die Rücktaste löscht das ganze Wort</string>
+    <string name="cheat_15">Von 123 auf die Tasten gleiten: Symbole und Währungszeichen erscheinen; Loslassen tippt eines und kehrt zu den Buchstaben zurück</string>
+    <string name="cheat_16">Auf der Vorschlagsleiste nach unten wischen: zurück zur einen Zeile. Von der Vorschlagsleiste oder der unteren Reihe der einzeiligen Tastatur nach oben ziehen: volle Tastatur</string>
 
     <!-- About, try it -->
     <string name="header_about">Info</string>

@@ -86,6 +86,13 @@
     <string name="tab_settings">Stillingar</string>
     <string name="tab_about">Um</string>
     <string name="tab_help">Hjálp</string>
+    <string name="cheat_20">Reiknivél: pikkaðu á 123 og síðan á talnaborðstakkann (litla reitinn við hliðina á abc) til að opna talnaborð</string>
+    <string name="cheat_21">Á talnaborðinu sýnir tillögustikan niðurstöðu þess sem þú slærð inn (%1$s virkar eins og í reiknivél). Pikkaðu á niðurstöðuna til að slá hana inn, pikkaðu á segðina til að slá hana inn með niðurstöðunni</string>
+    <string name="cheat_22">Afturkalla-takkinn (hægra megin við bilslá) tekur síðustu skiptingu til baka</string>
+    <string name="cheat_23">Veldu texta með mörgum tölum og pikkaðu á talnaborðstáknið yst til hægri á tillögustikunni: talnaborðið opnast með summu talnanna</string>
+    <string name="help_one_row">Lyklaborð með einni röð</string>
+    <string name="help_expanded">Stækkað lyklaborð</string>
+    <string name="help_nice">Gagnlegir eiginleikar</string>
     <string name="header_cheat_sheet">Yfirlit</string>
     <string name="cheat_1">Strjúktu til vinstri á stafaröðinni: eyða</string>
     <string name="cheat_2">Strjúktu upp til vinstri: raddinntak</string>
@@ -94,18 +101,18 @@
     <string name="cheat_5">Strjúktu til hægri: bil</string>
     <string name="cheat_6">Haltu inni staf og renndu: þegar þú sleppir skrifast nákvæmlega sá stafur (engin ágiskun)</string>
     <string name="cheat_7">Haltu inni punktalyklinum og renndu til að velja algeng greinarmerki</string>
-    <string name="cheat_8">Haltu inni kommulyklinum og renndu: emoji sem þú notar mest koma fyrst. Strjúktu upp: öll emoji (ýttu á eitt)</string>
-    <string name="cheat_9">Dragðu á bilslá: færa bendilinn</string>
-    <string name="cheat_10">Dragðu til vinstri á bakklykli: eyða orð fyrir orð</string>
-    <string name="cheat_11">Strjúktu tillögustikunni til hliðar: fleiri tillögur</string>
-    <string name="cheat_12">Haltu inni tillögu og slepptu henni á ruslatunnuna: gleyma orðinu</string>
-    <string name="cheat_13">Ýttu á tungumálslykilinn: næsta tungumál</string>
-    <string name="cheat_14">Haltu inni tungumálslyklinum og renndu: stillingar, venjulegt, fljótandi, skipt (aðeins spjaldtölvur). Renndu á venjulega táknið til að festa fljótandi lyklaborð aftur</string>
-    <string name="cheat_15">Fljótandi lyklaborð: dragðu stikuna undir tökkunum til að færa það</string>
-    <string name="cheat_16">Fljótandi lyklaborð: pikkaðu á merki krossaðra örva við hliðina á hnettinum til að sýna hornin og dragðu síðan horn til að breyta stærð</string>
-    <string name="cheat_17">Strokuritun (valfrjálst, Stillingar &gt; Bendingar): dragðu orð yfir stafina, hér h-e-l-l-o. Ýttu á tillögu til að skipta orðinu út; bakklykill eyðir öllu orðinu</string>
-    <string name="cheat_18">Renndu frá 123 á takkana: tákn og gjaldmiðlatákn birtast; ef þú sleppir skrifast eitt þeirra og farið er aftur í stafina</string>
-    <string name="cheat_19">Strjúktu niður á tillögustikuna: aftur í eina röð. Dragðu upp frá tillögustikunni eða neðstu röð einnar raðar lyklaborðsins: fullt lyklaborð</string>
+    <string name="cheat_17">Haltu inni kommulyklinum og renndu: emoji sem þú notar mest koma fyrst. Strjúktu upp: öll emoji (ýttu á eitt)</string>
+    <string name="cheat_8">Dragðu á bilslá: færa bendilinn</string>
+    <string name="cheat_9">Dragðu til vinstri á bakklykli: eyða orð fyrir orð</string>
+    <string name="cheat_10">Strjúktu tillögustikunni til hliðar: fleiri tillögur</string>
+    <string name="cheat_11">Haltu inni tillögu og slepptu henni á ruslatunnuna: gleyma orðinu</string>
+    <string name="cheat_12">Ýttu á tungumálslykilinn: næsta tungumál</string>
+    <string name="cheat_13">Haltu inni tungumálslyklinum og renndu: stillingar, venjulegt, fljótandi, skipt (aðeins spjaldtölvur). Renndu á venjulega táknið til að festa fljótandi lyklaborð aftur</string>
+    <string name="cheat_18">Fljótandi lyklaborð: dragðu stikuna undir tökkunum til að færa það</string>
+    <string name="cheat_19">Fljótandi lyklaborð: pikkaðu á merki krossaðra örva við hliðina á hnettinum til að sýna hornin og dragðu síðan horn til að breyta stærð</string>
+    <string name="cheat_14">Strokuritun (valfrjálst, Stillingar &gt; Bendingar): dragðu orð yfir stafina, hér h-e-l-l-o. Ýttu á tillögu til að skipta orðinu út; bakklykill eyðir öllu orðinu</string>
+    <string name="cheat_15">Renndu frá 123 á takkana: tákn og gjaldmiðlatákn birtast; ef þú sleppir skrifast eitt þeirra og farið er aftur í stafina</string>
+    <string name="cheat_16">Strjúktu niður á tillögustikuna: aftur í eina röð. Dragðu upp frá tillögustikunni eða neðstu röð einnar raðar lyklaborðsins: fullt lyklaborð</string>
 
     <!-- About, try it -->
     <string name="header_about">Um forritið</string>

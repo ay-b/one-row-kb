@@ -89,6 +89,13 @@
     <string name="tab_settings">Postavke</string>
     <string name="tab_about">O aplikaciji</string>
     <string name="tab_help">Pomoć</string>
+    <string name="cheat_20">Kalkulator: dodirnite 123, a zatim tipku brojčanika (mala mreža pokraj abc) da ga otvorite</string>
+    <string name="cheat_21">Na brojčaniku traka prijedloga prikazuje rezultat onoga što upisujete (%1$s radi kao na kalkulatoru). Dodirnite rezultat da ga upišete, dodirnite izraz da ga upišete s rezultatom</string>
+    <string name="cheat_22">Tipka za poništavanje (desno od razmaka) poništava posljednju zamjenu</string>
+    <string name="cheat_23">Označite tekst s nekoliko brojeva i dodirnite ikonu brojčanika na desnom kraju trake prijedloga: brojčanik se otvara sa zbrojem brojeva</string>
+    <string name="help_one_row">Tipkovnica s jednim redom</string>
+    <string name="help_expanded">Proširena tipkovnica</string>
+    <string name="help_nice">Korisne značajke</string>
     <string name="header_cheat_sheet">Podsjetnik</string>
     <string name="cheat_1">Povucite ulijevo po redu slova: brisanje</string>
     <string name="cheat_2">Povucite gore-lijevo: glasovni unos</string>
@@ -97,18 +104,18 @@
     <string name="cheat_5">Povucite udesno: razmak</string>
     <string name="cheat_6">Držite slovo, zatim kliznite: otpuštanje upisuje upravo to slovo (bez pogađanja)</string>
     <string name="cheat_7">Držite tipku točke, zatim kliznite za odabir osnovne interpunkcije</string>
-    <string name="cheat_8">Držite tipku zareza, zatim kliznite: prvo su emojiji koje najviše koristite. Povucite prema gore: svi emojiji (dodirnite jedan)</string>
-    <string name="cheat_9">Povlačenje po razmaku: pomicanje kursora</string>
-    <string name="cheat_10">Povlačenje ulijevo po tipki za brisanje: brisanje riječ po riječ</string>
-    <string name="cheat_11">Povucite traku prijedloga u stranu: više prijedloga</string>
-    <string name="cheat_12">Držite prijedlog i ispustite ga na koš: zaboravi riječ</string>
-    <string name="cheat_13">Dodirnite tipku jezika: sljedeći jezik</string>
-    <string name="cheat_14">Držite tipku jezika, zatim kliznite: postavke, normalna, plutajuća, podijeljena (samo tableti). Kliznite na ikonu normalne da plutajuću tipkovnicu ponovno usidrite</string>
-    <string name="cheat_15">Plutajuća tipkovnica: povucite traku ispod tipki da je premjestite</string>
-    <string name="cheat_16">Plutajuća tipkovnica: dodirnite oznaku ukrštenih strelica pokraj globusa da prikažete kutove, zatim povucite kut za promjenu veličine</string>
-    <string name="cheat_17">Tipkanje pokretima (neobavezno, Postavke &gt; Pokreti): povucite prstom preko slova da napišete riječ, ovdje h-e-l-l-o. Dodirnite prijedlog da zamijenite riječ; tipka za brisanje briše cijelu riječ</string>
-    <string name="cheat_18">Kliznite s 123 na tipke: pojave se simboli i znakovi valuta; otpuštanje upisuje jedan i vraća na slova</string>
-    <string name="cheat_19">Povucite prema dolje po traci prijedloga: natrag na jedan red. Povucite prema gore od trake prijedloga ili donjeg reda tipkovnice s jednim redom: puna tipkovnica</string>
+    <string name="cheat_17">Držite tipku zareza, zatim kliznite: prvo su emojiji koje najviše koristite. Povucite prema gore: svi emojiji (dodirnite jedan)</string>
+    <string name="cheat_8">Povlačenje po razmaku: pomicanje kursora</string>
+    <string name="cheat_9">Povlačenje ulijevo po tipki za brisanje: brisanje riječ po riječ</string>
+    <string name="cheat_10">Povucite traku prijedloga u stranu: više prijedloga</string>
+    <string name="cheat_11">Držite prijedlog i ispustite ga na koš: zaboravi riječ</string>
+    <string name="cheat_12">Dodirnite tipku jezika: sljedeći jezik</string>
+    <string name="cheat_13">Držite tipku jezika, zatim kliznite: postavke, normalna, plutajuća, podijeljena (samo tableti). Kliznite na ikonu normalne da plutajuću tipkovnicu ponovno usidrite</string>
+    <string name="cheat_18">Plutajuća tipkovnica: povucite traku ispod tipki da je premjestite</string>
+    <string name="cheat_19">Plutajuća tipkovnica: dodirnite oznaku ukrštenih strelica pokraj globusa da prikažete kutove, zatim povucite kut za promjenu veličine</string>
+    <string name="cheat_14">Tipkanje pokretima (neobavezno, Postavke &gt; Pokreti): povucite prstom preko slova da napišete riječ, ovdje h-e-l-l-o. Dodirnite prijedlog da zamijenite riječ; tipka za brisanje briše cijelu riječ</string>
+    <string name="cheat_15">Kliznite s 123 na tipke: pojave se simboli i znakovi valuta; otpuštanje upisuje jedan i vraća na slova</string>
+    <string name="cheat_16">Povucite prema dolje po traci prijedloga: natrag na jedan red. Povucite prema gore od trake prijedloga ili donjeg reda tipkovnice s jednim redom: puna tipkovnica</string>
 
     <!-- About, try it -->
     <string name="header_about">O aplikaciji</string>

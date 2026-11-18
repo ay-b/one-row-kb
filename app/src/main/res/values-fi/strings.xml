@@ -86,6 +86,13 @@
     <string name="tab_settings">Asetukset</string>
     <string name="tab_about">Tietoja</string>
     <string name="tab_help">Ohje</string>
+    <string name="cheat_20">Laskin: napauta 123 ja sitten numeronäppäimistön näppäintä (pieni ruudukko abc:n vieressä) avataksesi numeronäppäimistön</string>
+    <string name="cheat_21">Numeronäppäimistössä ehdotuspalkki näyttää kirjoittamasi laskun tuloksen (%1$s toimii kuten laskimessa). Napauta tulosta kirjoittaaksesi sen, napauta lauseketta kirjoittaaksesi sen tuloksen kanssa</string>
+    <string name="cheat_22">Kumoa-näppäin (välilyöntinäppäimen oikealla puolella) peruu viimeisen korvauksen</string>
+    <string name="cheat_23">Valitse teksti, jossa on useita lukuja, ja napauta numeronäppäimistön kuvaketta ehdotuspalkin oikeassa päässä: näppäimistö avautuu lukujen summan kanssa</string>
+    <string name="help_one_row">Yhden rivin näppäimistö</string>
+    <string name="help_expanded">Laajennettu näppäimistö</string>
+    <string name="help_nice">Kätevät toiminnot</string>
     <string name="header_cheat_sheet">Muistilappu</string>
     <string name="cheat_1">Pyyhkäise kirjainrivillä vasemmalle: poista</string>
     <string name="cheat_2">Pyyhkäise ylävasemmalle: puhesyöte</string>
@@ -94,18 +101,18 @@
     <string name="cheat_5">Pyyhkäise oikealle: välilyönti</string>
     <string name="cheat_6">Pidä kirjainta painettuna ja vedä sormea: vapauttaminen kirjoittaa täsmälleen sen kirjaimen (ei arvausta)</string>
     <string name="cheat_7">Pidä pistenäppäintä painettuna ja vedä valitaksesi perusvälimerkit</string>
-    <string name="cheat_8">Pidä pilkkunäppäintä painettuna ja vedä: eniten käyttämäsi emojit tulevat ensin. Pyyhkäise ylös: kaikki emojit (napauta yhtä)</string>
-    <string name="cheat_9">Vedä välilyöntinäppäimellä: siirrä kohdistinta</string>
-    <string name="cheat_10">Vedä askelpalauttimella vasemmalle: poista sana kerrallaan</string>
-    <string name="cheat_11">Pyyhkäise ehdotuspalkkia sivulle: lisää ehdotuksia</string>
-    <string name="cheat_12">Pidä ehdotusta painettuna ja pudota se roskakoriin: unohda sana</string>
-    <string name="cheat_13">Napauta kielinäppäintä: seuraava kieli</string>
-    <string name="cheat_14">Pidä kielinäppäintä painettuna ja vedä: asetukset, normaali, kelluva, jaettu (vain tableteissa). Vedä normaali-kuvakkeeseen kiinnittääksesi kelluvan näppäimistön takaisin</string>
-    <string name="cheat_15">Kelluva näppäimistö: siirrä vetämällä näppäinten alla olevaa palkkia</string>
-    <string name="cheat_16">Kelluva näppäimistö: näytä kulmat napauttamalla maapallon vieressä olevaa ristikkäisten nuolten merkkiä ja muuta kokoa vetämällä kulmasta</string>
-    <string name="cheat_17">Pyyhkäisykirjoitus (valinnainen, Asetukset &gt; Eleet): piirrä sana kirjainten yli, tässä h-e-l-l-o. Korvaa sana napauttamalla ehdotusta; askelpalautin poistaa koko sanan</string>
-    <string name="cheat_18">Vedä 123-näppäimestä näppäimille: näkyviin tulee symboleja ja valuuttamerkkejä; vapauttaminen kirjoittaa yhden ja palaa kirjaimiin</string>
-    <string name="cheat_19">Pyyhkäise ehdotuspalkista alas: takaisin yhteen riviin. Vedä ylös ehdotuspalkista tai yhden rivin näppäimistön alimmalta riviltä: täysi näppäimistö</string>
+    <string name="cheat_17">Pidä pilkkunäppäintä painettuna ja vedä: eniten käyttämäsi emojit tulevat ensin. Pyyhkäise ylös: kaikki emojit (napauta yhtä)</string>
+    <string name="cheat_8">Vedä välilyöntinäppäimellä: siirrä kohdistinta</string>
+    <string name="cheat_9">Vedä askelpalauttimella vasemmalle: poista sana kerrallaan</string>
+    <string name="cheat_10">Pyyhkäise ehdotuspalkkia sivulle: lisää ehdotuksia</string>
+    <string name="cheat_11">Pidä ehdotusta painettuna ja pudota se roskakoriin: unohda sana</string>
+    <string name="cheat_12">Napauta kielinäppäintä: seuraava kieli</string>
+    <string name="cheat_13">Pidä kielinäppäintä painettuna ja vedä: asetukset, normaali, kelluva, jaettu (vain tableteissa). Vedä normaali-kuvakkeeseen kiinnittääksesi kelluvan näppäimistön takaisin</string>
+    <string name="cheat_18">Kelluva näppäimistö: siirrä vetämällä näppäinten alla olevaa palkkia</string>
+    <string name="cheat_19">Kelluva näppäimistö: näytä kulmat napauttamalla maapallon vieressä olevaa ristikkäisten nuolten merkkiä ja muuta kokoa vetämällä kulmasta</string>
+    <string name="cheat_14">Pyyhkäisykirjoitus (valinnainen, Asetukset &gt; Eleet): piirrä sana kirjainten yli, tässä h-e-l-l-o. Korvaa sana napauttamalla ehdotusta; askelpalautin poistaa koko sanan</string>
+    <string name="cheat_15">Vedä 123-näppäimestä näppäimille: näkyviin tulee symboleja ja valuuttamerkkejä; vapauttaminen kirjoittaa yhden ja palaa kirjaimiin</string>
+    <string name="cheat_16">Pyyhkäise ehdotuspalkista alas: takaisin yhteen riviin. Vedä ylös ehdotuspalkista tai yhden rivin näppäimistön alimmalta riviltä: täysi näppäimistö</string>
 
     <!-- About, try it -->
     <string name="header_about">Tietoja</string>

@@ -22,7 +22,7 @@ import kotlin.math.min
  * FULL = classic 3-row QWERTY (swipe up on the letter row; swipe down to return).
  * Gestures: drag on space = move cursor, drag left on backspace = delete words.
  */
-class KeyboardView(context: Context, private val listener: Listener, private var lang: Lang) : View(context) {
+class KeyboardView(context: Context, private var listener: Listener, private var lang: Lang) : View(context) {
 
     interface Listener {
         fun onText(text: String)
@@ -316,30 +316,138 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     }
     private val text = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = cInk; textAlign = Paint.Align.CENTER; typeface = face }
 
-    override fun onDetachedFromWindow() { emojiPopup?.dismiss(); emojiPopup = null; hideLens(); super.onDetachedFromWindow() }
+    override fun onDetachedFromWindow() { dismissEmoji(); hideLens(); super.onDetachedFromWindow() }
 
-    /** A floating palette of every emoji above the keyboard; tapping one types it (and it climbs in the lens). */
+    /**
+     * A floating palette of every emoji above the keyboard; tapping one types it (and it climbs in the lens). While it is open the guess bar
+     * is a search field (cursor, and an x that closes it): the keys of the expanded keyboard type into the search instead of the text, and the
+     * palette shows the emoji whose names match. It is one column narrower than the keyboard, so it keeps a margin to the screen edges.
+     */
     private fun showEmojiPalette() {
+        dismissEmoji()
         val ctx = context
-        val cols = 8
-        val cell = width / cols
+        val cols = 7
+        val cell = width / (cols + 1)
         val grid = android.widget.GridLayout(ctx).apply { columnCount = cols }
         fun add(e: String) {
             grid.addView(android.widget.TextView(ctx).apply {
                 text = e; textSize = 24f; gravity = android.view.Gravity.CENTER
                 layoutParams = android.widget.GridLayout.LayoutParams().apply { width = cell; height = cell }
-                setOnClickListener { Emojis.bump(ctx, e); listener.onText(e); haptic(); emojiPopup?.dismiss(); emojiPopup = null }
+                setOnClickListener { Emojis.bump(ctx, e); dismissEmoji(); listener.onText(e); haptic() }
             })
         }
-        Emojis.used(ctx).forEach { add(it) }
-        // pad the "used" row so the full list starts on a fresh line
-        val used = Emojis.used(ctx).size
-        repeat((cols - used % cols) % cols) { grid.addView(android.view.View(ctx), android.widget.GridLayout.LayoutParams().apply { width = cell; height = cell }) }
-        Emojis.all().forEach { add(it) }
-        val sv = android.widget.ScrollView(ctx).apply { addView(grid); setBackgroundColor(cStrip) }
+        val sv = android.widget.ScrollView(ctx)
+        fun fill(query: String) {
+            grid.removeAllViews()
+            if (query.isBlank()) {
+                Emojis.used(ctx).forEach { add(it) }
+                // pad the "used" row so the full list starts on a fresh line
+                val used = Emojis.used(ctx).size
+                repeat((cols - used % cols) % cols) { grid.addView(android.view.View(ctx), android.widget.GridLayout.LayoutParams().apply { width = cell; height = cell }) }
+                Emojis.all().forEach { add(it) }
+            } else Emojis.search(ctx, query).forEach { add(it) }
+            sv.scrollTo(0, 0)
+        }
+        fill("")
+        emojiFill = ::fill
+        sv.addView(grid, android.widget.FrameLayout.LayoutParams(cell * cols, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.Gravity.CENTER_HORIZONTAL))
+        val r = dp(18f)
+        sv.background = android.graphics.drawable.GradientDrawable().apply { setColor(cStrip); cornerRadii = floatArrayOf(r, r, r, r, 0f, 0f, 0f, 0f) }
+        sv.clipToOutline = true
+        sv.setPadding(0, dp(6f).toInt(), 0, 0)
         val h = (cell * 5.5f).toInt()
-        val pw = android.widget.PopupWindow(sv, width, h, false).apply { isOutsideTouchable = true; isTouchable = true }
-        try { pw.showAsDropDown(this, 0, -(height + h)); emojiPopup = pw } catch (_: Exception) {}
+        // the search: the guess bar becomes the field and the expanded keyboard types into it
+        emojiQuery = StringBuilder(); searchBase = listener; listener = SearchListener(listener)
+        if (mode == Mode.MINI) { searchReturnMode = Mode.MINI; setMode(Mode.FULL) }
+        cursorOn = true; handler.removeCallbacks(cursorBlink); handler.postDelayed(cursorBlink, 530)
+        invalidate()
+        post {                                   // after the layout of the (possibly taller) expanded keyboard
+            if (emojiQuery == null) return@post
+            val pw = android.widget.PopupWindow(sv, width, h, false).apply { isOutsideTouchable = false; isTouchable = true }
+            try { pw.showAsDropDown(this, 0, -(height + h)); emojiPopup = pw } catch (_: Exception) { dismissEmoji() }
+        }
+    }
+
+    private var emojiFill: ((String) -> Unit)? = null
+    private var emojiQuery: StringBuilder? = null            // non-null while the emoji search is open
+    private var searchBase: Listener? = null                 // the real listener while the search holds the keys
+    private var searchReturnMode: Mode? = null
+    private var cursorOn = true
+    private var searchStripDown = false
+    private val cursorBlink = object : Runnable { override fun run() { cursorOn = !cursorOn; invalidate(); if (emojiQuery != null) handler.postDelayed(this, 530) } }
+
+    /** Closes the emoji palette and the search: the keys type into the text again, the guess bar comes back, a one-row keyboard returns to one row. */
+    private fun dismissEmoji() {
+        handler.removeCallbacks(cursorBlink)
+        emojiPopup?.let { try { it.dismiss() } catch (_: Exception) {} }; emojiPopup = null
+        emojiFill = null; emojiQuery = null; searchStripDown = false
+        searchBase?.let { listener = it }; searchBase = null
+        val back = searchReturnMode; searchReturnMode = null
+        if (back != null && mode == Mode.FULL) setMode(back)
+        invalidate()
+    }
+
+    /** The keys while the emoji search is open: letters and symbols go into the search, backspace edits it, the rest of the typing keys do nothing. */
+    private inner class SearchListener(base: Listener) : Listener by base {
+        private fun add(t: String) { emojiQuery?.append(t.lowercase()); searchChanged() }
+        override fun onText(text: String) = add(text)
+        override fun onLetter(ch: Char, logp: FloatArray, exact: Boolean) = add(ch.toString())
+        override fun onAccent(base: Char, shown: String) = add(shown)
+        override fun onBackspace() { val q = emojiQuery ?: return; if (q.isNotEmpty()) { q.setLength(q.length - 1); searchChanged() } }
+        override fun onDeleteWord() { val q = emojiQuery ?: return; q.setLength(maxOf(0, q.trimEnd().lastIndexOf(' ') + 1)); searchChanged() }
+        override fun onEnter() {}
+        override fun onMoveCursor(steps: Int) {}
+        override fun onSuggestion(word: String) {}
+        override fun onVoice() {}
+        override fun onGlide(xs: FloatArray, ys: FloatArray, n: Int, layout: GlideLayout) {}
+        override fun onProofread() {}
+        override fun onSelCalc() {}
+        override fun onCalcUndo() {}
+    }
+
+    private fun searchChanged() { cursorOn = true; emojiFill?.invoke(emojiQuery?.toString() ?: ""); invalidate() }
+
+    /** The guess bar as a search field: a magnifier, the typed text with a blinking cursor, and an x at the right end that closes the search. */
+    private fun drawEmojiSearch(c: Canvas, r: RectF) {
+        val m = dp(8f)
+        val field = RectF(r.left + m, r.top + dp(5f), r.right - m, r.bottom - dp(5f))
+        fill.color = cPanel; c.drawRoundRect(field, dp(10f), dp(10f), fill)
+        // magnifier
+        val mx = field.left + dp(18f); val my = field.centerY() - dp(1.5f)
+        stroke.color = cDim; stroke.strokeWidth = dp(1.6f)
+        c.drawCircle(mx, my, dp(5.5f), stroke); c.drawLine(mx + dp(4f), my + dp(4f), mx + dp(8.5f), my + dp(8.5f), stroke)
+        // the x
+        val xs = dp(6f); val xc = field.right - dp(22f); val yc = field.centerY()
+        stroke.color = cInk; stroke.strokeWidth = dp(1.8f)
+        c.drawLine(xc - xs, yc - xs, xc + xs, yc + xs, stroke); c.drawLine(xc - xs, yc + xs, xc + xs, yc - xs, stroke)
+        // the text and the cursor
+        val q = emojiQuery?.toString() ?: ""
+        text.textAlign = Paint.Align.LEFT; text.color = cInk; text.textSize = sp(15f)
+        val left = field.left + dp(36f); val avail = field.right - dp(44f) - left
+        var shown = q
+        while (shown.length > 1 && text.measureText(shown) > avail) shown = shown.substring(1)       // the end of a long search stays in view
+        val base = r.centerY() - (text.ascent() + text.descent()) / 2
+        c.save(); c.clipRect(left, field.top, left + avail + dp(2f), field.bottom)
+        c.drawText(shown, left, base, text)
+        if (cursorOn) { val cx = left + text.measureText(shown) + dp(1f); stroke.color = cTeal; stroke.strokeWidth = dp(1.6f); c.drawLine(cx, field.centerY() - dp(10f), cx, field.centerY() + dp(10f), stroke) }
+        c.restore()
+        text.textAlign = Paint.Align.CENTER
+    }
+
+    /** Touches on the search field: only the x does anything (it closes the search); nothing else on the bar reacts. */
+    private fun searchStripTouch(e: MotionEvent): Boolean {
+        val strip = rowRects.getOrNull(0) ?: return false
+        when (e.actionMasked) {
+            MotionEvent.ACTION_DOWN -> { if (e.y <= strip.bottom) { searchStripDown = true; return true } }
+            MotionEvent.ACTION_UP -> if (searchStripDown) {
+                searchStripDown = false
+                if (e.x > width - dp(56f) && e.y <= strip.bottom + dp(4f)) { haptic(); dismissEmoji() }
+                return true
+            }
+            MotionEvent.ACTION_CANCEL -> if (searchStripDown) { searchStripDown = false; return true }
+            else -> if (searchStripDown) return true
+        }
+        return false
     }
 
     private fun dp(v: Float) = v * resources.displayMetrics.density
@@ -367,7 +475,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     fun resetForNewField() {
         scaling = false
-        emojiPopup?.dismiss(); emojiPopup = null
+        dismissEmoji()
         removeWord = null
         if (isSymbolMode(mode)) setMode(letterMode)
         shift = Shift.OFF
@@ -849,6 +957,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     /** Suggestions, or a lens (pressed key + neighbours) while a key is held. */
     private fun drawStrip(c: Canvas, r: RectF) {
+        if (emojiQuery != null) { drawEmojiSearch(c, r); return }
         if (locked) { drawLockedStrip(c, r); return }
         if (gesture == Gesture.SWIPE && swipe != Swipe.NONE) { drawSwipeHint(c, r); return }
         val days = expiringDays
@@ -1093,10 +1202,10 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     private fun handleTouch(e: MotionEvent): Boolean {
         if (scaling) return scaleTouch(e)
+        if (emojiQuery != null && searchStripTouch(e)) return true
         if (locked) return lockedTouch(e)
         when (e.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
-                emojiPopup?.dismiss(); emojiPopup = null
                 downX = e.x; downY = e.y; anchorX = e.x; lensX = e.x
                 if (removeWord != null) { gesture = Gesture.MENU; pressed = null; return true }
                 gesture = Gesture.NONE; swipe = Swipe.NONE

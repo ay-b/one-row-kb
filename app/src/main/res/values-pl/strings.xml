@@ -90,6 +90,13 @@
     <string name="tab_settings">Ustawienia</string>
     <string name="tab_about">O aplikacji</string>
     <string name="tab_help">Pomoc</string>
+    <string name="cheat_20">Kalkulator: dotknij 123, a potem klawisza klawiatury numerycznej (mała siatka obok abc), aby ją otworzyć</string>
+    <string name="cheat_21">Na klawiaturze numerycznej pasek podpowiedzi pokazuje wynik wpisywanego działania (%1$s działa jak w kalkulatorze). Dotknij wyniku, aby go wpisać, dotknij działania, aby wpisać je razem z wynikiem</string>
+    <string name="cheat_22">Klawisz cofania (na prawo od spacji) cofa ostatnie zastąpienie</string>
+    <string name="cheat_23">Zaznacz tekst z kilkoma liczbami i dotknij ikony klawiatury numerycznej na prawym końcu paska podpowiedzi: otworzy się z dodanymi liczbami</string>
+    <string name="help_one_row">Klawiatura jednorzędowa</string>
+    <string name="help_expanded">Klawiatura rozszerzona</string>
+    <string name="help_nice">Przydatne funkcje</string>
     <string name="header_cheat_sheet">Ściąga</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture -->
     <string name="cheat_1">Przesuń w lewo po rzędzie liter: usuń</string>
@@ -99,18 +106,18 @@
     <string name="cheat_5">Przesuń w prawo: spacja</string>
     <string name="cheat_6">Przytrzymaj literę, a potem przesuń: po puszczeniu wpisze się dokładnie ta litera (bez zgadywania)</string>
     <string name="cheat_7">Przytrzymaj klawisz kropki, a potem przesuń, aby wybrać podstawowe znaki interpunkcyjne</string>
-    <string name="cheat_8">Przytrzymaj klawisz przecinka, a potem przesuń: najpierw najczęściej używane emoji. Przesuń w górę: wszystkie emoji (dotknij wybranego)</string>
-    <string name="cheat_9">Przeciągnij po spacji: przesuwanie kursora</string>
-    <string name="cheat_10">Przeciągnij w lewo po Backspace: usuwanie słowo po słowie</string>
-    <string name="cheat_11">Przesuń pasek podpowiedzi na bok: więcej podpowiedzi</string>
-    <string name="cheat_12">Przytrzymaj podpowiedź i upuść ją na kosz: zapomnij słowo</string>
-    <string name="cheat_13">Dotknij klawisza języka: następny język</string>
-    <string name="cheat_14">Przytrzymaj klawisz języka, a potem przesuń: ustawienia, normalna, pływająca, dzielona (tylko tablety). Przesuń na ikonę normalnej, aby ponownie zadokować pływającą klawiaturę</string>
-    <string name="cheat_15">Pływająca klawiatura: przeciągnij pasek pod klawiszami, aby ją przesunąć</string>
-    <string name="cheat_16">Pływająca klawiatura: dotknij znaku skrzyżowanych strzałek obok globusa, aby pokazać rogi, a następnie przeciągnij róg, aby zmienić rozmiar</string>
-    <string name="cheat_17">Pisanie gestami (opcjonalne, Ustawienia &gt; Gesty): narysuj słowo na literach, tutaj h-e-l-l-o. Dotknij podpowiedzi, aby zastąpić słowo; Backspace usuwa całe słowo</string>
-    <string name="cheat_18">Przesuń z 123 na klawisze: pojawią się symbole i znaki walut; po puszczeniu wpisze się jeden z nich i klawiatura wróci do liter</string>
-    <string name="cheat_19">Przesuń w dół po pasku podpowiedzi: powrót do jednego rzędu. Pociągnij w górę od paska podpowiedzi lub dolnego rzędu klawiatury jednorzędowej: pełna klawiatura</string>
+    <string name="cheat_17">Przytrzymaj klawisz przecinka, a potem przesuń: najpierw najczęściej używane emoji. Przesuń w górę: wszystkie emoji (dotknij wybranego)</string>
+    <string name="cheat_8">Przeciągnij po spacji: przesuwanie kursora</string>
+    <string name="cheat_9">Przeciągnij w lewo po Backspace: usuwanie słowo po słowie</string>
+    <string name="cheat_10">Przesuń pasek podpowiedzi na bok: więcej podpowiedzi</string>
+    <string name="cheat_11">Przytrzymaj podpowiedź i upuść ją na kosz: zapomnij słowo</string>
+    <string name="cheat_12">Dotknij klawisza języka: następny język</string>
+    <string name="cheat_13">Przytrzymaj klawisz języka, a potem przesuń: ustawienia, normalna, pływająca, dzielona (tylko tablety). Przesuń na ikonę normalnej, aby ponownie zadokować pływającą klawiaturę</string>
+    <string name="cheat_18">Pływająca klawiatura: przeciągnij pasek pod klawiszami, aby ją przesunąć</string>
+    <string name="cheat_19">Pływająca klawiatura: dotknij znaku skrzyżowanych strzałek obok globusa, aby pokazać rogi, a następnie przeciągnij róg, aby zmienić rozmiar</string>
+    <string name="cheat_14">Pisanie gestami (opcjonalne, Ustawienia &gt; Gesty): narysuj słowo na literach, tutaj h-e-l-l-o. Dotknij podpowiedzi, aby zastąpić słowo; Backspace usuwa całe słowo</string>
+    <string name="cheat_15">Przesuń z 123 na klawisze: pojawią się symbole i znaki walut; po puszczeniu wpisze się jeden z nich i klawiatura wróci do liter</string>
+    <string name="cheat_16">Przesuń w dół po pasku podpowiedzi: powrót do jednego rzędu. Pociągnij w górę od paska podpowiedzi lub dolnego rzędu klawiatury jednorzędowej: pełna klawiatura</string>
 
     <!-- About, try it -->
     <string name="header_about">Informacje</string>
