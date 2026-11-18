@@ -4,6 +4,24 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.37.0
+- Hebrew: Shift is now the switch to the English layout. Tap it and the English layout (lower case, no automatic capitals) takes Hebrew's place and stays, with the Shift key lit, until Shift is tapped again and Hebrew returns. It stays across text fields; the language key still moves on to the next language as usual. Hebrew has no capitals, so Shift had nothing else to do there (the number row's symbols on Shift are therefore not available in the Hebrew layout), and Hebrew no longer shows Shift lit at the start of a sentence.
+
+## 0.36.0
+- One-row keyboard: picking a letter with the zoom (hold and slide) now turns the guessing off for that whole word: what you typed stays as typed (the zoomed letter exactly, the other letters as the nearest key) and nothing is corrected. The guesses are still offered in the bar to tap. After the space the next word guesses again. Before, the guess replaced the word unless every letter had been zoomed.
+
+## 0.35.1
+- Russian and Ukrainian: every vowel offers its stressed form when held on the expanded keyboard (а́ е́ и́ о́ у́ ы́ э́ ю́ я́; Ukrainian also і́ є́ ї́), written as the letter plus the combining acute accent. Russian е still offers ё first. A variant can now be a letter with a combining mark.
+
+## 0.35.0
+- Accented vowels: on the expanded keyboard every vowel of a Latin-script language (also English) now offers the common accented forms when held: a à á â ä æ ã å ā, e è é ê ë ē ė ę, i ì í î ï ī į, o ò ó ô ö œ ø õ ō, u ù ú û ü ū, y ý ÿ. The language's own letters stay first (French é è ê ë, Spanish á, German ä ...), so releasing straight away still types what it did before; the rest follow and the list scrolls. A form that is already a key of the language (å in Swedish) or offered under another letter is not repeated. Cyrillic, Greek and Hebrew are unchanged.
+
+## 0.34.1
+- Fix: Shift pressed in the middle of a word is no longer ignored. The letter tapped with Shift down is typed as a capital (iPhone, McDonald, AbCd) in the word being typed and in the guesses; before, the Shift was used up by the tap and the letter came out lower case. Backspace keeps the capitals and the letters in step.
+
+## 0.34.0
+- Number row: Shift turns the digits into their PC (US) symbols, `1 2 3 4 5 6 7 8 9 0` -> `! @ # $ % ^ & * ( )`. Tap Shift for one symbol, double-tap to keep them (caps lock). Only Shift pressed on purpose does it: the automatic capital at the start of a sentence leaves the digits alone. Holding a symbol key gives no zoom; without Shift everything is as before.
+
 ## 0.33.0
 - Password managers (1Password, Bitwarden, Google, Proton Pass and any other Android autofill service): on Android 11 and newer their suggestions now appear in the guess bar of the keyboard, in the keyboard's colors, like on Gboard. Tap one to fill the login. The suggestions go away as soon as you type or press backspace. In the one-row layout the shift and backspace keys beside the bar stay usable. Floating layout and Android 10 and older keep the system's own dropdown. Needs the password manager's "inline suggestions" option, where it has one (Android's autofill settings).
 - Library added: androidx.autofill (Apache 2.0), used only to style the suggestions.

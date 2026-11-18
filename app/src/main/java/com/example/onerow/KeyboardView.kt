@@ -37,6 +37,8 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         /** A national letter picked by hold-and-slide: [base] is its plain letter (for the decoder), [shown] what to type. */
         fun onAccent(base: Char, shown: String)
         fun onLanguage(code: String)
+        /** The Shift key was tapped: return true when the keyboard's owner handled it (Hebrew: Shift is the switch to English). */
+        fun onShiftKey(): Boolean = false
         fun onSettings()
         /** The user picked a layout in the language key's zoom: "docked", "floating" or "split". */
         fun onMode(mode: String)
@@ -59,13 +61,22 @@ class KeyboardView(context: Context, private var listener: Listener, private var
     private enum class Kind { LETTER, CHAR, SHIFT, BACKSPACE, SPACE, ENTER, TO_SYMBOLS, TO_LETTERS, SYM_PAGE2, SYM_PAGE1, SUGG, LANG, KEYPAD, UNDO, NONE }
 
     /** [dy] = vertical position of the glyph inside its cell (0 top .. 1 bottom). */
-    private class Key(val kind: Kind, val label: String, val weight: Float, val hint: String? = null, val dy: Float = 0.5f, val base: Char? = null)
+    private class Key(val kind: Kind, val label: String, val weight: Float, val hint: String? = null, val dy: Float = 0.5f, val base: Char? = null, val num: Boolean = false)
     private class Row(val keys: List<Key>, val heightDp: Float, val inset: Float = 0f,
                       val panel: Boolean = true, val keyBg: Boolean = false)
     private class Placed(val key: Key, val rect: RectF, val row: Int)
 
     var shift = Shift.OFF
+        set(v) { field = v; if (v == Shift.OFF) userShift = false; invalidate() }
+    /** Hebrew: the Shift key is lit while the English layout is on in its place. */
+    var shiftLangOn = false
         set(v) { field = v; invalidate() }
+    /** Shift was pressed by the user (not set by the automatic capital at the start of a sentence): only that one turns the number row into symbols. */
+    private var userShift = false
+    private val numShifted get() = shift != Shift.OFF && userShift
+    /** What a number-row key shows and types: the digit, or its symbol on a PC keyboard (1 -> !, 2 -> @ ...) while Shift is held on purpose. */
+    private fun numText(k: Key): String =
+        if (k.num && numShifted) NUM_SHIFTED[NUM_DIGITS.indexOf(k.label[0]).coerceAtLeast(0)].toString() else k.label
     var suggestions: List<String> = emptyList()
         set(v) { if (v != field) { suggScroll = 0f; scrollToBest = true }; field = v; invalidate() }
     private var suggScroll = 0f              // the guess bar scrolls sideways when there are more than SLOTS guesses
@@ -228,6 +239,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
     private val holdToPrecise = Runnable {
         val p = pressed ?: return@Runnable
         if (gesture != Gesture.NONE || suggDown >= 0) return@Runnable
+        if (p.key.num && numShifted) return@Runnable            // a symbol from Shift: a plain tap
         preciseEmoji = false
         val set = if (p.key.kind == Kind.CHAR) when (p.key.hint) {
             ",!?" -> PUNCTUATION
@@ -248,7 +260,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
             }
             val first = items.size
             // a variant that is itself a letter of the alphabet (ъ under ь) counts as that letter for guessing
-            lang.alternates[ch]?.forEach { v -> if (v.toString() != p.key.hint) items += Key(Kind.CHAR, v.toString(), 1f, base = if (lang.alphabet.index(v) >= 0) v else ch) }
+            lang.variantsOf(ch).forEach { v -> if (v != p.key.hint) items += Key(Kind.CHAR, v, 1f, base = if (v.length == 1 && lang.alphabet.index(v[0]) >= 0) v[0] else ch) }
             if (items.isEmpty()) return@Runnable                  // nothing to offer: stay a plain tap
             preciseKeys = items.map { Placed(it, p.rect, p.row) }
             preciseIdx0 = if (first < items.size) first else 0
@@ -517,7 +529,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
     /** Width of Shift / Backspace on the full keyboard: the third row ends up as wide as the top row (1.5 on a 10-key QWERTY). */
     private fun edgeKey() = ((lang.fullRows[0].length - lang.fullRows[2].length) / 2f).coerceAtLeast(1f)
     /** The digits of the number row, each with a small hint of what its hold offers (superscripts, fractions). */
-    private fun numberKeys() = "1234567890".mapIndexed { i, d -> Key(Kind.CHAR, d.toString(), 1f, hint = NUM_HINTS[i].toString()) }
+    private fun numberKeys() = "1234567890".mapIndexed { i, d -> Key(Kind.CHAR, d.toString(), 1f, hint = NUM_HINTS[i].toString(), num = true) }
 
     /** Letters grouped by keyboard column; inside a column they zig-zag high / middle / low. */
     private fun zigzag(groups: List<String>, kind: Kind): List<Key> = groups.flatMap { g ->
@@ -727,11 +739,11 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                         fill.color = (cTeal and 0x00FFFFFF) or 0x40000000
                         c.drawRoundRect(RectF(r).apply { inset(0f, dp(3f)) }, dp(5f), dp(5f), fill)
                     }
-                    val s = if ((k.kind == Kind.LETTER || k.base != null) && (inRow || shift != Shift.OFF)) k.label.uppercase() else k.label
+                    val s = if (k.num) numText(k) else if ((k.kind == Kind.LETTER || k.base != null) && (inRow || shift != Shift.OFF)) k.label.uppercase() else k.label
                     text.color = if (k.kind == Kind.CHAR && !inRow && k.hint != null && !k.label[0].isDigit()) cTeal else cInk
                     text.textSize = sp(if (inRow) (if (lang.alphabet.n > 28) 12f else 14f) else 20f) * fs
                     drawCentered(c, s, r.centerX(), r.top + k.dy * r.height())
-                    k.hint?.let { drawHint(c, it, r, k) }
+                    if (!(k.num && numShifted)) k.hint?.let { drawHint(c, it, r, k) }
                 }
                 Kind.TO_SYMBOLS, Kind.TO_LETTERS, Kind.SYM_PAGE2, Kind.SYM_PAGE1 -> {
                     text.color = cTeal; text.textSize = sp(15f) * fs
@@ -864,7 +876,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         val from = maxOf(0, idx - span); val to = minOf(keys.size - 1, idx + span)
         var items = (from..to).map { i ->
             val k = keys[i]
-            if ((k.key.kind == Kind.LETTER || k.key.base != null) && shift != Shift.OFF) k.key.label.uppercase() else k.key.label
+            if (k.key.num) numText(k.key) else if ((k.key.kind == Kind.LETTER || k.key.base != null) && shift != Shift.OFF) k.key.label.uppercase() else k.key.label
         }
         val mirrored = precise && preciseDir < 0
         var hiIdx = idx - from
@@ -946,7 +958,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
             lineTo(cx - s * 0.45f, cy + s * 0.85f); lineTo(cx - s * 0.45f, cy); lineTo(cx - s, cy); close()
         }
         stroke.strokeWidth = dp(1.8f)
-        if (shift != Shift.OFF) { fill.color = cTeal; c.drawPath(p, fill) }
+        if (shift != Shift.OFF || shiftLangOn) { fill.color = cTeal; c.drawPath(p, fill) }
         c.drawPath(p, stroke)
         if (shift == Shift.LOCK) c.drawLine(cx - s * 0.45f, cy + s * 1.25f, cx + s * 0.45f, cy + s * 1.25f, stroke)
     }
@@ -1543,7 +1555,10 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                 listener.onLetter(p.key.label[0], letterLogProbs(x, y), false)
                 if (shift == Shift.ONCE) shift = Shift.OFF
             }
-            Kind.CHAR -> if (p.key.base != null) commitExact(p) else listener.onText(p.key.label)
+            Kind.CHAR -> if (p.key.base != null) commitExact(p) else if (p.key.num) {
+                listener.onText(numText(p.key))
+                if (shift == Shift.ONCE) shift = Shift.OFF
+            } else listener.onText(p.key.label)
             Kind.LANG -> if (languages.size > 1) {
                 val i = languages.indexOfFirst { it.code == this.lang.code }
                 listener.onLanguage(languages[(i + 1) % languages.size].code)
@@ -1554,7 +1569,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                 listener.onEnter()
                 if (isSymbolMode(mode) && mode != Mode.PEEK) setMode(letterMode)   // Enter leaves the 123 pages and the keypad
             }
-            Kind.SHIFT -> {
+            Kind.SHIFT -> if (listener.onShiftKey()) { lastShiftTap = 0L; haptic() } else {
                 val now = System.currentTimeMillis()
                 shift = when {
                     now - lastShiftTap < 350 -> Shift.LOCK
@@ -1562,6 +1577,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                     else -> Shift.OFF
                 }
                 lastShiftTap = now
+                userShift = shift != Shift.OFF
             }
             Kind.TO_SYMBOLS -> setMode(if (mode == Mode.FULL) Mode.SYMBOLS_FULL else Mode.SYMBOLS)   // keep the keyboard's size
             Kind.TO_LETTERS -> setMode(letterMode)
@@ -1654,6 +1670,8 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         const val HINTS_ROW2_NUM = "@#\$_&-+()/"        // ... and on the second ("%" moved up to Q)
         const val CURRENCY_ZOOM = "\$¢£€¥₱"          // what holding a currency key offers (the dollar sign's own zoom list)
         const val CURRENCY = "\$€£¥¢¤₣₤"             // every currency sign the keyboard's font (Victor Mono) has, most used first
+        const val NUM_DIGITS = "1234567890"
+        const val NUM_SHIFTED = "!@#$%^&*()"           // the PC (US) Shift values of the digits
         const val NUM_HINTS = "½²³¼⁵⁶⁷⁸⁹⁰"       // under 1234567890 on the number row
         const val SWIPE_MIN_DP = 26f      // travel before a stroke on the letter row counts as a shortcut swipe
         const val SIDE_MIN = 0.35f          // one-hand layouts: the narrowest and widest the keyboard can be made, as a share of the screen width

@@ -15,11 +15,22 @@ class Lang(
      * folds onto a letter (Ukrainian ґ) may be added.
      */
     val fullRows: List<String>,
-    /** National letters reachable by holding a key on the full keyboard: base letter -> variants. */
+    /**
+     * National letters reachable by holding a key on the full keyboard: base letter -> variants. A variant is one character, or a character
+     * with its combining marks (the stressed vowels of Russian and Ukrainian: а + U+0301), see [variantsOf].
+     */
     val alternates: Map<Char, String> = emptyMap(),
     /** Small symbols under the third letter row, one per key left to right (a space = none); null = the standard `* " ' : ; ! ?`. */
     val row3Symbols: String? = null,
-)
+) {
+    /** The variants of [base] as strings: each character together with the combining marks (U+0300..U+036F) that follow it. */
+    fun variantsOf(base: Char): List<String> {
+        val s = alternates[base] ?: return emptyList()
+        val out = ArrayList<String>()
+        for (c in s) if (c.code in 0x300..0x36F && out.isNotEmpty()) out[out.size - 1] = out.last() + c else out += c.toString()
+        return out
+    }
+}
 
 object Languages {
     /**
@@ -53,6 +64,33 @@ object Languages {
     // Hebrew: 22 letters; the five final forms fold onto their plain letters and are put at the end of a word by the engine
     private val hebrew = Alphabet("אבגדהוזחטיכלמנסעפצקרשת", mapOf('ך' to "כ", 'ם' to "מ", 'ן' to "נ", 'ף' to "פ", 'ץ' to "צ"),
         mapOf('כ' to 'ך', 'מ' to 'ם', 'נ' to 'ן', 'פ' to 'ף', 'צ' to 'ץ'))
+
+    /**
+     * Every vowel of a Latin-script language also offers the common accented forms when held (Gboard-style), after the letters of the
+     * language itself. A form that is already a key of the language (å in Swedish) or already offered under another letter is not repeated.
+     */
+    private val vowelAccents = mapOf('a' to "àáâäæãåā", 'e' to "èéêëēėę", 'i' to "ìíîïīį", 'o' to "òóôöœøõō", 'u' to "ùúûüū", 'y' to "ýÿ")
+
+    /** Russian and Ukrainian write the stress with a combining acute accent on the vowel (а́ е́ и́ ...). */
+    private val stressed = mapOf("ru" to "аеиоуыэюя", "uk" to "аеиіоуєюяї")
+
+    private fun withVowelAccents(l: Lang): Lang {
+        stressed[l.code]?.let { vowels ->
+            val merged = LinkedHashMap<Char, String>(l.alternates)
+            for (v in vowels) if (l.alphabet.index(v) >= 0) merged[v] = (merged[v] ?: "") + v + "\u0301"
+            return Lang(l.code, l.name, l.alphabet, l.columns, l.fullRows, merged, l.row3Symbols)
+        }
+        if ('a' !in l.alphabet.letters) return l                      // Greek, Hebrew: their own vowels
+        val have = HashSet<Char>(); l.alternates.values.forEach { v -> v.forEach { have += it } }
+        val taken = l.alphabet.letters.toSet() + l.fullRows.joinToString("").toSet() + have
+        val merged = LinkedHashMap<Char, String>(l.alternates)
+        for ((base, extra) in vowelAccents) {
+            if (l.alphabet.index(base) < 0) continue
+            val add = extra.filter { it !in taken }
+            if (add.isNotEmpty()) merged[base] = (merged[base] ?: "") + add
+        }
+        return Lang(l.code, l.name, l.alphabet, l.columns, l.fullRows, merged, l.row3Symbols)
+    }
 
     val all: List<Lang> = listOf(
         Lang("en", "English", latin, qwerty, qwertyRows),
@@ -126,7 +164,7 @@ object Languages {
             mapOf('a' to "ą", 'c' to "č", 'e' to "ęė", 'i' to "į", 's' to "š", 'u' to "ųū", 'z' to "ž")),
         Lang("ca", "Català", latin, qwerty, qwertyRows,
             mapOf('a' to "à", 'c' to "ç", 'e' to "éè", 'i' to "íï", 'o' to "óò", 'u' to "úü")),
-    )
+    ).map { withVowelAccents(it) }
 
     fun byCode(code: String?): Lang = all.firstOrNull { it.code == code } ?: all[0]
 }

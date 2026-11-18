@@ -60,6 +60,8 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     private var prevIdx = -1
     private var capFirst = false
     private var capAll = false
+    /** Per tap of the word being typed: was Shift down for it (parallel to [taps]). */
+    private val upper = ArrayList<Boolean>()
     private var cands: List<Candidate> = emptyList()
     private var decoding = true       // false in password / non-text fields
 
@@ -123,7 +125,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         loaded.values.forEach { it.glide.applyTolerance(prefs.swipeTolerance) }
         if (prefs.swipeTyping) loaded[lang.code]?.let { e -> Thread { e.glide.warmUp() }.start() }   // switched on after the engine loaded
         kv.tapSigma = floatArrayOf(0.62f, 0.9f, 1.3f)[prefs.tolerance]
-        if (cur.code != lang.code) switchLanguage(cur)
+        if (cur.code != lang.code && !(heEnglish && cur.code == "he")) switchLanguage(cur)      // Hebrew's Shift keeps the English layout from field to field
     }
 
     // ---- proofreading (on-device, see Proofread) ----
@@ -197,10 +199,23 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         }
     }
 
-    private fun switchLanguage(l: Lang) {
+    /** Hebrew has no capitals, so its Shift key is the switch to the English layout (lower case) and back: true while English stands in for Hebrew. */
+    private var heEnglish = false
+
+    override fun onShiftKey(): Boolean {
+        if (lang.code != "he" && !heEnglish) return false
+        val toEnglish = !heEnglish
+        switchLanguage(Languages.byCode(if (toEnglish) "en" else "he"), temporary = toEnglish)
+        return true
+    }
+
+    /** [temporary]: English standing in for Hebrew (see [heEnglish]); the saved language stays Hebrew and nothing is capitalized. */
+    private fun switchLanguage(l: Lang, temporary: Boolean = false) {
         finishComposing(); endGlide()
+        heEnglish = temporary
+        if (::kv.isInitialized) { kv.shiftLangOn = temporary; kv.shift = KeyboardView.Shift.OFF }
         lang = l
-        prefs.currentCode = l.code
+        prefs.currentCode = if (temporary) "he" else l.code
         kv.setLanguage(l)
         syncProof()
         loadEngine(l)
@@ -453,7 +468,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         syncAccess(); refreshBillingIfStale(); syncShake(true)
         selStart = info.initialSelStart; selEnd = info.initialSelEnd
         endGlide()
-        taps.clear(); exact.clear(); shown.clear()
+        taps.clear(); exact.clear(); shown.clear(); upper.clear()
         applyPrefs()
         applyNavBar()
         if (layoutMode == "floating" && !floating.isShowing()) showFloatingSoon()       // insurance: the window-shown callback can come too early
@@ -478,7 +493,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         // Without this, the stale composing region swallowed new input and snapped the caret back to the end.
         if (taps.isNotEmpty() && android.os.SystemClock.uptimeMillis() >= ignoreSelUntil &&
             (cs < 0 || ce < 0 || newSs != newSe || newSs != ce)) {
-            if (cs >= 0 && ce >= 0) finishComposing() else { taps.clear(); exact.clear(); shown.clear(); cands = emptyList() }
+            if (cs >= 0 && ce >= 0) finishComposing() else { taps.clear(); exact.clear(); shown.clear(); upper.clear(); cands = emptyList() }
         }
         if (::kv.isInitialized && taps.isEmpty()) refresh()
         if (::kv.isInitialized && selMode && android.os.SystemClock.uptimeMillis() - ownEditAt > 400 &&
@@ -517,10 +532,22 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         return l.indexOf(t.substring(i))
     }
 
-    private fun styled(w: String): String = when {
-        capAll -> w.uppercase()
-        capFirst -> w.replaceFirstChar { it.uppercase() }
-        else -> w
+    private fun styled(w: String): String {
+        val r = when {
+            capAll -> w.uppercase()
+            capFirst -> w.replaceFirstChar { it.uppercase() }
+            else -> w
+        }
+        if (capAll || upper.size != taps.size || upper.none { it }) return r
+        // capitals asked for letter by letter (Shift pressed in the middle of the word): the n-th key of the word is the n-th tap
+        val a = lex?.alphabet ?: return r
+        val sb = StringBuilder(); var k = 0
+        for (c in r) {
+            val m = a.key(c.toString()).size
+            sb.append(if (m > 0 && upper.getOrNull(k) == true) c.uppercaseChar() else c)
+            k += m
+        }
+        return sb.toString()
     }
 
     /** Set when the last action was deleting a line break: no automatic capital until something else is typed. */
@@ -539,7 +566,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         val before = textBefore(12).trimEnd(' ', '\u00a0').trimEnd('"', '\'', ')', ']', '}', '\u00bb', '\u201d', '\u2019')
         val sentenceDone = before.isEmpty() || before.last() in ".!?\u2026\n\u3002"
         val capOk = !noAutoCap && (!sentenceOnly || sentenceDone)
-        if (isText && capOk && kv.shift == KeyboardView.Shift.OFF && ic.getCursorCapsMode(info.inputType) != 0)
+        if (isText && capOk && !heEnglish && lang.code != "he" && kv.shift == KeyboardView.Shift.OFF && ic.getCursorCapsMode(info.inputType) != 0)
             kv.shift = KeyboardView.Shift.ONCE
         if (taps.isEmpty()) {
             kv.bestIndex = -1
@@ -612,7 +639,9 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (list.isEmpty()) return
         run { val order = diversify(list.map { it.word }); list = list.sortedBy { order.indexOf(it.word) } }
         // Full keyboard / hold-and-slide: the input gets exactly what was typed. Guesses are only offered.
-        val deliberate = exact.all { it }
+        // One-row keyboard: a single letter picked with the zoom (hold and slide) turns the guessing off for the whole word, the other letters are
+        // typed as the nearest key; the next word (after a space) guesses again. The expanded keyboard types every letter exactly anyway.
+        val deliberate = exact.any { it }
         if (deliberate) {
             var typed = taps.withIndex().joinToString("") { (i, t) ->
                 shown.getOrNull(i) ?: lx.alphabet.letters[t.indices.maxByOrNull { t[it] }!!].toString()
@@ -641,7 +670,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (taps.isEmpty()) return
         if (decoding && lastDeliberate && !resumed) learn(lastRaw)
         currentInputConnection?.finishComposingText()
-        taps.clear(); exact.clear(); shown.clear(); cands = emptyList()
+        taps.clear(); exact.clear(); shown.clear(); upper.clear(); cands = emptyList()
     }
 
     /** A word typed on purpose: unknown ones join the dictionary; used ones climb in priority. */
@@ -872,6 +901,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         taps += logp
         exact += exactPick
         shown += shownText
+        upper += (kv.shift != KeyboardView.Shift.OFF)          // Shift pressed for this very letter: a capital in the middle of a word (iPhone, McDonald)
         updateComposing()
     }
 
@@ -1001,7 +1031,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         }
         endGlide()
         if (taps.isNotEmpty()) {
-            taps.removeAt(taps.size - 1); exact.removeAt(exact.size - 1); shown.removeAt(shown.size - 1)
+            taps.removeAt(taps.size - 1); exact.removeAt(exact.size - 1); shown.removeAt(shown.size - 1); if (upper.isNotEmpty()) upper.removeAt(upper.size - 1)
             if (taps.isEmpty()) {
                 currentInputConnection?.setComposingText("", 1)
                 currentInputConnection?.finishComposingText()
@@ -1044,7 +1074,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         ic.beginBatchEdit()
         ic.deleteSurroundingText(w.length, 0)
         prevIdx = previousWordIdx()
-        taps.addAll(newTaps); shown.addAll(newShown); newTaps.forEach { exact += true }
+        taps.addAll(newTaps); shown.addAll(newShown); newTaps.forEach { exact += true; upper += false }
         // keep the word's capitalization for the guesses ("This" -> "Thistle", not "thistle"); all-caps stays all-caps
         capAll = w.length > 1 && w.all { !it.isLetter() || it.isUpperCase() }
         capFirst = capAll || w[0].isUpperCase()
@@ -1058,7 +1088,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         own()
         justAutoSpaced = false; wordAutoSpaced = false
         endGlide()
-        taps.clear(); exact.clear(); shown.clear()
+        taps.clear(); exact.clear(); shown.clear(); upper.clear()
         val ic = currentInputConnection ?: return
         ic.finishComposingText()
         val before = ic.getTextBeforeCursor(64, 0) ?: return
@@ -1200,7 +1230,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
             if (decoding && lex?.indexOf(word) == -1) learn(word.lowercase())   // picked the 'typed' slot: deliberate
             ic.setComposingText(word, 1)
             ic.finishComposingText()
-            taps.clear(); exact.clear(); shown.clear()
+            taps.clear(); exact.clear(); shown.clear(); upper.clear()
             ic.commitText(" ", 1)
         } else {
             // Not composing (the app dropped the composing region, or the caret sits at a word's end):
