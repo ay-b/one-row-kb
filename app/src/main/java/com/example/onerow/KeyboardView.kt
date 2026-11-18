@@ -1409,11 +1409,18 @@ class KeyboardView(context: Context, private var listener: Listener, private var
             val i = a.index(p.key.label[0]); if (i < 0) continue
             cx[i] = p.rect.centerX(); cy[i] = p.rect.centerY(); w = p.rect.width()
         }
+        // a final-form key (Hebrew ם ן ך ף) is where the path of a word that ends in that letter ends
+        var ex: FloatArray? = null; var ey: FloatArray? = null
+        for (p in placed) if (p.key.kind == Kind.CHAR && p.key.label.length == 1) {
+            val b = p.key.base ?: continue; val i = a.index(b); if (i < 0 || a.finals[b] != p.key.label[0]) continue
+            if (ex == null) { ex = FloatArray(n) { Float.NaN }; ey = FloatArray(n) { Float.NaN } }
+            ex[i] = p.rect.centerX(); ey!![i] = p.rect.centerY()
+        }
         for ((base, alts) in lang.alternates) for (alt in alts) {          // national letters are typed from their base key
             val k = a.index(alt); val b = a.index(base)
             if (k >= 0 && b >= 0 && cx[k].isNaN() && !cx[b].isNaN()) { cx[k] = cx[b]; cy[k] = cy[b] }
         }
-        return GlideLayout(cx, cy, w)
+        return GlideLayout(cx, cy, w, ex, ey)
     }
 
     private fun finishGlide(start: Placed?) {

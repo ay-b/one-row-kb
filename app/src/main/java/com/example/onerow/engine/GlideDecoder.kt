@@ -4,7 +4,11 @@ import kotlin.math.max
 import kotlin.math.sqrt
 
 /** Key centres (view pixels) per alphabet index; NaN = that letter has no key. [keyW] is the key width. */
-class GlideLayout(val cx: FloatArray, val cy: FloatArray, val keyW: Float)
+class GlideLayout(
+    val cx: FloatArray, val cy: FloatArray, val keyW: Float,
+    /** Where a letter's other key is when the word ENDS in it (Hebrew: the final-form keys ם ן ך ף); NaN / null = none. */
+    val endCx: FloatArray? = null, val endCy: FloatArray? = null,
+)
 
 /**
  * Glide ("swipe") typing: finds the dictionary words whose ideal path -- the polyline through the centres of
@@ -124,14 +128,26 @@ class GlideDecoder(private val lex: Lexicon) {
         val nk = lex.alphabet.n
         val cx = FloatArray(nk) { g.cx[it] / u }; val cy = FloatArray(nk) { g.cy[it] / u }
         val dS = FloatArray(nk); val dE = FloatArray(nk); val miss = FloatArray(nk)
+        // a letter that has a second key for the end of a word: that key's centre, whether the path end is nearer to it, and the missed-key cost of the last letter
+        val ecx = FloatArray(nk) { g.endCx?.get(it)?.div(u) ?: Float.NaN }; val ecy = FloatArray(nk) { g.endCy?.get(it)?.div(u) ?: Float.NaN }
+        val endAlt = BooleanArray(nk); val missLast = FloatArray(nk)
         for (k in 0 until nk) {
             if (cx[k].isNaN()) { dS[k] = -1f; dE[k] = -1f; miss[k] = 0f; continue }
-            val a = dist(cx[k] - sx, cy[k] - sy); val b = dist(cx[k] - ex, cy[k] - ey)
-            dS[k] = if (a <= endRadius) a else -1f
-            dE[k] = if (b <= endRadius) b else -1f
+            val a = dist(cx[k] - sx, cy[k] - sy); var b = dist(cx[k] - ex, cy[k] - ey)
             var best = Float.MAX_VALUE
             for (p in 0 until N) { val d = dist(cx[k] - up[2 * p], cy[k] - up[2 * p + 1]); if (d < best) best = d }
-            miss[k] = max(0f, best - visitTolerance)
+            miss[k] = max(0f, best - visitTolerance); missLast[k] = miss[k]
+            if (!ecx[k].isNaN()) {
+                val b2 = dist(ecx[k] - ex, ecy[k] - ey)
+                if (b2 < b) {
+                    endAlt[k] = true; b = b2
+                    var best2 = Float.MAX_VALUE
+                    for (p in 0 until N) { val d = dist(ecx[k] - up[2 * p], ecy[k] - up[2 * p + 1]); if (d < best2) best2 = d }
+                    missLast[k] = max(0f, best2 - visitTolerance)
+                }
+            }
+            dS[k] = if (a <= endRadius) a else -1f
+            dE[k] = if (b <= endRadius) b else -1f
         }
         val pair = FloatArray(nk * nk)                 // distance between key centres, for the length of ideal paths
         for (a in 0 until nk) if (!cx[a].isNaN()) for (b in 0 until nk) if (!cx[b].isNaN()) pair[a * nk + b] = dist(cx[a] - cx[b], cy[a] - cy[b])
@@ -160,8 +176,9 @@ class GlideDecoder(private val lex: Lexicon) {
                 for (j in 0 until m) {
                     val k = flat[o + j]
                     if (cx[k].isNaN()) { ok = false; break }
-                    missed += miss[k]
-                    if (j > 0) ideal += pair[prevKey * nk + k]
+                    val altEnd = j == m - 1 && endAlt[k]
+                    missed += if (j == m - 1) missLast[k] else miss[k]
+                    if (j > 0) ideal += if (altEnd) dist(cx[prevKey] - ecx[k], cy[prevKey] - ecy[k]) else pair[prevKey * nk + k]
                     prevKey = k
                 }
                 if (!ok || ideal < minLen || ideal > maxLen) continue
@@ -190,7 +207,11 @@ class GlideDecoder(private val lex: Lexicon) {
             scored++
             val m = len[i].toInt(); val o = off[i]
             var ideal = 0f
-            for (j in 0 until m) { val k = flat[o + j]; ix[j] = cx[k]; iy[j] = cy[k]; if (j > 0) ideal += pair[flat[o + j - 1] * nk + k] }
+            for (j in 0 until m) {
+                val k = flat[o + j]
+                if (j == m - 1 && endAlt[k]) { ix[j] = ecx[k]; iy[j] = ecy[k] } else { ix[j] = cx[k]; iy[j] = cy[k] }
+                if (j > 0) ideal += dist(ix[j] - ix[j - 1], iy[j] - iy[j - 1])
+            }
             val step = ideal / (N - 1)
             var seg = 1; var acc = 0f
             var segLen = dist(ix[1] - ix[0], iy[1] - iy[0])

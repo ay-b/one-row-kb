@@ -4,6 +4,9 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.32.1
+- Fix (Hebrew swipe typing): a word that ends in a final letter was missed when the finger ended on the final key (ם ן ך ף), because the swipe was compared with the path to the plain letter's key (מ נ כ פ). The final-form keys are now where such a word's path ends (ending on the plain key still works too). In a test of 400 common final-ending words, 3% were found in the top three before and 99% now.
+
 ## 0.32.0
 - New language: Hebrew (עברית). Add it under Settings > Languages. Both layouts follow the standard Israeli keyboard (the letters keep their physical places, not mirrored): the one-row keyboard has 22 letters in 9 columns, the expanded keyboard has the usual three rows plus `/` and `'` (for ג'ינס, צ'ק).
 - Final letters (ך ם ן ף ץ): the guesses and the dictionary know them, a plain letter at the end of a word becomes its final form by itself (type מ, get ם), and they are also keys / hold-alternates (hold כ for ך, מ for ם, נ for ן, פ for ף, צ for ץ). Guessing and swipe typing work the same as in the other languages; the dictionary has 350,000 words and 23,000 word pairs.
