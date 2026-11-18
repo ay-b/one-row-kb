@@ -86,6 +86,9 @@
     <string name="header_gestures">Pokreti</string>
     <string name="swipe_typing">Tipkanje pokretima na punoj tipkovnici</string>
     <string name="gestures_desc">Umjesto dodirivanja slova povucite prstom preko njih da napišete riječ. Povucite prema dolje po traci prijedloga za povratak na jedan red. Podsjetnik u nastavku prikazuje sve pokrete.</string>
+    <string name="tab_settings">Postavke</string>
+    <string name="tab_about">O aplikaciji</string>
+    <string name="tab_help">Pomoć</string>
     <string name="header_cheat_sheet">Podsjetnik</string>
     <string name="cheat_1">Povucite ulijevo po redu slova: brisanje</string>
     <string name="cheat_2">Povucite gore-lijevo: glasovni unos</string>

@@ -83,6 +83,9 @@
     <string name="header_gestures">Eleet</string>
     <string name="swipe_typing">Pyyhkäisykirjoitus täydellä näppäimistöllä</string>
     <string name="gestures_desc">Piirrä sana kirjainten yli niitä napauttamatta. Pyyhkäise ehdotuspalkista alas palataksesi yhteen riviin. Alla oleva muistilappu näyttää kaikki eleet.</string>
+    <string name="tab_settings">Asetukset</string>
+    <string name="tab_about">Tietoja</string>
+    <string name="tab_help">Ohje</string>
     <string name="header_cheat_sheet">Muistilappu</string>
     <string name="cheat_1">Pyyhkäise kirjainrivillä vasemmalle: poista</string>
     <string name="cheat_2">Pyyhkäise ylävasemmalle: puhesyöte</string>

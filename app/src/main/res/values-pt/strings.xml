@@ -83,6 +83,9 @@
     <string name="header_gestures">Gestos</string>
     <string name="swipe_typing">Digitação por gestos no teclado completo</string>
     <string name="gestures_desc">Desenhe uma palavra sobre as letras em vez de tocar nelas. Deslize para baixo na barra de sugestões para voltar a uma linha. O guia rápido abaixo mostra todos os gestos.</string>
+    <string name="tab_settings">Definições</string>
+    <string name="tab_about">Acerca</string>
+    <string name="tab_help">Ajuda</string>
     <string name="header_cheat_sheet">Guia rápido</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture (tools/make_cheatsheet.py) -->
     <string name="cheat_1">Deslize para a esquerda na linha de letras: apagar</string>

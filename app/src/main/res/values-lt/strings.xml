@@ -86,6 +86,9 @@
     <string name="header_gestures">Gestai</string>
     <string name="swipe_typing">Rašymas braukiant pilnoje klaviatūroje</string>
     <string name="gestures_desc">Užuot liesdami raides, nubrėžkite žodį per jas. Perbraukite žemyn pasiūlymų juostoje, kad grįžtumėte prie vienos eilutės. Toliau pateiktoje atmintinėje rodomi visi gestai.</string>
+    <string name="tab_settings">Nustatymai</string>
+    <string name="tab_about">Apie</string>
+    <string name="tab_help">Pagalba</string>
     <string name="header_cheat_sheet">Atmintinė</string>
     <string name="cheat_1">Perbraukite kairėn raidžių eilutėje: trynimas</string>
     <string name="cheat_2">Perbraukite aukštyn ir kairėn: balso įvestis</string>

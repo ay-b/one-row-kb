@@ -83,6 +83,9 @@
     <string name="header_gestures">Gesten</string>
     <string name="swipe_typing">Wischeingabe auf der vollen Tastatur</string>
     <string name="gestures_desc">Zeichne ein Wort über die Buchstaben, statt sie zu tippen. Wische auf der Vorschlagsleiste nach unten, um zur einen Zeile zurückzukehren. Der Spickzettel unten zeigt alle Gesten.</string>
+    <string name="tab_settings">Einstellungen</string>
+    <string name="tab_about">Info</string>
+    <string name="tab_help">Hilfe</string>
     <string name="header_cheat_sheet">Spickzettel</string>
     <string name="cheat_1">Auf der Buchstabenreihe nach links wischen: löschen</string>
     <string name="cheat_2">Nach links oben wischen: Spracheingabe</string>

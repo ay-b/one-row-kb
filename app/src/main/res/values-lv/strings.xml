@@ -86,6 +86,9 @@
     <string name="header_gestures">Žesti</string>
     <string name="swipe_typing">Rakstīšana ar vilkšanu pilnajā tastatūrā</string>
     <string name="gestures_desc">Velciet vārdu pāri burtiem, nevis pieskarieties tiem. Velciet uz leju ieteikumu joslā, lai atgrieztos pie vienas rindas. Zemāk redzamais pārskats rāda visus žestus.</string>
+    <string name="tab_settings">Iestatījumi</string>
+    <string name="tab_about">Par lietotni</string>
+    <string name="tab_help">Palīdzība</string>
     <string name="header_cheat_sheet">Pārskats</string>
     <string name="cheat_1">Velciet pa kreisi burtu rindā: dzēšana</string>
     <string name="cheat_2">Velciet augšup pa kreisi: balss ievade</string>

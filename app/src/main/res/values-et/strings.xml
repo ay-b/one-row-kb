@@ -83,6 +83,9 @@
     <string name="header_gestures">Žestid</string>
     <string name="swipe_typing">Pühkimissisestus täisklaviatuuril</string>
     <string name="gestures_desc">Joonista sõna tähtede kohal, selle asemel et neid puudutada. Pühi soovituseribal alla, et naasta ühe reani. Allolev spikker näitab kõiki žeste.</string>
+    <string name="tab_settings">Seaded</string>
+    <string name="tab_about">Teave</string>
+    <string name="tab_help">Abi</string>
     <string name="header_cheat_sheet">Spikker</string>
     <string name="cheat_1">Pühi tähereal vasakule: kustuta</string>
     <string name="cheat_2">Pühi üles vasakule: häälsisend</string>

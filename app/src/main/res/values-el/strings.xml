@@ -83,6 +83,9 @@
     <string name="header_gestures">Κινήσεις</string>
     <string name="swipe_typing">Πληκτρολόγηση με σύρσιμο στο πλήρες πληκτρολόγιο</string>
     <string name="gestures_desc">Σχεδιάστε μια λέξη πάνω από τα γράμματα αντί να τα πατάτε. Σύρετε προς τα κάτω στη γραμμή προτάσεων για να επιστρέψετε σε μία σειρά. Ο οδηγός παρακάτω δείχνει όλες τις κινήσεις.</string>
+    <string name="tab_settings">Ρυθμίσεις</string>
+    <string name="tab_about">Σχετικά</string>
+    <string name="tab_help">Βοήθεια</string>
     <string name="header_cheat_sheet">Οδηγός</string>
     <string name="cheat_1">Σύρετε αριστερά στη σειρά γραμμάτων: διαγραφή</string>
     <string name="cheat_2">Σύρετε πάνω αριστερά: φωνητική εισαγωγή</string>

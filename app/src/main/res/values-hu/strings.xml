@@ -83,6 +83,9 @@
     <string name="header_gestures">Gesztusok</string>
     <string name="swipe_typing">Csúsztatásos gépelés a teljes billentyűzeten</string>
     <string name="gestures_desc">Rajzoljon egy szót a betűk fölött ahelyett, hogy koppintana rájuk. Húzza le az ujját a javaslatsávon, hogy visszatérjen az egy sorhoz. Az alábbi puska minden gesztust bemutat.</string>
+    <string name="tab_settings">Beállítások</string>
+    <string name="tab_about">Névjegy</string>
+    <string name="tab_help">Súgó</string>
     <string name="header_cheat_sheet">Puska</string>
     <string name="cheat_1">Húzás balra a betűsoron: törlés</string>
     <string name="cheat_2">Húzás balra fel: hangbevitel</string>

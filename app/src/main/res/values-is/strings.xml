@@ -83,6 +83,9 @@
     <string name="header_gestures">Bendingar</string>
     <string name="swipe_typing">Strokuritun á fulla lyklaborðinu</string>
     <string name="gestures_desc">Dragðu orð yfir stafina í stað þess að ýta á þá. Strjúktu niður á tillögustikuna til að fara aftur í eina röð. Yfirlitið hér að neðan sýnir allar bendingar.</string>
+    <string name="tab_settings">Stillingar</string>
+    <string name="tab_about">Um</string>
+    <string name="tab_help">Hjálp</string>
     <string name="header_cheat_sheet">Yfirlit</string>
     <string name="cheat_1">Strjúktu til vinstri á stafaröðinni: eyða</string>
     <string name="cheat_2">Strjúktu upp til vinstri: raddinntak</string>

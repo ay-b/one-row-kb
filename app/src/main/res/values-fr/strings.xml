@@ -83,6 +83,9 @@
     <string name="header_gestures">Gestes</string>
     <string name="swipe_typing">Saisie gestuelle sur le clavier complet</string>
     <string name="gestures_desc">Tracez un mot sur les lettres au lieu de les toucher. Balayez vers le bas sur la barre de suggestions pour revenir à une rangée. L\'aide-mémoire ci-dessous présente tous les gestes.</string>
+    <string name="tab_settings">Réglages</string>
+    <string name="tab_about">À propos</string>
+    <string name="tab_help">Aide</string>
     <string name="header_cheat_sheet">Aide-mémoire</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture (tools/make_cheatsheet.py) -->
     <string name="cheat_1">Balayez vers la gauche sur la rangée de lettres : effacer</string>

@@ -83,6 +83,9 @@
     <string name="header_gestures">Gestos</string>
     <string name="swipe_typing">Escriptura gestual al teclat complet</string>
     <string name="gestures_desc">Dibuixa una paraula sobre les lletres en lloc de tocar-les. Llisca cap avall a la barra de suggeriments per tornar a una fila. La guia ràpida de sota mostra tots els gestos.</string>
+    <string name="tab_settings">Ajustos</string>
+    <string name="tab_about">Quant a</string>
+    <string name="tab_help">Ajuda</string>
     <string name="header_cheat_sheet">Guia ràpida</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture (tools/make_cheatsheet.py) -->
     <string name="cheat_1">Llisca cap a l\'esquerra a la fila de lletres: esborra</string>

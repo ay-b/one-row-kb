@@ -83,6 +83,9 @@
     <string name="header_gestures">Gesti</string>
     <string name="swipe_typing">Digitazione gestuale sulla tastiera completa</string>
     <string name="gestures_desc">Traccia una parola sulle lettere invece di toccarle. Scorri verso il basso sulla barra dei suggerimenti per tornare a una riga. La guida rapida qui sotto mostra tutti i gesti.</string>
+    <string name="tab_settings">Impostazioni</string>
+    <string name="tab_about">Info</string>
+    <string name="tab_help">Aiuto</string>
     <string name="header_cheat_sheet">Guida rapida</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture (tools/make_cheatsheet.py) -->
     <string name="cheat_1">Scorri a sinistra sulla riga delle lettere: cancella</string>

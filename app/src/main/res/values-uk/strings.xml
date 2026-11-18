@@ -87,6 +87,9 @@
     <string name="header_gestures">Жести</string>
     <string name="swipe_typing">Жестове введення на повній клавіатурі</string>
     <string name="gestures_desc">Проведіть лінію по літерах слова замість того, щоб торкатися їх. Проведіть униз по панелі підказок, щоб повернутися до одного рядка. Усі жести показано в шпаргалці нижче.</string>
+    <string name="tab_settings">Налаштування</string>
+    <string name="tab_about">Про застосунок</string>
+    <string name="tab_help">Довідка</string>
     <string name="header_cheat_sheet">Шпаргалка</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture -->
     <string name="cheat_1">Проведіть ліворуч по рядку літер: видалити</string>

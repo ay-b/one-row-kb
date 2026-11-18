@@ -26,6 +26,7 @@ class ReportActivity : Activity() {
         super.onCreate(b)
         requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)          // the screen has its own title
         val report = CrashReport.load(this)
+        var body0: TextView? = null
         val col = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(20), dp(16), dp(20), dp(8)) }
         col.addView(TextView(this).apply { text = getString(R.string.report_title); textSize = 20f; typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL) })
         if (report == null) {
@@ -37,10 +38,11 @@ class ReportActivity : Activity() {
                 text = head; textSize = 12f; typeface = Typeface.MONOSPACE; setTextIsSelectable(true)
                 setPadding(dp(10), dp(8), dp(10), dp(8)); setBackgroundColor(0x22808080)
             }
-            col.addView(body)
+            col.addView(body); body0 = body
             if (more) {
                 var open = false
                 col.addView(Button(this).apply {
+                    layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(8) }
                     text = getString(R.string.report_show_all); isAllCaps = false
                     setOnClickListener {
                         open = !open
@@ -52,13 +54,18 @@ class ReportActivity : Activity() {
         }
         // only the text scrolls; Close and Send stay in view however long the report is
         val buttons = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = android.view.Gravity.END; setPadding(dp(16), dp(4), dp(16), dp(10)) }
-        buttons.addView(Button(this).apply { text = getString(R.string.close); isAllCaps = false; setOnClickListener { finish() } })
+        buttons.addView(Button(this).apply { text = getString(R.string.close); isAllCaps = false; setOnClickListener { finish() } }, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { rightMargin = dp(8) })
         if (report != null) buttons.addView(Button(this).apply { text = getString(R.string.report_send); isAllCaps = false; setOnClickListener { send(report) } })
         val root = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         root.addView(ScrollView(this).apply { addView(col, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)) },
             LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
         root.addView(buttons, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         setContentView(root)
+        val pal = com.example.onerow.AppStyle.palette(this)
+        com.example.onerow.AppStyle.apply(root, pal)
+        window.setBackgroundDrawable(com.example.onerow.AppStyle.dialogBackground(this, pal))
+        root.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+        body0?.apply { setBackgroundColor(pal.key); setTextColor(pal.ink) }
     }
 
     /** Opens the mail app with the whole report (never just the preview). The user presses send there. */

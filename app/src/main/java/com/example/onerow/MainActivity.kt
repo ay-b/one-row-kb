@@ -54,7 +54,7 @@ class MainActivity : Activity() {
     /** A small bin, drawn in code (same idea as the one on the keyboard's guess bar). */
     private inner class BinView(ctx: android.content.Context) : View(ctx) {
         private val p = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
-            style = android.graphics.Paint.Style.STROKE; strokeWidth = resources.displayMetrics.density * 1.5f; color = Color.GRAY
+            style = android.graphics.Paint.Style.STROKE; strokeWidth = resources.displayMetrics.density * 1.5f; color = AppStyle.palette(ctx).dim
             strokeCap = android.graphics.Paint.Cap.ROUND; strokeJoin = android.graphics.Paint.Join.ROUND
         }
         override fun onDraw(c: android.graphics.Canvas) {
@@ -85,8 +85,22 @@ class MainActivity : Activity() {
     }
 
     private fun header(text: String) = TextView(this).apply {
-        this.text = text.uppercase(); textSize = 12f; setTextColor(teal); typeface = Typeface.DEFAULT_BOLD
+        this.text = text.uppercase(); textSize = 12f; tag = AppStyle.HEADER; typeface = Typeface.DEFAULT_BOLD
         letterSpacing = 0.08f; setPadding(0, dp(22), 0, dp(6))
+    }
+
+    /** A dialog in the keyboard's colors and font: optional title, scrolling content, optional close button. */
+    private fun themedDialog(title: String?, content: View, close: String?): android.app.AlertDialog {
+        val pal = AppStyle.palette(this)
+        val box = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(20), dp(12), dp(20), dp(12)) }
+        val dlg = android.app.AlertDialog.Builder(this).setView(box).create()
+        if (title != null) box.addView(header(title).apply { setPadding(0, dp(8), 0, dp(10)) })
+        box.addView(ScrollView(this).apply { addView(content) }, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
+        if (close != null) box.addView(button(close) { dlg.dismiss() })
+        AppStyle.apply(box, pal)
+        dlg.window?.setBackgroundDrawable(AppStyle.dialogBackground(this, pal))
+        dlg.show()
+        return dlg
     }
 
     private lateinit var billing: BillingManager
@@ -98,14 +112,15 @@ class MainActivity : Activity() {
     override fun onCreate(b: Bundle?) {
         super.onCreate(b)
         prefs = Prefs(this)
+        var restyle: () -> Unit = {}                    // recolors the pages (set once they exist); called when the theme changes
         val col = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(20), dp(12), dp(20), dp(24)) }
-        val scroll = ScrollView(this).apply { addView(col); isFillViewport = true }
+        val help = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(20), dp(12), dp(20), dp(24)) }
+        val about = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(20), dp(12), dp(20), dp(24)) }
+        val aboutScroll = ScrollView(this).apply { addView(about); isFillViewport = true; visibility = View.GONE }
+        val settingsScroll = ScrollView(this).apply { addView(col); isFillViewport = true }
+        val helpScroll = ScrollView(this).apply { addView(help); isFillViewport = true; visibility = View.GONE }
 
         col.addView(TextView(this).apply { text = getString(R.string.app_name); textSize = 24f; typeface = Typeface.create("sans-serif-light", Typeface.NORMAL) })
-        col.addView(TextView(this).apply {
-            text = getString(R.string.version_label, try { packageManager.getPackageInfo(packageName, 0).versionName } catch (e: Exception) { "?" })
-            textSize = 12f; setTextColor(Color.GRAY)
-        })
 
         col.addView(header(getString(R.string.header_setup)))
         col.addView(button(getString(R.string.btn_enable_keyboard)) { startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)) })
@@ -183,9 +198,15 @@ class MainActivity : Activity() {
         fun showPick() { chooser.text = others.getOrNull(pick)?.let { labelOf(it) + "   \u25BE" } ?: "" }
         chooser.setOnClickListener {
             if (others.isEmpty()) return@setOnClickListener
-            android.app.AlertDialog.Builder(this)
-                .setSingleChoiceItems(others.map { labelOf(it) }.toTypedArray(), pick) { d, i -> pick = i; showPick(); d.dismiss() }
-                .show()
+            val list = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+            lateinit var dlg: android.app.AlertDialog
+            others.forEachIndexed { i, l ->
+                list.addView(TextView(this).apply {
+                    text = labelOf(l); textSize = 16f; setPadding(dp(8), dp(12), dp(8), dp(12)); if (i == pick) tag = AppStyle.SELECTED
+                    setOnClickListener { pick = i; showPick(); dlg.dismiss() }
+                })
+            }
+            dlg = themedDialog(null, list, null)
         }
         val plus = button("+") { }.apply { textSize = 18f; (layoutParams as LinearLayout.LayoutParams).topMargin = 0 }
         val addRow = LinearLayout(this).apply {
@@ -205,9 +226,7 @@ class MainActivity : Activity() {
                     orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL
                     addView(TextView(context).apply {
                         text = if (installed) "${l.name}  (${l.code})" else getString(R.string.lang_dictionary_missing, l.name, l.code); textSize = 16f
-                        val tv = android.util.TypedValue()
-                        theme.resolveAttribute(android.R.attr.textColorPrimary, tv, true)
-                        setTextColor(if (installed) resources.getColor(tv.resourceId, theme) else Color.GRAY)
+                        if (!installed) tag = AppStyle.DIM
                     }, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
                     addView(BinView(context).apply {
                         contentDescription = getString(R.string.cd_remove_language, l.name)
@@ -231,7 +250,7 @@ class MainActivity : Activity() {
         refreshLanguages()
         col.addView(TextView(this).apply {
             text = getString(R.string.lang_switch_hint)
-            textSize = 13f; setTextColor(Color.GRAY)
+            textSize = 13f
         })
 
         col.addView(header(getString(R.string.header_theme)))
@@ -240,13 +259,13 @@ class MainActivity : Activity() {
             Themes.choices.forEach { (code, labelRes) ->
                 addView(RadioButton(context).apply { id = View.generateViewId(); text = getString(labelRes); textSize = 16f; tag = code; isChecked = code == prefs.theme })
             }
-            setOnCheckedChangeListener { g, id -> prefs.theme = g.findViewById<View>(id).tag as String; showCheatSheet() }
+            setOnCheckedChangeListener { g, id -> prefs.theme = g.findViewById<View>(id).tag as String; showCheatSheet(); restyle() }
         })
 
         col.addView(header(getString(R.string.header_guessing)))
         col.addView(TextView(this).apply {
             text = getString(R.string.guessing_desc)
-            textSize = 13f; setTextColor(Color.GRAY)
+            textSize = 13f
         })
         col.addView(RadioGroup(this).apply {
             orientation = RadioGroup.VERTICAL
@@ -259,7 +278,7 @@ class MainActivity : Activity() {
         col.addView(header(getString(R.string.header_swipe_precision)))
         col.addView(TextView(this).apply {
             text = getString(R.string.swipe_precision_desc)
-            textSize = 13f; setTextColor(Color.GRAY)
+            textSize = 13f
         })
         col.addView(RadioGroup(this).apply {
             orientation = RadioGroup.VERTICAL
@@ -312,16 +331,17 @@ class MainActivity : Activity() {
             textSize = 13f; setPadding(0, 0, 0, dp(12))
         })
 
-        col.addView(header(getString(R.string.header_cheat_sheet)))
+
+        help.addView(header(getString(R.string.header_cheat_sheet)))
         // each picture, then right under it only the legend lines for the numbers drawn on it
         val views = ArrayList<ImageView>()
         for (group in cheatGroups) {
             val pic = ImageView(this).apply { adjustViewBounds = true; scaleType = ImageView.ScaleType.FIT_CENTER }
-            views += pic; col.addView(pic, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(14) })
-            for (n in group) col.addView(LinearLayout(this).apply {
+            views += pic; help.addView(pic, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(14) })
+            for (n in group) help.addView(LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
                 setPadding(0, dp(4), 0, dp(2))
-                addView(TextView(context).apply { text = "$n"; textSize = 14f; setTextColor(teal); typeface = Typeface.DEFAULT_BOLD; gravity = Gravity.END },
+                addView(TextView(context).apply { text = "$n"; textSize = 14f; tag = AppStyle.HEADER; typeface = Typeface.DEFAULT_BOLD; gravity = Gravity.END },
                     LinearLayout.LayoutParams(dp(26), ViewGroup.LayoutParams.WRAP_CONTENT))
                 addView(TextView(context).apply { text = getString(cheatTexts[n - 1]); textSize = 14f; setPadding(dp(10), 0, 0, 0) },
                     LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
@@ -330,33 +350,88 @@ class MainActivity : Activity() {
         cheatViews = views
         showCheatSheet()
 
-        col.addView(header(getString(R.string.header_crash_reports)))
-        col.addView(Switch(this).apply {
-            text = getString(R.string.shake_report); textSize = 16f; isChecked = prefs.shakeReport
-            setOnCheckedChangeListener { _, on -> prefs.shakeReport = on }
-        })
-        col.addView(TextView(this).apply { text = getString(R.string.shake_report_desc); textSize = 13f; setPadding(0, 0, 0, dp(6)) })
-        col.addView(button(getString(R.string.btn_show_report)) { startActivity(Intent(this, com.example.onerow.report.ReportActivity::class.java)) })
-
-        col.addView(header(getString(R.string.header_about)))
-        col.addView(button(getString(R.string.btn_attributions)) {
-            val text = try { assets.open("attribution.md").bufferedReader().readText() } catch (e: Exception) { getString(R.string.attributions_missing) }
-            val tv = TextView(this).apply { this.text = text; textSize = 12f; setPadding(dp(20), dp(12), dp(20), dp(12)); setTextIsSelectable(true) }
-            android.app.AlertDialog.Builder(this).setTitle(getString(R.string.attributions_title)).setView(ScrollView(this).apply { addView(tv) }).setPositiveButton(getString(R.string.close), null).show()
-        })
-
-        col.addView(header(getString(R.string.header_try_it)))
-        col.addView(EditText(this).apply {
+        help.addView(header(getString(R.string.header_try_it)))
+        help.addView(EditText(this).apply {
             hint = getString(R.string.hint_type_here); minLines = 3; gravity = Gravity.TOP
             // like a messaging field: capitalizes the first letter of each sentence
             inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or
                 android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
         })
-        setContentView(scroll)
-        // Android 15+ draws the page edge-to-edge: keep the last items clear of the navigation bar / gesture zone
-        if (android.os.Build.VERSION.SDK_INT >= 35) scroll.setOnApplyWindowInsetsListener { _, insets ->
+        about.addView(header(getString(R.string.header_crash_reports)))
+        about.addView(Switch(this).apply {
+            text = getString(R.string.shake_report); textSize = 16f; isChecked = prefs.shakeReport
+            setOnCheckedChangeListener { _, on -> prefs.shakeReport = on }
+        })
+        about.addView(TextView(this).apply { text = getString(R.string.shake_report_desc); textSize = 13f; setPadding(0, 0, 0, dp(6)) })
+        about.addView(button(getString(R.string.btn_show_report)) { startActivity(Intent(this, com.example.onerow.report.ReportActivity::class.java)) })
+
+        about.addView(header(getString(R.string.header_about)))
+        about.addView(button(getString(R.string.btn_attributions)) {
+            val text = try { assets.open("attribution.md").bufferedReader().readText() } catch (e: Exception) { getString(R.string.attributions_missing) }
+            val tv = TextView(this).apply { this.text = text; textSize = 12f; setTextIsSelectable(true) }
+            themedDialog(getString(R.string.attributions_title), tv, getString(R.string.close))
+        })
+
+        about.addView(TextView(this).apply {
+            text = getString(R.string.version_label, try { packageManager.getPackageInfo(packageName, 0).versionName } catch (e: Exception) { "?" })
+            textSize = 12f
+        })
+        // two tabs: Settings and Help (the gesture cheat sheet)
+        val bars = ArrayList<View>(); val labels = ArrayList<TextView>(); var curTab = 0
+        fun select(i: Int) {
+            settingsScroll.visibility = if (i == 0) View.VISIBLE else View.GONE
+            helpScroll.visibility = if (i == 1) View.VISIBLE else View.GONE
+            aboutScroll.visibility = if (i == 2) View.VISIBLE else View.GONE
+            curTab = i
+            val pal = AppStyle.palette(this)
+            labels.forEachIndexed { k, t -> t.setTextColor(if (k == i) pal.accent else pal.dim); t.typeface = if (k == i) Typeface.create(AppStyle.face(this), Typeface.BOLD) else AppStyle.face(this) }
+            bars.forEachIndexed { k, v -> v.setBackgroundColor(if (k == i) pal.accent else Color.TRANSPARENT) }
+        }
+        val tabs = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+        listOf(R.string.tab_settings, R.string.tab_help, R.string.tab_about).forEachIndexed { i, res ->
+            val label = TextView(this).apply { text = getString(res).uppercase(); textSize = 14f; gravity = Gravity.CENTER; setPadding(0, dp(14), 0, dp(10)) }
+            val bar = View(this)
+            labels += label; bars += bar
+            tabs.addView(LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL; isClickable = true; setOnClickListener { select(i) }
+                addView(label, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+                addView(bar, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(3)))
+            }, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+        }
+        select(0)
+        val root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            addView(tabs, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+            addView(settingsScroll, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
+            addView(helpScroll, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
+            addView(aboutScroll, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
+        }
+        setContentView(root)
+        restyle = {
+            val pal = AppStyle.palette(this)
+            AppStyle.apply(root, pal)
+            tabs.setBackgroundColor(pal.strip)
+            AppStyle.window(this, pal)
+            root.post { AppStyle.window(this, pal) }          // once more after the window is attached: the system resets the bar icons then
+            select(curTab)
+        }
+        restyle()
+        // Android 15+ draws the page edge-to-edge and the action bar floats over it: keep the tabs below the action bar (checked on every layout pass)
+        if (android.os.Build.VERSION.SDK_INT >= 35) root.viewTreeObserver.addOnGlobalLayoutListener {
+            val ab = findViewById<View>(resources.getIdentifier("action_bar_container", "id", "android"))
+            if (ab != null && ab.visibility == View.VISIBLE && ab.height > 0) {
+                val l = IntArray(2); root.getLocationOnScreen(l)
+                val k = IntArray(2); ab.getLocationOnScreen(k)
+                val pad = maxOf(0, k[1] + ab.height - l[1])
+                if (pad != root.paddingTop) root.setPadding(0, pad, 0, 0)
+            }
+        }
+        // ... and keep the last items clear of the navigation bar / gesture zone
+        if (android.os.Build.VERSION.SDK_INT >= 35) root.setOnApplyWindowInsetsListener { _, insets ->
             val b = insets.getInsets(android.view.WindowInsets.Type.navigationBars()).bottom
             col.setPadding(dp(20), dp(12), dp(20), dp(24) + b)
+            help.setPadding(dp(20), dp(12), dp(20), dp(24) + b)
+            about.setPadding(dp(20), dp(12), dp(20), dp(24) + b)
             insets
         }
     }

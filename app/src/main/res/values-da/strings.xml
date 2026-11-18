@@ -83,6 +83,9 @@
     <string name="header_gestures">Bevægelser</string>
     <string name="swipe_typing">Strygeskrivning på det fulde tastatur</string>
     <string name="gestures_desc">Tegn et ord hen over bogstaverne i stedet for at trykke på dem. Stryg nedad på forslagslinjen for at vende tilbage til én række. Snydearket nedenfor viser alle bevægelser.</string>
+    <string name="tab_settings">Indstillinger</string>
+    <string name="tab_about">Om</string>
+    <string name="tab_help">Hjælp</string>
     <string name="header_cheat_sheet">Snydeark</string>
     <string name="cheat_1">Stryg til venstre på bogstavrækken: slet</string>
     <string name="cheat_2">Stryg op mod venstre: stemmeindtastning</string>

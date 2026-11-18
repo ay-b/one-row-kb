@@ -88,6 +88,9 @@
     <string name="header_gestures">Kretnje</string>
     <string name="swipe_typing">Tipkanje z drsenjem na polni tipkovnici</string>
     <string name="gestures_desc">Namesto tapkanja po črkah narišite besedo čez črke. Podrsnite navzdol po vrstici predlogov, da se vrnete na eno vrstico. Spodnji povzetek prikazuje vse kretnje.</string>
+    <string name="tab_settings">Nastavitve</string>
+    <string name="tab_about">O aplikaciji</string>
+    <string name="tab_help">Pomoč</string>
     <string name="header_cheat_sheet">Povzetek</string>
     <string name="cheat_1">Podrsnite levo po vrstici črk: brisanje</string>
     <string name="cheat_2">Podrsnite navzgor in levo: glasovni vnos</string>

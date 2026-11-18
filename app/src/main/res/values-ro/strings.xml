@@ -86,6 +86,9 @@
     <string name="header_gestures">Gesturi</string>
     <string name="swipe_typing">Tastare prin glisare pe tastatura completă</string>
     <string name="gestures_desc">Trasați un cuvânt peste litere în loc să le atingeți. Glisați în jos pe bara de sugestii pentru a reveni la un singur rând. Ghidul rapid de mai jos arată toate gesturile.</string>
+    <string name="tab_settings">Setări</string>
+    <string name="tab_about">Despre</string>
+    <string name="tab_help">Ajutor</string>
     <string name="header_cheat_sheet">Ghid rapid</string>
     <string name="cheat_1">Glisați la stânga pe rândul de litere: ștergere</string>
     <string name="cheat_2">Glisați în sus și la stânga: introducere vocală</string>

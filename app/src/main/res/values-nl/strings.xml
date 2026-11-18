@@ -83,6 +83,9 @@
     <string name="header_gestures">Gebaren</string>
     <string name="swipe_typing">Swipend typen op het volledige toetsenbord</string>
     <string name="gestures_desc">Teken een woord over de letters in plaats van ze aan te tikken. Veeg omlaag op de suggestiebalk om terug te keren naar één rij. Het spiekbriefje hieronder toont elk gebaar.</string>
+    <string name="tab_settings">Instellingen</string>
+    <string name="tab_about">Over</string>
+    <string name="tab_help">Help</string>
     <string name="header_cheat_sheet">Spiekbriefje</string>
     <string name="cheat_1">Veeg naar links op de letterrij: wissen</string>
     <string name="cheat_2">Veeg naar linksboven: spraakinvoer</string>

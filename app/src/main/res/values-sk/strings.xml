@@ -85,6 +85,9 @@
     <string name="header_gestures">Gestá</string>
     <string name="swipe_typing">Písanie gestami na plnej klávesnici</string>
     <string name="gestures_desc">Slovo nakreslite cez písmená namiesto ich klepania. Potiahnutím po lište návrhov nadol sa vrátite k jednému riadku. Všetky gestá ukazuje ťahák nižšie.</string>
+    <string name="tab_settings">Nastavenia</string>
+    <string name="tab_about">O aplikácii</string>
+    <string name="tab_help">Pomocník</string>
     <string name="header_cheat_sheet">Ťahák</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture -->
     <string name="cheat_1">Potiahnite doľava po riadku písmen: zmazať</string>

@@ -87,6 +87,9 @@
     <string name="header_gestures">Gesty</string>
     <string name="swipe_typing">Pisanie gestami na pełnej klawiaturze</string>
     <string name="gestures_desc">Narysuj słowo na literach zamiast je stukać. Przesuń w dół po pasku podpowiedzi, aby wrócić do jednego rzędu. Ściąga poniżej pokazuje wszystkie gesty.</string>
+    <string name="tab_settings">Ustawienia</string>
+    <string name="tab_about">O aplikacji</string>
+    <string name="tab_help">Pomoc</string>
     <string name="header_cheat_sheet">Ściąga</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture -->
     <string name="cheat_1">Przesuń w lewo po rzędzie liter: usuń</string>

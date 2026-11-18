@@ -83,6 +83,9 @@
     <string name="header_gestures">Gester</string>
     <string name="swipe_typing">Svepskrivning på hela tangentbordet</string>
     <string name="gestures_desc">Dra ett ord över bokstäverna i stället för att trycka på dem. Svep nedåt i förslagsfältet för att återgå till en rad. Fusklappen nedan visar alla gester.</string>
+    <string name="tab_settings">Inställningar</string>
+    <string name="tab_about">Om</string>
+    <string name="tab_help">Hjälp</string>
     <string name="header_cheat_sheet">Fusklapp</string>
     <string name="cheat_1">Svep åt vänster på bokstavsraden: radera</string>
     <string name="cheat_2">Svep uppåt vänster: röstinmatning</string>

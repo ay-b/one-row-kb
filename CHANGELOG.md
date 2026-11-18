@@ -4,6 +4,16 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.29.0
+- The settings, help, about and crash-report pages and their dialogs now look like the keyboard: the chosen keyboard theme's colors (they change at once when you pick a theme) and the keyboard's font, rounded key-like buttons, matching action bar, tab bar and status-bar icons.
+
+## 0.28.1
+- Settings tabs: fixed a large empty gap above the tab bar on some phones.
+
+## 0.28.0
+- The settings page is split into three tabs: Settings, Help (gesture cheat sheet and the "Try it" field) and About (version, crash reports, attributions).
+- Release folder no longer keeps R8 mapping files (the app bundle already carries the mapping for Google Play).
+
 ## 0.27.1
 - Settings > Languages: the language to add is chosen with a button that shows the chosen language as plain text (tap it for the list) instead of the system dropdown, which drew its selected item invisibly on some devices (Samsung Galaxy Fold, unfolded).
 

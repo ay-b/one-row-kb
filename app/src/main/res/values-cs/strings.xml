@@ -85,6 +85,9 @@
     <string name="header_gestures">Gesta</string>
     <string name="swipe_typing">Psaní gesty na plné klávesnici</string>
     <string name="gestures_desc">Slovo nakreslete přes písmena místo jejich klepání. Přejetím po liště návrhů dolů se vrátíte k jednomu řádku. Všechna gesta ukazuje tahák níže.</string>
+    <string name="tab_settings">Nastavení</string>
+    <string name="tab_about">O aplikaci</string>
+    <string name="tab_help">Nápověda</string>
     <string name="header_cheat_sheet">Tahák</string>
     <!-- Legend under the cheat-sheet picture: number N belongs to the badge N drawn on the picture -->
     <string name="cheat_1">Přejeďte doleva po řádku písmen: smazat</string>
