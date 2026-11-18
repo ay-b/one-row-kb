@@ -42,6 +42,8 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         fun onMode(mode: String)
         /** A word was drawn across the letters of the full keyboard ([n] points, view pixels). */
         fun onGlide(xs: FloatArray, ys: FloatArray, n: Int, layout: GlideLayout)
+        /** The words a drawn path may mean, best first, without typing anything (the emoji search uses it for swipe typing). */
+        fun glideCandidates(xs: FloatArray, ys: FloatArray, n: Int, layout: GlideLayout): List<String> = emptyList()
         /** The user asked to delete [word] from the dictionary (hold a guess, then the bucket). */
         fun onRemoveWord(word: String)
         /** The proofread circle at the right end of the guess strip was tapped. */
@@ -327,7 +329,9 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         dismissEmoji()
         val ctx = context
         val cols = 7
-        val cell = width / (cols + 1)
+        val margin = dp(14f).toInt()                       // the palette floats in from the screen edges
+        val panelW = width - 2 * margin
+        val cell = (panelW - 2 * dp(10f).toInt()) / cols
         val grid = android.widget.GridLayout(ctx).apply { columnCount = cols }
         fun add(e: String) {
             grid.addView(android.widget.TextView(ctx).apply {
@@ -352,7 +356,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         emojiFill = ::fill
         sv.addView(grid, android.widget.FrameLayout.LayoutParams(cell * cols, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.Gravity.CENTER_HORIZONTAL))
         val r = dp(18f)
-        sv.background = android.graphics.drawable.GradientDrawable().apply { setColor(cStrip); cornerRadii = floatArrayOf(r, r, r, r, 0f, 0f, 0f, 0f) }
+        sv.background = android.graphics.drawable.GradientDrawable().apply { setColor(cPanel); cornerRadii = floatArrayOf(r, r, r, r, 0f, 0f, 0f, 0f) }
         sv.clipToOutline = true
         sv.setPadding(0, dp(6f).toInt(), 0, 0)
         val h = (cell * 5.5f).toInt()
@@ -363,8 +367,8 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         invalidate()
         post {                                   // after the layout of the (possibly taller) expanded keyboard
             if (emojiQuery == null) return@post
-            val pw = android.widget.PopupWindow(sv, width, h, false).apply { isOutsideTouchable = false; isTouchable = true }
-            try { pw.showAsDropDown(this, 0, -(height + h)); emojiPopup = pw } catch (_: Exception) { dismissEmoji() }
+            val pw = android.widget.PopupWindow(sv, panelW, h, false).apply { isOutsideTouchable = false; isTouchable = true }
+            try { pw.showAsDropDown(this, margin, -(height + h)); emojiPopup = pw } catch (_: Exception) { dismissEmoji() }
         }
     }
 
@@ -388,7 +392,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
     }
 
     /** The keys while the emoji search is open: letters and symbols go into the search, backspace edits it, the rest of the typing keys do nothing. */
-    private inner class SearchListener(base: Listener) : Listener by base {
+    private inner class SearchListener(private val real: Listener) : Listener by real {
         private fun add(t: String) { emojiQuery?.append(t.lowercase()); searchChanged() }
         override fun onText(text: String) = add(text)
         override fun onLetter(ch: Char, logp: FloatArray, exact: Boolean) = add(ch.toString())
@@ -399,7 +403,13 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         override fun onMoveCursor(steps: Int) {}
         override fun onSuggestion(word: String) {}
         override fun onVoice() {}
-        override fun onGlide(xs: FloatArray, ys: FloatArray, n: Int, layout: GlideLayout) {}
+        /** Swipe typing works in the search too: the best word of the drawn path is added (with a space before it when something is typed already). */
+        override fun onGlide(xs: FloatArray, ys: FloatArray, n: Int, layout: GlideLayout) {
+            val q = emojiQuery ?: return
+            val w = real.glideCandidates(xs, ys, n, layout).firstOrNull() ?: return
+            if (q.isNotEmpty() && !q.endsWith(" ")) q.append(' ')
+            add(w)
+        }
         override fun onProofread() {}
         override fun onSelCalc() {}
         override fun onCalcUndo() {}
@@ -409,6 +419,8 @@ class KeyboardView(context: Context, private var listener: Listener, private var
 
     /** The guess bar as a search field: a magnifier, the typed text with a blinking cursor, and an x at the right end that closes the search. */
     private fun drawEmojiSearch(c: Canvas, r: RectF) {
+        // the paints are shared with the keys: put them back as they were, or the icons drawn after this change color with every cursor blink
+        val oldStroke = stroke.color; val oldWidth = stroke.strokeWidth; val oldText = text.color; val oldSize = text.textSize; val oldFill = fill.color
         val m = dp(8f)
         val field = RectF(r.left + m, r.top + dp(5f), r.right - m, r.bottom - dp(5f))
         fill.color = cPanel; c.drawRoundRect(field, dp(10f), dp(10f), fill)
@@ -432,6 +444,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         if (cursorOn) { val cx = left + text.measureText(shown) + dp(1f); stroke.color = cTeal; stroke.strokeWidth = dp(1.6f); c.drawLine(cx, field.centerY() - dp(10f), cx, field.centerY() + dp(10f), stroke) }
         c.restore()
         text.textAlign = Paint.Align.CENTER
+        stroke.color = oldStroke; stroke.strokeWidth = oldWidth; text.color = oldText; text.textSize = oldSize; fill.color = oldFill
     }
 
     /** Touches on the search field: only the x does anything (it closes the search); nothing else on the bar reacts. */
@@ -1560,6 +1573,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
             } else {
                 if (p.key.label[0].code >= 0x2190 || Character.isSurrogate(p.key.label[0])) Emojis.bump(context, p.key.label)
                 listener.onText(p.key.label)
+                if (isSymbolMode(mode) && mode != Mode.KEYPAD) setMode(letterMode)       // a symbol picked from the zoom on the 123 pages: back to the letters (the calculator keypad stays)
             }
             Kind.LANG -> when (p.key.label) {
                 L_DOCKED -> listener.onMode("docked")

@@ -1083,6 +1083,12 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         android.util.Log.d("OneRowGlide", "ipc+prev=${(t1 - t0) / 1000}us decode=${(t2 - t1) / 1000}us commit=${(System.nanoTime() - t2) / 1000}us | ${eng.glide.stats}")
     }
 
+    /** The words a drawn path may mean, nothing typed: for the emoji search. */
+    override fun glideCandidates(xs: FloatArray, ys: FloatArray, n: Int, layout: GlideLayout): List<String> {
+        val eng = loaded[lang.code] ?: return emptyList()
+        return eng.glide.decode(xs, ys, n, layout, -1, 6).map { it.word }
+    }
+
     override fun onSuggestion(word: String) {
         own()
         if (kv.keypadActive) { calcPick(word); return }

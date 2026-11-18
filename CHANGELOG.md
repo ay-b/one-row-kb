@@ -4,6 +4,22 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.31.5
+- 123 pages: choosing a symbol in the hold-zoom (hold a key, slide, release) now returns to the letters (abc) afterwards, like sliding from 123 does. A plain tap still stays on the page, and the calculator keypad is not affected.
+
+## 0.31.4
+- Emoji search: swipe typing works in the search field (the best word of the drawn path is added to the search, with a space between words); nothing is typed into the text.
+
+## 0.31.3
+- Emoji palette: floats in from the screen edges (14 dp each side) with a little inner padding, and its background is the keyboard's own panel color.
+- Emoji search: the keyboard icons (shift, backspace, enter, language and emoji marks) no longer blink in step with the search cursor: the search field now leaves the shared drawing paints as it found them.
+
+## 0.31.2
+- Russian and Ukrainian word lists: "том" (and its look-alike function words) is stored in lower case, so it follows the capitalization rules (capital at the start of a sentence, lower case in the middle) instead of always being offered as "Том". Changed, in both: Том, Тому; Russian also: Ну, Ой, Ага, Ох, Ах, Ха, Ого, Эй, Ай, Хм, Итак, Впрочем, Неужели, Интернет; Ukrainian also: Томів, Самі, Вибач, Нумо. Names that are also words (Тома, Бог, Союз ...) are left as they were. Done in the .lex files in place (same byte sizes) and in tools/dict_src/<lang>_casing.tsv, so a rebuild gives the same result.
+
+## 0.31.1
+- Help tab: the "Try it" field is no longer hidden behind the keyboard (Android 15+ ignored the resize): the page now ends above the keyboard and scrolls the field into view, also with the full-size keyboard.
+
 ## 0.31.0
 - Full emoji palette: one column narrower, so it keeps a margin to the screen edges, with rounded upper corners.
 - Full emoji palette: search. While the palette is open the guess bar turns into a search field (magnifier, blinking cursor, an x at the right end that closes the search and brings the guess bar back). A one-row keyboard switches to the expanded one meanwhile (exact letters) and returns afterwards. The keys type into the search, not the text; backspace edits it; the palette shows the emoji whose English Unicode name has a word starting with each word you typed ("tear", "face tear", "heart"), plus a few everyday words ("lol", "love", "thanks"). Tapping an emoji types it and closes the search.

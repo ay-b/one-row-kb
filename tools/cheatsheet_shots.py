@@ -23,10 +23,10 @@ def snap(path):
     im.save(path); print("  wrote", path)
 def motion(kind, x, y): sh(f"input motionevent {kind} {int(x)} {int(y)}")
 
-def prep(theme, full=False, layout="docked"):
+def prep(theme, full=False, layout="docked", cur="en"):
     xml = ('<?xml version="1.0" encoding="utf-8" standalone="yes" ?><map><string name="layout">%s</string><string name="langs">en,ru</string>'
-           '<string name="cur">en</string><string name="theme">%s</string><boolean name="full_keyboard" value="%s" />'
-           '<boolean name="swipe_typing" value="true" /></map>') % (layout, theme, "true" if full else "false")
+           '<string name="cur">%s</string><string name="theme">%s</string><boolean name="full_keyboard" value="%s" />'
+           '<boolean name="swipe_typing" value="true" /></map>') % (layout, cur, theme, "true" if full else "false")
     with tempfile.NamedTemporaryFile("w", suffix=".xml", delete=False) as f: f.write(xml)
     adb("push", f.name, "/data/local/tmp/onerow.xml")
     sh("am force-stop blank.host"); sh(f"am force-stop {APP}")

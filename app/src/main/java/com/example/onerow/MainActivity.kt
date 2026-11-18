@@ -438,15 +438,20 @@ class MainActivity : Activity() {
                 val l = IntArray(2); root.getLocationOnScreen(l)
                 val k = IntArray(2); ab.getLocationOnScreen(k)
                 val pad = maxOf(0, k[1] + ab.height - l[1])
-                if (pad != root.paddingTop) root.setPadding(0, pad, 0, 0)
+                if (pad != root.paddingTop) root.setPadding(0, pad, 0, root.paddingBottom)
             }
         }
         // ... and keep the last items clear of the navigation bar / gesture zone
         if (android.os.Build.VERSION.SDK_INT >= 35) root.setOnApplyWindowInsetsListener { _, insets ->
-            val b = insets.getInsets(android.view.WindowInsets.Type.navigationBars()).bottom
+            val nav = insets.getInsets(android.view.WindowInsets.Type.navigationBars()).bottom
+            val ime = insets.getInsets(android.view.WindowInsets.Type.ime()).bottom
+            // with the keyboard open the page ends above it (edge-to-edge ignores adjustResize), so the "Try it" field is never hidden behind it
+            root.setPadding(0, root.paddingTop, 0, ime)
+            val b = if (ime > 0) 0 else nav
             col.setPadding(dp(20), dp(12), dp(20), dp(24) + b)
             help.setPadding(dp(20), dp(12), dp(20), dp(24) + b)
             about.setPadding(dp(20), dp(12), dp(20), dp(24) + b)
+            if (ime > 0) root.post { root.findFocus()?.let { it.requestRectangleOnScreen(android.graphics.Rect(0, 0, it.width, it.height + dp(24))) } }
             insets
         }
     }
