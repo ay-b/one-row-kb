@@ -25,7 +25,7 @@ class Decoder(
         for (t in taps) { var bi = 0; for (l in 1 until t.size) if (t[l] > t[bi]) bi = l; sb.append(lex.alphabet.letters[bi]); lsc += t[bi] }
         // a letter picked by hold-and-slide (one-hot vector) is a deliberate act: it makes the literal text more believable
         val held = taps.count { t -> t.count { it < -20f } >= t.size - 1 }
-        val literal = Candidate(sb.toString(), lsc + lmWeight * oovLogProb + heldBonus * held, true)
+        val literal = Candidate(lex.alphabet.close(sb.toString()), lsc + lmWeight * oovLogProb + heldBonus * held, true)
 
         var beam = listOf(State(Lexicon.ROOT, 0f))
         for (t in taps) {

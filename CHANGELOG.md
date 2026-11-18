@@ -4,6 +4,21 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.32.0
+- New language: Hebrew (עברית). Add it under Settings > Languages. Both layouts follow the standard Israeli keyboard (the letters keep their physical places, not mirrored): the one-row keyboard has 22 letters in 9 columns, the expanded keyboard has the usual three rows plus `/` and `'` (for ג'ינס, צ'ק).
+- Final letters (ך ם ן ף ץ): the guesses and the dictionary know them, a plain letter at the end of a word becomes its final form by itself (type מ, get ם), and they are also keys / hold-alternates (hold כ for ך, מ for ם, נ for ן, פ for ף, צ for ץ). Guessing and swipe typing work the same as in the other languages; the dictionary has 350,000 words and 23,000 word pairs.
+- ₪ is the national currency sign on the symbol keys in Hebrew.
+- The Hebrew word list is vetted against the Hspell dictionary (AGPL 3, used only as a filter and not shipped; credited in Settings > About).
+- Fix: the next-word fallback words (I, the, and, to) are only used for English; other languages show only real guesses.
+- The language list shows languages named in Hebrew left-aligned like the rest.
+- The OneRow spell checker also offers Hebrew to the system.
+
+## 0.31.7
+- Fix (Samsung, gesture navigation): the keyboard slid down under the gesture handle. Phones that give the keyboard no bottom inset now fall back to the height the system reserves for the current navigation mode, and the inset ignores a bar that is momentarily hidden. Phones that deliver the inset are unchanged.
+
+## 0.31.6
+- Emoji search: the magnifier and the x in the search bar are about half their size, in proportion to the search text (the x still closes the search from a generous touch area).
+
 ## 0.31.5
 - 123 pages: choosing a symbol in the hold-zoom (hold a key, slide, release) now returns to the letters (abc) afterwards, like sliding from 123 does. A plain tap still stays on the page, and the calculator keypad is not affected.
 

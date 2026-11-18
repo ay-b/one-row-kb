@@ -425,17 +425,17 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         val field = RectF(r.left + m, r.top + dp(5f), r.right - m, r.bottom - dp(5f))
         fill.color = cPanel; c.drawRoundRect(field, dp(10f), dp(10f), fill)
         // magnifier
-        val mx = field.left + dp(18f); val my = field.centerY() - dp(1.5f)
-        stroke.color = cDim; stroke.strokeWidth = dp(1.6f)
-        c.drawCircle(mx, my, dp(5.5f), stroke); c.drawLine(mx + dp(4f), my + dp(4f), mx + dp(8.5f), my + dp(8.5f), stroke)
+        val mx = field.left + dp(16f); val my = field.centerY() - dp(0.8f)
+        stroke.color = cDim; stroke.strokeWidth = dp(1.1f)
+        c.drawCircle(mx, my, dp(2.9f), stroke); c.drawLine(mx + dp(2.1f), my + dp(2.1f), mx + dp(4.4f), my + dp(4.4f), stroke)
         // the x
-        val xs = dp(6f); val xc = field.right - dp(22f); val yc = field.centerY()
-        stroke.color = cInk; stroke.strokeWidth = dp(1.8f)
+        val xs = dp(3f); val xc = field.right - dp(20f); val yc = field.centerY()
+        stroke.color = cInk; stroke.strokeWidth = dp(1.2f)
         c.drawLine(xc - xs, yc - xs, xc + xs, yc + xs, stroke); c.drawLine(xc - xs, yc + xs, xc + xs, yc - xs, stroke)
         // the text and the cursor
         val q = emojiQuery?.toString() ?: ""
         text.textAlign = Paint.Align.LEFT; text.color = cInk; text.textSize = sp(15f)
-        val left = field.left + dp(36f); val avail = field.right - dp(44f) - left
+        val left = field.left + dp(30f); val avail = field.right - dp(40f) - left
         var shown = q
         while (shown.length > 1 && text.measureText(shown) > avail) shown = shown.substring(1)       // the end of a long search stays in view
         val base = r.centerY() - (text.ascent() + text.descent()) / 2

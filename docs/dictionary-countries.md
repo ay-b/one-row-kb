@@ -43,7 +43,7 @@ Russian and Ukrainian are bundled although Russia and Ukraine are below the line
 | Language | Countries | Reason |
 |---|---|---|
 | Japanese, Korean, Chinese | Japan, South Korea, China (borderline), Taiwan, Singapore | no letter alphabet: needs a kana/hangul/pinyin conversion engine, not a letter trie |
-| Hebrew, Arabic | Israel, UAE, Saudi Arabia, Qatar, Kuwait | right-to-left layout is not supported yet |
+| Arabic | UAE, Saudi Arabia, Qatar, Kuwait | joining letter forms and right-to-left layout are not supported (Hebrew is: 0.32.0) |
 | Maltese, Irish, Luxembourgish | Malta, Ireland, Luxembourg | no usable frequency data (and the countries are served by English / French / German) |
 | Turkish | Turkey | below the line, or borderline at best |
 | Bulgarian, Serbian | Bulgaria, Serbia | below / borderline; Cyrillic layouts would be easy to add next |

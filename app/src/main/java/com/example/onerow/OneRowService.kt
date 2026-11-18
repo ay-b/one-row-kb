@@ -261,7 +261,9 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
             // the navigation bar or the large-screen taskbar, the gesture strip, and whatever else the system keeps tappable at the bottom
             val kinds = android.view.WindowInsets.Type.navigationBars() or android.view.WindowInsets.Type.systemGestures() or
                 android.view.WindowInsets.Type.tappableElement() or android.view.WindowInsets.Type.mandatorySystemGestures()
-            val b = insets.getInsets(kinds).bottom
+            // ignoring visibility: a bar that is momentarily hidden / transient must not let the keys drop under it
+            val hard = android.view.WindowInsets.Type.navigationBars() or android.view.WindowInsets.Type.mandatorySystemGestures()
+            val b = maxOf(insets.getInsets(kinds).bottom, insets.getInsetsIgnoringVisibility(hard).bottom)
             if (b != navInset) { navInset = b; updateDockLook() }
             insets
         }
@@ -286,7 +288,20 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (Build.VERSION.SDK_INT < 35) return 0
         var b = navInset
         if (isTablet()) b = maxOf(b, largeScreenGestureStrip())
+        // phones: some (Samsung) hand the keyboard no bottom inset at all, and the keys then slide under the gesture handle;
+        // only when the system gave nothing, fall back to the height it reserves for the current navigation mode
+        else if (b == 0) b = systemNavHeight()
         return b
+    }
+
+    /** The system's own height for the navigation strip in the current mode (gesture handle zone, or the three-button bar). */
+    private fun systemNavHeight(): Int {
+        return try {
+            val mode = android.provider.Settings.Secure.getInt(contentResolver, "navigation_mode", 0)
+            val sys = android.content.res.Resources.getSystem()
+            val id = sys.getIdentifier(if (mode == 2) "navigation_bar_gesture_height" else "navigation_bar_height", "dimen", "android")
+            if (id > 0) sys.getDimensionPixelSize(id) else 0
+        } catch (_: Exception) { 0 }
     }
 
     private fun largeScreenGestureStrip(): Int {
@@ -528,7 +543,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
                 else -> {
                     val p = previousWordIdx()
                     val n = l.nextWords(p, 12)
-                    val base = if (n.size >= 4) n else (n + listOf("I", "the", "and", "to")).distinct().take(4)
+                    val base = if (n.size >= 4 || lang.code != "en") n else (n + listOf("I", "the", "and", "to")).distinct().take(4)      // the filler words are English
                     if (kv.shift != KeyboardView.Shift.OFF) base.map { it.replaceFirstChar { c -> c.uppercase() } } else base
                 }
             }
@@ -589,9 +604,10 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         // Full keyboard / hold-and-slide: the input gets exactly what was typed. Guesses are only offered.
         val deliberate = exact.all { it }
         if (deliberate) {
-            val typed = taps.withIndex().joinToString("") { (i, t) ->
+            var typed = taps.withIndex().joinToString("") { (i, t) ->
                 shown.getOrNull(i) ?: lx.alphabet.letters[t.indices.maxByOrNull { t[it] }!!].toString()
             }
+            if (shown.lastOrNull() == null) typed = lx.alphabet.close(typed)         // Hebrew: a plain letter at the end of a word is its final form
             list = listOf(Candidate(typed, 0f, true)) + list.filter { !it.word.equals(typed, ignoreCase = true) }
         }
         lastRaw = list[0].word

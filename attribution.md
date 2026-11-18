@@ -29,6 +29,7 @@ word is a real word. Their word lists are not copied into the app.
 | Portuguese | pt_BR, Raimundo Moura; pt_PT, Jose Joao Almeida et al. | LGPL 3 / LGPL-style |
 | Russian | Alexander I. Lebedev | LGPL-style, see README_ru_RU.txt |
 | Ukrainian | based on dict_uk, https://github.com/brown-uk/dict_uk | see the note below |
+| Hebrew | Hspell, Nadav Har'El and Dan Kenigsberg, http://hspell.ivrix.org.il/ (LibreOffice he_IL) | GNU AGPL 3, used only as a filter (see NOTICE-dictionaries.md) |
 | Other languages (offered as separate packs) | the matching LibreOffice/dictionaries entries | each pack's own licence texts: GPL, LGPL, MPL, BSD, CC BY |
 
 Further word lists used only to check or add English words: **dwyl/english-words** (Unlicense),

@@ -197,9 +197,11 @@ class MainActivity : Activity() {
         // devices (Samsung foldables, unfolded), and this one is plain text in the page's own colors on every phone.
         var pick = 0
         var others: List<Lang> = emptyList()
-        fun labelOf(l: Lang) = if (Dictionaries.has(this, l.code)) "${l.name}  (${l.code})" else getString(R.string.lang_not_installed, l.name, l.code)
+        val LRM = "\u200E"          // a left-to-right mark first: a language named in Hebrew must not turn its row right-to-left
+        fun labelOf(l: Lang) = LRM + (if (Dictionaries.has(this, l.code)) "${l.name}  (${l.code})" else getString(R.string.lang_not_installed, l.name, l.code))
         val chooser = button("") { }.apply {
             gravity = Gravity.CENTER_VERTICAL or Gravity.START; textSize = 16f; (layoutParams as LinearLayout.LayoutParams).topMargin = 0
+            textDirection = View.TEXT_DIRECTION_LTR           // a language named in Hebrew must not turn the row right-to-left
         }
         fun showPick() { chooser.text = others.getOrNull(pick)?.let { labelOf(it) + "   \u25BE" } ?: "" }
         chooser.setOnClickListener {
@@ -209,6 +211,7 @@ class MainActivity : Activity() {
             others.forEachIndexed { i, l ->
                 list.addView(TextView(this).apply {
                     text = labelOf(l); textSize = 16f; setPadding(dp(8), dp(12), dp(8), dp(12)); if (i == pick) tag = AppStyle.SELECTED
+                    textDirection = View.TEXT_DIRECTION_LTR; textAlignment = View.TEXT_ALIGNMENT_VIEW_START
                     setOnClickListener { pick = i; showPick(); dlg.dismiss() }
                 })
             }
@@ -231,7 +234,8 @@ class MainActivity : Activity() {
                 langList.addView(LinearLayout(this).apply {
                     orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL
                     addView(TextView(context).apply {
-                        text = if (installed) "${l.name}  (${l.code})" else getString(R.string.lang_dictionary_missing, l.name, l.code); textSize = 16f
+                        text = LRM + (if (installed) "${l.name}  (${l.code})" else getString(R.string.lang_dictionary_missing, l.name, l.code)); textSize = 16f
+                        textDirection = View.TEXT_DIRECTION_LTR; textAlignment = View.TEXT_ALIGNMENT_VIEW_START
                         if (!installed) tag = AppStyle.DIM
                     }, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
                     addView(BinView(context).apply {

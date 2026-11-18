@@ -17,7 +17,7 @@ class LanguagesTest {
             assertEquals("${l.code}: full keyboard rows repeat a letter", rows.toSet().size, rows.length)
             val held = l.alternates.values.joinToString("").toSet()
             for (c in letters) assertTrue("${l.code}: '$c' is neither on the full keyboard nor under another key", c in rows || c in held)
-            for (c in rows) assertTrue("${l.code}: '$c' on the full keyboard is not a letter of the alphabet", c in letters || c in l.alphabet.folds)
+            for (c in rows) assertTrue("${l.code}: '$c' on the full keyboard is neither a letter of the alphabet nor a punctuation key", c in letters || c in l.alphabet.folds || !c.isLetter())
             for ((base, variants) in l.alternates) assertTrue("${l.code}: alternates of '$base'", l.alphabet.index(base) >= 0 && variants.isNotEmpty())
         }
     }

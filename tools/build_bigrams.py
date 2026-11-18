@@ -11,7 +11,7 @@ Licence: Tatoeba sentences are CC BY 2.0 FR (see NOTICE-dictionaries.md).
 import bz2, collections, json, os, re, struct, sys
 
 TAT = {"it": "ita", "nl": "nld", "sv": "swe", "da": "dan", "nb": "nob", "fi": "fin", "is": "isl", "pl": "pol", "cs": "ces",
-       "sk": "slk", "sl": "slv", "hr": "hrv", "hu": "hun", "ro": "ron", "el": "ell", "et": "est", "lv": "lvs", "lt": "lit", "ca": "cat"}
+       "sk": "slk", "sl": "slv", "hr": "hrv", "hu": "hun", "ro": "ron", "el": "ell", "et": "est", "lv": "lvs", "lt": "lit", "ca": "cat", "he": "heb"}
 TOKEN = re.compile(r"[^\W\d_]+(?:['’][^\W\d_]+)*(?:-[^\W\d_]+)*")
 
 def read_words(path):

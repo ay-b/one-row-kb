@@ -30,6 +30,7 @@ object Languages {
     fun currency(code: String): Char? = when (code) {
         "ru" -> '\u20BD'                                                      // ₽
         "uk" -> '\u20B4'                                                      // ₴
+        "he" -> '\u20AA'                                                      // ₪
         "fr", "de", "it", "nl", "fi", "el", "sk", "sl", "hr", "et", "lv", "lt", "ca" -> '\u20AC'      // €
         else -> null
     }
@@ -48,6 +49,10 @@ object Languages {
     private val estonian = Alphabet(Alphabet.LATIN + "õäöü", Alphabet.LATIN_FOLDS)
     private val greek = Alphabet("αβγδεζηθικλμνξοπρστυφχψω", mapOf('ς' to "σ", 'ά' to "α", 'έ' to "ε", 'ή' to "η", 'ί' to "ι", 'ό' to "ο",
         'ύ' to "υ", 'ώ' to "ω", 'ϊ' to "ι", 'ϋ' to "υ", 'ΐ' to "ι", 'ΰ' to "υ"))
+
+    // Hebrew: 22 letters; the five final forms fold onto their plain letters and are put at the end of a word by the engine
+    private val hebrew = Alphabet("אבגדהוזחטיכלמנסעפצקרשת", mapOf('ך' to "כ", 'ם' to "מ", 'ן' to "נ", 'ף' to "פ", 'ץ' to "צ"),
+        mapOf('כ' to 'ך', 'מ' to 'ם', 'נ' to 'ן', 'פ' to 'ף', 'צ' to 'ץ'))
 
     val all: List<Lang> = listOf(
         Lang("en", "English", latin, qwerty, qwertyRows),
@@ -73,6 +78,12 @@ object Languages {
             listOf("йцукенгшщзхї", "фівапролджє", "ячсмитьбюґ"),
             mapOf('г' to "ґ"),
             row3Symbols = "*\"':;! ?%"),                                     // "?" on б (the key right of ь), nothing on ь, % on ю, as in Russian
+        // Hebrew keeps the physical (QWERTY) positions of the Israeli layout: left to right, not mirrored. The one-row columns are the QWERTY columns
+        // with the letters of the Israeli standard (the final forms are not keys there: they come by themselves at the end of a word, or by holding).
+        Lang("he", "עברית", hebrew,
+            listOf("שז", "דס", "קגב", "רכה", "אענ", "טימ", "וחצ", "לת", "פ"),
+            listOf("/'קראטוןםפ", "שדגכעיחלךף", "זסבהנמצת"),
+            mapOf('כ' to "ך", 'מ' to "ם", 'נ' to "ן", 'פ' to "ף", 'צ' to "ץ")),
         // ---- more languages (dictionaries are not part of the app: see docs/on-demand-dictionaries.md) ----
         Lang("it", "Italiano", latin, qwerty, qwertyRows,
             mapOf('a' to "à", 'e' to "èé", 'i' to "ìí", 'o' to "òó", 'u' to "ùú")),

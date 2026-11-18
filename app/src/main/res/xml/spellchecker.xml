@@ -10,6 +10,7 @@
     <subtype android:label="Português" android:subtypeLocale="pt"/>
     <subtype android:label="Русский" android:subtypeLocale="ru"/>
     <subtype android:label="Українська" android:subtypeLocale="uk"/>
+    <subtype android:label="עברית" android:subtypeLocale="he"/>
     <subtype android:label="Italiano" android:subtypeLocale="it"/>
     <subtype android:label="Nederlands" android:subtypeLocale="nl"/>
     <subtype android:label="Svenska" android:subtypeLocale="sv"/>

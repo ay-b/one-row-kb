@@ -9,4 +9,6 @@ Status: settled for release.
   CC BY-SA 4.0.
 - The Ukrainian Hunspell dictionary (dict_uk, CC BY-NC-SA 4.0 data) is used only as a filter; the owner has decided to treat that
   as not incorporating it (see attribution.md). Replace it with another source if that decision changes.
+- The Hebrew Hunspell dictionary (Hspell, GNU AGPL 3) is used the same way, only as a filter, and none of its entries are shipped; the owner has
+  decided that this is not incorporating it. Replace it with another source if that decision changes.
 - The GPL / LGPL / MPL Hunspell dictionaries are used only to vet words; their lists are not copied.

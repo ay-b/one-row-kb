@@ -50,13 +50,14 @@ BASE = {
     "en": "abcdefghijklmnopqrstuvwxyz", "fr": "abcdefghijklmnopqrstuvwxyz", "de": "abcdefghijklmnopqrstuvwxyz",
     "es": "abcdefghijklmnopqrstuvwxyz", "pt": "abcdefghijklmnopqrstuvwxyz", "ru": "абвгдежзийклмнопрстуфхцчшщъыьэюя",
     "uk": "абвгдежзиіїйклмнопрстуфхцчшщьюяє",
+    "he": "אבגדהוזחטיכלמנסעפצקרשת",
 }
 EXTRA = {"en": "'", "fr": "àâäçéèêëîïôöùûüÿœæ'-", "de": "äöüß", "es": "áéíóúüñ", "pt": "áâãàçéêíóôõú",
-         "ru": "ё", "uk": "ґ'"}
-SINGLE = {"en": "ai", "fr": "ay", "de": "", "es": "aeouy", "pt": "aeo", "ru": "авикосуяжб", "uk": "аівйузоя"}
-TARGET = {"en": 150_000, "fr": 220_000, "de": 330_000, "es": 250_000, "pt": 220_000, "ru": 450_000, "uk": 350_000}
+         "ru": "ё", "uk": "ґ'", "he": "ךםןףץ'"}
+SINGLE = {"en": "ai", "fr": "ay", "de": "", "es": "aeouy", "pt": "aeo", "ru": "авикосуяжб", "uk": "аівйузоя", "he": ""}
+TARGET = {"en": 150_000, "fr": 220_000, "de": 330_000, "es": 250_000, "pt": 220_000, "ru": 450_000, "uk": 350_000, "he": 350_000}
 DICTS = {"en": ["en/en_US"], "fr": ["fr/fr"], "de": ["de/de_DE_frami"], "es": ["es/es_ES"],
-         "pt": ["pt_BR/pt_BR", "pt_PT/pt_PT"], "ru": ["ru/ru_RU"], "uk": ["uk/uk_UA"]}
+         "pt": ["pt_BR/pt_BR", "pt_PT/pt_PT"], "ru": ["ru/ru_RU"], "uk": ["uk/uk_UA"], "he": ["he/he_IL"]}
 # ---- languages whose dictionaries are not bundled in the app (see docs/on-demand-dictionaries.md) ----
 # Their alphabets come from tools/languages.json (generated from Lang.kt); output goes to OPT_OUT.
 OPT_OUT = "dictionaries"
@@ -80,7 +81,7 @@ if os.path.exists(_lj):
         BASE[_c] = _d["letters"]; EXTRA[_c] = NATIVE.get(_c, "") + "'-"; SINGLE[_c] = SINGLE_NEW.get(_c, "")
         TARGET[_c] = TARGET_NEW.get(_c, 150_000); FOLDS[_c] = _d["folds"]
         DICTS[_c] = None   # found at build time: <hunspell_dir>/<code>/*.aff
-OLD = {"en", "fr", "de", "es", "pt", "ru", "uk"}
+OLD = {"en", "fr", "de", "es", "pt", "ru", "uk", "he"}
 for _c in EXTRA:
     if "-" not in EXTRA[_c]: EXTRA[_c] += "-"        # hyphenated words are words (their hyphen is not a key: Alphabet.key skips it)
 def out_dir(code): return OUT if code in OLD else OPT_OUT
@@ -98,6 +99,8 @@ def folds_for(code):
         f["œ"] = "oe"; f["æ"] = "ae"; f["ß"] = "ss"
     if code == "ru": f["ё"] = "е"
     if code == "uk": f["ґ"] = "г"
+    if code == "he":                                  # final forms count as the plain letters (the display form keeps the right one)
+        for a, b in zip("ךםןףץ", "כמנפצ"): f[a] = b
     return f
 
 def make_key(code):
@@ -126,6 +129,7 @@ def candidates(code, sub=None):
     def ok(w):
         if not w or any(ch not in allowed for ch in w): return False
         if w[0] in "'-" or w[-1] == "-": return False
+        if code == "he" and (re.search("[ךםןףץ].", w) or re.search("[כמנפצ]$", w)): return False     # a final form only ever ends a word, and a word never ends in the plain form
         letters = [c for c in w if c not in "'-"]
         return len(letters) > 1 or w in set(SINGLE[code])
     vocab = {}
