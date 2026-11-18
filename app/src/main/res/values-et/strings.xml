@@ -9,7 +9,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Tellimus</string>
     <string name="btn_subscribe">Telli</string>
-    <string name="btn_buy_forever">Osta igaveseks (versioon 1)</string>
+    <string name="btn_buy_forever">Osta see põhiversioon igaveseks</string>
     <string name="btn_manage_subscription">Halda tellimust</string>
     <string name="sub_status_locked">Prooviaeg on lõppenud. Klaviatuur ainult kirjutab, kuni tellid või ostad selle.</string>
     <string name="sub_status_lifetime">OneRow kuulub sulle igaveseks (versioon 1). Aitäh!</string>
@@ -25,8 +25,8 @@
     <string name="btn_subscribe_no_price">Telli (hind pole veel saadaval)</string>
     <string name="btn_subscribe_trial_price">Alusta 1-kuulist tasuta prooviperioodi, seejärel %1$s kuus</string>
     <string name="btn_subscribe_price">Telli: %1$s kuus</string>
-    <string name="btn_buy_forever_price">Osta igaveseks (versioon 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Osta igaveseks (hind pole veel saadaval)</string>
+    <string name="btn_buy_forever_price">Osta see põhiversioon igaveseks: %1$s</string>
+    <string name="btn_buy_forever_no_price">Osta see põhiversioon igaveseks (hind pole veel saadaval)</string>
 
     <!-- Languages -->
     <string name="header_languages">Keeled</string>
@@ -67,6 +67,7 @@
     <string name="header_spell_checker">Õigekirjakontroll</string>
     <string name="spell_checker_desc">Android allajoonib sõnu punasega oma õigekirjakontrolliga, mis tunneb ainult ühte keelt. Rakendusel OneRow on oma kontroll: see tunneb kõiki siia lisatud keeli (ja sõnu, mida sa talle õpetasid), nii et märgitakse ainult tõesti tundmatud sõnad.</string>
     <string name="btn_spell_on">Kasuta OneRow õigekirjakontrolli</string>
+    <string name="spell_checker_warn">Kui te seda ei vali, joonib Androidi enda õigekirjakontroll punasega alla iga sõna, mis ei kuulu selle ainsasse keelde.</string>
     <string name="toast_spell_pick">Vali avanevas vaates \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->

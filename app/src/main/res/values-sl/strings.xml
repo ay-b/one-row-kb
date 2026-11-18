@@ -10,7 +10,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Naročnina</string>
     <string name="btn_subscribe">Naročite se</string>
-    <string name="btn_buy_forever">Kupite za vedno (različica 1)</string>
+    <string name="btn_buy_forever">Kupite to glavno različico za vedno</string>
     <string name="btn_manage_subscription">Upravljanje naročnine</string>
     <string name="sub_status_locked">Preizkusno obdobje je poteklo. Tipkovnica samo tipka, dokler se ne naročite ali je ne kupite.</string>
     <string name="sub_status_lifetime">OneRow imate za vedno (različica 1). Hvala!</string>
@@ -30,8 +30,8 @@
     <string name="btn_subscribe_no_price">Naročite se (cena še ni na voljo)</string>
     <string name="btn_subscribe_trial_price">Začnite 1-mesečni brezplačni preizkus, nato %1$s na mesec</string>
     <string name="btn_subscribe_price">Naročite se: %1$s na mesec</string>
-    <string name="btn_buy_forever_price">Kupite za vedno (različica 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Kupite za vedno (cena še ni na voljo)</string>
+    <string name="btn_buy_forever_price">Kupite to glavno različico za vedno: %1$s</string>
+    <string name="btn_buy_forever_no_price">Kupite to glavno različico za vedno (cena še ni na voljo)</string>
 
     <!-- Languages -->
     <string name="header_languages">Jeziki</string>
@@ -72,6 +72,7 @@
     <string name="header_spell_checker">Črkovalnik</string>
     <string name="spell_checker_desc">Android z rdečo črto podčrta besede s svojim črkovalnikom, ki pozna samo en jezik. OneRow ima svojega: pozna vse jezike, ki ste jih dodali tukaj (in besede, ki ste jih naučili), zato so označene samo res neznane besede.</string>
     <string name="btn_spell_on">Uporabite črkovalnik OneRow</string>
+    <string name="spell_checker_warn">Če je ne izberete, bo Androidov črkovalnik rdeče podčrtal vsako besedo, ki ni v njegovem edinem jeziku.</string>
     <string name="toast_spell_pick">Na zaslonu, ki se odpre, izberite \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->

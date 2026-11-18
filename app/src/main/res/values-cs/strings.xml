@@ -9,7 +9,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Předplatné</string>
     <string name="btn_subscribe">Předplatit</string>
-    <string name="btn_buy_forever">Koupit navždy (verze 1)</string>
+    <string name="btn_buy_forever">Koupit tuto hlavní verzi navždy</string>
     <string name="btn_manage_subscription">Spravovat předplatné</string>
     <string name="sub_status_locked">Zkušební doba skončila. Klávesnice pouze píše, dokud si ji nepředplatíte nebo nekoupíte.</string>
     <string name="sub_status_lifetime">OneRow vlastníte navždy (verze 1). Děkujeme!</string>
@@ -27,8 +27,8 @@
     <string name="btn_subscribe_no_price">Předplatit (cena zatím není k dispozici)</string>
     <string name="btn_subscribe_trial_price">Zahájit 1měsíční bezplatnou zkušební verzi, poté %1$s měsíčně</string>
     <string name="btn_subscribe_price">Předplatit: %1$s měsíčně</string>
-    <string name="btn_buy_forever_price">Koupit navždy (verze 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Koupit navždy (cena zatím není k dispozici)</string>
+    <string name="btn_buy_forever_price">Koupit tuto hlavní verzi navždy: %1$s</string>
+    <string name="btn_buy_forever_no_price">Koupit tuto hlavní verzi navždy (cena zatím není k dispozici)</string>
 
     <!-- Languages -->
     <string name="header_languages">Jazyky</string>
@@ -69,6 +69,7 @@
     <string name="header_spell_checker">Kontrola pravopisu</string>
     <string name="spell_checker_desc">Android podtrhává slova červeně pomocí vlastní kontroly pravopisu, která zná jen jeden jazyk. OneRow má vlastní: zná všechny jazyky, které sem přidáte (i slova, která jste ji naučili), takže se označí jen opravdu neznámá slova.</string>
     <string name="btn_spell_on">Použít kontrolu pravopisu OneRow</string>
+    <string name="spell_checker_warn">Pokud ji nevyberete, bude kontrola pravopisu Androidu podtrhávat červeně každé slovo, které není v jejím jediném jazyce.</string>
     <string name="toast_spell_pick">Na obrazovce, která se otevře, vyberte \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->

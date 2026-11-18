@@ -9,7 +9,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Abbonamento</string>
     <string name="btn_subscribe">Abbonati</string>
-    <string name="btn_buy_forever">Acquista per sempre (versione 1)</string>
+    <string name="btn_buy_forever">Acquista questa versione principale per sempre</string>
     <string name="btn_manage_subscription">Gestisci abbonamento</string>
     <string name="sub_status_locked">La prova è scaduta. La tastiera permette solo di scrivere finché non ti abboni o non la acquisti.</string>
     <string name="sub_status_lifetime">OneRow è tuo per sempre (versione 1). Grazie!</string>
@@ -25,8 +25,8 @@
     <string name="btn_subscribe_no_price">Abbonati (prezzo non ancora disponibile)</string>
     <string name="btn_subscribe_trial_price">Avvia la prova gratuita di 1 mese, poi %1$s al mese</string>
     <string name="btn_subscribe_price">Abbonati: %1$s al mese</string>
-    <string name="btn_buy_forever_price">Acquista per sempre (versione 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Acquista per sempre (prezzo non ancora disponibile)</string>
+    <string name="btn_buy_forever_price">Acquista questa versione principale per sempre: %1$s</string>
+    <string name="btn_buy_forever_no_price">Acquista questa versione principale per sempre (prezzo non ancora disponibile)</string>
 
     <!-- Languages -->
     <string name="header_languages">Lingue</string>
@@ -67,6 +67,7 @@
     <string name="header_spell_checker">Controllo ortografico</string>
     <string name="spell_checker_desc">Android sottolinea in rosso le parole con il proprio controllo ortografico, che conosce una sola lingua. OneRow ha il suo: conosce tutte le lingue che hai aggiunto qui (e le parole che gli hai insegnato), quindi vengono segnate solo le parole davvero sconosciute.</string>
     <string name="btn_spell_on">Usa il controllo ortografico di OneRow</string>
+    <string name="spell_checker_warn">Se non la scegli, il correttore di Android sottolineerà in rosso ogni parola che non appartiene alla sua unica lingua.</string>
     <string name="toast_spell_pick">Scegli \"OneRow Keyboard\" nella schermata che si apre</string>
 
     <!-- Proofreading -->

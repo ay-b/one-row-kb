@@ -10,7 +10,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Abonements</string>
     <string name="btn_subscribe">Abonējiet</string>
-    <string name="btn_buy_forever">Iegādājieties uz visiem laikiem (1. versija)</string>
+    <string name="btn_buy_forever">Iegādājieties šo galveno versiju uz visiem laikiem</string>
     <string name="btn_manage_subscription">Pārvaldiet abonementu</string>
     <string name="sub_status_locked">Izmēģinājuma laiks ir beidzies. Tastatūra tikai raksta, kamēr neabonējat vai neiegādājaties to.</string>
     <string name="sub_status_lifetime">OneRow pieder jums uz visiem laikiem (1. versija). Paldies!</string>
@@ -28,8 +28,8 @@
     <string name="btn_subscribe_no_price">Abonējiet (cena vēl nav pieejama)</string>
     <string name="btn_subscribe_trial_price">Sāciet 1 mēneša bezmaksas izmēģinājumu, pēc tam %1$s mēnesī</string>
     <string name="btn_subscribe_price">Abonējiet: %1$s mēnesī</string>
-    <string name="btn_buy_forever_price">Iegādājieties uz visiem laikiem (1. versija): %1$s</string>
-    <string name="btn_buy_forever_no_price">Iegādājieties uz visiem laikiem (cena vēl nav pieejama)</string>
+    <string name="btn_buy_forever_price">Iegādājieties šo galveno versiju uz visiem laikiem: %1$s</string>
+    <string name="btn_buy_forever_no_price">Iegādājieties šo galveno versiju uz visiem laikiem (cena vēl nav pieejama)</string>
 
     <!-- Languages -->
     <string name="header_languages">Valodas</string>
@@ -70,6 +70,7 @@
     <string name="header_spell_checker">Pareizrakstības pārbaude</string>
     <string name="spell_checker_desc">Android pasvītro vārdus sarkanā krāsā, izmantojot savu pareizrakstības pārbaudītāju, kas pārzina tikai vienu valodu. OneRow ir savs: tas pārzina visas šeit pievienotās valodas (un vārdus, ko tam iemācījāties), tāpēc tiek atzīmēti tikai patiešām nezināmi vārdi.</string>
     <string name="btn_spell_on">Izmantojiet OneRow pareizrakstības pārbaudi</string>
+    <string name="spell_checker_warn">Ja to neizvēlēsieties, Android pareizrakstības pārbaude sarkani pasvītros katru vārdu, kas nav tās vienā valodā.</string>
     <string name="toast_spell_pick">Atvērtajā ekrānā izvēlieties \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->

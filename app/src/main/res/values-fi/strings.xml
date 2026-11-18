@@ -9,7 +9,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Tilaus</string>
     <string name="btn_subscribe">Tilaa</string>
-    <string name="btn_buy_forever">Osta ikuisesti (versio 1)</string>
+    <string name="btn_buy_forever">Osta tämä pääversio ikuisesti</string>
     <string name="btn_manage_subscription">Hallinnoi tilausta</string>
     <string name="sub_status_locked">Kokeilu on päättynyt. Näppäimistö vain kirjoittaa, kunnes tilaat tai ostat sen.</string>
     <string name="sub_status_lifetime">OneRow on sinun ikuisesti (versio 1). Kiitos!</string>
@@ -25,8 +25,8 @@
     <string name="btn_subscribe_no_price">Tilaa (hinta ei ole vielä saatavilla)</string>
     <string name="btn_subscribe_trial_price">Aloita 1 kuukauden ilmainen kokeilujakso, sitten %1$s kuukaudessa</string>
     <string name="btn_subscribe_price">Tilaa: %1$s kuukaudessa</string>
-    <string name="btn_buy_forever_price">Osta ikuisesti (versio 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Osta ikuisesti (hinta ei ole vielä saatavilla)</string>
+    <string name="btn_buy_forever_price">Osta tämä pääversio ikuisesti: %1$s</string>
+    <string name="btn_buy_forever_no_price">Osta tämä pääversio ikuisesti (hinta ei ole vielä saatavilla)</string>
 
     <!-- Languages -->
     <string name="header_languages">Kielet</string>
@@ -67,6 +67,7 @@
     <string name="header_spell_checker">Oikoluku</string>
     <string name="spell_checker_desc">Android alleviivaa sanat punaisella oman oikolukunsa avulla, joka tuntee vain yhden kielen. OneRow-näppäimistöllä on oma: se tuntee kaikki tänne lisäämäsi kielet (ja sanat, jotka olet opettanut sille), joten vain todella tuntemattomat sanat merkitään.</string>
     <string name="btn_spell_on">Käytä OneRow-oikolukua</string>
+    <string name="spell_checker_warn">Jos et valitse sitä, Androidin oma oikoluku alleviivaa punaisella jokaisen sanan, joka ei ole sen ainoalla kielellä.</string>
     <string name="toast_spell_pick">Valitse avautuvalta näytöltä \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->

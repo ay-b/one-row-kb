@@ -9,7 +9,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Abonnement</string>
     <string name="btn_subscribe">Abonneren</string>
-    <string name="btn_buy_forever">Voorgoed kopen (versie 1)</string>
+    <string name="btn_buy_forever">Deze hoofdversie voorgoed kopen</string>
     <string name="btn_manage_subscription">Abonnement beheren</string>
     <string name="sub_status_locked">De proefperiode is verlopen. Het toetsenbord kan alleen nog typen totdat je een abonnement neemt of het koopt.</string>
     <string name="sub_status_lifetime">OneRow is voorgoed van jou (versie 1). Bedankt!</string>
@@ -25,8 +25,8 @@
     <string name="btn_subscribe_no_price">Abonneren (prijs nog niet beschikbaar)</string>
     <string name="btn_subscribe_trial_price">Start de gratis proefperiode van 1 maand, daarna %1$s per maand</string>
     <string name="btn_subscribe_price">Abonneren: %1$s per maand</string>
-    <string name="btn_buy_forever_price">Voorgoed kopen (versie 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Voorgoed kopen (prijs nog niet beschikbaar)</string>
+    <string name="btn_buy_forever_price">Deze hoofdversie voorgoed kopen: %1$s</string>
+    <string name="btn_buy_forever_no_price">Deze hoofdversie voorgoed kopen (prijs nog niet beschikbaar)</string>
 
     <!-- Languages -->
     <string name="header_languages">Talen</string>
@@ -67,6 +67,7 @@
     <string name="header_spell_checker">Spellingcontrole</string>
     <string name="spell_checker_desc">Android onderstreept woorden in rood met zijn eigen spellingcontrole, die maar één taal kent. OneRow heeft een eigen: die kent alle talen die je hier hebt toegevoegd (en de woorden die je haar hebt geleerd), zodat alleen echt onbekende woorden worden gemarkeerd.</string>
     <string name="btn_spell_on">De OneRow-spellingcontrole gebruiken</string>
+    <string name="spell_checker_warn">Als je hem niet kiest, onderstreept de eigen spellingcontrole van Android elk woord rood dat niet in zijn ene taal staat.</string>
     <string name="toast_spell_pick">Kies \"OneRow Keyboard\" op het scherm dat opent</string>
 
     <!-- Proofreading -->

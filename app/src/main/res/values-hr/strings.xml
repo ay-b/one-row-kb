@@ -10,7 +10,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Pretplata</string>
     <string name="btn_subscribe">Pretplatite se</string>
-    <string name="btn_buy_forever">Kupite zauvijek (verzija 1)</string>
+    <string name="btn_buy_forever">Kupite ovu glavnu verziju zauvijek</string>
     <string name="btn_manage_subscription">Upravljanje pretplatom</string>
     <string name="sub_status_locked">Probno razdoblje je isteklo. Tipkovnica samo tipka dok se ne pretplatite ili je ne kupite.</string>
     <string name="sub_status_lifetime">OneRow posjedujete zauvijek (verzija 1). Hvala!</string>
@@ -28,8 +28,8 @@
     <string name="btn_subscribe_no_price">Pretplatite se (cijena još nije dostupna)</string>
     <string name="btn_subscribe_trial_price">Pokrenite 1-mjesečno besplatno probno razdoblje, zatim %1$s mjesečno</string>
     <string name="btn_subscribe_price">Pretplatite se: %1$s mjesečno</string>
-    <string name="btn_buy_forever_price">Kupite zauvijek (verzija 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Kupite zauvijek (cijena još nije dostupna)</string>
+    <string name="btn_buy_forever_price">Kupite ovu glavnu verziju zauvijek: %1$s</string>
+    <string name="btn_buy_forever_no_price">Kupite ovu glavnu verziju zauvijek (cijena još nije dostupna)</string>
 
     <!-- Languages -->
     <string name="header_languages">Jezici</string>
@@ -70,6 +70,7 @@
     <string name="header_spell_checker">Provjera pravopisa</string>
     <string name="spell_checker_desc">Android crvenom crtom podcrtava riječi pomoću vlastite provjere pravopisa, koja zna samo jedan jezik. OneRow ima svoju: zna sve jezike koje ste ovdje dodali (i riječi koje ste ju naučili), pa se označavaju samo doista nepoznate riječi.</string>
     <string name="btn_spell_on">Koristite provjeru pravopisa OneRow</string>
+    <string name="spell_checker_warn">Ako je ne odaberete, Androidova provjera pravopisa podcrtat će crveno svaku riječ koja nije na njezinu jedinom jeziku.</string>
     <string name="toast_spell_pick">Na zaslonu koji se otvori odaberite \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->

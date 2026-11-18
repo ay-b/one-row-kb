@@ -19,6 +19,8 @@ import android.widget.PopupWindow
  * The keyboard as a floating window: drag it by the bar under the keyboard, hide it with the "v" at that bar's left,
  * resize it by dragging any corner (width follows the horizontal drag, height the vertical one).
  *
+ * The bar's small crossed-arrows mark (left of the globe) shows and hides the corner grips, like a tap on the handle.
+ *
  * It is a popup window attached to the input-method window (the real input view shrinks to a sliver while the keyboard
  * floats), so it sits above the app and everything outside it still belongs to the app. The position is kept in screen
  * pixels (left, top), the width as a share of the screen, the height as the keyboard's own scale, all in [Prefs].
@@ -137,11 +139,26 @@ class FloatingKeyboard(private val ctx: Context, private val prefs: Prefs, priva
         private val chevronW get() = dp(56f)
         override fun onDraw(c: Canvas) {
             p.style = Paint.Style.FILL; p.color = back; c.drawRect(0f, 0f, width.toFloat(), height.toFloat(), p)
-            p.color = if (resizing) 0xFF7FCFC6.toInt() else hint
-            val half = if (resizing) dp(30f) else dp(22f)
-            c.drawRoundRect(width / 2f - half, height / 2f - dp(2f), width / 2f + half, height / 2f + dp(2f), dp(2f), dp(2f), p)
-            p.style = Paint.Style.STROKE; p.strokeWidth = dp(1.8f)
+            val teal = 0xFF7FCFC6.toInt()
+            p.color = if (resizing) teal else hint
+            // the handle sits in the middle; a narrow window squeezes it (and moves it left) to leave room for the resize mark before the globe
+            val iconX = width - dp(74f)
+            var half = if (resizing) dp(30f) else dp(22f); var mid = width / 2f
+            val maxRight = iconX - dp(12f)
+            if (mid + half > maxRight) { half = minOf(half, (maxRight - chevronW) / 2 - dp(2f)).coerceAtLeast(dp(6f)); mid = (chevronW + maxRight) / 2 }
+            c.drawRoundRect(mid - half, height / 2f - dp(2f), mid + half, height / 2f + dp(2f), dp(2f), dp(2f), p)
+            p.style = Paint.Style.STROKE; p.strokeWidth = dp(1.4f)
             val cx = dp(27f); val cy = height / 2f
+            // the resize toggle: two crossed double arrows (tap it, or the handle, to show / hide the corner grips)
+            run {
+                val r = dp(5.5f); val a = dp(3.2f)
+                c.drawLine(iconX - r, cy - r, iconX + r, cy + r, p); c.drawLine(iconX - r, cy + r, iconX + r, cy - r, p)
+                for ((sx, sy) in listOf(1 to 1, 1 to -1, -1 to 1, -1 to -1)) {
+                    val ex = iconX + sx * r; val ey = cy + sy * r
+                    c.drawLine(ex, ey, ex - sx * a, ey, p); c.drawLine(ex, ey, ex, ey - sy * a, p)
+                }
+            }
+            p.strokeWidth = dp(1.8f)
             c.drawLine(cx - dp(4.2f), cy - dp(1.8f), cx, cy + dp(2.4f), p); c.drawLine(cx + dp(4.2f), cy - dp(1.8f), cx, cy + dp(2.4f), p)
             // the globe at the right: switch input method
             val gx = width - dp(34f); val r = dp(6f); p.strokeWidth = dp(1.4f)

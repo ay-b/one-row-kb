@@ -9,7 +9,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Áskrift</string>
     <string name="btn_subscribe">Gerast áskrifandi</string>
-    <string name="btn_buy_forever">Kaupa að eilífu (útgáfa 1)</string>
+    <string name="btn_buy_forever">Kaupa þessa meginútgáfu að eilífu</string>
     <string name="btn_manage_subscription">Stjórna áskrift</string>
     <string name="sub_status_locked">Prufutímabilinu er lokið. Lyklaborðið getur aðeins skrifað þar til þú gerist áskrifandi eða kaupir það.</string>
     <string name="sub_status_lifetime">Þú átt OneRow að eilífu (útgáfa 1). Takk fyrir!</string>
@@ -25,8 +25,8 @@
     <string name="btn_subscribe_no_price">Gerast áskrifandi (verð ekki enn tiltækt)</string>
     <string name="btn_subscribe_trial_price">Hefja 1 mánaðar ókeypis prufuáskrift, síðan %1$s á mánuði</string>
     <string name="btn_subscribe_price">Gerast áskrifandi: %1$s á mánuði</string>
-    <string name="btn_buy_forever_price">Kaupa að eilífu (útgáfa 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Kaupa að eilífu (verð ekki enn tiltækt)</string>
+    <string name="btn_buy_forever_price">Kaupa þessa meginútgáfu að eilífu: %1$s</string>
+    <string name="btn_buy_forever_no_price">Kaupa þessa meginútgáfu að eilífu (verð ekki enn tiltækt)</string>
 
     <!-- Languages -->
     <string name="header_languages">Tungumál</string>
@@ -67,6 +67,7 @@
     <string name="header_spell_checker">Stafsetningarathugun</string>
     <string name="spell_checker_desc">Android undirstrikar orð með rauðu með eigin stafsetningarathugun sem þekkir aðeins eitt tungumál. OneRow er með sína eigin: hún þekkir öll tungumál sem þú bættir við hér (og orðin sem þú kenndir henni), svo aðeins orð sem eru í raun óþekkt eru merkt.</string>
     <string name="btn_spell_on">Nota stafsetningarathugun OneRow</string>
+    <string name="spell_checker_warn">Ef þú velur hana ekki undirstrikar stafsetningarforrit Android með rauðu hvert orð sem er ekki á því eina tungumáli sem það kann.</string>
     <string name="toast_spell_pick">Veldu \"OneRow Keyboard\" á skjánum sem opnast</string>
 
     <!-- Proofreading -->

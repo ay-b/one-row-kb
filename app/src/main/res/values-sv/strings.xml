@@ -9,7 +9,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Prenumeration</string>
     <string name="btn_subscribe">Prenumerera</string>
-    <string name="btn_buy_forever">Köp för alltid (version 1)</string>
+    <string name="btn_buy_forever">Köp denna huvudversion för alltid</string>
     <string name="btn_manage_subscription">Hantera prenumeration</string>
     <string name="sub_status_locked">Provperioden har gått ut. Tangentbordet kan bara skriva tills du prenumererar eller köper det.</string>
     <string name="sub_status_lifetime">Du äger OneRow för alltid (version 1). Tack!</string>
@@ -25,8 +25,8 @@
     <string name="btn_subscribe_no_price">Prenumerera (priset är inte tillgängligt än)</string>
     <string name="btn_subscribe_trial_price">Starta 1 månads gratis provperiod, sedan %1$s per månad</string>
     <string name="btn_subscribe_price">Prenumerera: %1$s per månad</string>
-    <string name="btn_buy_forever_price">Köp för alltid (version 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Köp för alltid (priset är inte tillgängligt än)</string>
+    <string name="btn_buy_forever_price">Köp denna huvudversion för alltid: %1$s</string>
+    <string name="btn_buy_forever_no_price">Köp denna huvudversion för alltid (priset är inte tillgängligt än)</string>
 
     <!-- Languages -->
     <string name="header_languages">Språk</string>
@@ -67,6 +67,7 @@
     <string name="header_spell_checker">Stavningskontroll</string>
     <string name="spell_checker_desc">Android understryker ord med rött med sin egen stavningskontroll, som bara kan ett språk. OneRow har en egen: den kan alla språk du lagt till här (och orden du lärt den), så bara riktigt okända ord markeras.</string>
     <string name="btn_spell_on">Använd OneRows stavningskontroll</string>
+    <string name="spell_checker_warn">Om du inte väljer den understryker Androids egen stavningskontroll varje ord med rött som inte finns på dess enda språk.</string>
     <string name="toast_spell_pick">Välj \"OneRow Keyboard\" på skärmen som öppnas</string>
 
     <!-- Proofreading -->

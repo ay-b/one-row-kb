@@ -9,7 +9,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Előfizetés</string>
     <string name="btn_subscribe">Előfizetés</string>
-    <string name="btn_buy_forever">Vásárlás örökre (1. verzió)</string>
+    <string name="btn_buy_forever">Ennek a főverziónak a megvásárlása örökre</string>
     <string name="btn_manage_subscription">Előfizetés kezelése</string>
     <string name="sub_status_locked">A próbaidőszak lejárt. A billentyűzet csak gépelni tud, amíg elő nem fizet vagy meg nem vásárolja.</string>
     <string name="sub_status_lifetime">A OneRow örökre az öné (1. verzió). Köszönjük!</string>
@@ -25,8 +25,8 @@
     <string name="btn_subscribe_no_price">Előfizetés (az ár még nem érhető el)</string>
     <string name="btn_subscribe_trial_price">1 hónapos ingyenes próba indítása, utána havi %1$s</string>
     <string name="btn_subscribe_price">Előfizetés: havi %1$s</string>
-    <string name="btn_buy_forever_price">Vásárlás örökre (1. verzió): %1$s</string>
-    <string name="btn_buy_forever_no_price">Vásárlás örökre (az ár még nem érhető el)</string>
+    <string name="btn_buy_forever_price">Ennek a főverziónak a megvásárlása örökre: %1$s</string>
+    <string name="btn_buy_forever_no_price">Ennek a főverziónak a megvásárlása örökre (az ár még nem érhető el)</string>
 
     <!-- Languages -->
     <string name="header_languages">Nyelvek</string>
@@ -67,6 +67,7 @@
     <string name="header_spell_checker">Helyesírás-ellenőrző</string>
     <string name="spell_checker_desc">Az Android a saját helyesírás-ellenőrzőjével húzza alá pirossal a szavakat, amely csak egy nyelvet ismer. A OneRow-nak saját van: ismeri az összes itt hozzáadott nyelvet (és a megtanított szavakat is), így csak a valóban ismeretlen szavak vannak megjelölve.</string>
     <string name="btn_spell_on">A OneRow helyesírás-ellenőrzőjének használata</string>
+    <string name="spell_checker_warn">Ha nem ezt választja, az Android saját helyesírás-ellenőrzője pirossal aláhúz minden szót, amely nem az egyetlen nyelvén van.</string>
     <string name="toast_spell_pick">Válassza ki a \"OneRow Keyboard\" elemet a megnyíló képernyőn</string>
 
     <!-- Proofreading -->

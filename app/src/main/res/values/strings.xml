@@ -17,7 +17,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Subscription</string>
     <string name="btn_subscribe">Subscribe</string>
-    <string name="btn_buy_forever">Buy forever (version 1)</string>
+    <string name="btn_buy_forever">Buy this major version forever</string>
     <string name="btn_manage_subscription">Manage subscription</string>
     <string name="sub_status_locked">The trial has expired. The keyboard only types until you subscribe or buy it.</string>
     <string name="sub_status_lifetime">You own OneRow forever (version 1). Thank you!</string>
@@ -33,8 +33,8 @@
     <string name="btn_subscribe_no_price">Subscribe (price not available yet)</string>
     <string name="btn_subscribe_trial_price">Start the 1-month free trial, then %1$s a month</string>
     <string name="btn_subscribe_price">Subscribe: %1$s a month</string>
-    <string name="btn_buy_forever_price">Buy forever (version 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Buy forever (price not available yet)</string>
+    <string name="btn_buy_forever_price">Buy this major version forever: %1$s</string>
+    <string name="btn_buy_forever_no_price">Buy this major version forever (price not available yet)</string>
 
     <!-- Languages -->
     <string name="header_languages">Languages</string>
@@ -75,6 +75,7 @@
     <string name="header_spell_checker">Spell checker</string>
     <string name="spell_checker_desc">Android underlines words in red using its own spell checker, which only knows one language. OneRow has its own: it knows every language you added here (and the words you taught it), so only really unknown words get marked.</string>
     <string name="btn_spell_on">Use the OneRow spell checker</string>
+    <string name="spell_checker_warn">If you don\'t choose it, Android\'s own spell checker will underline in red every word that is not in its single language.</string>
     <string name="toast_spell_pick">Pick \"OneRow Keyboard\" on the screen that opens</string>
 
     <!-- Proofreading -->

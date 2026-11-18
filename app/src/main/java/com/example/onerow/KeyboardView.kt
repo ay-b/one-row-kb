@@ -127,7 +127,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     var heightScale = 1f
         set(v) { if (v != field) { field = v; layoutKeys(width.toFloat()); requestLayout(); invalidate() } }
     var hapticsOn = true
-    /** Extra vertical factor on top of [heightScale] (one-hand layouts are a bit lower), and whether the keyboard floats (no vertical scaling button then). */
+    /** Extra vertical factor on top of [heightScale] (one-hand layouts are a bit lower), and whether the keyboard floats (then the scaling drag follows the bottom edge, as the window's top stays put). */
     var shrink = 1f
         set(v) { if (v != field) { field = v; layoutKeys(width.toFloat()); requestLayout(); invalidate() } }
     var floating = false
@@ -141,6 +141,8 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     private val fs get() = vs.coerceIn(0.62f, 1.35f)
     private var scaleStartY = 0f; private var scaleStartScale = 1f; private var scaleStartH = 1f
     private var scaleDragging = false
+    private var scaleStartX = 0f; private var scaleStartSplit = 1f; private var scaleStartSide = 1f; private var scaleLeftHalf = true
+    private var scaleAxis = 0                // split layout: a drag settles on one axis, 1 = vertical (height), 2 = horizontal (width of the halves)
     private val doneRect = RectF()
     /** Width of the tap-scatter model, in key widths (tight / normal / loose). Normal is the original 0.9. */
     var tapSigma = 0.9f
@@ -152,6 +154,16 @@ class KeyboardView(context: Context, private val listener: Listener, private var
     /** Split layout: the key rows fall apart into a left and a right half with a gap between (tablets). */
     var split = false
         set(v) { if (v != field) { field = v; layoutKeys(width.toFloat()); requestLayout(); invalidate() } }
+    /** Split layout: how wide each half is, as a share of its full (portrait) width, 0.5 .. 1. Narrower halves = narrower keys. */
+    var splitScale = 1f
+        set(v) { val c = v.coerceIn(0.5f, 1f); if (c != field) { field = c; if (width > 0) layoutKeys(width.toFloat()); invalidate() } }
+    /** One-hand layouts (tablets): -1 = the keyboard sits against the left edge, 1 = against the right, 0 = neither. A sideways drag in scaling mode then changes its width. */
+    var sideShift = 0
+    /** Called with the keyboard's new width as a share of its parent's when the user drags it in scaling mode (one-hand layouts). */
+    var onSideWidth: ((Float) -> Unit)? = null
+    private var scaleStartW = 1
+    /** Called with the new [splitScale] when the user drags it in scaling mode (split layout). */
+    var onSplitScale: ((Float) -> Unit)? = null
     /** Offer the split layout in the language key's zoom (tablets). */
     var splitAvailable = false
     private var leftBlock: RectF? = null
@@ -215,7 +227,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             else -> null
         } else null
         if (p.key.kind == Kind.LANG) {
-            val items = listOf(L_GEAR, L_DOCKED, L_FLOAT) + (if (splitAvailable) listOf(L_SPLIT, L_LEFT, L_RIGHT) else emptyList()) + (if (floating) emptyList() else listOf(L_VSCALE))      // settings, the layouts, vertical scaling
+            val items = listOf(L_GEAR, L_DOCKED, L_FLOAT) + (if (splitAvailable) listOf(L_SPLIT, L_LEFT, L_RIGHT) else emptyList()) + listOf(L_VSCALE)      // settings, the layouts, vertical scaling
             preciseKeys = items.map { Placed(Key(Kind.LANG, it, 1f), p.rect, p.row) }; preciseIdx0 = 0
         } else if (mode == Mode.FULL && p.key.kind == Kind.LETTER) {
             // full keyboard: [its small symbol] [national letters ...] -- not the letter itself (a tap types that).
@@ -224,7 +236,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             val items = ArrayList<Key>()
             p.key.hint?.let { h ->
                 items += Key(Kind.CHAR, h, 1f, base = h[0].takeIf { lang.alphabet.index(it) >= 0 })      // a hint that is a letter (ъ on ь) counts as one for guessing
-                SYMBOL_VARIANTS[h[0]]?.forEach { items += Key(Kind.CHAR, it.toString(), 1f) }
+                symbolVariants(h[0])?.forEach { items += Key(Kind.CHAR, it.toString(), 1f) }
             }
             val first = items.size
             // a variant that is itself a letter of the alphabet (ъ under ь) counts as that letter for guessing
@@ -405,7 +417,7 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                 Row(listOf(Key(Kind.SUGG, "", 1f)), stripH, panel = false),
                 if (numberRow) Row(numberKeys(), fullRowH, inset = ((lang.fullRows[0].length - 10) / 2f).coerceAtLeast(0f), keyBg = true) else null,
                 Row(hinted(lang.fullRows[0], if (numberRow) TOP_ROW_SYMBOLS else "1234567890"), fullRowH, keyBg = true),
-                Row(hinted(lang.fullRows[1], if (numberRow) HINTS_ROW2_NUM else HINTS_ROW2), fullRowH, inset = ((lang.fullRows[0].length - lang.fullRows[1].length) / 2f).coerceAtLeast(0f), keyBg = true),
+                Row(hinted(lang.fullRows[1], nat(if (numberRow) HINTS_ROW2_NUM else HINTS_ROW2)), fullRowH, inset = ((lang.fullRows[0].length - lang.fullRows[1].length) / 2f).coerceAtLeast(0f), keyBg = true),
                 Row(listOf(Key(Kind.SHIFT, "", edgeKey())) + hinted(lang.fullRows[2], lang.row3Symbols ?: SYMBOLS_ROW3) + Key(Kind.BACKSPACE, "", edgeKey()), fullRowH, keyBg = true),
                 Row(listOf(Key(Kind.TO_SYMBOLS, "123", 1.5f), langKey, comma, Key(Kind.SPACE, "", 4f), period,
                     Key(Kind.ENTER, "", 1.5f)), fullRowH, keyBg = true)
@@ -415,8 +427,8 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             Mode.SYMBOLS_FULL -> listOfNotNull(
                 Row(listOf(Key(Kind.SUGG, "", 1f)), stripH, panel = false),
                 Row(chars("1234567890"), fullRowH, keyBg = true),
-                Row(chars(SYMBOLS_ROW2), fullRowH, keyBg = true),
-                if (numberRow) Row(chars(CURRENCY), fullRowH, inset = ((lang.fullRows[0].length - CURRENCY.length) / 2f).coerceAtLeast(0f), keyBg = true) else null,
+                Row(chars(nat(SYMBOLS_ROW2)), fullRowH, keyBg = true),
+                if (numberRow) Row(chars(currencyRow()), fullRowH, inset = ((lang.fullRows[0].length - currencyRow().length) / 2f).coerceAtLeast(0f), keyBg = true) else null,
                 Row(listOf(Key(Kind.SYM_PAGE2, "=\\<", 1.5f)) + chars("*\"':;!?") + Key(Kind.BACKSPACE, "", 1.5f), fullRowH, keyBg = true),
                 Row(listOf(Key(Kind.TO_LETTERS, "abc", 1.5f), keypadKey, comma, Key(Kind.SPACE, "", 4f), period,
                     Key(Kind.ENTER, "", 1.5f)), fullRowH, keyBg = true)
@@ -439,8 +451,8 @@ class KeyboardView(context: Context, private val listener: Listener, private var
                     Row(listOf(Key(Kind.SUGG, "", 1f)), stripH, panel = false),
                     if (numberRow) sym("1234567890") else null,
                     sym(if (numberRow) TOP_ROW_SYMBOLS else "1234567890"),
-                    sym(if (numberRow) "@#\$_&-+()" else "@#\$%&-+()/"),
-                    sym(CURRENCY),
+                    sym(nat(if (numberRow) "@#\$_&-+()" else "@#\$%&-+()/")),
+                    sym(currencyRow()),
                     Row(listOf(Key(Kind.TO_LETTERS, "abc", 1.5f), langKey, comma, Key(Kind.SPACE, "", 4f), period,
                         Key(Kind.ENTER, "", 1.5f)), fullRowH, keyBg = true)
                 )
@@ -491,8 +503,11 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         val padH = dp(4f)
         val list = ArrayList<Placed>(); val rects = ArrayList<RectF>()
         var y = 0f
-        val gap = if (split) w * SPLIT_GAP else 0f
-        val side = (w - 2 * padH - gap) / 2
+        // Split layout: each half keeps the width it has in portrait, so the keys are the same size in portrait and landscape
+        // (landscape just gets a wider gap between the halves). A narrower window (multi-window) still shrinks them to fit.
+        val portraitW = shortSidePx()
+        val fullSide = if (split) minOf((portraitW - 2 * padH - portraitW * SPLIT_GAP) / 2, (w - 2 * padH - w * SPLIT_GAP) / 2) else (w - 2 * padH) / 2
+        val side = if (split) fullSide * splitScale else fullSide                      // the user can make the halves (and so the keys) narrower
         var blockTop = -1f; var blockBottom = 0f
         for ((ri, row) in rows.withIndex()) {
             val rh = dp(row.heightDp) * vs
@@ -532,6 +547,16 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         leftBlock = if (split && blockTop >= 0) RectF(padH, blockTop, padH + side, blockBottom) else null
         rightBlock = if (split && blockTop >= 0) RectF(w - padH - side, blockTop, w - padH, blockBottom) else null
         placed = list; rowRects = rects
+    }
+
+    /** The shorter side of the screen as it is now (a foldable that was opened lately reports its old size through the resources). */
+    private fun shortSidePx(): Float {
+        if (android.os.Build.VERSION.SDK_INT >= 30) {
+            val b = (context.getSystemService(Context.WINDOW_SERVICE) as android.view.WindowManager).maximumWindowMetrics.bounds
+            return minOf(b.width(), b.height()).toFloat()
+        }
+        val dm = resources.displayMetrics
+        return minOf(dm.widthPixels, dm.heightPixels).toFloat()
     }
 
     /** The parts of the keyboard that take touches (in split layout the gap between the halves lets touches through). */
@@ -976,12 +1001,33 @@ class KeyboardView(context: Context, private val listener: Listener, private var
             MotionEvent.ACTION_DOWN -> {
                 if (doneRect.contains(e.x, e.y)) { scaling = false; return true }
                 scaleStartY = e.rawY; scaleStartScale = heightScale; scaleStartH = height.toFloat().coerceAtLeast(1f); scaleDragging = true
+                scaleStartX = e.rawX; scaleStartSplit = splitScale; scaleStartSide = (leftBlock?.width() ?: 1f).coerceAtLeast(1f); scaleLeftHalf = e.x < width / 2f
+                scaleStartW = width.coerceAtLeast(1)
+                scaleAxis = if (split || sideShift != 0) 0 else 1
             }
             MotionEvent.ACTION_MOVE -> if (scaleDragging) {
-                val h = (scaleStartH - (e.rawY - scaleStartY)).coerceAtLeast(dp(40f))
-                heightScale = (scaleStartScale * h / scaleStartH).coerceIn(0.5f, 1.6f)
+                val dy = e.rawY - scaleStartY; val dx = e.rawX - scaleStartX
+                if (scaleAxis == 0 && maxOf(abs(dx), abs(dy)) > dp(12f)) scaleAxis = if (abs(dx) > abs(dy)) 2 else 1      // split: the first clear direction wins
+                if (scaleAxis == 1) {
+                    val h = (if (floating) scaleStartH + dy else scaleStartH - dy).coerceAtLeast(dp(40f))      // docked: the top edge follows the finger; floating: the bottom edge (the window's top stays)
+                    heightScale = (scaleStartScale * h / scaleStartH).coerceIn(0.5f, 1.6f)
+                } else if (scaleAxis == 2 && sideShift != 0) {
+                    // one-hand layout: the free edge follows the finger (a keyboard on the left grows to the right, on the right grows to the left)
+                    val pw = ((parent as? View)?.width ?: width).toFloat()
+                    val w = (scaleStartW + (if (sideShift < 0) dx else -dx)).coerceIn(pw * SIDE_MIN, pw * SIDE_MAX).toInt()
+                    layoutParams?.let { if (it.width != w) { it.width = w; requestLayout() } }
+                } else if (scaleAxis == 2) {
+                    // dragging outward from the middle widens the half under the finger, inward narrows it
+                    val side = scaleStartSide + (if (scaleLeftHalf) -dx else dx)
+                    splitScale = scaleStartSplit * side / scaleStartSide
+                }
             }
-            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> if (scaleDragging) { scaleDragging = false; onHeightScale?.invoke(heightScale) }
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> if (scaleDragging) {
+                scaleDragging = false
+                if (scaleAxis == 2 && sideShift != 0) onSideWidth?.invoke(width.toFloat() / ((parent as? View)?.width ?: width).coerceAtLeast(1))
+                else if (scaleAxis == 2) onSplitScale?.invoke(splitScale)
+                else onHeightScale?.invoke(heightScale)
+            }
         }
         return true
     }
@@ -1002,6 +1048,17 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         c.drawLine(cx, cy - l, cx, cy + l, stroke)
         c.drawLine(cx - a, cy - l + a, cx, cy - l, stroke); c.drawLine(cx + a, cy - l + a, cx, cy - l, stroke)
         c.drawLine(cx - a, cy + l - a, cx, cy + l, stroke); c.drawLine(cx + a, cy + l - a, cx, cy + l, stroke)
+        if (sideShift != 0) {                                                  // one-hand layout: one horizontal double arrow (drag sideways = narrower / wider)
+            c.drawLine(cx - l, cy, cx + l, cy, stroke)
+            c.drawLine(cx - l + a, cy - a, cx - l, cy, stroke); c.drawLine(cx - l + a, cy + a, cx - l, cy, stroke)
+            c.drawLine(cx + l - a, cy - a, cx + l, cy, stroke); c.drawLine(cx + l - a, cy + a, cx + l, cy, stroke)
+        }
+        if (split) for (b in listOfNotNull(leftBlock, rightBlock)) {          // split layout: a horizontal double arrow in each half too (drag sideways = narrower / wider keys)
+            val bx = b.centerX(); val by = b.centerY()
+            c.drawLine(bx - l, by, bx + l, by, stroke)
+            c.drawLine(bx - l + a, by - a, bx - l, by, stroke); c.drawLine(bx - l + a, by + a, bx - l, by, stroke)
+            c.drawLine(bx + l - a, by - a, bx + l, by, stroke); c.drawLine(bx + l - a, by + a, bx + l, by, stroke)
+        }
         stroke.color = old; stroke.strokeWidth = sw
     }
 
@@ -1428,7 +1485,16 @@ class KeyboardView(context: Context, private val listener: Listener, private var
 
     /** The keypad's own zoom lists: the brackets: hold , for ( and . for ). The other keys keep the usual ones. */
     private val KEYPAD_VARIANTS = mapOf(',' to "(", '.' to ")")
-    private fun variantsOf(c: Char): String? = (if (mode == Mode.KEYPAD) KEYPAD_VARIANTS[c] else null) ?: SYMBOL_VARIANTS[c]
+    private fun variantsOf(c: Char): String? = (if (mode == Mode.KEYPAD) KEYPAD_VARIANTS[c] else null) ?: symbolVariants(c)
+
+    /** The language's own currency sign (₽, ₴, €) stands where the dollar sign is; the dollar sign then stays in its zoom. */
+    private val natCur: Char get() = Languages.currency(lang.code) ?: '$'
+    private fun nat(symbols: String) = if (natCur == '$') symbols else symbols.replace('$', natCur)
+    /** The currency signs in the peek row and number-row page: the national one first. */
+    private fun currencyRow() = if (natCur == '$') CURRENCY else natCur + CURRENCY.replace(natCur.toString(), "")
+    /** What holding [c] offers after the key itself; the national currency sign gets the currency list, the dollar sign first. */
+    private fun symbolVariants(c: Char): String? =
+        if (c == natCur && c != '$') CURRENCY_ZOOM.replace(c.toString(), "") else SYMBOL_VARIANTS[c]
 
     private class HoldSet(val items: List<String>, val start: Int)
 
@@ -1448,10 +1514,13 @@ class KeyboardView(context: Context, private val listener: Listener, private var
         const val SYMBOLS_ROW3 = "*\"':;!?"
         const val TOP_ROW_SYMBOLS = "%\\|=[]<>{}"      // what Gboard shows on the top letter row when it has a number row
         const val HINTS_ROW2_NUM = "@#\$_&-+()/"        // ... and on the second ("%" moved up to Q)
+        const val CURRENCY_ZOOM = "\$¢£€¥₱"          // what holding a currency key offers (the dollar sign's own zoom list)
         const val CURRENCY = "\$€£¥¢¤₣₤"             // every currency sign the keyboard's font (Victor Mono) has, most used first
         const val NUM_HINTS = "½²³¼⁵⁶⁷⁸⁹⁰"       // under 1234567890 on the number row
         const val SWIPE_MIN_DP = 26f      // travel before a stroke on the letter row counts as a shortcut swipe
-        const val SPLIT_GAP = 0.24f         // share of the width left empty between the halves in split layout
+        const val SIDE_MIN = 0.35f          // one-hand layouts: the narrowest and widest the keyboard can be made, as a share of the screen width
+        const val SIDE_MAX = 0.95f
+        const val SPLIT_GAP = 0.24f         // share of the (portrait) width left empty between the halves in split layout
         const val L_GEAR = "\u2699"         // the language key's zoom: settings and the three layouts (private-use code points = icons drawn in code)
         const val L_DOCKED = "\uE000"
         const val L_FLOAT = "\uE001"

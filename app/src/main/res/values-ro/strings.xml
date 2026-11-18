@@ -10,7 +10,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Abonament</string>
     <string name="btn_subscribe">Abonați-vă</string>
-    <string name="btn_buy_forever">Cumpărați pentru totdeauna (versiunea 1)</string>
+    <string name="btn_buy_forever">Cumpărați această versiune majoră pentru totdeauna</string>
     <string name="btn_manage_subscription">Gestionați abonamentul</string>
     <string name="sub_status_locked">Perioada de probă a expirat. Tastatura doar tastează până când vă abonați sau o cumpărați.</string>
     <string name="sub_status_lifetime">Dețineți OneRow pentru totdeauna (versiunea 1). Mulțumim!</string>
@@ -28,8 +28,8 @@
     <string name="btn_subscribe_no_price">Abonați-vă (prețul nu este încă disponibil)</string>
     <string name="btn_subscribe_trial_price">Începeți perioada de probă gratuită de 1 lună, apoi %1$s pe lună</string>
     <string name="btn_subscribe_price">Abonați-vă: %1$s pe lună</string>
-    <string name="btn_buy_forever_price">Cumpărați pentru totdeauna (versiunea 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Cumpărați pentru totdeauna (prețul nu este încă disponibil)</string>
+    <string name="btn_buy_forever_price">Cumpărați această versiune majoră pentru totdeauna: %1$s</string>
+    <string name="btn_buy_forever_no_price">Cumpărați această versiune majoră pentru totdeauna (prețul nu este încă disponibil)</string>
 
     <!-- Languages -->
     <string name="header_languages">Limbi</string>
@@ -70,6 +70,7 @@
     <string name="header_spell_checker">Verificare ortografică</string>
     <string name="spell_checker_desc">Android subliniază cuvintele cu roșu folosind propriul verificator ortografic, care cunoaște o singură limbă. OneRow are unul al său: cunoaște toate limbile adăugate aici (și cuvintele pe care l-ați învățat), așa că sunt marcate doar cuvintele cu adevărat necunoscute.</string>
     <string name="btn_spell_on">Folosiți verificatorul ortografic OneRow</string>
+    <string name="spell_checker_warn">Dacă nu o alegi, verificatorul ortografic din Android va sublinia cu roșu fiecare cuvânt care nu e în singura lui limbă.</string>
     <string name="toast_spell_pick">Alege \"OneRow Keyboard\" pe ecranul care se deschide</string>
 
     <!-- Proofreading -->

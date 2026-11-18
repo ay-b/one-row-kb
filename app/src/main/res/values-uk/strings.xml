@@ -9,7 +9,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Підписка</string>
     <string name="btn_subscribe">Оформити підписку</string>
-    <string name="btn_buy_forever">Купити назавжди (версія 1)</string>
+    <string name="btn_buy_forever">Купити цю основну версію назавжди</string>
     <string name="btn_manage_subscription">Керувати підпискою</string>
     <string name="sub_status_locked">Пробний період закінчився. Клавіатура лише друкує, доки ви не оформите підписку або не купите її.</string>
     <string name="sub_status_lifetime">OneRow у вас назавжди (версія 1). Дякуємо!</string>
@@ -29,8 +29,8 @@
     <string name="btn_subscribe_no_price">Оформити підписку (ціна поки недоступна)</string>
     <string name="btn_subscribe_trial_price">Почати безкоштовний пробний період на 1 місяць, потім %1$s на місяць</string>
     <string name="btn_subscribe_price">Оформити підписку: %1$s на місяць</string>
-    <string name="btn_buy_forever_price">Купити назавжди (версія 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Купити назавжди (ціна поки недоступна)</string>
+    <string name="btn_buy_forever_price">Купити цю основну версію назавжди: %1$s</string>
+    <string name="btn_buy_forever_no_price">Купити цю основну версію назавжди (ціна поки недоступна)</string>
 
     <!-- Languages -->
     <string name="header_languages">Мови</string>
@@ -71,6 +71,7 @@
     <string name="header_spell_checker">Перевірка правопису</string>
     <string name="spell_checker_desc">Android підкреслює слова червоним за допомогою власної перевірки правопису, яка знає лише одну мову. OneRow має свою: вона знає всі додані тут мови (і слова, яких ви її навчили), тож позначаються лише справді невідомі слова.</string>
     <string name="btn_spell_on">Використовувати перевірку правопису OneRow</string>
+    <string name="spell_checker_warn">Якщо його не вибрати, вбудована перевірка орфографії Android підкреслить червоним кожне слово, якого немає в її єдиній мові.</string>
     <string name="toast_spell_pick">Виберіть \"OneRow Keyboard\" на екрані, що відкриється</string>
 
     <!-- Proofreading -->

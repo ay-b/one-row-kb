@@ -60,6 +60,16 @@ class Prefs(context: Context) {
         get() = (sp.getString("layout", "docked") ?: "docked").takeIf { it in setOf("floating", "split", "left", "right") } ?: "docked"
         set(v) = sp.edit().putString("layout", v).apply()
 
+    /** Split layout: how wide each half is, as a share of its full width (0.5 .. 1); the user narrows the keys with the scaling drag. */
+    var splitWidth: Float
+        get() = sp.getFloat("split_w", 1f).coerceIn(0.5f, 1f)
+        set(v) = sp.edit().putFloat("split_w", v.coerceIn(0.5f, 1f)).apply()
+
+    /** One-hand layouts (tablets): the keyboard's width as a share of the screen width (0.35 .. 0.95), changed with the scaling drag. */
+    var sideWidth: Float
+        get() = sp.getFloat("side_w", 0.62f).coerceIn(0.35f, 0.95f)
+        set(v) = sp.edit().putFloat("side_w", v.coerceIn(0.35f, 0.95f)).apply()
+
     /** Floating keyboard: width as a share of the screen, and where it was left (offsets, see FloatingKeyboard). */
     var floatWidth: Float
         get() = sp.getFloat("float_w", 0.8f).coerceIn(0.4f, 1f)

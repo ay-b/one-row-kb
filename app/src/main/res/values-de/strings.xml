@@ -9,7 +9,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Abo</string>
     <string name="btn_subscribe">Abonnieren</string>
-    <string name="btn_buy_forever">Dauerhaft kaufen (Version 1)</string>
+    <string name="btn_buy_forever">Diese Hauptversion dauerhaft kaufen</string>
     <string name="btn_manage_subscription">Abo verwalten</string>
     <string name="sub_status_locked">Die Testphase ist abgelaufen. Die Tastatur kann nur noch tippen, bis du ein Abo abschließt oder sie kaufst.</string>
     <string name="sub_status_lifetime">OneRow gehört dir dauerhaft (Version 1). Vielen Dank!</string>
@@ -25,8 +25,8 @@
     <string name="btn_subscribe_no_price">Abonnieren (Preis noch nicht verfügbar)</string>
     <string name="btn_subscribe_trial_price">1 Monat kostenlos testen, danach %1$s pro Monat</string>
     <string name="btn_subscribe_price">Abonnieren: %1$s pro Monat</string>
-    <string name="btn_buy_forever_price">Dauerhaft kaufen (Version 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Dauerhaft kaufen (Preis noch nicht verfügbar)</string>
+    <string name="btn_buy_forever_price">Diese Hauptversion dauerhaft kaufen: %1$s</string>
+    <string name="btn_buy_forever_no_price">Diese Hauptversion dauerhaft kaufen (Preis noch nicht verfügbar)</string>
 
     <!-- Languages -->
     <string name="header_languages">Sprachen</string>
@@ -67,6 +67,7 @@
     <string name="header_spell_checker">Rechtschreibprüfung</string>
     <string name="spell_checker_desc">Android unterstreicht Wörter rot mit der eigenen Rechtschreibprüfung, die nur eine Sprache kennt. OneRow hat eine eigene: Sie kennt alle hier hinzugefügten Sprachen (und die Wörter, die du ihr beigebracht hast), sodass nur wirklich unbekannte Wörter markiert werden.</string>
     <string name="btn_spell_on">OneRow-Rechtschreibprüfung verwenden</string>
+    <string name="spell_checker_warn">Wenn du sie nicht auswählst, unterstreicht die Rechtschreibprüfung von Android jedes Wort rot, das nicht in ihrer einen Sprache steht.</string>
     <string name="toast_spell_pick">Wähle auf dem sich öffnenden Bildschirm \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->

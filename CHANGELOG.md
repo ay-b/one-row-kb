@@ -4,6 +4,38 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.27.1
+- Settings > Languages: the language to add is chosen with a button that shows the chosen language as plain text (tap it for the list) instead of the system dropdown, which drew its selected item invisibly on some devices (Samsung Galaxy Fold, unfolded).
+
+## 0.27.0
+- One-hand ("side-shift") keyboards on tablets: horizontal scaling. In the scaling mode (language key zoom > the arrows icon) a sideways drag makes the keyboard narrower or wider (35% to 95% of the screen width, the free edge follows the finger); up / down still changes the height, the first clear direction of a drag decides. The width is remembered.
+
+## 0.26.5
+- Foldables / tablets: the strip under the keys (gesture handle) no longer depends only on the insets the system hands to the keyboard. On large screens the keyboard also reads the display's gesture strip and the system's gesture-navigation height and keeps clear of the largest of them. Phones are unchanged.
+
+## 0.26.4
+- Foldables: the split / one-hand layouts are now offered, and the keyboard re-arranges itself, when the phone is unfolded after the keyboard started (the screen size was only read once, at start, and kept the folded value). Screen size for these layouts is read from the display as it is now.
+- Bottom strip: besides the navigation bar and the gesture strip, the keyboard now also keeps clear of whatever else the system marks as tappable at the bottom (the large-screen taskbar), and asks for fresh insets when the screen changes.
+
+## 0.26.3
+- The lifetime purchase button now says "Buy this major version forever" (with the price, or "price not available yet"), in all 26 languages; the "(version 1)" in the label is gone since "this major version" says it.
+
+## 0.26.2
+- Settings: the Spell checker section (explanation and the "Use the OneRow spell checker" button) moved to the top, right under the two Setup buttons, with a new note: if OneRow is not chosen, Android's own checker underlines in red every word that is not in its single language. The note is translated into all 25 languages.
+
+## 0.26.1
+- National currency: in the euro languages (French, German, Italian, Dutch, Finnish, Greek, Slovak, Slovenian, Croatian, Estonian, Latvian, Lithuanian, Catalan) and in Russian (₽) and Ukrainian (₴) the symbol keys show the national currency sign instead of `$` (the small hint on D, the key on the symbols page, the first sign of the currency row). Holding it offers that sign first, then `$ ¢ £ € ¥ ₱`. English, Spanish, Portuguese and the languages whose currency has a longer name (kr, zł, Kč, Ft, lei) keep `$`.
+
+## 0.26.0
+- Split keyboard (tablets): horizontal scaling. In the scaling mode (language key zoom > the arrows icon) a sideways drag makes the two halves, and so the keys, narrower (down to half); dragging up or down still changes the height. The first clear direction of a drag decides which one. The width is remembered. Each half shows a horizontal arrow while scaling.
+
+## 0.25.10
+- Floating keyboard: a small crossed double-arrow mark on the bottom bar (between the handle and the globe) shows that tapping there toggles resizing (the corner grips); it lights up while resizing is on. A narrow window squeezes the handle to make room.
+
+## 0.25.9
+- Split keyboard (tablets): the two halves keep the same key size in portrait and in landscape. In landscape the gap between the halves is simply wider (before, the keys grew with the screen width).
+- Floating keyboard: the vertical-scaling button is now also in the language key's zoom (drag down = taller, up = lower; the check mark ends it). The size is remembered like the corner drags.
+
 ## 0.25.8
 - Swipe typing: the guess bar after a glide no longer repeats the word that was just typed; it lists only the other, less certain guesses (tap one to replace the word).
 

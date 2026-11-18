@@ -9,7 +9,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Abonnement</string>
     <string name="btn_subscribe">Abonner</string>
-    <string name="btn_buy_forever">Kjøp for alltid (versjon 1)</string>
+    <string name="btn_buy_forever">Kjøp denne hovedversjonen for alltid</string>
     <string name="btn_manage_subscription">Administrer abonnement</string>
     <string name="sub_status_locked">Prøveperioden er utløpt. Tastaturet kan bare skrive til du tegner et abonnement eller kjøper det.</string>
     <string name="sub_status_lifetime">Du eier OneRow for alltid (versjon 1). Takk!</string>
@@ -25,8 +25,8 @@
     <string name="btn_subscribe_no_price">Abonner (prisen er ikke tilgjengelig ennå)</string>
     <string name="btn_subscribe_trial_price">Start 1 måneds gratis prøveperiode, deretter %1$s per måned</string>
     <string name="btn_subscribe_price">Abonner: %1$s per måned</string>
-    <string name="btn_buy_forever_price">Kjøp for alltid (versjon 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Kjøp for alltid (prisen er ikke tilgjengelig ennå)</string>
+    <string name="btn_buy_forever_price">Kjøp denne hovedversjonen for alltid: %1$s</string>
+    <string name="btn_buy_forever_no_price">Kjøp denne hovedversjonen for alltid (prisen er ikke tilgjengelig ennå)</string>
 
     <!-- Languages -->
     <string name="header_languages">Språk</string>
@@ -67,6 +67,7 @@
     <string name="header_spell_checker">Stavekontroll</string>
     <string name="spell_checker_desc">Android understreker ord med rødt med sin egen stavekontroll, som bare kan ett språk. OneRow har sin egen: den kan alle språkene du har lagt til her (og ordene du har lært den), så bare helt ukjente ord blir markert.</string>
     <string name="btn_spell_on">Bruk OneRows stavekontroll</string>
+    <string name="spell_checker_warn">Hvis du ikke velger den, understreker Androids egen stavekontroll alle ord med rødt som ikke er på dens ene språk.</string>
     <string name="toast_spell_pick">Velg \"OneRow Keyboard\" på skjermen som åpnes</string>
 
     <!-- Proofreading -->

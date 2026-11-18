@@ -9,7 +9,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Συνδρομή</string>
     <string name="btn_subscribe">Συνδρομή</string>
-    <string name="btn_buy_forever">Αγορά για πάντα (έκδοση 1)</string>
+    <string name="btn_buy_forever">Αγορά αυτής της κύριας έκδοσης για πάντα</string>
     <string name="btn_manage_subscription">Διαχείριση συνδρομής</string>
     <string name="sub_status_locked">Η δοκιμαστική περίοδος έληξε. Το πληκτρολόγιο απλώς πληκτρολογεί μέχρι να κάνετε συνδρομή ή να το αγοράσετε.</string>
     <string name="sub_status_lifetime">Έχετε το OneRow για πάντα (έκδοση 1). Ευχαριστούμε!</string>
@@ -25,8 +25,8 @@
     <string name="btn_subscribe_no_price">Συνδρομή (η τιμή δεν είναι διαθέσιμη ακόμα)</string>
     <string name="btn_subscribe_trial_price">Έναρξη δωρεάν δοκιμής 1 μήνα, μετά %1$s ανά μήνα</string>
     <string name="btn_subscribe_price">Συνδρομή: %1$s ανά μήνα</string>
-    <string name="btn_buy_forever_price">Αγορά για πάντα (έκδοση 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Αγορά για πάντα (η τιμή δεν είναι διαθέσιμη ακόμα)</string>
+    <string name="btn_buy_forever_price">Αγορά αυτής της κύριας έκδοσης για πάντα: %1$s</string>
+    <string name="btn_buy_forever_no_price">Αγορά αυτής της κύριας έκδοσης για πάντα (η τιμή δεν είναι διαθέσιμη ακόμα)</string>
 
     <!-- Languages -->
     <string name="header_languages">Γλώσσες</string>
@@ -67,6 +67,7 @@
     <string name="header_spell_checker">Ορθογραφικός έλεγχος</string>
     <string name="spell_checker_desc">Το Android υπογραμμίζει με κόκκινο τις λέξεις χρησιμοποιώντας τον δικό του ορθογραφικό έλεγχο, ο οποίος γνωρίζει μόνο μία γλώσσα. Το OneRow έχει δικό του: γνωρίζει όλες τις γλώσσες που προσθέσατε εδώ (και τις λέξεις που του μάθατε), ώστε να επισημαίνονται μόνο οι πραγματικά άγνωστες λέξεις.</string>
     <string name="btn_spell_on">Χρήση ορθογραφικού ελέγχου OneRow</string>
+    <string name="spell_checker_warn">Αν δεν την επιλέξετε, ο ορθογραφικός έλεγχος του Android θα υπογραμμίζει με κόκκινο κάθε λέξη που δεν ανήκει στη μία γλώσσα του.</string>
     <string name="toast_spell_pick">Επιλέξτε \"OneRow Keyboard\" στην οθόνη που θα ανοίξει</string>
 
     <!-- Proofreading -->

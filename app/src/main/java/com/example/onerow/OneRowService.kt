@@ -212,6 +212,8 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         kv.languages = prefs.enabled
         kv.heightScale = prefs.heightScale
         kv.onHeightScale = { v -> if (layoutMode == "floating") prefs.floatHeight = v else prefs.heightScale = v }
+        kv.onSplitScale = { v -> prefs.splitWidth = v }
+        kv.onSideWidth = { v -> prefs.sideWidth = v }
         kv.hapticsOn = prefs.haptics
         kv.themeMode = prefs.theme
         kv.swipeTyping = prefs.swipeTyping
@@ -231,7 +233,23 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         return dock
     }
 
-    private fun isTablet() = resources.configuration.smallestScreenWidthDp >= 600
+    /**
+     * A tablet-sized screen (the smaller side is at least 600 dp), asked of the display as it is NOW: a foldable that was opened after the keyboard
+     * started would still report the folded size through the service's own configuration.
+     */
+    /** The width of the screen as it is now (see [isTablet]). */
+    private fun screenWidthPx(): Int =
+        if (Build.VERSION.SDK_INT >= 30) (getSystemService(WINDOW_SERVICE) as android.view.WindowManager).maximumWindowMetrics.bounds.width()
+        else resources.displayMetrics.widthPixels
+
+    private fun isTablet(): Boolean {
+        if (Build.VERSION.SDK_INT >= 30) {
+            val b = (getSystemService(WINDOW_SERVICE) as android.view.WindowManager).maximumWindowMetrics.bounds
+            val density = resources.displayMetrics.density.takeIf { it > 0f } ?: return resources.configuration.smallestScreenWidthDp >= 600
+            return minOf(b.width(), b.height()) / density >= 600f
+        }
+        return resources.configuration.smallestScreenWidthDp >= 600
+    }
 
     // ---- Android 15+ draws the system buttons / the home-gesture zone OVER the bottom of our window (edge-to-edge is enforced for apps
     // targeting 35+). Older Android reserves that strip itself, so we add nothing there. ----
@@ -240,7 +258,9 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     private fun watchSystemBars() {
         if (Build.VERSION.SDK_INT < 35) return
         dock.setOnApplyWindowInsetsListener { _, insets ->
-            val kinds = android.view.WindowInsets.Type.navigationBars() or android.view.WindowInsets.Type.systemGestures()
+            // the navigation bar or the large-screen taskbar, the gesture strip, and whatever else the system keeps tappable at the bottom
+            val kinds = android.view.WindowInsets.Type.navigationBars() or android.view.WindowInsets.Type.systemGestures() or
+                android.view.WindowInsets.Type.tappableElement() or android.view.WindowInsets.Type.mandatorySystemGestures()
             val b = insets.getInsets(kinds).bottom
             if (b != navInset) { navInset = b; updateDockLook() }
             insets
@@ -252,8 +272,41 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (!::dock.isInitialized) return
         val floatingNow = layoutMode == "floating"
         val side = layoutMode == "left" || layoutMode == "right"
-        dock.setPadding(0, 0, 0, if (floatingNow) 0 else navInset)
-        dock.setBackgroundColor(if (side || (!floatingNow && navInset > 0)) Themes.palette(prefs.theme, resources.configuration).panel else 0)
+        val inset = bottomInset()
+        dock.setPadding(0, 0, 0, if (floatingNow) 0 else inset)
+        dock.setBackgroundColor(if (side || (!floatingNow && inset > 0)) Themes.palette(prefs.theme, resources.configuration).panel else 0)
+    }
+
+    /**
+     * The strip under the keys that the system draws over (navigation bar, gesture handle). The window insets are the first source; on large
+     * screens (tablets, unfolded foldables) the system may not deliver them to the keyboard at all, so the display's own gesture strip and the
+     * system's navigation-bar size are read as well and the largest wins. Phones keep exactly the insets they get.
+     */
+    private fun bottomInset(): Int {
+        if (Build.VERSION.SDK_INT < 35) return 0
+        var b = navInset
+        if (isTablet()) b = maxOf(b, largeScreenGestureStrip())
+        return b
+    }
+
+    private fun largeScreenGestureStrip(): Int {
+        var best = 0
+        if (Build.VERSION.SDK_INT >= 30) {
+            try {
+                val m = (getSystemService(WINDOW_SERVICE) as android.view.WindowManager).maximumWindowMetrics
+                val kinds = android.view.WindowInsets.Type.systemGestures() or android.view.WindowInsets.Type.mandatorySystemGestures()
+                best = maxOf(best, m.windowInsets.getInsetsIgnoringVisibility(kinds).bottom)
+            } catch (_: Exception) { }
+        }
+        try {
+            // gesture navigation (navigation_mode 2): the height of the gesture handle zone the system itself reserves
+            if (android.provider.Settings.Secure.getInt(contentResolver, "navigation_mode", 0) == 2) {
+                val sys = android.content.res.Resources.getSystem()
+                val id = sys.getIdentifier("navigation_bar_gesture_height", "dimen", "android")
+                if (id > 0) best = maxOf(best, sys.getDimensionPixelSize(id))
+            }
+        } catch (_: Exception) { }
+        return best
     }
 
     /** Puts the keyboard where [layoutMode] says: in the input view (docked or split) or in the floating window. */
@@ -261,6 +314,8 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
 
     private fun arrange() {
         kv.split = layoutMode == "split"
+        kv.splitScale = prefs.splitWidth
+        kv.sideShift = when (layoutMode) { "left" -> -1; "right" -> 1; else -> 0 }
         kv.floating = layoutMode == "floating"
         kv.scaling = false
         kv.heightScale = scaleFor(layoutMode)
@@ -280,7 +335,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
                 dock.addView(kv)
             }
             // one-hand layouts: the keyboard is narrower and sits against one side; the rest of the input view is panel color
-            val w = if (side) (resources.displayMetrics.widthPixels * 0.62f).toInt() else ViewGroup.LayoutParams.MATCH_PARENT
+            val w = if (side) (screenWidthPx() * prefs.sideWidth).toInt() else ViewGroup.LayoutParams.MATCH_PARENT
             kv.layoutParams = FrameLayout.LayoutParams(w, ViewGroup.LayoutParams.WRAP_CONTENT,
                 when (layoutMode) { "left" -> Gravity.START; "right" -> Gravity.END; else -> Gravity.NO_GRAVITY } or Gravity.BOTTOM)
         }
@@ -336,6 +391,16 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
         super.onConfigurationChanged(newConfig)
         if (::kv.isInitialized && prefs.theme == Themes.AUTO) { kv.applyTheme(); applyNavBar() }      // system light/dark switched
+        if (::kv.isInitialized && ::dock.isInitialized) {
+            // a foldable opened or closed (or the tablet turned): the split layouts come and go with the screen size, and the system bars may differ
+            val tablet = isTablet()
+            kv.splitAvailable = tablet
+            val want = prefs.layoutMode.let { if (it in setOf("split", "left", "right") && !tablet) "docked" else it }
+            if (want != layoutMode) { layoutMode = want; arrange(); applyNavBar(); kv.invalidate() }
+            else if (layoutMode == "left" || layoutMode == "right") arrange()
+            updateDockLook()
+            dock.requestApplyInsets()
+        }
     }
 
     /** Paints the system navigation bar under the keyboard in the keyboard's color (otherwise each phone picks its own: black, white...). */

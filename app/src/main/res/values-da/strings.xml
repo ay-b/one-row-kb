@@ -9,7 +9,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Abonnement</string>
     <string name="btn_subscribe">Abonnér</string>
-    <string name="btn_buy_forever">Køb for altid (version 1)</string>
+    <string name="btn_buy_forever">Køb denne hovedversion for altid</string>
     <string name="btn_manage_subscription">Administrer abonnement</string>
     <string name="sub_status_locked">Prøveperioden er udløbet. Tastaturet kan kun skrive, indtil du tegner et abonnement eller køber det.</string>
     <string name="sub_status_lifetime">Du ejer OneRow for altid (version 1). Tak!</string>
@@ -25,8 +25,8 @@
     <string name="btn_subscribe_no_price">Abonnér (prisen er ikke tilgængelig endnu)</string>
     <string name="btn_subscribe_trial_price">Start 1 måneds gratis prøveperiode, derefter %1$s om måneden</string>
     <string name="btn_subscribe_price">Abonnér: %1$s om måneden</string>
-    <string name="btn_buy_forever_price">Køb for altid (version 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Køb for altid (prisen er ikke tilgængelig endnu)</string>
+    <string name="btn_buy_forever_price">Køb denne hovedversion for altid: %1$s</string>
+    <string name="btn_buy_forever_no_price">Køb denne hovedversion for altid (prisen er ikke tilgængelig endnu)</string>
 
     <!-- Languages -->
     <string name="header_languages">Sprog</string>
@@ -67,6 +67,7 @@
     <string name="header_spell_checker">Stavekontrol</string>
     <string name="spell_checker_desc">Android understreger ord med rødt ved hjælp af sin egen stavekontrol, som kun kender ét sprog. OneRow har sin egen: den kender alle de sprog, du har tilføjet her (og de ord, du har lært den), så kun helt ukendte ord markeres.</string>
     <string name="btn_spell_on">Brug OneRows stavekontrol</string>
+    <string name="spell_checker_warn">Hvis du ikke vælger den, understreger Androids egen stavekontrol alle ord med rødt, som ikke er på dens ene sprog.</string>
     <string name="toast_spell_pick">Vælg \"OneRow Keyboard\" på den skærm, der åbnes</string>
 
     <!-- Proofreading -->

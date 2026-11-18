@@ -22,6 +22,18 @@ class Lang(
 )
 
 object Languages {
+    /**
+     * The national currency sign, when a single character is enough (the euro languages, ₽, ₴); null = the dollar sign stays. It replaces `$`
+     * on the symbol keys and comes first in the zoom of that key. Spanish, Portuguese and English are spoken in too many currencies to pick one;
+     * the crowns, złoty, forint and leu need more than one character.
+     */
+    fun currency(code: String): Char? = when (code) {
+        "ru" -> '\u20BD'                                                      // ₽
+        "uk" -> '\u20B4'                                                      // ₴
+        "fr", "de", "it", "nl", "fi", "el", "sk", "sl", "hr", "et", "lv", "lt", "ca" -> '\u20AC'      // €
+        else -> null
+    }
+
     private val latin = Alphabet(Alphabet.LATIN, Alphabet.LATIN_FOLDS)
     private val cyrillic = Alphabet("абвгдежзийклмнопрстуфхцчшщъыьэюя", mapOf('ё' to "е"))
     private val ukrainian = Alphabet("абвгдежзиіїйклмнопрстуфхцчшщьюяє", mapOf('ґ' to "г"))

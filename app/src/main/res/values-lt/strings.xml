@@ -10,7 +10,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Prenumerata</string>
     <string name="btn_subscribe">Prenumeruokite</string>
-    <string name="btn_buy_forever">Pirkite visam laikui (1 versija)</string>
+    <string name="btn_buy_forever">Pirkite šią pagrindinę versiją visam laikui</string>
     <string name="btn_manage_subscription">Tvarkykite prenumeratą</string>
     <string name="sub_status_locked">Bandomasis laikotarpis baigėsi. Klaviatūra tik rašo, kol neprenumeruosite arba jos nenusipirksite.</string>
     <string name="sub_status_lifetime">OneRow priklauso jums visam laikui (1 versija). Ačiū!</string>
@@ -28,8 +28,8 @@
     <string name="btn_subscribe_no_price">Prenumeruokite (kaina dar nepasiekiama)</string>
     <string name="btn_subscribe_trial_price">Pradėkite 1 mėnesio nemokamą bandomąjį laikotarpį, vėliau %1$s per mėnesį</string>
     <string name="btn_subscribe_price">Prenumeruokite: %1$s per mėnesį</string>
-    <string name="btn_buy_forever_price">Pirkite visam laikui (1 versija): %1$s</string>
-    <string name="btn_buy_forever_no_price">Pirkite visam laikui (kaina dar nepasiekiama)</string>
+    <string name="btn_buy_forever_price">Pirkite šią pagrindinę versiją visam laikui: %1$s</string>
+    <string name="btn_buy_forever_no_price">Pirkite šią pagrindinę versiją visam laikui (kaina dar nepasiekiama)</string>
 
     <!-- Languages -->
     <string name="header_languages">Kalbos</string>
@@ -70,6 +70,7 @@
     <string name="header_spell_checker">Rašybos tikrinimas</string>
     <string name="spell_checker_desc">Android raudonai pabraukia žodžius naudodama savo rašybos tikrinimo priemonę, kuri žino tik vieną kalbą. OneRow turi savo: ji žino visas čia pridėtas kalbas (ir žodžius, kuriuos ją išmokėte), todėl pažymimi tik tikrai nežinomi žodžiai.</string>
     <string name="btn_spell_on">Naudokite OneRow rašybos tikrinimo priemonę</string>
+    <string name="spell_checker_warn">Jei jos nepasirinksite, Android rašybos tikrinimas raudonai pabrauks kiekvieną žodį, kurio nėra jo vienoje kalboje.</string>
     <string name="toast_spell_pick">Atsidariusiame ekrane pasirinkite \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->

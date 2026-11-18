@@ -9,7 +9,7 @@
     <!-- Subscription -->
     <string name="header_subscription">Predplatné</string>
     <string name="btn_subscribe">Predplatiť</string>
-    <string name="btn_buy_forever">Kúpiť navždy (verzia 1)</string>
+    <string name="btn_buy_forever">Kúpiť túto hlavnú verziu navždy</string>
     <string name="btn_manage_subscription">Spravovať predplatné</string>
     <string name="sub_status_locked">Skúšobná doba skončila. Klávesnica iba píše, kým si ju nepredplatíte alebo nekúpite.</string>
     <string name="sub_status_lifetime">OneRow vlastníte navždy (verzia 1). Ďakujeme!</string>
@@ -27,8 +27,8 @@
     <string name="btn_subscribe_no_price">Predplatiť (cena zatiaľ nie je k dispozícii)</string>
     <string name="btn_subscribe_trial_price">Spustiť 1-mesačnú bezplatnú skúšobnú verziu, potom %1$s mesačne</string>
     <string name="btn_subscribe_price">Predplatiť: %1$s mesačne</string>
-    <string name="btn_buy_forever_price">Kúpiť navždy (verzia 1): %1$s</string>
-    <string name="btn_buy_forever_no_price">Kúpiť navždy (cena zatiaľ nie je k dispozícii)</string>
+    <string name="btn_buy_forever_price">Kúpiť túto hlavnú verziu navždy: %1$s</string>
+    <string name="btn_buy_forever_no_price">Kúpiť túto hlavnú verziu navždy (cena zatiaľ nie je k dispozícii)</string>
 
     <!-- Languages -->
     <string name="header_languages">Jazyky</string>
@@ -69,6 +69,7 @@
     <string name="header_spell_checker">Kontrola pravopisu</string>
     <string name="spell_checker_desc">Android podčiarkuje slová načerveno pomocou vlastnej kontroly pravopisu, ktorá pozná len jeden jazyk. OneRow má vlastnú: pozná všetky jazyky, ktoré sem pridáte (aj slová, ktoré ste ju naučili), takže sa označia len naozaj neznáme slová.</string>
     <string name="btn_spell_on">Použiť kontrolu pravopisu OneRow</string>
+    <string name="spell_checker_warn">Ak ju nevyberiete, kontrola pravopisu Androidu podčiarkne červenou každé slovo, ktoré nie je v jej jedinom jazyku.</string>
     <string name="toast_spell_pick">Na obrazovke, ktorá sa otvorí, vyberte \"OneRow Keyboard\"</string>
 
     <!-- Proofreading -->

@@ -111,6 +111,24 @@ class MainActivity : Activity() {
         col.addView(button(getString(R.string.btn_enable_keyboard)) { startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)) })
         col.addView(button(getString(R.string.btn_switch_keyboard)) { (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).showInputMethodPicker() })
 
+        col.addView(header(getString(R.string.header_spell_checker)))
+        col.addView(TextView(this).apply {
+            text = getString(R.string.spell_checker_desc)
+            textSize = 13f; setPadding(0, 0, 0, dp(6))
+        })
+        /** Opens Android's own spell-checker screen; the user picks OneRow there (an app cannot switch it for them). */
+        col.addView(button(getString(R.string.btn_spell_on)) {
+            Toast.makeText(this, getString(R.string.toast_spell_pick), Toast.LENGTH_LONG).show()
+            val intents = listOf(
+                Intent().setClassName("com.android.settings", "com.android.settings.Settings\$SpellCheckersSettingsActivity"),
+                Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
+            for (i in intents) { try { startActivity(i); break } catch (_: Exception) { } }
+        })
+        col.addView(TextView(this).apply {                                      // what happens when it was not chosen
+            text = getString(R.string.spell_checker_warn)
+            textSize = 13f; setPadding(0, dp(2), 0, dp(6))
+        })
+
         // ---- subscription ----
         col.addView(header(getString(R.string.header_subscription)))
         val subStatus = TextView(this).apply { textSize = 14f; setPadding(0, 0, 0, dp(4)) }
@@ -154,15 +172,28 @@ class MainActivity : Activity() {
         // the added languages, each with a bin; below them a dropdown of the others and a + to add the chosen one
         val langList = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         col.addView(langList)
-        val spinner = Spinner(this)
+        // The language to add is chosen with our own button + list dialog: the system Spinner drew its selected item invisibly on some
+        // devices (Samsung foldables, unfolded), and this one is plain text in the page's own colors on every phone.
+        var pick = 0
+        var others: List<Lang> = emptyList()
+        fun labelOf(l: Lang) = if (Dictionaries.has(this, l.code)) "${l.name}  (${l.code})" else getString(R.string.lang_not_installed, l.name, l.code)
+        val chooser = button("") { }.apply {
+            gravity = Gravity.CENTER_VERTICAL or Gravity.START; textSize = 16f; (layoutParams as LinearLayout.LayoutParams).topMargin = 0
+        }
+        fun showPick() { chooser.text = others.getOrNull(pick)?.let { labelOf(it) + "   \u25BE" } ?: "" }
+        chooser.setOnClickListener {
+            if (others.isEmpty()) return@setOnClickListener
+            android.app.AlertDialog.Builder(this)
+                .setSingleChoiceItems(others.map { labelOf(it) }.toTypedArray(), pick) { d, i -> pick = i; showPick(); d.dismiss() }
+                .show()
+        }
         val plus = button("+") { }.apply { textSize = 18f; (layoutParams as LinearLayout.LayoutParams).topMargin = 0 }
         val addRow = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL
-            addView(spinner, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+            addView(chooser, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply { rightMargin = dp(8) })
             addView(plus, LinearLayout.LayoutParams(dp(64), ViewGroup.LayoutParams.WRAP_CONTENT))
         }
         col.addView(addRow)
-        var others: List<Lang> = emptyList()
         fun save(codes: Set<String>) { prefs.enabledCodes = Languages.all.map { it.code }.filter { it in codes } }
         lateinit var refreshLanguages: () -> Unit
         refreshLanguages = {
@@ -189,12 +220,11 @@ class MainActivity : Activity() {
                 })
             }
             others = Languages.all.filter { it.code !in added }
-            spinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,
-                others.map { l -> if (Dictionaries.has(this, l.code)) "${l.name}  (${l.code})" else getString(R.string.lang_not_installed, l.name, l.code) })
+            pick = 0; showPick()
             addRow.visibility = if (others.isEmpty()) View.GONE else View.VISIBLE
         }
         plus.setOnClickListener {
-            val l = others.getOrNull(spinner.selectedItemPosition) ?: return@setOnClickListener
+            val l = others.getOrNull(pick) ?: return@setOnClickListener
             if (!Dictionaries.has(this, l.code)) { Toast.makeText(this, getString(R.string.toast_dictionary_not_installed, l.name), Toast.LENGTH_SHORT).show(); return@setOnClickListener }
             save(prefs.enabledCodes.toSet() + l.code); refreshLanguages()
         }
@@ -247,20 +277,6 @@ class MainActivity : Activity() {
         col.addView(TextView(this).apply {
             text = getString(R.string.number_row_desc)
             textSize = 13f; setPadding(0, 0, 0, dp(12))
-        })
-
-        col.addView(header(getString(R.string.header_spell_checker)))
-        col.addView(TextView(this).apply {
-            text = getString(R.string.spell_checker_desc)
-            textSize = 13f; setPadding(0, 0, 0, dp(6))
-        })
-        /** Opens Android's own spell-checker screen; the user picks OneRow there (an app cannot switch it for them). */
-        col.addView(button(getString(R.string.btn_spell_on)) {
-            Toast.makeText(this, getString(R.string.toast_spell_pick), Toast.LENGTH_LONG).show()
-            val intents = listOf(
-                Intent().setClassName("com.android.settings", "com.android.settings.Settings\$SpellCheckersSettingsActivity"),
-                Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
-            for (i in intents) { try { startActivity(i); break } catch (_: Exception) { } }
         })
 
         col.addView(header(getString(R.string.header_proofreading)))
