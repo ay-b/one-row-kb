@@ -96,6 +96,12 @@ class KeyboardView(context: Context, private var listener: Listener, private var
     val keypadAvailable: Boolean get() = letterMode == Mode.FULL
     private fun proofW() = if (proof == ProofState.OFF && !selHint) 0f else dp(34f)
     /** The guess slots use the strip minus the circle. */
+    /** Height of the guess bar in pixels (the autofill suggestions of a password manager are shown in its place). */
+    fun stripHeightPx(): Int = rowRects.firstOrNull()?.height()?.toInt() ?: dp(32f).toInt()
+
+    /** Left and right edge of the guess bar's own area (the shift / backspace keys beside it in the one-row layout are left out), in pixels. */
+    fun suggBounds(): IntArray? = placed.firstOrNull { it.key.kind == Kind.SUGG }?.rect?.let { intArrayOf(it.left.toInt(), it.right.toInt()) }
+
     private fun stripW(r: RectF) = r.width() - proofW()
 
     // Guess slots are as wide as their words (never narrower than a quarter of the bar), so long words keep their size.

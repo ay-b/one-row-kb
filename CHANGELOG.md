@@ -4,6 +4,10 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.33.0
+- Password managers (1Password, Bitwarden, Google, Proton Pass and any other Android autofill service): on Android 11 and newer their suggestions now appear in the guess bar of the keyboard, in the keyboard's colors, like on Gboard. Tap one to fill the login. The suggestions go away as soon as you type or press backspace. In the one-row layout the shift and backspace keys beside the bar stay usable. Floating layout and Android 10 and older keep the system's own dropdown. Needs the password manager's "inline suggestions" option, where it has one (Android's autofill settings).
+- Library added: androidx.autofill (Apache 2.0), used only to style the suggestions.
+
 ## 0.32.1
 - Fix (Hebrew swipe typing): a word that ends in a final letter was missed when the finger ended on the final key (ם ן ך ף), because the swipe was compared with the path to the plain letter's key (מ נ כ פ). The final-form keys are now where such a word's path ends (ending on the plain key still works too). In a test of 400 common final-ending words, 3% were found in the top three before and 99% now.
 

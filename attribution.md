@@ -51,3 +51,4 @@ code is not affected.
 ## Software
 
 - **Google Play Billing Library** and **ML Kit GenAI Proofreading** (Google), under their own terms.
+- **AndroidX Autofill** (Android Open Source Project), Apache License 2.0: styles the password manager's suggestions in the guess bar.

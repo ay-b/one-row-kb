@@ -13,6 +13,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.view.inputmethod.EditorInfo
 import com.example.onerow.billing.Access
 import com.example.onerow.billing.BillingManager
@@ -226,6 +227,10 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (::floating.isInitialized) floating.hide()
         floating = FloatingKeyboard(this, prefs, { requestHideSelf(0) }, { (getSystemService(INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager).showInputMethodPicker() })
         dock = FrameLayout(this)
+        autofillBar = android.widget.HorizontalScrollView(this).apply {
+            isHorizontalScrollBarEnabled = false; visibility = View.GONE
+            addView(LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }.also { autofillRow = it })
+        }
         watchSystemBars()
         layoutMode = prefs.layoutMode.let { if (it in setOf("split", "left", "right") && !isTablet()) "docked" else it }
         arrange()
@@ -351,8 +356,12 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
             }
             // one-hand layouts: the keyboard is narrower and sits against one side; the rest of the input view is panel color
             val w = if (side) (screenWidthPx() * prefs.sideWidth).toInt() else ViewGroup.LayoutParams.MATCH_PARENT
-            kv.layoutParams = FrameLayout.LayoutParams(w, ViewGroup.LayoutParams.WRAP_CONTENT,
-                when (layoutMode) { "left" -> Gravity.START; "right" -> Gravity.END; else -> Gravity.NO_GRAVITY } or Gravity.BOTTOM)
+            val g = when (layoutMode) { "left" -> Gravity.START; "right" -> Gravity.END; else -> Gravity.NO_GRAVITY }
+            kv.layoutParams = FrameLayout.LayoutParams(w, ViewGroup.LayoutParams.WRAP_CONTENT, g or Gravity.BOTTOM)
+            autofillBar?.let { bar ->
+                (bar.parent as? ViewGroup)?.removeView(bar)
+                dock.addView(bar, FrameLayout.LayoutParams(w, kv.stripHeightPx(), g or Gravity.TOP))
+            }
         }
         dock.requestLayout()
     }
@@ -440,6 +449,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
 
     override fun onStartInputView(info: EditorInfo, restarting: Boolean) {
         super.onStartInputView(info, restarting)
+        hideAutofill()
         syncAccess(); refreshBillingIfStale(); syncShake(true)
         selStart = info.initialSelStart; selEnd = info.initialSelEnd
         endGlide()
@@ -654,7 +664,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     private var calcUndo: CalcUndo? = null
     private var keypadAuto = false                     // the keypad opened by itself because the caret reached an expression
     private var ownEditAt = 0L                         // when a key of ours last changed the text (selection updates right after are ours)
-    private fun own() { ownEditAt = android.os.SystemClock.uptimeMillis() }
+    private fun own() { ownEditAt = android.os.SystemClock.uptimeMillis(); hideAutofill() }
     private fun setUndo(u: CalcUndo?) { calcUndo = u; kv.calcUndoReady = u != null }
 
     private fun isCalcChar(c: Char) = c in "0123456789.,+-*/%()"
@@ -918,6 +928,68 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         return true
     }
 
+    // ---- autofill (1Password, Bitwarden, Google ...): Android 11+ lets the keyboard show the password manager's suggestions in the guess bar ----
+    private var autofillBar: android.widget.HorizontalScrollView? = null
+    private var autofillRow: LinearLayout? = null
+
+    private fun hideAutofill() {
+        autofillRow?.removeAllViews()
+        autofillBar?.visibility = View.GONE
+    }
+
+    override fun onCreateInlineSuggestionsRequest(uiExtras: android.os.Bundle): android.view.inputmethod.InlineSuggestionsRequest? {
+        // asked before the input view exists on the first field after the service starts, so nothing of the view may be needed here
+        if (Build.VERSION.SDK_INT < 30 || prefs.layoutMode == "floating") return null      // floating: the system's own dropdown is used
+        val p = Themes.palette(prefs.theme, resources.configuration)
+        val dm = resources.displayMetrics
+        val h = (if (::kv.isInitialized) kv.stripHeightPx() else 0).coerceAtLeast(dp(32))
+        val chip = androidx.autofill.inline.common.ViewStyle.Builder().setBackgroundColor(p.key).setPadding(dp(10), 0, dp(10), 0).build()
+        val title = androidx.autofill.inline.common.TextViewStyle.Builder().setTextColor(p.ink).setTextSize(14f).build()
+        val sub = androidx.autofill.inline.common.TextViewStyle.Builder().setTextColor(p.dim).setTextSize(11f).build()
+        val single = androidx.autofill.inline.common.ViewStyle.Builder().setBackgroundColor(p.key).setPadding(dp(10), 0, dp(10), 0).build()
+        val style = androidx.autofill.inline.v1.InlineSuggestionUi.newStyleBuilder()
+            .setChipStyle(chip).setTitleStyle(title).setSubtitleStyle(sub).setSingleIconChipStyle(single).build()
+        val styles = androidx.autofill.inline.UiVersions.newStylesBuilder().addStyle(style).build()
+        val spec = android.widget.inline.InlinePresentationSpec.Builder(android.util.Size(dp(80), h), android.util.Size(dm.widthPixels, h)).setStyle(styles).build()
+        return android.view.inputmethod.InlineSuggestionsRequest.Builder(listOf(spec)).setMaxSuggestionCount(6).build()
+    }
+
+    override fun onInlineSuggestionsResponse(response: android.view.inputmethod.InlineSuggestionsResponse): Boolean {
+        val bar = autofillBar; val row = autofillRow
+        val list = response.inlineSuggestions
+        if (bar == null || row == null || list.isEmpty() || bar.parent == null || Build.VERSION.SDK_INT < 30) { hideAutofill(); return false }
+        val h = kv.stripHeightPx().coerceAtLeast(dp(32))
+        val dm = resources.displayMetrics
+        val p = Themes.palette(prefs.theme, resources.configuration)
+        bar.setBackgroundColor(p.strip)
+        // only over the guess bar's own area: shift and backspace of the one-row layout stay usable
+        val sb = kv.suggBounds()
+        bar.layoutParams = (bar.layoutParams as FrameLayout.LayoutParams).also {
+            it.height = h
+            it.leftMargin = kv.left + (sb?.get(0) ?: 0)
+            it.width = if (sb != null) (sb[1] - sb[0]) else ViewGroup.LayoutParams.MATCH_PARENT
+            it.gravity = Gravity.TOP or Gravity.START
+        }
+        row.removeAllViews()
+        // a WRAP_CONTENT width leaves the view 0 px wide, so every suggestion gets a fixed width: wide enough for a name and an e-mail address,
+        // narrow enough that the next one peeks in (the row scrolls sideways)
+        val w = (sb?.let { it[1] - it[0] } ?: dm.widthPixels).let { (it * 0.5f).toInt().coerceIn(dp(120), dp(260)) }
+        val size = android.util.Size(w, h)
+        var n = 0
+        for (s in list) {
+            s.inflate(this, size, mainExecutor) { v ->
+                if (v == null) return@inflate
+                (v.parent as? ViewGroup)?.removeView(v)
+                row.addView(v, LinearLayout.LayoutParams(w, h).apply { marginEnd = dp(6) })
+                bar.visibility = View.VISIBLE
+            }
+            n++
+        }
+        return n > 0
+    }
+
+    private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
+
     override fun onBackspace() {
         own()
         if (kv.keypadActive && calcBackspace()) return
@@ -1043,6 +1115,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     }
 
     override fun onFinishInputView(finishingInput: Boolean) {
+        hideAutofill()
         finishComposing()                          // a word still being typed when the field is left is not lost
         syncShake(false)
         super.onFinishInputView(finishingInput)
