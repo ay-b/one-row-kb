@@ -347,7 +347,8 @@ class MainActivity : Activity() {
         val views = arrayOfNulls<ImageView>(cheatGroups.size)
         helpSections.forEachIndexed { si, (titleRes, pictures) ->
             val body = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; visibility = if (si == 0) View.VISIBLE else View.GONE }
-            val bar = header(getString(titleRes)).apply { setPadding(0, dp(18), 0, dp(10)); isClickable = true }
+            // the folding titles stand out: bigger and heavier than the small headers
+            val bar = header(getString(titleRes)).apply { textSize = 15f; paint.style = android.graphics.Paint.Style.FILL_AND_STROKE; paint.strokeWidth = 0.7f * resources.displayMetrics.density; letterSpacing = 0.05f; setPadding(0, dp(22), 0, dp(12)); isClickable = true }
             fun label() { bar.text = (if (body.visibility == View.VISIBLE) "\u25BE  " else "\u25B8  ") + getString(titleRes).uppercase() }
             label()
             bar.setOnClickListener { body.visibility = if (body.visibility == View.VISIBLE) View.GONE else View.VISIBLE; label() }

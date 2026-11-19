@@ -4,8 +4,18 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.40.2
+- Help: the folding section titles (One-row keyboard, Expanded keyboard, Nice features) are a little bigger and bolder than the other headers.
+
+## 0.40.1
+- The small hint on the Shift key is now x₂, the same sign as in its zoom bubble (it said "sub").
+
+## 0.40.0
+- Subscripts: hold Shift for half a second and pick the x₂ zoom; the digits, + - = ( ) and the letters that have a subscript form (a e h i j k l m n o p r s t u v x) are then typed as subscripts (H₂O, xₙ), every other key as usual. Tap Shift again or the space bar to go back to normal; The Shift key carries a small x₂ hint (not in Hebrew, where Shift switches to English) and shows a small ₂ while the subscripts are on. Swipe typing is off meanwhile.
+- The zoom of every digit key (hold 1 ... 0) now ends with the matching subscript digit (₁ ... ₀), after the superscripts and fractions.
+
 ## 0.39.0
-- Space key: hold it still for half a second and a "?" zoom appears; release (or slide onto it and release) to open the app's Help page. A small dim hint on the key says "hold for help" (translated into the 25 other languages, from memory and not checked by native speakers); it is only drawn where it fits. A tap and the slide for the cursor work as before.
+- Space key: hold it still for half a second and a "?" zoom appears; release (or slide onto it and release) to open the app's Help page. A small hint in the key's up-right corner (where the other keys have theirs) says "hold for help" (translated into the 25 other languages, from memory and not checked by native speakers); it is only drawn where it fits. A tap and the slide for the cursor work as before.
 
 ## 0.38.0
 - Swipe typing: when a swiped word was guessed wrong, tap into the word at any time (also after typing on) and the guess bar offers the other readings of the swipe path (The, Three, Thee, There ...) instead of only completions of its letters. Picking one swaps the word and the list stays, so you can go back. The last 120 swiped words are remembered; a word that was typed, not swiped, behaves as before.

@@ -70,6 +70,17 @@ class KeyboardView(context: Context, private var listener: Listener, private var
 
     var shift = Shift.OFF
         set(v) { field = v; if (v == Shift.OFF) userShift = false; invalidate() }
+    /** Subscript typing is on (hold Shift, pick x₂): digits and the letters that have a subscript form are typed as subscripts until Shift or Space is tapped. */
+    var subOn = false
+        set(v) { field = v; invalidate() }
+    private fun subText(p: Placed): String? {
+        if (!subOn) return null
+        val c = when (p.key.kind) { Kind.LETTER -> p.key.label.firstOrNull(); Kind.CHAR -> if (p.key.base == null && p.key.label.length == 1) p.key.label[0] else null; else -> null } ?: return null
+        val i = SUB_FROM.indexOf(c.lowercaseChar())
+        return if (i >= 0) SUB_TO[i].toString() else null
+    }
+    /** The small hint on the Shift key: what holding it offers (not in Hebrew, where Shift is the switch to English). */
+    private val shiftHint: String? get() = if (lang.code == "he") null else L_SUB
     /** Hebrew: the Shift key is lit while the English layout is on in its place. */
     var shiftLangOn = false
         set(v) { field = v; invalidate() }
@@ -248,7 +259,13 @@ class KeyboardView(context: Context, private var listener: Listener, private var
             "☺" -> { preciseEmoji = true; HoldSet(Emojis.lens(context), 0) }       // most used first; swipe up = full palette
             else -> null
         } else null
-        if (p.key.kind == Kind.SPACE) {
+        if (p.key.kind == Kind.SHIFT) {
+            if (subOn || android.os.SystemClock.uptimeMillis() - downTime < SPACE_HOLD_MS) {
+                if (!subOn) handler.postDelayed(holdToPrecise, SPACE_HOLD_MS - (android.os.SystemClock.uptimeMillis() - downTime))
+                return@Runnable
+            }
+            preciseKeys = listOf(Placed(Key(Kind.LANG, L_SUB, 1f), p.rect, p.row)); preciseIdx0 = 0
+        } else if (p.key.kind == Kind.SPACE) {
             // a long, still hold on the space key (a plain tap and the cursor slide are both over before): the zoom offers the help
             if (android.os.SystemClock.uptimeMillis() - downTime < SPACE_HOLD_MS) { handler.postDelayed(holdToPrecise, SPACE_HOLD_MS - (android.os.SystemClock.uptimeMillis() - downTime)); return@Runnable }
             preciseKeys = listOf(Placed(Key(Kind.LANG, L_HELP, 1f), p.rect, p.row)); preciseIdx0 = 0
@@ -514,6 +531,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         scaling = false
         dismissEmoji()
         removeWord = null
+        subOn = false
         if (isSymbolMode(mode)) setMode(letterMode)
         shift = Shift.OFF
         suggestions = emptyList()
@@ -552,7 +570,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         val period = Key(Kind.CHAR, ".", 1f, hint = ",!?", dy = 0.40f)
         rows = when (mode) {
             Mode.MINI -> listOf(
-                Row(listOf(Key(Kind.SHIFT, "", 1.3f), Key(Kind.SUGG, "", 6f),
+                Row(listOf(Key(Kind.SHIFT, "", 1.3f, hint = shiftHint), Key(Kind.SUGG, "", 6f),
                     Key(Kind.BACKSPACE, "", 1.3f)), stripH, panel = false),
                 Row(zigzag(lang.columns, Kind.LETTER), rowH, inset = 0.5f),
                 Row(listOf(Key(Kind.TO_SYMBOLS, "123", 1.5f), langKey, comma, Key(Kind.SPACE, "", 4f), period,
@@ -563,7 +581,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                 if (numberRow) Row(numberKeys(), fullRowH, inset = ((lang.fullRows[0].length - 10) / 2f).coerceAtLeast(0f), keyBg = true) else null,
                 Row(hinted(lang.fullRows[0], if (numberRow) TOP_ROW_SYMBOLS else "1234567890"), fullRowH, keyBg = true),
                 Row(hinted(lang.fullRows[1], nat(if (numberRow) HINTS_ROW2_NUM else HINTS_ROW2)), fullRowH, inset = ((lang.fullRows[0].length - lang.fullRows[1].length) / 2f).coerceAtLeast(0f), keyBg = true),
-                Row(listOf(Key(Kind.SHIFT, "", edgeKey())) + hinted(lang.fullRows[2], lang.row3Symbols ?: SYMBOLS_ROW3) + Key(Kind.BACKSPACE, "", edgeKey()), fullRowH, keyBg = true),
+                Row(listOf(Key(Kind.SHIFT, "", edgeKey(), hint = shiftHint)) + hinted(lang.fullRows[2], lang.row3Symbols ?: SYMBOLS_ROW3) + Key(Kind.BACKSPACE, "", edgeKey()), fullRowH, keyBg = true),
                 Row(listOf(Key(Kind.TO_SYMBOLS, "123", 1.5f), langKey, comma, Key(Kind.SPACE, "", 4f), period,
                     Key(Kind.ENTER, "", 1.5f)), fullRowH, keyBg = true)
             )
@@ -762,13 +780,14 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                         stroke.strokeWidth = dp(if (down) 2.4f else 1.4f); c.drawRoundRect(b, dp(4f), dp(4f), stroke)
                         stroke.strokeWidth = sw
                     }
-                    // what holding the key does: shown small and dim, only when it fits
+                    // what holding the key does: a hint in the up-right corner, like the hints of the other keys, only when it fits
                     if (k.label.isEmpty() && !down) {
                         val hint = context.getString(R.string.space_hint)
-                        val size = text.textSize; val col = text.color
-                        text.textSize = sp(9f) * fs; text.color = cDim
-                        if (text.measureText(hint) < r.width() - dp(14f)) drawCentered(c, hint, r.centerX(), r.centerY())
-                        text.textSize = size; text.color = col
+                        val size = text.textSize
+                        text.textSize = sp(9f) * fs
+                        val fits = text.measureText(hint) < r.width() - dp(14f)
+                        text.textSize = size
+                        if (fits) drawHint(c, hint, r, k)
                     }
                 }
                 Kind.KEYPAD -> {                              // a little 3x3 keypad
@@ -786,7 +805,10 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                     drawGear(c, RectF(gx - gs, r.top + r.height() * 0.28f - gs, gx + gs, r.top + r.height() * 0.28f + gs), 0.5f)
                     stroke.strokeWidth = sw; stroke.color = keep
                 }
-                Kind.SHIFT -> { drawShift(c, r); k.hint?.let { drawHint(c, it, r, k) } }
+                Kind.SHIFT -> {
+                    drawShift(c, r); if (!subOn) k.hint?.let { drawHint(c, it, r, k) }
+                    if (subOn) { text.color = cTeal; text.textSize = sp(11f) * fs; drawCentered(c, "\u2082", r.right - dp(12f), r.top + r.height() * 0.30f) }
+                }
                 Kind.BACKSPACE -> drawBackspace(c, r, down)
                 Kind.ENTER -> drawEnter(c, r)
                 Kind.UNDO -> {
@@ -1391,7 +1413,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                 }
             }
             Kind.LETTER, Kind.CHAR -> {
-                if (mode == Mode.FULL && swipeTyping && p.key.kind == Kind.LETTER && (gesture == Gesture.NONE || gesture == Gesture.GLIDE)) {
+                if (mode == Mode.FULL && swipeTyping && !subOn && p.key.kind == Kind.LETTER && (gesture == Gesture.NONE || gesture == Gesture.GLIDE)) {
                     if (gesture == Gesture.NONE && hypot(dx, dy) > dp(GLIDE_START_DP)) {
                         gesture = Gesture.GLIDE; handler.removeCallbacks(holdToPrecise)
                         glideX.clear(); glideY.clear(); glideX += downX; glideY += downY; haptic()
@@ -1566,6 +1588,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
     }
 
     private fun commit(p: Placed, x: Float, y: Float) {
+        subText(p)?.let { listener.onText(it); if (shift == Shift.ONCE) shift = Shift.OFF; return }
         when (p.key.kind) {
             Kind.LETTER -> if (mode == Mode.FULL) commitExact(p) else {   // full keyboard: exactly what you hit
                 listener.onLetter(p.key.label[0], letterLogProbs(x, y), false)
@@ -1579,13 +1602,13 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                 val i = languages.indexOfFirst { it.code == this.lang.code }
                 listener.onLanguage(languages[(i + 1) % languages.size].code)
             }
-            Kind.SPACE -> listener.onText(" ")
+            Kind.SPACE -> { subOn = false; listener.onText(" ") }
             Kind.BACKSPACE -> listener.onBackspace()
             Kind.ENTER -> {
                 listener.onEnter()
                 if (isSymbolMode(mode) && mode != Mode.PEEK) setMode(letterMode)   // Enter leaves the 123 pages and the keypad
             }
-            Kind.SHIFT -> if (listener.onShiftKey()) { lastShiftTap = 0L; haptic() } else {
+            Kind.SHIFT -> if (subOn) { subOn = false; haptic() } else if (listener.onShiftKey()) { lastShiftTap = 0L; haptic() } else {
                 val now = System.currentTimeMillis()
                 shift = when {
                     now - lastShiftTap < 350 -> Shift.LOCK
@@ -1606,6 +1629,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
     }
 
     private fun commitExact(p: Placed) {
+        subText(p)?.let { listener.onText(it); return }
         when (p.key.kind) {
             Kind.LETTER -> {
                 val ch = p.key.label[0]
@@ -1628,6 +1652,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                 L_RIGHT -> listener.onMode("right")
                 L_VSCALE -> { scaling = true; setMode(letterMode); invalidate() }
                 L_HELP -> listener.onHelp()
+                L_SUB -> { subOn = true; haptic() }
                 else -> listener.onSettings()
             }
             else -> {}
@@ -1648,8 +1673,8 @@ class KeyboardView(context: Context, private var listener: Listener, private var
 
     /** What Gboard offers when a symbol is held (after the symbol itself). */
     private val SYMBOL_VARIANTS = mapOf(
-        '1' to "¹½⅓¼⅕⅙⅛", '2' to "²⅔⅖", '3' to "³¾⅗⅜", '4' to "⁴⅘", '5' to "⁵⅚⅝", '6' to "⁶", '7' to "⁷⅞", '8' to "⁸", '9' to "⁹",
-        '0' to "⁰ⁿ∅°",
+        '1' to "¹½⅓¼⅕⅙⅛₁", '2' to "²⅔⅖₂", '3' to "³¾⅗⅜₃", '4' to "⁴⅘₄", '5' to "⁵⅚⅝₅", '6' to "⁶₆", '7' to "⁷⅞₇", '8' to "⁸₈", '9' to "⁹₉",
+        '0' to "⁰ⁿ∅°₀",
         '#' to "№", '\$' to "¢£€¥₱", '%' to "‰", '-' to "—–", '+' to "±", '(' to "[{<", ')' to "]}>",
         '*' to "†‡★", '"' to "„“”«»", '\'' to "‘’‚‹›", '!' to "¡", '?' to "¿", '=' to "≠≈∞", '<' to "≤«‹", '>' to "≥»›",
     )
@@ -1701,6 +1726,9 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         const val L_LEFT = "\uE003"        // keyboard shifted to the left / right side (one-hand layouts), and vertical scaling
         const val L_RIGHT = "\uE004"
         const val L_VSCALE = "\uE005"
+        const val L_SUB = "x\u2082"             // the Shift key's zoom: subscript typing
+        const val SUB_FROM = "0123456789+-=()aehijklmnoprstuvx"
+        const val SUB_TO = "\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089\u208A\u208B\u208C\u208D\u208E\u2090\u2091\u2095\u1D62\u2C7C\u2096\u2097\u2098\u2099\u2092\u209A\u1D63\u209B\u209C\u1D64\u1D65\u2093"
         const val L_HELP = "?"                // the space key's zoom: the help
         const val SPACE_HOLD_MS = 550L        // how long the space key must be held, still, for that zoom (a tap and the cursor slide stay free)
         const val LENS_CARD_DP = 46f
