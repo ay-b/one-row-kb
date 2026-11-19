@@ -4,6 +4,12 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.39.0
+- Space key: hold it still for half a second and a "?" zoom appears; release (or slide onto it and release) to open the app's Help page. A small dim hint on the key says "hold for help" (translated into the 25 other languages, from memory and not checked by native speakers); it is only drawn where it fits. A tap and the slide for the cursor work as before.
+
+## 0.38.0
+- Swipe typing: when a swiped word was guessed wrong, tap into the word at any time (also after typing on) and the guess bar offers the other readings of the swipe path (The, Three, Thee, There ...) instead of only completions of its letters. Picking one swaps the word and the list stays, so you can go back. The last 120 swiped words are remembered; a word that was typed, not swiped, behaves as before.
+
 ## 0.37.0
 - Hebrew: Shift is now the switch to the English layout. Tap it and the English layout (lower case, no automatic capitals) takes Hebrew's place and stays, with the Shift key lit, until Shift is tapped again and Hebrew returns. It stays across text fields; the language key still moves on to the next language as usual. Hebrew has no capitals, so Shift had nothing else to do there (the number row's symbols on Shift are therefore not available in the Hebrew layout), and Hebrew no longer shows Shift lit at the start of a sentence.
 

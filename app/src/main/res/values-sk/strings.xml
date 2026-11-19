@@ -158,4 +158,5 @@
     <string name="report_show_less">Zobraziť menej</string>
     <string name="report_send">Odoslať e-mailom</string>
     <string name="report_no_mail">Nenašla sa žiadna e-mailová aplikácia</string>
+    <string name="space_hint">podrž pre pomoc</string>
 </resources>

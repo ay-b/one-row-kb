@@ -154,4 +154,5 @@
     <string name="report_show_less">Vis mindre</string>
     <string name="report_send">Send som e-post</string>
     <string name="report_no_mail">Fant ingen e-postapp</string>
+    <string name="space_hint">hold for hjelp</string>
 </resources>

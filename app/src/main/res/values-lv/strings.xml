@@ -158,4 +158,5 @@
     <string name="report_show_less">Rādīt mazāk</string>
     <string name="report_send">Nosūtīt pa e-pastu</string>
     <string name="report_no_mail">Nav atrasta e-pasta lietotne</string>
+    <string name="space_hint">turi: palīdzība</string>
 </resources>

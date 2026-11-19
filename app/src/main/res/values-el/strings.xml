@@ -154,4 +154,5 @@
     <string name="report_show_less">Εμφάνιση λιγότερων</string>
     <string name="report_send">Αποστολή με email</string>
     <string name="report_no_mail">Δεν βρέθηκε εφαρμογή email</string>
+    <string name="space_hint">κράτα για βοήθεια</string>
 </resources>

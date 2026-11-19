@@ -161,4 +161,5 @@
     <string name="report_show_less">Показать меньше</string>
     <string name="report_send">Отправить по почте</string>
     <string name="report_no_mail">Почтовое приложение не найдено</string>
+    <string name="space_hint">зажмите: помощь</string>
 </resources>

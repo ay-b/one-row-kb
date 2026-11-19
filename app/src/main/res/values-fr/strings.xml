@@ -155,4 +155,5 @@
     <string name="report_show_less">Afficher moins</string>
     <string name="report_send">Envoyer par e-mail</string>
     <string name="report_no_mail">Aucune application de messagerie trouvée</string>
+    <string name="space_hint">maintenir : aide</string>
 </resources>

@@ -417,7 +417,7 @@ class MainActivity : Activity() {
                 addView(bar, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(3)))
             }, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
         }
-        select(0)
+        select(intent.getIntExtra("tab", 0).coerceIn(0, 2))          // the keyboard's help action opens the Help tab
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             addView(tabs, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))

@@ -154,4 +154,5 @@
     <string name="report_show_less">Sýna minna</string>
     <string name="report_send">Senda með tölvupósti</string>
     <string name="report_no_mail">Ekkert tölvupóstforrit fannst</string>
+    <string name="space_hint">haltu inni fyrir hjálp</string>
 </resources>

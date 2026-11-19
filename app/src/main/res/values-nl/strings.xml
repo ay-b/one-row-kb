@@ -154,4 +154,5 @@
     <string name="report_show_less">Minder tonen</string>
     <string name="report_send">Versturen per e-mail</string>
     <string name="report_no_mail">Geen e-mailapp gevonden</string>
+    <string name="space_hint">ingedrukt houden: hulp</string>
 </resources>

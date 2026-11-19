@@ -155,4 +155,5 @@
     <string name="report_show_less">Mostra\'n menys</string>
     <string name="report_send">Envia per correu</string>
     <string name="report_no_mail">No s\'ha trobat cap aplicació de correu</string>
+    <string name="space_hint">mantén per ajuda</string>
 </resources>

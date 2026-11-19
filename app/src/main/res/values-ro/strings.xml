@@ -158,4 +158,5 @@
     <string name="report_show_less">Afișați mai puțin</string>
     <string name="report_send">Trimiteți prin e-mail</string>
     <string name="report_no_mail">Nu a fost găsită nicio aplicație de e-mail</string>
+    <string name="space_hint">ține apăsat: ajutor</string>
 </resources>

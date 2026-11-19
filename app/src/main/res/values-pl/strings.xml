@@ -161,4 +161,5 @@
     <string name="report_show_less">Pokaż mniej</string>
     <string name="report_send">Wyślij e-mailem</string>
     <string name="report_no_mail">Nie znaleziono aplikacji pocztowej</string>
+    <string name="space_hint">przytrzymaj: pomoc</string>
 </resources>

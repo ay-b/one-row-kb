@@ -161,4 +161,5 @@
     <string name="report_show_less">Показати менше</string>
     <string name="report_send">Надіслати поштою</string>
     <string name="report_no_mail">Поштовий застосунок не знайдено</string>
+    <string name="space_hint">утримуйте: довідка</string>
 </resources>

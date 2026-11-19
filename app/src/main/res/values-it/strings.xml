@@ -155,4 +155,5 @@
     <string name="report_show_less">Mostra meno</string>
     <string name="report_send">Invia per e-mail</string>
     <string name="report_no_mail">Nessuna app di posta trovata</string>
+    <string name="space_hint">tieni premuto: aiuto</string>
 </resources>

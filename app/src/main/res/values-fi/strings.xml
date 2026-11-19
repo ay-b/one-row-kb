@@ -154,4 +154,5 @@
     <string name="report_show_less">Näytä vähemmän</string>
     <string name="report_send">Lähetä sähköpostilla</string>
     <string name="report_no_mail">Sähköpostisovellusta ei löytynyt</string>
+    <string name="space_hint">pidä pohjassa: ohje</string>
 </resources>

@@ -592,6 +592,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         val dec = decoder ?: return null
         val w = currentWord() + wordTail()
         if (w.isEmpty()) return null
+        glideMemory[w.lowercase()]?.let { alts -> return (listOf(w) + alts.filter { !it.equals(w, ignoreCase = true) }).take(12) }    // a swiped word: the path's other readings
         val key = l.alphabet.key(w)
         if (key.isEmpty()) return null
         val taps = key.map { k -> FloatArray(l.alphabet.n) { -30f }.also { it[k] = 0f } }
@@ -1111,6 +1112,11 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
 
     override fun onLanguage(code: String) { if (code != lang.code) switchLanguage(Languages.byCode(code)) }
 
+    override fun onHelp() {
+        finishComposing()
+        startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("tab", 1))       // the Help tab
+    }
+
     override fun onSettings() {
         finishComposing()
         startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
@@ -1171,6 +1177,15 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
 
     private fun endGlide() { glideWord = null; glideAlts = emptyList() }
 
+    /**
+     * The other words a swipe path may have meant, kept for the words that were glided and chosen (lower case word -> the whole list), so that a
+     * word that was guessed wrong can be tapped much later and the bar offers the path's other readings again, not just completions of its letters.
+     */
+    private val glideMemory = object : LinkedHashMap<String, List<String>>(64, 0.75f, true) {
+        override fun removeEldestEntry(e: MutableMap.MutableEntry<String, List<String>>?) = size > 120
+    }
+    private fun rememberGlide(word: String, alts: List<String>) { if (alts.size > 1 && word.isNotEmpty()) glideMemory[word.lowercase()] = alts }
+
     /** True while the text before the caret still ends with the word a glide typed plus our space. */
     private fun glideIntact(): Boolean { val g = glideWord ?: return false; return textBefore(g.length + 1).endsWith("$g ") }
 
@@ -1198,6 +1213,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         ic.endBatchEdit()
         wordAutoSpaced = true
         glideWord = words[0]; glideAlts = words
+        rememberGlide(words[0], words)
         kv.suggestions = words.drop(1); kv.bestIndex = -1          // the typed word is not repeated in the bar: only the other, less certain guesses
         android.util.Log.d("OneRowGlide", "ipc+prev=${(t1 - t0) / 1000}us decode=${(t2 - t1) / 1000}us commit=${(System.nanoTime() - t2) / 1000}us | ${eng.glide.stats}")
     }
@@ -1218,6 +1234,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (gw != null && taps.isEmpty() && glideIntact()) {         // a guess for a glided word replaces it
             ic.beginBatchEdit(); ic.deleteSurroundingText(gw.length + 1, 0); ic.commitText("$word ", 1); ic.endBatchEdit()
             prefer(word, glideAlts.firstOrNull() ?: gw)
+            rememberGlide(word, glideAlts)                           // the chosen reading keeps the path's other readings
             endGlide(); wordAutoSpaced = true
             refresh()                                                // back to next-word prediction
             return
@@ -1237,6 +1254,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
             // a tapped guess replaces the word touching the caret instead of being appended to it.
             // Tapped inside the word: the whole word is replaced, not just the part before the caret.
             val typed = currentWord(); val tail = wordTail()
+            glideMemory[(typed + tail).lowercase()]?.let { rememberGlide(word, it) }       // swapping between the readings of a swipe keeps the list
             if (typed.isNotEmpty() || tail.isNotEmpty()) ic.deleteSurroundingText(typed.length, tail.length)
             if (decoding && lex?.indexOf(word) == -1) learn(word.lowercase())   // the typed slot again: silent, no prompt
             val next = ic.getTextAfterCursor(1, 0)?.toString().orEmpty()

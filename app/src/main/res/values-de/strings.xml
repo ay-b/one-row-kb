@@ -154,4 +154,5 @@
     <string name="report_show_less">Weniger anzeigen</string>
     <string name="report_send">Per E-Mail senden</string>
     <string name="report_no_mail">Keine E-Mail-App gefunden</string>
+    <string name="space_hint">halten für Hilfe</string>
 </resources>

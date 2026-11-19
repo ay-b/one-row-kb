@@ -161,4 +161,5 @@
     <string name="report_show_less">Pokažite manj</string>
     <string name="report_send">Pošljite po e-pošti</string>
     <string name="report_no_mail">Ni najdene e-poštne aplikacije</string>
+    <string name="space_hint">drži za pomoč</string>
 </resources>

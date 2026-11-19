@@ -40,6 +40,8 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         /** The Shift key was tapped: return true when the keyboard's owner handled it (Hebrew: Shift is the switch to English). */
         fun onShiftKey(): Boolean = false
         fun onSettings()
+        /** The help action of the space key's zoom: open the Help page of the app. */
+        fun onHelp() {}
         /** The user picked a layout in the language key's zoom: "docked", "floating" or "split". */
         fun onMode(mode: String)
         /** A word was drawn across the letters of the full keyboard ([n] points, view pixels). */
@@ -236,7 +238,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         override fun run() { listener.onBackspace(); haptic(); handler.postDelayed(this, 45) }
     }
     /** Finger rested on a letter: switch to precise mode (magnifier; slide to choose; release types exactly it). */
-    private val holdToPrecise = Runnable {
+    private val holdToPrecise: Runnable = Runnable {
         val p = pressed ?: return@Runnable
         if (gesture != Gesture.NONE || suggDown >= 0) return@Runnable
         if (p.key.num && numShifted) return@Runnable            // a symbol from Shift: a plain tap
@@ -246,7 +248,11 @@ class KeyboardView(context: Context, private var listener: Listener, private var
             "☺" -> { preciseEmoji = true; HoldSet(Emojis.lens(context), 0) }       // most used first; swipe up = full palette
             else -> null
         } else null
-        if (p.key.kind == Kind.LANG) {
+        if (p.key.kind == Kind.SPACE) {
+            // a long, still hold on the space key (a plain tap and the cursor slide are both over before): the zoom offers the help
+            if (android.os.SystemClock.uptimeMillis() - downTime < SPACE_HOLD_MS) { handler.postDelayed(holdToPrecise, SPACE_HOLD_MS - (android.os.SystemClock.uptimeMillis() - downTime)); return@Runnable }
+            preciseKeys = listOf(Placed(Key(Kind.LANG, L_HELP, 1f), p.rect, p.row)); preciseIdx0 = 0
+        } else if (p.key.kind == Kind.LANG) {
             val items = listOf(L_GEAR, L_DOCKED, L_FLOAT) + (if (splitAvailable) listOf(L_SPLIT, L_LEFT, L_RIGHT) else emptyList()) + listOf(L_VSCALE)      // settings, the layouts, vertical scaling
             preciseKeys = items.map { Placed(Key(Kind.LANG, it, 1f), p.rect, p.row) }; preciseIdx0 = 0
         } else if (mode == Mode.FULL && p.key.kind == Kind.LETTER) {
@@ -749,11 +755,21 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                     text.color = cTeal; text.textSize = sp(15f) * fs
                     drawCentered(c, k.label, r.centerX(), r.centerY())
                 }
-                Kind.SPACE -> if (!row.keyBg) {               // one row: an outline only, nothing filled; thicker while pressed (the full keyboard draws it like any key)
-                    val b = RectF(r).apply { inset(dp(5f), r.height() * 0.17f) }
-                    val sw = stroke.strokeWidth
-                    stroke.strokeWidth = dp(if (down) 2.4f else 1.4f); c.drawRoundRect(b, dp(4f), dp(4f), stroke)
-                    stroke.strokeWidth = sw
+                Kind.SPACE -> {
+                    if (!row.keyBg) {               // one row: an outline only, nothing filled; thicker while pressed (the full keyboard draws it like any key)
+                        val b = RectF(r).apply { inset(dp(5f), r.height() * 0.17f) }
+                        val sw = stroke.strokeWidth
+                        stroke.strokeWidth = dp(if (down) 2.4f else 1.4f); c.drawRoundRect(b, dp(4f), dp(4f), stroke)
+                        stroke.strokeWidth = sw
+                    }
+                    // what holding the key does: shown small and dim, only when it fits
+                    if (k.label.isEmpty() && !down) {
+                        val hint = context.getString(R.string.space_hint)
+                        val size = text.textSize; val col = text.color
+                        text.textSize = sp(9f) * fs; text.color = cDim
+                        if (text.measureText(hint) < r.width() - dp(14f)) drawCentered(c, hint, r.centerX(), r.centerY())
+                        text.textSize = size; text.color = col
+                    }
                 }
                 Kind.KEYPAD -> {                              // a little 3x3 keypad
                     val d = dp(1.4f); val gap = dp(5.2f)
@@ -1611,6 +1627,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                 L_LEFT -> listener.onMode("left")
                 L_RIGHT -> listener.onMode("right")
                 L_VSCALE -> { scaling = true; setMode(letterMode); invalidate() }
+                L_HELP -> listener.onHelp()
                 else -> listener.onSettings()
             }
             else -> {}
@@ -1684,6 +1701,8 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         const val L_LEFT = "\uE003"        // keyboard shifted to the left / right side (one-hand layouts), and vertical scaling
         const val L_RIGHT = "\uE004"
         const val L_VSCALE = "\uE005"
+        const val L_HELP = "?"                // the space key's zoom: the help
+        const val SPACE_HOLD_MS = 550L        // how long the space key must be held, still, for that zoom (a tap and the cursor slide stay free)
         const val LENS_CARD_DP = 46f
         const val LENS_STEP_DP = 36f
         const val GLIDE_START_DP = 16f    // finger travel that turns a press on a letter into a glide
