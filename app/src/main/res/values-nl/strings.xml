@@ -148,6 +148,7 @@
     <string name="shake_report_desc">Een flinke schudbeweging terwijl het toetsenbord open is, toont het laatste crashrapport. Je kunt het lezen en per e-mail naar ons sturen. Er wordt niets verzonden tenzij je de e-mail zelf verstuurt.</string>
     <string name="btn_show_report">Crashrapport</string>
     <string name="report_title">Crashrapport</string>
+    <string name="clipboard_empty">Nog niets gekopieerd</string>
     <string name="report_explainer">Als het toetsenbord is gecrasht, kun je ons de technische gegevens sturen zodat we het kunnen oplossen. Het rapport hieronder is alles wat wordt verzonden: de app- en Android-versies, het telefoonmodel, de taal en het technische spoor van de crash (welke onderdelen van het programma actief waren). Het bevat niets wat je hebt getypt, geen klembord, geen contacten, geen instellingen en geen woordenboek. Met \"Versturen per e-mail\" wordt alleen je e-mailapp geopend met deze tekst ingevuld; er verlaat niets de telefoon totdat je de e-mail zelf verstuurt.</string>
     <string name="report_none">Er is geen crash op deze telefoon geregistreerd, dus er is niets te versturen.</string>
     <string name="report_show_all">Alles tonen</string>

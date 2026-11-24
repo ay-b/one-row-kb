@@ -149,6 +149,7 @@
     <string name="shake_report_desc">Una sacudida firme con el teclado abierto muestra el último informe de fallos. Puedes leerlo y enviárnoslo por correo electrónico. No se envía nada a menos que envíes tú mismo el correo.</string>
     <string name="btn_show_report">Informe de fallos</string>
     <string name="report_title">Informe de fallos</string>
+    <string name="clipboard_empty">Aún no se ha copiado nada</string>
     <string name="report_explainer">Si el teclado ha fallado, puedes enviarnos los detalles técnicos para que podamos solucionarlo. El informe de abajo es todo lo que se enviará: las versiones de la aplicación y de Android, el modelo del teléfono, el idioma y el rastro técnico del fallo (qué partes del programa se estaban ejecutando). No contiene nada de lo que has escrito, ni portapapeles, ni contactos, ni ajustes, ni diccionario. Al pulsar «Enviar por correo» solo se abre tu aplicación de correo con este texto ya rellenado; nada sale del teléfono hasta que envíes tú mismo el correo.</string>
     <string name="report_none">No se ha registrado ningún fallo en este teléfono, así que no hay nada que enviar.</string>
     <string name="report_show_all">Mostrar todo</string>

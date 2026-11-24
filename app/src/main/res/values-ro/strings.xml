@@ -152,6 +152,7 @@
     <string name="shake_report_desc">O scuturare fermă cât timp tastatura este deschisă afișează ultimul raport de blocare. Îl puteți citi și ne puteți trimite prin e-mail. Nimic nu se trimite decât dacă trimiteți dumneavoastră e-mailul.</string>
     <string name="btn_show_report">Raport de blocare</string>
     <string name="report_title">Raport de blocare</string>
+    <string name="clipboard_empty">Nimic copiat încă</string>
     <string name="report_explainer">Dacă tastatura s-a blocat, ne puteți trimite detaliile tehnice pentru a o remedia. Raportul de mai jos este tot ce va fi trimis: versiunile aplicației și ale Android, modelul telefonului, limba și urma tehnică a blocării (ce părți ale programului rulau). Nu conține nimic din ce ați tastat, nici clipboardul, nici contactele, nici setările, nici dicționarul. Apăsarea butonului „Trimiteți prin e-mail” doar deschide aplicația dvs. de e-mail cu acest text completat; nimic nu părăsește telefonul până când nu trimiteți dumneavoastră e-mailul.</string>
     <string name="report_none">Pe acest telefon nu a fost înregistrată nicio blocare, deci nu există nimic de trimis.</string>
     <string name="report_show_all">Afișați tot</string>

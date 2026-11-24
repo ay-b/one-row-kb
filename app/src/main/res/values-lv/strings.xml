@@ -152,6 +152,7 @@
     <string name="shake_report_desc">Spēcīga sakratīšana, kamēr tastatūra ir atvērta, parāda pēdējo avārijas ziņojumu. Varat to izlasīt un nosūtīt mums pa e-pastu. Nekas netiek nosūtīts, ja e-pastu nenosūtāt paši.</string>
     <string name="btn_show_report">Avārijas ziņojums</string>
     <string name="report_title">Avārijas ziņojums</string>
+    <string name="clipboard_empty">Vēl nekas nav nokopēts</string>
     <string name="report_explainer">Ja tastatūra avarēja, varat mums nosūtīt tehnisko informāciju, lai mēs to izlabotu. Tālāk redzamais ziņojums ir viss, kas tiks nosūtīts: lietotnes un Android versijas, tālruņa modelis, valoda un avārijas tehniskais izsekojums (kuras programmas daļas darbojās). Tajā nav nekā, ko esat ierakstījis, ne starpliktuves, ne kontaktpersonu, ne iestatījumu, ne vārdnīcas. Nospiežot „Nosūtīt pa e-pastu”, tiek tikai atvērta jūsu e-pasta lietotne ar šo tekstu; nekas neatstāj tālruni, kamēr e-pastu nenosūtāt paši.</string>
     <string name="report_none">Šajā tālrunī nav reģistrēta neviena avārija, tāpēc nav ko nosūtīt.</string>
     <string name="report_show_all">Rādīt visu</string>

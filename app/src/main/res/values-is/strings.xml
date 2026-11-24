@@ -148,6 +148,7 @@
     <string name="shake_report_desc">Föst hristing á meðan lyklaborðið er opið sýnir síðustu hrunskýrslu. Þú getur lesið hana og sent okkur hana í tölvupósti. Ekkert er sent nema þú sendir tölvupóstinn að eigin frumkvæði.</string>
     <string name="btn_show_report">Hrunskýrsla</string>
     <string name="report_title">Hrunskýrsla</string>
+    <string name="clipboard_empty">Ekkert afritað ennþá</string>
     <string name="report_explainer">Ef lyklaborðið hrundi geturðu sent okkur tæknilegar upplýsingar svo við getum lagað það. Skýrslan hér að neðan er allt sem verður sent: útgáfur forritsins og Android, gerð símans, tungumálið og tæknilegur ferill hrunsins (hvaða hlutar forritsins voru í gangi). Hún inniheldur ekkert sem þú skrifaðir, ekkert af klippiborðinu, enga tengiliði, engar stillingar og enga orðabók. Þegar þú ýtir á Senda með tölvupósti opnast aðeins tölvupóstforritið þitt með þessum texta útfylltum; ekkert fer úr símanum fyrr en þú sendir tölvupóstinn að eigin frumkvæði.</string>
     <string name="report_none">Ekkert hrun hefur verið skráð í þessum síma, svo ekkert er til að senda.</string>
     <string name="report_show_all">Sýna allt</string>

@@ -32,7 +32,7 @@ object Quotes {
         val spaceAfter = if (after.isEmpty() || !(after[0].isWhitespace() || after[0] in NO_SPACE_BEFORE_NEXT)) " " else ""
         return when (q) {
             '«', '„' -> Plan(0, if (opensAfter(prev)) "" else " ", q, "")
-            '»', '“' -> Plan(0, "", q, spaceAfter)
+            '»', '“' -> Plan(line.length - line.trimEnd(' ').length, "", q, spaceAfter)     // a closing mark never has a space before it
             '"', '\'' -> {
                 val open = if (q == '"') line.count { it == '"' } % 2 == 1 else singleOpen(line)
                 val opening = if (q == '"') !open else opensAfter(prev)

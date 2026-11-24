@@ -168,6 +168,9 @@ class Lexicon private constructor(
 
     private val yoWords = HashSet<Int>()              // words with ё that have an е twin (все/всё): they win ties
 
+    private val YO_BOOST_MIN = -3.0f        // ln of the frequency ratio ё form : е twin below which the ё form is not preferred (1 : 20)
+    private val YO_HIDE = -6.0f             // ... and below which it is hidden (1 : 400)
+
     /** For Russian: a word with ё outranks its е spelling (всё before все); the е form stays as the variant. */
     fun preferYo() {
         for (i in 0 until staticWords) {
@@ -181,6 +184,11 @@ class Lexicon private constructor(
             if (!has) continue
             val twin = indexOf(surfaceOf(i).replace('ё', 'е').replace('Ё', 'Е'))
             if (twin < 0 || twin == i) continue
+            // The corpora write ё rarely and carelessly, so a ё form that is far rarer than its е twin is mostly a typo or a mistaken ё
+            // (ёё for ее, лёт, перёд, самоё): it must not outrank the real word, and a hopeless one is not offered at all.
+            val gap = logUni[i] - logUni[twin]
+            if (gap < YO_HIDE) { removed += i; continue }
+            if (gap < YO_BOOST_MIN) continue
             yoWords += i
             if (logUni[i] < logUni[twin] + 1.0f) logUni[i] = logUni[twin] + 1.0f
         }

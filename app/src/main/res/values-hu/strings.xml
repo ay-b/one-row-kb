@@ -148,6 +148,7 @@
     <string name="shake_report_desc">Határozott rázás nyitott billentyűzet mellett megjeleníti az utolsó összeomlási jelentést. Elolvashatja, és e-mailben elküldheti nekünk. Semmi sem kerül elküldésre, amíg Ön nem küldi el az e-mailt.</string>
     <string name="btn_show_report">Összeomlási jelentés</string>
     <string name="report_title">Összeomlási jelentés</string>
+    <string name="clipboard_empty">Még nincs semmi kimásolva</string>
     <string name="report_explainer">Ha a billentyűzet összeomlott, elküldheti nekünk a technikai adatokat, hogy kijavíthassuk a hibát. Az alábbi jelentés mindaz, ami elküldésre kerül: az alkalmazás és az Android verziója, a telefon típusa, a nyelv és az összeomlás technikai naplója (a program mely részei futottak). Nem tartalmaz semmit abból, amit begépelt, sem vágólapot, sem névjegyeket, sem beállításokat, sem szótárat. A Küldés e-mailben gomb megnyomása csak megnyitja az e-mail alkalmazását ezzel a szöveggel kitöltve; a telefonról semmi sem kerül ki, amíg Ön el nem küldi az e-mailt.</string>
     <string name="report_none">Ezen a telefonon nem volt rögzített összeomlás, így nincs mit elküldeni.</string>
     <string name="report_show_all">Összes megjelenítése</string>

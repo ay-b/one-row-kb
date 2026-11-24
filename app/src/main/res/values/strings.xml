@@ -138,6 +138,7 @@
     <string name="shake_report_desc">A firm shake while the keyboard is open shows the last crash report. You can read it and email it to us. Nothing is sent unless you send the email yourself.</string>
     <string name="btn_show_report">Crash report</string>
     <string name="report_title">Crash report</string>
+    <string name="clipboard_empty">Nothing copied yet</string>
     <string name="report_explainer">If the keyboard crashed, you can send us the technical details so we can fix it. The report below is everything that will be sent: the app and Android versions, the phone model, the language and the technical trace of the crash (which parts of the program were running). It contains nothing you typed, no clipboard, no contacts, no settings and no dictionary. Pressing Send only opens your email app with this text filled in; nothing leaves the phone until you send the email yourself.</string>
     <string name="report_none">No crash has been recorded on this phone, so there is nothing to send.</string>
     <string name="report_show_all">Show all</string>

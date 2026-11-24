@@ -149,6 +149,7 @@
     <string name="shake_report_desc">Una scossa decisa con la tastiera aperta mostra l\'ultima segnalazione di arresto anomalo. Puoi leggerla e inviarcela per e-mail. Non viene inviato nulla finché non invii tu stesso l\'e-mail.</string>
     <string name="btn_show_report">Arresto anomalo</string>
     <string name="report_title">Segnalazione di arresto anomalo</string>
+    <string name="clipboard_empty">Ancora nulla copiato</string>
     <string name="report_explainer">Se la tastiera si è arrestata in modo anomalo, puoi inviarci i dettagli tecnici così possiamo risolvere il problema. La segnalazione qui sotto è tutto ciò che verrà inviato: le versioni dell\'app e di Android, il modello del telefono, la lingua e la traccia tecnica dell\'arresto (quali parti del programma erano in esecuzione). Non contiene nulla di ciò che hai scritto, né appunti, né contatti, né impostazioni, né dizionario. Toccando \"Invia per e-mail\" si apre soltanto la tua app di posta con questo testo già compilato; nulla lascia il telefono finché non invii tu stesso l\'e-mail.</string>
     <string name="report_none">Nessun arresto anomalo è stato registrato su questo telefono, quindi non c\'è nulla da inviare.</string>
     <string name="report_show_all">Mostra tutto</string>

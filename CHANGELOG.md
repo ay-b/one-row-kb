@@ -4,6 +4,32 @@ Semantic versioning: MAJOR.MINOR.PATCH. The version lives in one place, `appVers
 While MAJOR is 0 the app is pre-release. PATCH = bug fix, MINOR = new feature, MAJOR = breaking change (1.0.0 = first public release).
 Built APKs are named `onerow-<version>-debug.apk`.
 
+## 0.44.2
+- Russian: nonsense ё words like ёё (and лёт, перёд, самоё, запрещёно) are no longer offered. Cause: the word list contains ё spellings that the source texts produce by mistake, and the "prefer ё" rule put every ё form above its е twin (ёё above ее). Now an ё form is preferred only when it is at least 1/20 as frequent as its twin, and one below 1/400 is hidden.
+
+## 0.44.1
+- Zoom (hold) lists as a grid instead of a sideways-scrolling strip: up to 4 symbols in the row next to the key, more go to a second row above it. Slide sideways to pick the column, slide up to reach the second row; the grid always opens with the starting symbol on the low row. The emoji zoom and the one-row letter strip keep the strip (`GRID_ZOOM` in KeyboardView turns the grid off).
+
+## 0.43.3
+- Russian and Ukrainian full keyboard: "?" is back on ь (it is first in the zoom, and a hold-release types it); ъ is the second choice there. б has no small symbol.
+- Clipboard "Nothing copied yet" text translated into every language.
+
+## 0.43.2
+- No double spaces: a swiped word or a picked guess put in the middle of a phrase no longer adds its space when one is already there before the next word.
+
+## 0.43.1
+- Spacing: » and “ never have a space before them (a typed one is taken back); a space may stand before a quote only when it opens. A hyphen after a letter takes back the automatic space (after a picked guess or a swiped word); a space you typed stays. © ® ™ never have a space before and always get one after. The long dash — always has a space on both sides.
+- Auto capital: a quote that opens a line or sentence (" « „ “ ‘) no longer blocks the capital letter of the first word after it.
+
+## 0.43.0
+- Clipboard history: a small clipboard icon at the very left of the guess bar opens a scrollable panel of the texts copied lately (newest first), the same way the emoji palette opens. Tap one to type it; hold one to forget it; tap the icon again to close. The history lives in memory only (never written to disk, gone when the keyboard restarts), keeps the last 30 copies, and skips copies an app marks as sensitive (password managers).
+
+## 0.42.0
+- Address bars (fields that ask for a URL, like a browser's address bar): the guesses and swipe typing are now on, so a search typed there works as everywhere else (also when the browser asks for "no suggestions" there). What stays off is everything that could spoil a web address: nothing is replaced (the letters stay as typed and the guesses are only offered in the bar), nothing is learned, and there is no automatic space after a dot or comma and no smart quotes. Email and password fields are unchanged: no guessing at all.
+
+## 0.41.0
+- Enter key: hold it still for half a second and a microphone zoom appears; release to switch to the phone's voice input. It only appears where a voice input method is installed and enabled; otherwise holding Enter does nothing, as before. (The swipe up-left on the one-row keyboard still does the same.)
+
 ## 0.40.2
 - Help: the folding section titles (One-row keyboard, Expanded keyboard, Nice features) are a little bigger and bolder than the other headers.
 

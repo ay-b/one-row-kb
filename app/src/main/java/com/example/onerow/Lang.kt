@@ -110,12 +110,12 @@ object Languages {
             listOf("йфя", "цыч", "увс", "кам", "епи", "нрт", "гоь", "шлб", "щдю", "зж", "хэ", "ъ"),
             listOf("йцукенгшщзх", "фывапролджэ", "ячсмитьбю"),            // ъ is under ь (hold), as on Gboard
             mapOf('е' to "ё", 'ь' to "ъ"),
-            row3Symbols = "*\"':;!ъ?%"),                                    // ъ is the small hint on ь, "?" moved to б (the key right of ь), % on ю (hold: % and ‰)
+            row3Symbols = "*\"':;!? %"),                                    // "?" is the small hint on ь (first in its zoom, and the one a hold-release types); ъ is its alternate, after it. % on ю (hold: % and ‰)
         Lang("uk", "Українська", ukrainian,
             listOf("йфя", "ціч", "увс", "кам", "епи", "нрт", "гоь", "шлб", "щдю", "зж", "хє", "ї"),
             listOf("йцукенгшщзхї", "фівапролджє", "ячсмитьбюґ"),
             mapOf('г' to "ґ"),
-            row3Symbols = "*\"':;! ?%"),                                     // "?" on б (the key right of ь), nothing on ь, % on ю, as in Russian
+            row3Symbols = "*\"':;!? %"),                                     // "?" on ь, nothing on б, % on ю, as in Russian
         // Hebrew keeps the physical (QWERTY) positions of the Israeli layout: left to right, not mirrored. The one-row columns are the QWERTY columns
         // with the letters of the Israeli standard (the final forms are not keys there: they come by themselves at the end of a word, or by holding).
         Lang("he", "עברית", hebrew,

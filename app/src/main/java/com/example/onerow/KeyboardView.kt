@@ -34,6 +34,8 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         fun onMoveCursor(steps: Int)
         fun onSuggestion(word: String)
         fun onVoice()
+        /** Whether a voice input method is installed and enabled: the Enter key's zoom offers it only then. */
+        fun voiceAvailable(): Boolean = false
         /** A national letter picked by hold-and-slide: [base] is its plain letter (for the decoder), [shown] what to type. */
         fun onAccent(base: Char, shown: String)
         fun onLanguage(code: String)
@@ -126,7 +128,11 @@ class KeyboardView(context: Context, private var listener: Listener, private var
     /** Left and right edge of the guess bar's own area (the shift / backspace keys beside it in the one-row layout are left out), in pixels. */
     fun suggBounds(): IntArray? = placed.firstOrNull { it.key.kind == Kind.SUGG }?.rect?.let { intArrayOf(it.left.toInt(), it.right.toInt()) }
 
-    private fun stripW(r: RectF) = r.width() - proofW()
+    private fun stripW(r: RectF) = r.width() - proofW() - clipW()
+    /** The clipboard icon at the left end of the guess bar. */
+    private fun clipW() = if (locked) 0f else dp(30f)
+    private var clipDown = false
+    private var clipPopup: android.widget.PopupWindow? = null
 
     // Guess slots are as wide as their words (never narrower than a quarter of the bar), so long words keep their size.
     private var slotLeft = FloatArray(0)
@@ -239,6 +245,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
     private var preciseKeys: List<Placed> = emptyList()
     private var preciseIdx0 = 0
     private var preciseAnchorX = 0f
+    private var preciseAnchorY = 0f
     private var preciseIdx = 0
     private var preciseEmoji = false
     private var preciseDir = 1          // -1: the list runs to the left as the finger moves right-to-left (keys near the right edge, where there is no room to slide right)
@@ -265,6 +272,11 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                 return@Runnable
             }
             preciseKeys = listOf(Placed(Key(Kind.LANG, L_SUB, 1f), p.rect, p.row)); preciseIdx0 = 0
+        } else if (p.key.kind == Kind.ENTER) {
+            // a long, still hold on Enter: the zoom offers voice input, where the phone has one
+            if (!listener.voiceAvailable()) return@Runnable
+            if (android.os.SystemClock.uptimeMillis() - downTime < SPACE_HOLD_MS) { handler.postDelayed(holdToPrecise, SPACE_HOLD_MS - (android.os.SystemClock.uptimeMillis() - downTime)); return@Runnable }
+            preciseKeys = listOf(Placed(Key(Kind.LANG, L_VOICE, 1f), p.rect, p.row)); preciseIdx0 = 0
         } else if (p.key.kind == Kind.SPACE) {
             // a long, still hold on the space key (a plain tap and the cursor slide are both over before): the zoom offers the help
             if (android.os.SystemClock.uptimeMillis() - downTime < SPACE_HOLD_MS) { handler.postDelayed(holdToPrecise, SPACE_HOLD_MS - (android.os.SystemClock.uptimeMillis() - downTime)); return@Runnable }
@@ -286,7 +298,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
             lang.variantsOf(ch).forEach { v -> if (v != p.key.hint) items += Key(Kind.CHAR, v, 1f, base = if (v.length == 1 && lang.alphabet.index(v[0]) >= 0) v[0] else ch) }
             if (items.isEmpty()) return@Runnable                  // nothing to offer: stay a plain tap
             preciseKeys = items.map { Placed(it, p.rect, p.row) }
-            preciseIdx0 = if (first < items.size) first else 0
+            preciseIdx0 = if (p.key.hint == "?" && ch == 'ь') 0 else if (first < items.size) first else 0      // ь: "?" is used far more than ъ, so a hold-release types it
         } else if ((mode == Mode.SYMBOLS_FULL || mode == Mode.SYMBOLS_FULL2 || mode == Mode.FULL || mode == Mode.KEYPAD) && p.key.kind == Kind.CHAR && p.key.label.length == 1 &&
             variantsOf(p.key.label[0]) != null) {
             val own = if (mode == Mode.KEYPAD) emptyList() else listOf(p.key.label)          // on the keypad the zoom offers only what a tap does not type
@@ -304,10 +316,13 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         }
         // a list that continues to the right of a key near the right edge is walked leftwards instead (the lens is mirrored)
         val variantList = p.key.kind == Kind.LANG || preciseKeys.firstOrNull()?.rect === p.rect
+        if (GRID_ZOOM && variantList && !preciseEmoji && preciseKeys.size > GRID_COLS && preciseIdx0 > 0) {      // the grid opens on its low row (there is no room to slide down): the starting symbol goes first
+            preciseKeys = listOf(preciseKeys[preciseIdx0]) + preciseKeys.filterIndexed { i, _ -> i != preciseIdx0 }; preciseIdx0 = 0
+        }
         preciseDir = if (variantList && p.rect.centerX() > width * 0.55f && preciseIdx0 <= (preciseKeys.size - 1) / 2) -1 else 1
         pressed = preciseKeys[preciseIdx0]
         preciseIdx = preciseIdx0
-        preciseAnchorX = holdX
+        preciseAnchorX = holdX; preciseAnchorY = downY
         gesture = Gesture.PRECISE
         if (hapticsOn) performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
         invalidate(); syncLens()
@@ -413,6 +428,41 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         }
     }
 
+    /** A floating, scrollable panel of the texts copied lately (newest first), opened by the clipboard icon at the left of the guess bar: tap one to type it, hold it to forget it. */
+    private fun showClipboard() {
+        dismissEmoji()
+        Clips.start(context)
+        val ctx = context
+        val margin = dp(14f).toInt()
+        val panelW = width - 2 * margin
+        val row = dp(46f).toInt()
+        val list = android.widget.LinearLayout(ctx).apply { orientation = android.widget.LinearLayout.VERTICAL; setPadding(dp(8f).toInt(), dp(8f).toInt(), dp(8f).toInt(), dp(8f).toInt()) }
+        val sv = android.widget.ScrollView(ctx)
+        fun fill() {
+            list.removeAllViews()
+            val all = Clips.all()
+            if (all.isEmpty()) list.addView(android.widget.TextView(ctx).apply {
+                text = ctx.getString(R.string.clipboard_empty); setTextColor(cDim); textSize = 14f; gravity = android.view.Gravity.CENTER
+            }, android.widget.LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, row))
+            for (t in all) list.addView(android.widget.TextView(ctx).apply {
+                text = t.trim(); setTextColor(cInk); textSize = 14f; maxLines = 2; ellipsize = android.text.TextUtils.TruncateAt.END
+                gravity = android.view.Gravity.CENTER_VERTICAL; setPadding(dp(12f).toInt(), dp(4f).toInt(), dp(12f).toInt(), dp(4f).toInt())
+                background = android.graphics.drawable.GradientDrawable().apply { setColor(cKey); cornerRadius = dp(10f) }
+                setOnClickListener { dismissEmoji(); listener.onText(t); haptic() }
+                setOnLongClickListener { Clips.remove(t); haptic(); fill(); true }
+            }, android.widget.LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT).apply { minimumHeight = 0; bottomMargin = dp(5f).toInt() })
+        }
+        fill()
+        sv.addView(list)
+        val r = dp(18f)
+        sv.background = android.graphics.drawable.GradientDrawable().apply { setColor(cPanel); cornerRadii = floatArrayOf(r, r, r, r, 0f, 0f, 0f, 0f) }
+        sv.clipToOutline = true
+        val h = (row * 5.5f).toInt()
+        val pw = android.widget.PopupWindow(sv, panelW, h, false).apply { isOutsideTouchable = false; isTouchable = true }
+        try { pw.showAsDropDown(this, margin, -(height + h)); clipPopup = pw } catch (_: Exception) { }
+        invalidate()
+    }
+
     private var emojiFill: ((String) -> Unit)? = null
     private var emojiQuery: StringBuilder? = null            // non-null while the emoji search is open
     private var searchBase: Listener? = null                 // the real listener while the search holds the keys
@@ -424,6 +474,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
     /** Closes the emoji palette and the search: the keys type into the text again, the guess bar comes back, a one-row keyboard returns to one row. */
     private fun dismissEmoji() {
         handler.removeCallbacks(cursorBlink)
+        clipPopup?.let { try { it.dismiss() } catch (_: Exception) {} }; clipPopup = null; clipDown = false
         emojiPopup?.let { try { it.dismiss() } catch (_: Exception) {} }; emojiPopup = null
         emojiFill = null; emojiQuery = null; searchStripDown = false
         searchBase?.let { listener = it }; searchBase = null
@@ -844,10 +895,11 @@ class KeyboardView(context: Context, private var listener: Listener, private var
 
     private inner class LensContent(ctx: Context) : View(ctx) {
         var items: List<String> = emptyList(); var hi = 0; var tailX = 0f; var hint = false   // hint: "swipe up for all emoji"
+        var gridCols = 0; var gridMirror = false                                  // gridCols > 0: the items are rows of that many (the first row next to the key), not one strip
         var pad = 0f; var moreLeft = false; var moreRight = false               // a list longer than the bubble: arrows at the sides show where it continues
         private val p = Paint(Paint.ANTI_ALIAS_FLAG); private val t = Paint(Paint.ANTI_ALIAS_FLAG).apply { textAlign = Paint.Align.CENTER; typeface = face }
         override fun onDraw(c: Canvas) {
-            val w = width.toFloat(); val cardH = dp(LENS_CARD_DP); val r = dp(14f)
+            val w = width.toFloat(); val cardH = height - dp(11f); val rowH = dp(LENS_CARD_DP); val r = dp(14f)
             // the outline is centred on the path: inset the path by half its width, or the edges on the window border (left, top, right) lose half of it
             val sw = dp(1.5f); val ins = sw / 2
             val shape = Path().apply { addRoundRect(RectF(ins, ins, w - ins, cardH - ins), r, r, Path.Direction.CW) }
@@ -876,21 +928,37 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                 p.strokeCap = Paint.Cap.BUTT
             }
             for ((i, label) in items.withIndex()) {
-                val x = dp(8f) + pad + (i + 0.5f) * step
+                val col = if (gridCols > 0) (if (gridMirror) gridCols - 1 - i % gridCols else i % gridCols) else i
+                val x = dp(8f) + pad + (col + 0.5f) * step
+                val cy = if (gridCols > 0) cardH - (i / gridCols + 0.5f) * rowH else cardH / 2
                 if (i == hi) {
                     p.style = Paint.Style.FILL; p.color = cTeal
-                    c.drawRoundRect(x - dp(16f), dp(6f), x + dp(16f), cardH - dp(6f), dp(9f), dp(9f), p)
+                    c.drawRoundRect(x - dp(16f), cy - rowH / 2 + dp(6f), x + dp(16f), cy + rowH / 2 - dp(6f), dp(9f), dp(9f), p)
                     t.color = cStrip; t.textSize = sp(19f)
                 } else { t.color = cDim; t.textSize = sp(14f) }
                 if (label == L_GEAR) {
                     val old = stroke.color; stroke.color = if (i == hi) cStrip else cDim
-                    drawGear(c, RectF(x - dp(10f), cardH / 2 - dp(10f), x + dp(10f), cardH / 2 + dp(10f)))
+                    drawGear(c, RectF(x - dp(10f), cy - dp(10f), x + dp(10f), cy + dp(10f)))
                     stroke.color = old
+                } else if (label == L_VOICE) {
+                    drawMic(c, RectF(x - dp(7f), cy - dp(10f), x + dp(7f), cy + dp(10f)), if (i == hi) cStrip else cDim)
                 } else if (label == L_DOCKED || label == L_FLOAT || label == L_SPLIT || label == L_LEFT || label == L_RIGHT || label == L_VSCALE) {
-                    drawLayoutIcon(c, label, RectF(x - dp(10f), cardH / 2 - dp(8f), x + dp(10f), cardH / 2 + dp(8f)), if (i == hi) cStrip else cDim)
-                } else { val fm = t.fontMetrics; c.drawText(label, x, cardH / 2 - (fm.ascent + fm.descent) / 2, t) }
+                    drawLayoutIcon(c, label, RectF(x - dp(10f), cy - dp(8f), x + dp(10f), cy + dp(8f)), if (i == hi) cStrip else cDim)
+                } else { val fm = t.fontMetrics; c.drawText(label, x, cy - (fm.ascent + fm.descent) / 2, t) }
             }
         }
+    }
+
+    /** A microphone: a capsule, the cup around it and the stand. */
+    private fun drawMic(c: Canvas, box: RectF, color: Int) {
+        val oldColor = stroke.color; val oldWidth = stroke.strokeWidth
+        stroke.color = color; stroke.strokeWidth = dp(1.6f)
+        val w = box.width(); val h = box.height(); val cx = box.centerX()
+        c.drawRoundRect(RectF(cx - w * 0.3f, box.top, cx + w * 0.3f, box.top + h * 0.58f), w * 0.3f, w * 0.3f, stroke)
+        c.drawArc(RectF(cx - w * 0.5f, box.top + h * 0.2f, cx + w * 0.5f, box.top + h * 0.8f), 0f, 180f, false, stroke)
+        c.drawLine(cx, box.top + h * 0.8f, cx, box.bottom, stroke)
+        c.drawLine(cx - w * 0.3f, box.bottom, cx + w * 0.3f, box.bottom, stroke)
+        stroke.color = oldColor; stroke.strokeWidth = oldWidth
     }
 
     private fun hideLens() {
@@ -910,13 +978,15 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         if (!precise && mode != Mode.MINI && mode != Mode.SYMBOLS) { hideLens(); return }
         val keys = if (precise) preciseKeys else placed.filter { it.row == down.row && (it.key.kind == Kind.LETTER || it.key.kind == Kind.CHAR) }
         val idx = keys.indexOf(down); if (idx < 0) { hideLens(); return }
+        val grid = GRID_ZOOM && precise && !preciseEmoji && keys.size > GRID_COLS && keys.all { it.rect === keys[0].rect }      // a list of variants: rows of 4 (a longer one: two equal rows) instead of a scrolling strip
+        val gcols = if (keys.size <= 2 * GRID_COLS) GRID_COLS else (keys.size + 1) / 2; val grows = (keys.size + gcols - 1) / gcols
         val span = if (precise) 3 else 2
-        val from = maxOf(0, idx - span); val to = minOf(keys.size - 1, idx + span)
+        val from = if (grid) 0 else maxOf(0, idx - span); val to = if (grid) keys.size - 1 else minOf(keys.size - 1, idx + span)
         var items = (from..to).map { i ->
             val k = keys[i]
             if (k.key.num) numText(k.key) else if ((k.key.kind == Kind.LETTER || k.key.base != null) && shift != Shift.OFF) k.key.label.uppercase() else k.key.label
         }
-        val mirrored = precise && preciseDir < 0
+        val mirrored = precise && preciseDir < 0 && !grid
         var hiIdx = idx - from
         if (mirrored) { items = items.reversed(); hiIdx = to - idx }          // the list is walked leftwards: show it that way
         val scrollable = precise && keys.size > items.size
@@ -924,12 +994,13 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         val padArrow = if (scrollable) dp(14f) else 0f
         val step = dp(LENS_STEP_DP)
         val emojiHint = precise && preciseEmoji
-        val w = items.size * step + dp(16f) + 2 * padArrow + (if (emojiHint) dp(46f) else 0f); val cardH = dp(LENS_CARD_DP); val tailH = dp(11f); val h = cardH + tailH
+        val cardH = dp(LENS_CARD_DP); val tailH = dp(11f)
+        val w = (if (grid) gcols else items.size) * step + dp(16f) + 2 * padArrow + (if (emojiHint) dp(46f) else 0f); val h = cardH * (if (grid) grows else 1) + tailH
         val keyCx = down.rect.centerX()
         val left = (keyCx - w / 2).coerceIn(dp(4f), maxOf(dp(4f), width - w - dp(4f)))
         val top = down.rect.top - dp(3f) - h                                   // the pointer tip just above the key
         val content = lensContent ?: LensContent(context).also { lensContent = it }
-        content.items = items; content.hi = hiIdx; content.hint = emojiHint; content.pad = padArrow
+        content.items = items; content.hi = hiIdx; content.gridCols = if (grid) gcols else 0; content.gridMirror = preciseDir < 0; content.hint = emojiHint; content.pad = padArrow
         content.moreLeft = if (mirrored) after else before; content.moreRight = if (mirrored) before else after
          content.tailX = (keyCx - left).coerceIn(dp(16f), w - dp(16f))
         val geo = floatArrayOf(left, top, w, h)
@@ -1035,7 +1106,8 @@ class KeyboardView(context: Context, private var listener: Listener, private var
             val msg = resources.getQuantityString(R.plurals.bar_subscription_expiring, days, days)
             val avail = stripW(r) - dp(12f); val w = text.measureText(msg)
             if (w > avail) text.textSize = (sp(14f) * avail / w).coerceAtLeast(sp(9f))
-            drawCentered(c, msg, r.left + stripW(r) / 2, r.centerY())
+            drawCentered(c, msg, r.left + clipW() + stripW(r) / 2, r.centerY())
+            drawClipIcon(c, r)
             if (proof != ProofState.OFF || selHint) drawProof(c, r)
             return
         }
@@ -1047,11 +1119,11 @@ class KeyboardView(context: Context, private var listener: Listener, private var
             if (b != null && b < slotLeft.size && slotLeft[b] + slotWidth[b] > sw0)
                 suggScroll = minOf(maxOf(0f, suggTotal - sw0), slotLeft[b] + slotWidth[b] - sw0)
         }
-        c.save(); c.clipRect(r.left, r.top, r.left + sw0, r.bottom)
+        c.save(); c.clipRect(r.left + clipW(), r.top, r.left + clipW() + sw0, r.bottom)
         for (i in suggestions.indices) {
             val s = suggestions[i].takeIf { it.isNotEmpty() } ?: continue
             val sw = slotWidth[i]
-            val l = r.left + slotLeft[i] - suggScroll
+            val l = r.left + clipW() + slotLeft[i] - suggScroll
             if (l + sw < r.left || l > r.right) continue
             if (i == bestIndex) {
                 fill.color = cTeal
@@ -1071,10 +1143,24 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         if (suggTotal > sw0 + 1f) {                                // thin position marker: more guesses to the side
             val total = suggTotal; val vis = sw0 / total
             fill.color = cDim
-            val x0 = r.left + (suggScroll / total) * sw0
+            val x0 = r.left + clipW() + (suggScroll / total) * sw0
             c.drawRoundRect(x0, r.bottom - dp(3f), x0 + vis * sw0, r.bottom - dp(1.5f), dp(1f), dp(1f), fill)
         }
+        drawClipIcon(c, r)
         if (proof != ProofState.OFF || selHint) drawProof(c, r)
+    }
+
+    /** A small clipboard (board, clip, two text lines) at the left end of the guess bar; lit while the history panel is open. */
+    private fun drawClipIcon(c: Canvas, r: RectF) {
+        val cx = r.left + clipW() / 2 + dp(2f); val cy = r.centerY()
+        val old = stroke.color; val sw = stroke.strokeWidth
+        stroke.color = if (clipPopup != null || clipDown) cTeal else cDim; stroke.strokeWidth = dp(1.3f)
+        val w = dp(6.5f); val h = dp(8.5f)
+        c.drawRoundRect(RectF(cx - w, cy - h + dp(1.5f), cx + w, cy + h), dp(1.5f), dp(1.5f), stroke)
+        c.drawRoundRect(RectF(cx - dp(3f), cy - h, cx + dp(3f), cy - h + dp(3.2f)), dp(1f), dp(1f), stroke)
+        c.drawLine(cx - dp(3.2f), cy + dp(0.5f), cx + dp(3.2f), cy + dp(0.5f), stroke)
+        c.drawLine(cx - dp(3.2f), cy + dp(3.4f), cx + dp(1.2f), cy + dp(3.4f), stroke)
+        stroke.color = old; stroke.strokeWidth = sw
     }
 
     /** The trial is over: the message and a gear that opens the settings (a tap anywhere on the bar does too). */
@@ -1170,7 +1256,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
 
     private fun suggSlot(p: Placed, x: Float): Int {
         suggLayout(stripW(p.rect))
-        val xx = x - p.rect.left + suggScroll
+        val xx = x - p.rect.left - clipW() + suggScroll
         for (i in slotLeft.indices) if (xx < slotLeft[i] + slotWidth[i]) return i
         return maxOf(0, slotLeft.size - 1)
     }
@@ -1283,6 +1369,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                 if (p?.key?.kind == Kind.SUGG && (proof != ProofState.OFF || selHint) && e.x > p.rect.right - dp(36f)) {
                     proofDown = true; haptic(); invalidate(); return true          // the circle at the strip's right end
                 }
+                if (p?.key?.kind == Kind.SUGG && e.x < p.rect.left + clipW()) { clipDown = true; haptic(); invalidate(); return true }
                 if (p?.key?.kind == Kind.SUGG) {
                     suggDragging = false
                     suggDown = suggSlot(p, e.x)
@@ -1297,8 +1384,14 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                 downTime = android.os.SystemClock.uptimeMillis(); handler.removeCallbacks(lensTick); handler.postDelayed(lensTick, PREVIEW_MS)
                 haptic(); invalidate()
             }
-            MotionEvent.ACTION_MOVE -> if (!proofDown) onMove(e)
+            MotionEvent.ACTION_MOVE -> if (!proofDown && !clipDown) onMove(e)
             MotionEvent.ACTION_UP -> {
+                if (clipDown) {
+                    clipDown = false
+                    val sg = pressed
+                    if (sg != null && e.x < sg.rect.left + clipW() + dp(6f) && e.y < rowRects[0].bottom + dp(4f)) { if (clipPopup != null) dismissEmoji() else showClipboard() }
+                    pressed = null; invalidate(); return true
+                }
                 if (proofDown) {
                     proofDown = false
                     val sg = pressed
@@ -1375,7 +1468,14 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                 haptic(); invalidate(); showEmojiPalette(); return
             }
             // finger travel is amplified into the magnified lens: PRECISE_STEP dp = one letter
-            val idx = (preciseIdx0 + preciseDir * Math.round((e.x - preciseAnchorX) / dp(PRECISE_STEP_DP))).coerceIn(0, preciseKeys.size - 1)
+            val n = preciseKeys.size
+            val gridded = lensContent?.gridCols ?: 0
+            val idx = if (gridded > 0) {        // the grid: sideways picks the column, up picks the next row
+                val rows = (n + gridded - 1) / gridded
+                val col = (preciseIdx0 % gridded + preciseDir * Math.round((e.x - preciseAnchorX) / dp(PRECISE_STEP_DP))).coerceIn(0, gridded - 1)
+                val row = (preciseIdx0 / gridded + Math.round((preciseAnchorY - e.y) / dp(GRID_ROW_STEP_DP))).coerceIn(0, rows - 1)
+                (row * gridded + col).coerceAtMost(n - 1)
+            } else (preciseIdx0 + preciseDir * Math.round((e.x - preciseAnchorX) / dp(PRECISE_STEP_DP))).coerceIn(0, n - 1)
             if (idx != preciseIdx) { preciseIdx = idx; pressed = preciseKeys[idx]; haptic(); invalidate() }
             return
         }
@@ -1652,6 +1752,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
                 L_RIGHT -> listener.onMode("right")
                 L_VSCALE -> { scaling = true; setMode(letterMode); invalidate() }
                 L_HELP -> listener.onHelp()
+                L_VOICE -> listener.onVoice()
                 L_SUB -> { subOn = true; haptic() }
                 else -> listener.onSettings()
             }
@@ -1729,6 +1830,7 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         const val L_SUB = "x\u2082"             // the Shift key's zoom: subscript typing
         const val SUB_FROM = "0123456789+-=()aehijklmnoprstuvx"
         const val SUB_TO = "\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089\u208A\u208B\u208C\u208D\u208E\u2090\u2091\u2095\u1D62\u2C7C\u2096\u2097\u2098\u2099\u2092\u209A\u1D63\u209B\u209C\u1D64\u1D65\u2093"
+        const val L_VOICE = "\uE006"           // the Enter key's zoom: voice input (a microphone drawn in code)
         const val L_HELP = "?"                // the space key's zoom: the help
         const val SPACE_HOLD_MS = 550L        // how long the space key must be held, still, for that zoom (a tap and the cursor slide stay free)
         const val LENS_CARD_DP = 46f
@@ -1736,6 +1838,9 @@ class KeyboardView(context: Context, private var listener: Listener, private var
         const val GLIDE_START_DP = 16f    // finger travel that turns a press on a letter into a glide
         const val HOLD_MS = 300L          // finger at rest this long on a letter = hold and slide (exact letter), with a buzz
         const val PREVIEW_MS = 150L       // finger at rest this long = the zoom preview bubble appears
+        const val GRID_ZOOM = true         // variant lists as a grid (rows of GRID_COLS) instead of a strip that scrolls sideways
+        const val GRID_COLS = 4
+        const val GRID_ROW_STEP_DP = 30f   // finger travel up per row in the grid
         const val PRECISE_STEP_DP = 22f   // finger travel per letter while holding
     }
 }

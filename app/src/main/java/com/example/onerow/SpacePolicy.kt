@@ -10,6 +10,9 @@ object SpacePolicy {
      */
     fun cutsSpaceBefore(ch: Char, twoBefore: String, wasAuto: Boolean): Boolean {
         if (twoBefore.length != 2 || twoBefore[1] != ' ' || twoBefore[0].isWhitespace()) return false
+        if (ch == '—') return false                         // the long dash keeps its space before
+        if (ch in "©®™") return true                        // ©®™ never have a space before, typed or not
+        if (ch == '-') return wasAuto && twoBefore[0].isLetter()   // a hyphen after a letter takes back an automatic space only
         return wasAuto || ch !in ":;"
     }
 }

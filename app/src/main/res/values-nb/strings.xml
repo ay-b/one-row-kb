@@ -148,6 +148,7 @@
     <string name="shake_report_desc">Et kraftig ryst mens tastaturet er åpent, viser den siste krasjrapporten. Du kan lese den og sende den til oss på e-post. Ingenting sendes med mindre du selv sender e-posten.</string>
     <string name="btn_show_report">Krasjrapport</string>
     <string name="report_title">Krasjrapport</string>
+    <string name="clipboard_empty">Ingenting kopiert ennå</string>
     <string name="report_explainer">Hvis tastaturet krasjet, kan du sende oss de tekniske detaljene slik at vi kan rette det. Rapporten nedenfor er alt som blir sendt: app- og Android-versjonene, telefonmodellen, språket og den tekniske sporingen av krasjet (hvilke deler av programmet som kjørte). Den inneholder ingenting du har skrevet, ingen utklippstavle, ingen kontakter, ingen innstillinger og ingen ordbok. Når du trykker på \"Send som e-post\", åpnes bare e-postappen din med denne teksten fylt ut; ingenting forlater telefonen før du selv sender e-posten.</string>
     <string name="report_none">Ingen krasj er registrert på denne telefonen, så det er ingenting å sende.</string>
     <string name="report_show_all">Vis alle</string>

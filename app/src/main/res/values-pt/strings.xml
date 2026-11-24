@@ -149,6 +149,7 @@
     <string name="shake_report_desc">Uma sacudida firme com o teclado aberto mostra o último relatório de falhas. Você pode lê-lo e nos enviar por e-mail. Nada é enviado a menos que você mesmo envie o e-mail.</string>
     <string name="btn_show_report">Relatório de falhas</string>
     <string name="report_title">Relatório de falhas</string>
+    <string name="clipboard_empty">Nada copiado ainda</string>
     <string name="report_explainer">Se o teclado falhou, você pode nos enviar os detalhes técnicos para que possamos corrigir o problema. O relatório abaixo é tudo o que será enviado: as versões do app e do Android, o modelo do telefone, o idioma e o rastro técnico da falha (quais partes do programa estavam em execução). Ele não contém nada do que você digitou, nem área de transferência, nem contatos, nem configurações, nem dicionário. Tocar em \"Enviar por e-mail\" apenas abre seu app de e-mail com este texto já preenchido; nada sai do telefone até que você mesmo envie o e-mail.</string>
     <string name="report_none">Nenhuma falha foi registrada neste telefone, então não há nada para enviar.</string>
     <string name="report_show_all">Mostrar tudo</string>

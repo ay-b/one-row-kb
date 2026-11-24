@@ -35,6 +35,8 @@ class QuotesTest {
         assertEquals("( «", type("( ", '«'))
         assertEquals("word „", type("word", '„'))
         assertEquals("» ", type("", '»'))
+        assertEquals("word» ", type("word ", '»'))                        // » never has a space before it
+        assertEquals("word“ ", type("word  ", '“'))
         assertEquals("x“ ", type("x", '“'))
     }
 

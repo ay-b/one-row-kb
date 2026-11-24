@@ -148,6 +148,7 @@
     <string name="shake_report_desc">Kindel raputus, kui klaviatuur on avatud, näitab viimast kokkujooksu aruannet. Saad selle läbi lugeda ja meile e-kirjaga saata. Midagi ei saadeta, kui sa e-kirja ise ei saada.</string>
     <string name="btn_show_report">Kokkujooksu aruanne</string>
     <string name="report_title">Kokkujooksu aruanne</string>
+    <string name="clipboard_empty">Midagi pole veel kopeeritud</string>
     <string name="report_explainer">Kui klaviatuur jooksis kokku, saad meile saata tehnilised andmed, et saaksime vea parandada. Allolev aruanne on kõik, mis saadetakse: rakenduse ja Androidi versioonid, telefoni mudel, keel ja kokkujooksu tehniline jälg (millised programmi osad töötasid). See ei sisalda midagi, mida sa kirjutasid, ei lõikelauda, kontakte, seadeid ega sõnastikku. Nupu Saada e-kirjaga vajutamine avab ainult sinu e-posti rakenduse selle tekstiga täidetuna; midagi ei lahku telefonist enne, kui sa e-kirja ise saadad.</string>
     <string name="report_none">Sellesse telefoni pole kokkujooksu salvestatud, seega pole midagi saata.</string>
     <string name="report_show_all">Näita kõiki</string>

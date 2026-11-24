@@ -152,6 +152,7 @@
     <string name="shake_report_desc">Snažno protresanje dok je tipkovnica otvorena prikazuje posljednje izvješće o rušenju. Možete ga pročitati i poslati nam e-poštom. Ništa se ne šalje ako e-poštu ne pošaljete sami.</string>
     <string name="btn_show_report">Izvješće o rušenju</string>
     <string name="report_title">Izvješće o rušenju</string>
+    <string name="clipboard_empty">Još ništa nije kopirano</string>
     <string name="report_explainer">Ako se tipkovnica srušila, možete nam poslati tehničke podatke kako bismo je popravili. Izvješće u nastavku sve je što će biti poslano: verzije aplikacije i Androida, model telefona, jezik i tehnički trag rušenja (koji su dijelovi programa bili pokrenuti). Ne sadrži ništa što ste upisali, ni međuspremnik, ni kontakte, ni postavke, ni rječnik. Pritiskom na „Pošaljite e-poštom” samo se otvara vaša aplikacija za e-poštu s ovim tekstom; ništa ne napušta telefon dok sami ne pošaljete e-poštu.</string>
     <string name="report_none">Na ovom telefonu nije zabilježeno nijedno rušenje, pa nema što poslati.</string>
     <string name="report_show_all">Prikažite sve</string>

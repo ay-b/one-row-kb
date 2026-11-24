@@ -152,6 +152,7 @@
     <string name="shake_report_desc">Silné zatrasenie pri otvorenej klávesnici zobrazí posledné hlásenie o zlyhaní. Môžete si ho prečítať a poslať nám ho e-mailom. Nič sa neodošle, kým e-mail sami neodošlete.</string>
     <string name="btn_show_report">Hlásenie o zlyhaní</string>
     <string name="report_title">Hlásenie o zlyhaní</string>
+    <string name="clipboard_empty">Zatiaľ nič nekopírované</string>
     <string name="report_explainer">Ak klávesnica zlyhala, môžete nám poslať technické podrobnosti, aby sme to mohli opraviť. Hlásenie nižšie je všetko, čo sa odošle: verzie aplikácie a Androidu, model telefónu, jazyk a technická stopa zlyhania (ktoré časti programu práve bežali). Neobsahuje nič, čo ste napísali, žiadnu schránku, žiadne kontakty, žiadne nastavenia a žiadny slovník. Stlačenie tlačidla „Odoslať e-mailom“ iba otvorí vašu e-mailovú aplikáciu s týmto textom; nič neopustí telefón, kým e-mail sami neodošlete.</string>
     <string name="report_none">V tomto telefóne nebolo zaznamenané žiadne zlyhanie, takže nie je čo odosielať.</string>
     <string name="report_show_all">Zobraziť všetko</string>

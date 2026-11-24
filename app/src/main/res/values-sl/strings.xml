@@ -155,6 +155,7 @@
     <string name="shake_report_desc">Močan stresljaj, ko je tipkovnica odprta, prikaže zadnje poročilo o zrušitvi. Preberete ga lahko in nam ga pošljete po e-pošti. Nič se ne pošlje, razen če e-pošto pošljete sami.</string>
     <string name="btn_show_report">Poročilo o zrušitvi</string>
     <string name="report_title">Poročilo o zrušitvi</string>
+    <string name="clipboard_empty">Nič še ni kopirano</string>
     <string name="report_explainer">Če se je tipkovnica zrušila, nam lahko pošljete tehnične podrobnosti, da jo popravimo. Spodnje poročilo je vse, kar bo poslano: različici aplikacije in sistema Android, model telefona, jezik in tehnično sled zrušitve (kateri deli programa so se izvajali). Ne vsebuje ničesar, kar ste natipkali, ne odložišča, ne stikov, ne nastavitev in ne slovarja. Ko pritisnete »Pošljite po e-pošti«, se samo odpre vaša e-poštna aplikacija s tem besedilom; nič ne zapusti telefona, dokler e-pošte ne pošljete sami.</string>
     <string name="report_none">V tem telefonu ni zabeležene nobene zrušitve, zato ni ničesar za pošiljanje.</string>
     <string name="report_show_all">Pokažite vse</string>

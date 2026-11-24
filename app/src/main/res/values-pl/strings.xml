@@ -155,6 +155,7 @@
     <string name="shake_report_desc">Mocne potrząśnięcie przy otwartej klawiaturze pokazuje ostatni raport o awarii. Możesz go przeczytać i wysłać do nas e-mailem. Nic nie jest wysyłane, dopóki sam nie wyślesz e-maila.</string>
     <string name="btn_show_report">Raport o awarii</string>
     <string name="report_title">Raport o awarii</string>
+    <string name="clipboard_empty">Nic jeszcze nie skopiowano</string>
     <string name="report_explainer">Jeśli klawiatura uległa awarii, możesz wysłać nam szczegóły techniczne, abyśmy mogli to naprawić. Poniższy raport to wszystko, co zostanie wysłane: wersje aplikacji i Androida, model telefonu, język oraz techniczny ślad awarii (które części programu były uruchomione). Nie zawiera niczego, co zostało wpisane, schowka, kontaktów, ustawień ani słownika. Naciśnięcie przycisku „Wyślij e-mailem” tylko otwiera Twoją aplikację pocztową z tym tekstem; nic nie opuszcza telefonu, dopóki sam nie wyślesz e-maila.</string>
     <string name="report_none">Na tym telefonie nie zarejestrowano żadnej awarii, więc nie ma czego wysyłać.</string>
     <string name="report_show_all">Pokaż wszystko</string>

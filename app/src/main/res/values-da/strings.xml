@@ -148,6 +148,7 @@
     <string name="shake_report_desc">Et kraftigt ryst, mens tastaturet er åbent, viser den seneste nedbrudsrapport. Du kan læse den og sende den til os på e-mail. Intet sendes, medmindre du selv sender e-mailen.</string>
     <string name="btn_show_report">Nedbrudsrapport</string>
     <string name="report_title">Nedbrudsrapport</string>
+    <string name="clipboard_empty">Intet kopieret endnu</string>
     <string name="report_explainer">Hvis tastaturet er brudt ned, kan du sende os de tekniske oplysninger, så vi kan rette det. Rapporten nedenfor er alt, hvad der sendes: app- og Android-versionerne, telefonmodellen, sproget og det tekniske spor af nedbruddet (hvilke dele af programmet der kørte). Den indeholder intet, du har skrevet, intet fra udklipsholderen, ingen kontakter, ingen indstillinger og ingen ordbog. Når du trykker på \"Send som e-mail\", åbnes kun din e-mailapp med denne tekst udfyldt; intet forlader telefonen, før du selv sender e-mailen.</string>
     <string name="report_none">Der er ikke registreret noget nedbrud på denne telefon, så der er intet at sende.</string>
     <string name="report_show_all">Vis alle</string>

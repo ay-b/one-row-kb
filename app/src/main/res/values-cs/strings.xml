@@ -152,6 +152,7 @@
     <string name="shake_report_desc">Silné zatřesení při otevřené klávesnici zobrazí poslední hlášení o pádu. Můžete si ho přečíst a poslat nám ho e-mailem. Nic se neodešle, dokud e-mail sami neodešlete.</string>
     <string name="btn_show_report">Hlášení o pádu</string>
     <string name="report_title">Hlášení o pádu</string>
+    <string name="clipboard_empty">Zatím nic nezkopírováno</string>
     <string name="report_explainer">Pokud klávesnice spadla, můžete nám poslat technické podrobnosti, abychom to mohli opravit. Hlášení níže je vše, co se odešle: verze aplikace a Androidu, model telefonu, jazyk a technická stopa pádu (které části programu právě běžely). Neobsahuje nic, co jste napsali, žádnou schránku, žádné kontakty, žádná nastavení a žádný slovník. Stisknutí tlačítka „Odeslat e-mailem“ pouze otevře vaši e-mailovou aplikaci s tímto textem; nic neopustí telefon, dokud e-mail sami neodešlete.</string>
     <string name="report_none">V tomto telefonu nebyl zaznamenán žádný pád, takže není co odesílat.</string>
     <string name="report_show_all">Zobrazit vše</string>

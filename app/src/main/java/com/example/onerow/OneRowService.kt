@@ -64,6 +64,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
     private val upper = ArrayList<Boolean>()
     private var cands: List<Candidate> = emptyList()
     private var decoding = true       // false in password / non-text fields
+    private var addressField = false  // a URL field (browser address bar): guesses and swipe on, nothing replaced, learned or re-spaced
 
     private var bornAt = 0L
     private fun sinceBirth() = (System.nanoTime() - bornAt) / 1_000_000
@@ -72,6 +73,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         super.onCreate()
         bornAt = System.nanoTime()
         prefs = Prefs(this)
+        Clips.start(this)
         com.example.onerow.engine.Lexicon.trace = { android.util.Log.d("OneRowStartup", it) }
         lang = prefs.current()
         loadEngine(lang)
@@ -477,10 +479,12 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         val isText = (info.inputType and InputType.TYPE_MASK_CLASS) == InputType.TYPE_CLASS_TEXT
         val pw = v == InputType.TYPE_TEXT_VARIATION_PASSWORD ||
             v == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD ||
-            v == InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD ||
-            v == InputType.TYPE_TEXT_VARIATION_URI || v == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+            v == InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD || v == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+        // an address bar (URL field): often a search box, so the guesses and swipe typing stay on; only the automatic replacing, the learning
+        // and the typography (space after a dot, quotes) are off there, because the text may be a web address
+        addressField = isText && v == InputType.TYPE_TEXT_VARIATION_URI
         decoding = isText && !pw &&
-            (info.inputType and InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS) == 0
+            ((info.inputType and InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS) == 0 || addressField)
         refresh()
     }
 
@@ -563,10 +567,11 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         // allowed in between); after ":" ";" "%" digits, commas and the like the word stays lower case. Fields that ask for
         // every word/character capitalized (names) keep the system's rule.
         val sentenceOnly = (info.inputType and (InputType.TYPE_TEXT_FLAG_CAP_WORDS or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS)) == 0
-        val before = textBefore(12).trimEnd(' ', '\u00a0').trimEnd('"', '\'', ')', ']', '}', '\u00bb', '\u201d', '\u2019')
+        val raw = textBefore(12).trimEnd(' ', '\u00a0')
+        val before = raw.trimEnd('"', '\'', ')', ']', '}', '»', '”', '’', '«', '„', '“', '‘')
         val sentenceDone = before.isEmpty() || before.last() in ".!?\u2026\n\u3002"
         val capOk = !noAutoCap && (!sentenceOnly || sentenceDone)
-        if (isText && capOk && !heEnglish && lang.code != "he" && kv.shift == KeyboardView.Shift.OFF && ic.getCursorCapsMode(info.inputType) != 0)
+        if (isText && capOk && !heEnglish && lang.code != "he" && kv.shift == KeyboardView.Shift.OFF && (ic.getCursorCapsMode(info.inputType) != 0 || (sentenceDone && raw.isNotEmpty() && raw.last() in "\"'«„“‘")))   // a quote that opens a line or sentence: the first letter after it is a capital
             kv.shift = KeyboardView.Shift.ONCE
         if (taps.isEmpty()) {
             kv.bestIndex = -1
@@ -642,7 +647,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         // Full keyboard / hold-and-slide: the input gets exactly what was typed. Guesses are only offered.
         // One-row keyboard: a single letter picked with the zoom (hold and slide) turns the guessing off for the whole word, the other letters are
         // typed as the nearest key; the next word (after a space) guesses again. The expanded keyboard types every letter exactly anyway.
-        val deliberate = exact.any { it }
+        val deliberate = exact.any { it } || addressField          // address bars: what is typed stays, the guesses are only offered
         if (deliberate) {
             var typed = taps.withIndex().joinToString("") { (i, t) ->
                 shown.getOrNull(i) ?: lx.alphabet.letters[t.indices.maxByOrNull { t[it] }!!].toString()
@@ -652,7 +657,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         }
         lastRaw = list[0].word
         // learn what was typed on purpose: every letter held, or some held and the text is not a dictionary word
-        lastDeliberate = deliberate || (list[0].isLiteral && exact.any { it })
+        lastDeliberate = !addressField && (deliberate || (list[0].isLiteral && exact.any { it }))
         cands = list
         val best = list[0]
         val rest = list.drop(1)
@@ -923,12 +928,27 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         // a space typed right after the automatic one is not needed
         if (text == " " && wasAuto && textBefore(1) == " ") return
         // ":)" / ";)" smileys: take the automatic space back before a closing bracket
-        if (decoding && wasAuto && text.length == 1 && text[0] in ")]}") {
+        if (decoding && !addressField && wasAuto && text.length == 1 && text[0] in ")]}") {
             val b = textBefore(2)
             if (b.length == 2 && b[0] in ":;" && b[1] == ' ') ic.deleteSurroundingText(1, 0)
         }
-        if (decoding && text.length == 1 && text[0] in Quotes.ALL && smartQuote(ic, text[0])) return
-        if (decoding && text.length == 1 && text[0] in AUTO_SPACE_AFTER) {
+        if (decoding && !addressField && text.length == 1 && text[0] in Quotes.ALL && smartQuote(ic, text[0])) return
+        // - after a letter takes back an automatic space; ©®™ never have a space before and always one after; the long dash has one on both sides
+        if (decoding && !addressField && text.length == 1 && text[0] in "-©®™—") {
+            val c = text[0]
+            ic.beginBatchEdit()
+            if (SpacePolicy.cutsSpaceBefore(c, textBefore(2), wasAuto || wasWordAuto)) ic.deleteSurroundingText(1, 0)
+            val prev = textBefore(1).lastOrNull()
+            if (c == '—' && prev != null && !prev.isWhitespace()) ic.commitText(" ", 1)
+            ic.commitText(text, 1)
+            if (c != '-') {
+                val next = ic.getTextAfterCursor(1, 0)?.toString().orEmpty()
+                if (next.isEmpty() || !next[0].isWhitespace()) { ic.commitText(" ", 1); justAutoSpaced = true }
+            }
+            ic.endBatchEdit()
+            return
+        }
+        if (decoding && !addressField && text.length == 1 && text[0] in AUTO_SPACE_AFTER) {
             ic.beginBatchEdit()
             // "word ." -> "word." (also joins "..." and "?!" after the automatic space)
             if (SpacePolicy.cutsSpaceBefore(text[0], textBefore(2), wasAuto || wasWordAuto)) ic.deleteSurroundingText(1, 0)
@@ -1122,6 +1142,11 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
+    override fun voiceAvailable(): Boolean = try {
+        (getSystemService(INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager).enabledInputMethodList
+            .any { ime -> (0 until ime.subtypeCount).any { ime.getSubtypeAt(it).mode == "voice" } }
+    } catch (e: Exception) { false }
+
     override fun onVoice() {
         finishComposing()
         try {
@@ -1175,6 +1200,11 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         selStart = pos; selEnd = pos                         // later steps arrive before the editor reports back
     }
 
+    /** A space of ours was just added before the caret: if the text goes on with a space already, that one goes (no double space when a word is put in the middle of a phrase). */
+    private fun eatNextSpace(ic: android.view.inputmethod.InputConnection) {
+        if (ic.getTextAfterCursor(1, 0)?.toString() == " ") ic.deleteSurroundingText(0, 1)
+    }
+
     private fun endGlide() { glideWord = null; glideAlts = emptyList() }
 
     /**
@@ -1210,6 +1240,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         val b = textBefore(1)
         if (b.isNotEmpty() && !b.last().isWhitespace() && b.last() !in "([{\"'\u00AB\u201C-") ic.commitText(" ", 1)
         ic.commitText(words[0] + " ", 1)
+        eatNextSpace(ic)
         ic.endBatchEdit()
         wordAutoSpaced = true
         glideWord = words[0]; glideAlts = words
@@ -1232,7 +1263,7 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         val ic = currentInputConnection ?: return
         val gw = glideWord
         if (gw != null && taps.isEmpty() && glideIntact()) {         // a guess for a glided word replaces it
-            ic.beginBatchEdit(); ic.deleteSurroundingText(gw.length + 1, 0); ic.commitText("$word ", 1); ic.endBatchEdit()
+            ic.beginBatchEdit(); ic.deleteSurroundingText(gw.length + 1, 0); ic.commitText("$word ", 1); eatNextSpace(ic); ic.endBatchEdit()
             prefer(word, glideAlts.firstOrNull() ?: gw)
             rememberGlide(word, glideAlts)                           // the chosen reading keeps the path's other readings
             endGlide(); wordAutoSpaced = true
@@ -1244,11 +1275,12 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
         if (taps.isNotEmpty()) {
             // composing: the guess replaces the composing text; then only the space is added
             if (lex?.alphabet?.key(word)?.size == taps.size) prefer(word, cands.firstOrNull()?.word ?: "")   // a correction, not a longer completion
-            if (decoding && lex?.indexOf(word) == -1) learn(word.lowercase())   // picked the 'typed' slot: deliberate
+            if (decoding && !addressField && lex?.indexOf(word) == -1) learn(word.lowercase())   // picked the 'typed' slot: deliberate
             ic.setComposingText(word, 1)
             ic.finishComposingText()
             taps.clear(); exact.clear(); shown.clear(); upper.clear()
             ic.commitText(" ", 1)
+            eatNextSpace(ic)
         } else {
             // Not composing (the app dropped the composing region, or the caret sits at a word's end):
             // a tapped guess replaces the word touching the caret instead of being appended to it.
@@ -1256,9 +1288,11 @@ class OneRowService : InputMethodService(), KeyboardView.Listener {
             val typed = currentWord(); val tail = wordTail()
             glideMemory[(typed + tail).lowercase()]?.let { rememberGlide(word, it) }       // swapping between the readings of a swipe keeps the list
             if (typed.isNotEmpty() || tail.isNotEmpty()) ic.deleteSurroundingText(typed.length, tail.length)
-            if (decoding && lex?.indexOf(word) == -1) learn(word.lowercase())   // the typed slot again: silent, no prompt
+            if (decoding && !addressField && lex?.indexOf(word) == -1) learn(word.lowercase())   // the typed slot again: silent, no prompt
             val next = ic.getTextAfterCursor(1, 0)?.toString().orEmpty()
-            ic.commitText(if (tail.isNotEmpty() && next.isNotEmpty() && !next[0].isLetterOrDigit()) word else "$word ", 1)
+            val plain = tail.isNotEmpty() && next.isNotEmpty() && !next[0].isLetterOrDigit()
+            ic.commitText(if (plain) word else "$word ", 1)
+            if (!plain) eatNextSpace(ic)
         }
         ic.endBatchEdit()
         wordAutoSpaced = true
